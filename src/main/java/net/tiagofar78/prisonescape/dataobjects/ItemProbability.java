@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game;
+package net.tiagofar78.prisonescape.dataobjects;
 
 import org.bukkit.inventory.ItemStack;
 
