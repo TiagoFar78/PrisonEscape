@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.managers.Settings;
 
 public class PrisonEscapeGame {
 	
@@ -28,7 +27,7 @@ public class PrisonEscapeGame {
 	private String _state;
 	
 	public PrisonEscapeGame(String mapName, Location referenceBlock, String hostName) {
-		_settings = Settings.getInstance();
+		_settings = new Settings();
 		
 		_currentDay = 0;
 		

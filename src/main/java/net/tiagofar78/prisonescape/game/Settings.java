@@ -1,11 +1,9 @@
-package net.tiagofar78.prisonescape.managers;
+package net.tiagofar78.prisonescape.game;
 
 public class Settings {
 	
-	private static Settings settings = new Settings();
-	
-	public static Settings getInstance() {
-		return settings;
+	public Settings() {
+		
 	}
 	
 	public int getMaxPrisioners() {

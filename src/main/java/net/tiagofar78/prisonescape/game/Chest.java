@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public class Chest {
 	
@@ -64,8 +65,16 @@ public class Chest {
 	}
 	
 	public Inventory buildInventory() {
+		ConfigManager config = ConfigManager.getInstance();
+		
 		int lines = 3;
-		Inventory inv = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, aa);
+		Inventory inv = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
+		
+		for (int i = 0; i < lines * SLOTS_PER_LINE; i++) {
+			
+		}
+		
+		return inv;
 	}
 
 }
