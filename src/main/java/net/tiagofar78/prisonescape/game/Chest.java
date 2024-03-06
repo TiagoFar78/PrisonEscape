@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -15,6 +17,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 public class Chest {
 	
 	private static final int SLOTS_PER_LINE = 9;
+	private static final ItemStack GRAY_PANEL = getGrayPanel();
 	
 	private int _size;
 	private List<ItemStack> _contents;
@@ -71,10 +74,33 @@ public class Chest {
 		Inventory inv = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
 		
 		for (int i = 0; i < lines * SLOTS_PER_LINE; i++) {
-			
+			inv.setItem(i, GRAY_PANEL);
+		}
+		
+		List<Integer> contentPos = getStartingPosForContents();
+		for (int i = 0; i < contentPos.size(); i++) {
+			inv.setItem(contentPos.get(i), _contents.get(i));
 		}
 		
 		return inv;
+	}
+	
+	private List<Integer> getStartingPosForContents() {
+		List<Integer> positions = new ArrayList<>();
+		
+		for (int i = 2; i <= 2 + _size; i++) {
+			positions.add(i);
+		}
+		
+		return positions;
+	}
+	
+	private static ItemStack getGrayPanel() {
+		ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("");
+		item.setItemMeta(meta);
+		return item;
 	}
 
 }
