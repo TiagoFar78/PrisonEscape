@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.game;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
@@ -19,32 +20,23 @@ public class Chest {
 	private static final int SLOTS_PER_LINE = 9;
 	private static final ItemStack GRAY_PANEL = getGrayPanel();
 	
-	private int _size;
-	private List<ItemStack> _contents;
+	private List<Integer> _contentsIndexes;
+	private Hashtable<Integer, ItemStack> _contents;
 	private List<ItemProbability> _itemsProbability;
-	private String _playerOpener;
 	
 	protected Chest(int size, List<ItemProbability> itemsProbability) {
-		this._size = size;
-		this._contents = new ArrayList<>();
+		this._contentsIndexes = getIndexesForContents(size);
+		this._contents = new Hashtable<>();
 		this._itemsProbability = itemsProbability;
 		
-		initializeContents();
-		
 		reload();
-	}
-	
-	private void initializeContents() {
-		for (int i = 0; i < _size; i++) {
-			_contents.add(null);
-		}
 	}
 	
 	public void reload() {
 		_contents.clear();
 		
-		for (int i = 0; i < _size; i++) {
-			_contents.set(i, getRandomItem());
+		for (int index : _contentsIndexes) {
+			_contents.put(index, getRandomItem());
 		}
 	}
 	
@@ -63,10 +55,6 @@ public class Chest {
         return null;
 	}
 	
-	public void removeItem(int inventoryIndex) {
-		
-	}
-	
 	public Inventory buildInventory() {
 		ConfigManager config = ConfigManager.getInstance();
 		
@@ -77,19 +65,42 @@ public class Chest {
 			inv.setItem(i, GRAY_PANEL);
 		}
 		
-		List<Integer> contentPos = getStartingPosForContents();
-		for (int i = 0; i < contentPos.size(); i++) {
-			inv.setItem(contentPos.get(i), _contents.get(i));
+		for (int slot : _contentsIndexes) {
+			inv.setItem(slot, _contents.get(slot));
 		}
 		
 		return inv;
 	}
 	
-	private List<Integer> getStartingPosForContents() {
+	public void playerClickEvent(InventoryClickEvent e, PrisonEscapePlayer player) {		
+		int slot = e.getRawSlot();
+		
+		if (!_contents.containsKey(slot)) {
+			e.setCancelled(true);
+			return;
+		}
+		
+		ItemStack item = _contents.get(slot);
+		if (item == null) {
+			return;
+		}
+		
+		int returnCode = player.giveItem(item);
+		if (returnCode == -1) {
+			// TODO send message of full inventory to player
+		}
+		else if (returnCode == 0) {
+			_contents.put(slot, null);
+		}
+		
+	}
+	
+	private List<Integer> getIndexesForContents(int size) {
+		// This method should be remade so that it will allow different sizes besides _size = 5
 		List<Integer> positions = new ArrayList<>();
 		
-		for (int i = 2; i <= 2 + _size; i++) {
-			positions.add(i);
+		for (int i = 2; i <= 2 + size; i++) {
+			positions.add(i + 9);
 		}
 		
 		return positions;
