@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
+import net.tiagofar78.prisonescape.game.phases.Phase;
+import net.tiagofar78.prisonescape.game.phases.Waiting;
 
 public class PrisonEscapeGame {
 	
@@ -24,7 +26,7 @@ public class PrisonEscapeGame {
 	private PrisonEscapeTeam _policeTeam;
 	private PrisonEscapeTeam _prisionersTeam;
 	
-	private String _state;
+	private Phase _phase;
 	
 	public PrisonEscapeGame(String mapName, Location referenceBlock, String hostName) {
 		_settings = new Settings();
@@ -35,6 +37,8 @@ public class PrisonEscapeGame {
 		
 		_policeTeam = new PrisonEscapeTeam();
 		_prisionersTeam = new PrisonEscapeTeam();
+		
+		_phase = new Waiting();
 	}
 	
 //	#########################################
