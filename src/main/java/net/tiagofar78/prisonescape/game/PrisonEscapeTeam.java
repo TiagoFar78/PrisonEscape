@@ -4,7 +4,16 @@ import java.util.List;
 
 public class PrisonEscapeTeam {
 	
+	private String _name;
 	private List<PrisonEscapePlayer> _players;
+	
+	public PrisonEscapeTeam(String name) {
+		this._name = name;
+	}
+	
+	public String getName() {
+		return _name;
+	}
 	
 	public boolean isOnTeam(String playerName) {
 		for (PrisonEscapePlayer player : _players) {

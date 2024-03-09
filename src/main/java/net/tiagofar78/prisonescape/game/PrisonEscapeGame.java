@@ -14,6 +14,8 @@ import net.tiagofar78.prisonescape.game.phases.Waiting;
 public class PrisonEscapeGame {
 	
 	private static final int TICKS_PER_SECOND = 20;
+	private static final String POLICE_TEAM_NAME = "Police";
+	private static final String PRISIONERS_TEAM_NAME = "Prisioners";
 	
 	private Settings _settings;
 	
@@ -35,8 +37,8 @@ public class PrisonEscapeGame {
 		
 		_players = new ArrayList<>();
 		
-		_policeTeam = new PrisonEscapeTeam();
-		_prisionersTeam = new PrisonEscapeTeam();
+		_policeTeam = new PrisonEscapeTeam(POLICE_TEAM_NAME);
+		_prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
 		
 		_phase = new Waiting();
 	}
@@ -100,20 +102,6 @@ public class PrisonEscapeGame {
 		return false;
 	}
 	
-//	########################################
-//	#                Phases                #
-//	########################################
-	
-	private void startWaitingPhase() {
-		// Nothing
-	}
-	
-	private void startOngoingPhase() {
-		startDay();
-		
-		distributePlayersPerTeams();
-	}
-	
 	private void distributePlayersPerTeams() {
 		int preferPrisioner = 0;
 		int preferPolice = 0;
@@ -139,7 +127,21 @@ public class PrisonEscapeGame {
 		
 	}
 	
-	private void startFinishedPhase() {
+//	########################################
+//	#                Phases                #
+//	########################################
+	
+	private void startWaitingPhase() {
+		// Nothing
+	}
+	
+	private void startOngoingPhase() {
+		startDay();
+		
+		distributePlayersPerTeams();
+	}
+	
+	private void startFinishedPhase(PrisonEscapeTeam winnerTeam) {
 		
 	}	
 	
@@ -148,10 +150,12 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private void startDay() {
+		if (_phase.isClockStoped()) {
+			return;
+		}
+		
 		_dayPeriod = DayPeriod.DAY;
 		_currentDay++;
-		
-		// TODO check if it was finished
 		
 		// TODO reload chests
 		
@@ -165,7 +169,9 @@ public class PrisonEscapeGame {
 	}
 	
 	private void startNight() {
-		// TODO check if it was finished
+		if (_phase.isClockStoped()) {
+			return;
+		}
 		
 		_dayPeriod = DayPeriod.NIGHT;
 		
@@ -174,7 +180,7 @@ public class PrisonEscapeGame {
 			@Override
 			public void run() {
 				if (_currentDay == _settings.getDays()) {
-					startFinishedPhase(); // TODO cops won
+					startFinishedPhase(_policeTeam);
 				}
 				else {
 					startDay();
@@ -182,6 +188,12 @@ public class PrisonEscapeGame {
 			}
 		}, _settings.getNightDuration() * TICKS_PER_SECOND);
 	}
+	
+//	########################################
+//	#                Events                #
+//	########################################
+	
+	
 	
 //	#########################################
 //	#               Locations               #
