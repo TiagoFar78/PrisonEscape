@@ -6,10 +6,12 @@ public class PrisonEscapePlayer {
 	
 	private String _name;
 	private TeamPreference _preference;
+	private boolean _isWanted;
 	
 	public PrisonEscapePlayer(String name) {
 		_name = name;
 		_preference = TeamPreference.RANDOM;
+		_isWanted = false;
 	}
 	
 	public String getName() {
@@ -26,6 +28,22 @@ public class PrisonEscapePlayer {
 	 */
 	public int giveItem(ItemStack item) {
 		return 0;
+	}
+	
+//	########################################
+//	#                Wanted                #
+//	########################################
+	
+	public boolean isWanted() {
+		return _isWanted;
+	}
+	
+	public void setWanted() {
+		_isWanted = true;
+	}
+	
+	public void removeWanted() {
+		_isWanted = false;
 	}
 
 }

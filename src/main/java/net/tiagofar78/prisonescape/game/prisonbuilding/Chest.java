@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game;
+package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public class Chest {

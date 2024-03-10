@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 
 public class PrisonEscapeGame {
 	
@@ -135,14 +136,16 @@ public class PrisonEscapeGame {
 		// Nothing
 	}
 	
-	private void startOngoingPhase() {
-		startDay();
-		
+	private void startOngoingPhase() {		
 		distributePlayersPerTeams();
+		
+		_phase.next();
+		
+		startDay();
 	}
 	
 	private void startFinishedPhase(PrisonEscapeTeam winnerTeam) {
-		
+		_phase.next();
 	}	
 	
 //	########################################
@@ -193,7 +196,40 @@ public class PrisonEscapeGame {
 //	#                Events                #
 //	########################################
 	
+	public void playerMove(String playerName, Location loc) {
+		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+		if (player == null) {
+			return;
+		}
+	}
 	
+	public void playerAttack(String attackerName, String attackedName) {
+		PrisonEscapePlayer attacker = getPrisonEscapePlayer(attackerName);
+		if (attacker == null) {
+			return;
+		}
+		
+		PrisonEscapePlayer attacked = getPrisonEscapePlayer(attackedName);
+		if (attacked == null) {
+			return;
+		}
+		
+		// TODO keep going
+	}
+	
+//	########################################
+//	#                 Util                 #
+//	########################################
+	
+	private PrisonEscapePlayer getPrisonEscapePlayer(String playerName) {
+		for (PrisonEscapePlayer player : _players) {
+			if (player.getName().equals(playerName)) {
+				return player;
+			}
+		}
+		
+		return null;
+	}
 	
 //	#########################################
 //	#               Locations               #

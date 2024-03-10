@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game;
+package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import java.util.List;
 
