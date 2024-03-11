@@ -24,5 +24,9 @@ public class PrisonEscapeTeam {
 		
 		return false;
 	}
+	
+	public int countArrestedPlayers() {
+		return (int) _players.stream().filter(player -> !player.hasEscaped() && player.isOnline()).count();
+	}
 
 }

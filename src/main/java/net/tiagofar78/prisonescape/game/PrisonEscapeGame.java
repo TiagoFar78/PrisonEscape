@@ -21,7 +21,7 @@ public class PrisonEscapeGame {
 	private Settings _settings;
 	
 	private int _currentDay;
-	private DayPeriod _dayPeriod; 
+	private DayPeriod _dayPeriod;
 	private PrisonBuilding _prison;
 	
 	private List<PrisonEscapePlayer> _players;
@@ -196,11 +196,33 @@ public class PrisonEscapeGame {
 //	#                Events                #
 //	########################################
 	
+	public void playerEscaped(String playerName) {
+		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+		if (player == null) {
+			return;
+		}
+		
+		player.escaped();
+		
+		if (_prisionersTeam.countArrestedPlayers() == 0) {
+			startFinishedPhase(_prisionersTeam);
+		}
+	}
+	
 	public void playerMove(String playerName, Location loc) {
 		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
 		if (player == null) {
 			return;
 		}
+		
+		if (_prison.isOutsidePrison(loc)) {
+			player.giveLeavingPrisonItem();
+		}
+		else {
+			player.removeLeavingPrisonItem();
+		}
+		
+		// TODO check if metal detectors are triggered
 	}
 	
 	public void playerAttack(String attackerName, String attackedName) {
