@@ -15,14 +15,8 @@ public class PrisonEscapeTeam {
 		return _name;
 	}
 	
-	public boolean isOnTeam(String playerName) {
-		for (PrisonEscapePlayer player : _players) {
-			if (player.getName().equals(playerName)) {
-				return true;
-			}
-		}
-		
-		return false;
+	public boolean isOnTeam(PrisonEscapePlayer player) {
+		return _players.contains(player);
 	}
 	
 	public int countArrestedPlayers() {

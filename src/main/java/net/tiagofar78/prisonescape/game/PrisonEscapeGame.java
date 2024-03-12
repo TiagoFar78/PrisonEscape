@@ -146,7 +146,7 @@ public class PrisonEscapeGame {
 	
 	private void startFinishedPhase(PrisonEscapeTeam winnerTeam) {
 		_phase.next();
-	}	
+	}
 	
 //	########################################
 //	#                 Time                 #
@@ -225,18 +225,39 @@ public class PrisonEscapeGame {
 		// TODO check if metal detectors are triggered
 	}
 	
-	public void playerAttack(String attackerName, String attackedName) {
-		PrisonEscapePlayer attacker = getPrisonEscapePlayer(attackerName);
-		if (attacker == null) {
+	public void playerTouch(String attackerName, String attackedName, PrisonEscapeItem item) {
+		PrisonEscapePlayer toucher = getPrisonEscapePlayer(attackerName);
+		if (toucher == null) {
 			return;
 		}
 		
-		PrisonEscapePlayer attacked = getPrisonEscapePlayer(attackedName);
-		if (attacked == null) {
+		PrisonEscapePlayer touched = getPrisonEscapePlayer(attackedName);
+		if (touched == null) {
 			return;
 		}
 		
-		// TODO keep going
+		if (_prisionersTeam.isOnTeam(toucher)) {
+			return;
+		}
+		
+		if (item == PrisonEscapeItem.HANDCUFS) {
+			if (touched.isWanted()) {
+				arrestPlayer(touched);
+			}
+		}
+		else if (item == PrisonEscapeItem.SEARCH) {
+			if (touched.hasIllegalItems()) {
+				touched.setWanted();
+			}
+		}
+	}
+	
+//	########################################
+//	#                Arrest                #
+//	########################################
+	
+	private void arrestPlayer(PrisonEscapePlayer player) {
+		
 	}
 	
 //	########################################

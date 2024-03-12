@@ -73,6 +73,10 @@ public class PrisonEscapePlayer {
 		
 	}
 	
+	public boolean hasIllegalItems() {
+		return false; // TODO
+	}
+	
 //	########################################
 //	#                Wanted                #
 //	########################################
