@@ -133,10 +133,10 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private void startWaitingPhase() {
-		// Nothing
+		
 	}
 	
-	private void startOngoingPhase() {		
+	private void startOngoingPhase() {
 		distributePlayersPerTeams();
 		
 		_phase.next();
@@ -225,7 +225,7 @@ public class PrisonEscapeGame {
 		// TODO check if metal detectors are triggered
 	}
 	
-	public void playerTouch(String attackerName, String attackedName, PrisonEscapeItem item) {
+	public void playerTouch(String attackerName, String attackedName, PrisonEscapeItem item) {	
 		PrisonEscapePlayer toucher = getPrisonEscapePlayer(attackerName);
 		if (toucher == null) {
 			return;
@@ -236,13 +236,17 @@ public class PrisonEscapeGame {
 			return;
 		}
 		
+		if (_phase.isClockStoped()) {
+			return;
+		}
+		
 		if (_prisionersTeam.isOnTeam(toucher)) {
 			return;
 		}
 		
 		if (item == PrisonEscapeItem.HANDCUFS) {
 			if (touched.isWanted()) {
-				arrestPlayer(touched);
+				arrestPlayer(touched, toucher);
 			}
 		}
 		else if (item == PrisonEscapeItem.SEARCH) {
@@ -256,8 +260,31 @@ public class PrisonEscapeGame {
 //	#                Arrest                #
 //	########################################
 	
-	private void arrestPlayer(PrisonEscapePlayer player) {
+	private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
+		_prison.sendPlayerToSolitary(arrested);
 		
+		// TODO warn players
+		
+		Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
+			
+			@Override
+			public void run() {
+				if (_phase.isClockStoped()) {
+					return;
+				}
+				
+				arrested.removeWanted();
+				
+				// TODO warn arrested
+				
+				if (_dayPeriod == DayPeriod.DAY) {
+					_prison.takePlayerFromSolitary(arrested);
+				}
+				else if (_dayPeriod == DayPeriod.NIGHT) {
+					_prison.sendPlayerToCell(arrested);
+				}
+			}
+		}, TICKS_PER_SECOND * _settings.getSecondsInSolitary());
 	}
 	
 //	########################################

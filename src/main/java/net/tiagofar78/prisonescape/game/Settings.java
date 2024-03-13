@@ -11,6 +11,10 @@ public class Settings {
 	}
 	
 	public int getMaxPoliceOfficers() {
+		return 0; // TODO
+	}
+	
+	public int getSecondsInSolitary() {
 		return 0;
 	}
 	
