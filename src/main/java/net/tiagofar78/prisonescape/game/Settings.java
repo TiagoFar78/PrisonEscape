@@ -1,17 +1,9 @@
 package net.tiagofar78.prisonescape.game;
 
 public class Settings {
-	
+
 	public Settings() {
 		
-	}
-	
-	public int getMaxPrisioners() {
-		return 0; // TODO
-	}
-	
-	public int getMaxPoliceOfficers() {
-		return 0; // TODO
 	}
 	
 	public int getSecondsInSolitary() {

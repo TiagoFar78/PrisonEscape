@@ -14,6 +14,10 @@ public class PrisonEscapeTeam {
 	public String getName() {
 		return _name;
 	}
+
+	public void addMember(PrisonEscapePlayer player) {
+		_players.add(player);
+	}
 	
 	public boolean isOnTeam(PrisonEscapePlayer player) {
 		return _players.contains(player);

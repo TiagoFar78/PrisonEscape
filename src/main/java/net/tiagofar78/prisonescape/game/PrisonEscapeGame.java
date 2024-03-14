@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public class PrisonEscapeGame {
 	
@@ -103,29 +105,42 @@ public class PrisonEscapeGame {
 		return false;
 	}
 	
-	private void distributePlayersPerTeams() {
-		int preferPrisioner = 0;
-		int preferPolice = 0;
-		int noPreference = 0;
-		
-		for (int i = 0; i < _players.size(); i++) {
-			TeamPreference preference = _players.get(i).getPreference();
-			if (preference == TeamPreference.POLICE) {
-				preferPolice++;
-			}
-			else if (preference == TeamPreference.PRISIONERS) {
-				preferPrisioner++;
-			}
-			else if (preference == TeamPreference.RANDOM) {
-				noPreference++;
+	private void distributePlayersPerTeam() {
+		int numberOfPlayers = _players.size();
+		int requiredPrisioners = (int) Math.round(
+				numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
+		);
+		int requiredOfficers = (int) Math.round(
+				numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
+		);
+
+		Collections.shuffle(_players);
+		List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
+
+		for (PrisonEscapePlayer player : _players) {
+			TeamPreference preference = player.getPreference();
+
+			if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
+				_policeTeam.addMember(player);
+				requiredOfficers--;
+			} else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
+				_prisionersTeam.addMember(player);
+				requiredPrisioners--;
+			} else {
+				remainingPlayers.add(player);
 			}
 		}
-		
-		if (preferPrisioner <= _settings.getMaxPrisioners()) {
-			//TODO finish this method
+
+		for (PrisonEscapePlayer player : remainingPlayers) {
+
+			if (requiredPrisioners != 0) {
+				_prisionersTeam.addMember(player);
+				requiredPrisioners--;
+			} else {
+				_policeTeam.addMember(player);
+				requiredOfficers--;
+			}
 		}
-		
-		
 	}
 	
 //	########################################
@@ -137,7 +152,7 @@ public class PrisonEscapeGame {
 	}
 	
 	private void startOngoingPhase() {
-		distributePlayersPerTeams();
+		distributePlayersPerTeam();
 		
 		_phase.next();
 		
