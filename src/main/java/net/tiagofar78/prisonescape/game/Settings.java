@@ -2,9 +2,6 @@ package net.tiagofar78.prisonescape.game;
 
 public class Settings {
 
-	private static final double PRISIONERS_RATIO = 0.64;
-	private static final double GUARDS_RATIO = 0.36;
-
 	public Settings() {
 		
 	}
