@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -103,29 +104,39 @@ public class PrisonEscapeGame {
 		return false;
 	}
 	
-	private void distributePlayersPerTeams() {
-		int preferPrisioner = 0;
-		int preferPolice = 0;
-		int noPreference = 0;
+	private void distributePlayersPerTeam() {
+		int requiredPrisioners = _settings.getRequiredPrisioners(_players.size());
+		int requiredOfficers = _settings.getRequiredOfficers(_players.size());
+		List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
 		
-		for (int i = 0; i < _players.size(); i++) {
-			TeamPreference preference = _players.get(i).getPreference();
-			if (preference == TeamPreference.POLICE) {
-				preferPolice++;
-			}
-			else if (preference == TeamPreference.PRISIONERS) {
-				preferPrisioner++;
-			}
-			else if (preference == TeamPreference.RANDOM) {
-				noPreference++;
+		// Shuffle the list of players to assign randomly
+		Collections.shuffle(_players);
+		
+		for (PrisonEscapePlayer player : _players) {
+			TeamPreference preference = player.getPreference();
+
+			if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
+				_policeTeam.add(player); // Assign to police
+				requiredOfficers--;
+			} else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
+				_prisionersTeam.add(player); // Assing to prisioner
+				requiredPrisioners--;
+			} else {
+				remainingPlayers.add(player);
 			}
 		}
-		
-		if (preferPrisioner <= _settings.getMaxPrisioners()) {
-			//TODO finish this method
+
+		// Assign the players with no preference and players that did not get their pick
+		for(PrisonEscapePlayer player : remainingPlayers) {
+			if (requiredPrisioners != 0) {
+				_prisionersTeam.add(player); // Assign to prisioner
+				requiredPrisioners--;
+			}
+			else {
+				_policeTeam.add(player); // Assign to poline
+				requiredOfficers--;
+			}
 		}
-		
-		
 	}
 	
 //	########################################
@@ -137,7 +148,7 @@ public class PrisonEscapeGame {
 	}
 	
 	private void startOngoingPhase() {
-		distributePlayersPerTeams();
+		distributePlayersPerTeam();
 		
 		_phase.next();
 		
