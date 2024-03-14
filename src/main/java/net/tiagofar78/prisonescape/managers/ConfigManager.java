@@ -9,7 +9,7 @@ public class ConfigManager {
 	}
 
 	public String getContainerName() {
-		return null;
+		return null; // TODO
 	}
 
 	public Double getPrisionerRatio() {
@@ -18,5 +18,9 @@ public class ConfigManager {
 
 	public Double getOfficerRatio() {
 		return 0.0; // TODO
+	}
+	
+	public String getWorldName() {
+		return null; // TODO
 	}
 }
