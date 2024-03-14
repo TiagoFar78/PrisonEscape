@@ -16,7 +16,7 @@ public class TeleportManager {
 	
 	public static void teleport(PrisonEscapePlayer player, PrisonEscapeLocation loc) {
 		Player bukkitPlayer = Bukkit.getPlayer(player.getName());
-		if (bukkitPlayer == null) {
+		if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
 			return;
 		}
 		
