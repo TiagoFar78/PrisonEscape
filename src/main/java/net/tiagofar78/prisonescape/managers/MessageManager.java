@@ -11,7 +11,7 @@ public class MessageManager {
 	
 	public static void sendChatMessage(PrisonEscapePlayer player, String message) {
 		Player bukkitPlayer = Bukkit.getPlayer(player.getName());
-		if (bukkitPlayer == null) {
+		if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
 			return;
 		}
 		
@@ -20,7 +20,7 @@ public class MessageManager {
 	
 	public static void sendChatMessage(PrisonEscapePlayer player, String[] message) {
 		Player bukkitPlayer = Bukkit.getPlayer(player.getName());
-		if (bukkitPlayer == null) {
+		if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
 			return;
 		}
 		
