@@ -114,7 +114,6 @@ public class PrisonEscapeGame {
 				numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
 		);
 
-		// Shuffle the list of players to assign randomly
 		Collections.shuffle(_players);
 		List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
 
@@ -122,24 +121,23 @@ public class PrisonEscapeGame {
 			TeamPreference preference = player.getPreference();
 
 			if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
-				_policeTeam.addMember(player); // Assign to police
+				_policeTeam.addMember(player);
 				requiredOfficers--;
 			} else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
-				_prisionersTeam.addMember(player); // Assing to prisioner
+				_prisionersTeam.addMember(player);
 				requiredPrisioners--;
 			} else {
 				remainingPlayers.add(player);
 			}
 		}
 
-		// Assign the players with no preference and players that did not get their pick
 		for (PrisonEscapePlayer player : remainingPlayers) {
 
 			if (requiredPrisioners != 0) {
-				_prisionersTeam.addMember(player); // Assign to prisioner
+				_prisionersTeam.addMember(player);
 				requiredPrisioners--;
 			} else {
-				_policeTeam.addMember(player); // Assign to poline
+				_policeTeam.addMember(player);
 				requiredOfficers--;
 			}
 		}
