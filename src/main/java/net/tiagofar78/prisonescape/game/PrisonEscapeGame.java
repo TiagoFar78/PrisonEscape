@@ -116,10 +116,10 @@ public class PrisonEscapeGame {
 			TeamPreference preference = player.getPreference();
 
 			if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
-				_policeTeam.add(player); // Assign to police
+				_policeTeam.addMember(player); // Assign to police
 				requiredOfficers--;
 			} else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
-				_prisionersTeam.add(player); // Assing to prisioner
+				_prisionersTeam.addMember(player); // Assing to prisioner
 				requiredPrisioners--;
 			} else {
 				remainingPlayers.add(player);
@@ -128,12 +128,13 @@ public class PrisonEscapeGame {
 
 		// Assign the players with no preference and players that did not get their pick
 		for(PrisonEscapePlayer player : remainingPlayers) {
+			
 			if (requiredPrisioners != 0) {
-				_prisionersTeam.add(player); // Assign to prisioner
+				_prisionersTeam.addMember(player); // Assign to prisioner
 				requiredPrisioners--;
 			}
 			else {
-				_policeTeam.add(player); // Assign to poline
+				_policeTeam.addMember(player); // Assign to poline
 				requiredOfficers--;
 			}
 		}

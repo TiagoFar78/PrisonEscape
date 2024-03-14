@@ -15,7 +15,7 @@ public class PrisonEscapeTeam {
 		return _name;
 	}
 
-	public void add(PrisonEscapePlayer player) {
+	public void addMember(PrisonEscapePlayer player) {
 		_players.add(player);
 	}
 	
