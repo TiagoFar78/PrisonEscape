@@ -8,14 +8,6 @@ public class Settings {
 	public Settings() {
 		
 	}
-
-	public int getRequiredPrisioners(int numberOfPlayers) {
-		return (int) Math.round(numberOfPlayers * PRISIONERS_RATIO);
-	}
-
-	public int getRequiredOfficers(int numberOfPlayers) {
-		return (int) Math.round(numberOfPlayers * GUARDS_RATIO);
-	}
 	
 	public int getSecondsInSolitary() {
 		return 0;
