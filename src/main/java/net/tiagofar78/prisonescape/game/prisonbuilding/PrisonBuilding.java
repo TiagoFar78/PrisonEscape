@@ -30,14 +30,12 @@ public class PrisonBuilding {
 
 	public boolean checkIfMetalDetectorTriggered(Location location, List<PrisonEscapeItem> playerItems) {
 		if (_metalDetectorsLocations.contains(location)) {
-
 			for (PrisonEscapeItem item : playerItems) {
 				if (item.isMetal()) {
 					return true;
 				}
 			}
 		}
-
 		return false;
 	}
 }
