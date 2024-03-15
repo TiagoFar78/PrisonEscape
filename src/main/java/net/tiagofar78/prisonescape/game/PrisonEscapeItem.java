@@ -20,7 +20,7 @@ public enum PrisonEscapeItem {
 
     private final boolean isMetal;
     private final boolean isIllegal;
-
+    
 	PrisonEscapeItem(boolean isMetal, boolean isIllegal) {
         this.isMetal = isMetal;
         this.isIllegal = isIllegal;

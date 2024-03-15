@@ -35,11 +35,9 @@ public class PrisonBuilding {
 				if (item.isMetal()) {
 					return true;
 				}
-
 			}
 		}
 
 		return false;
 	}
-
 }
