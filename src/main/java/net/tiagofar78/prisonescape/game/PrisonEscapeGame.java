@@ -237,7 +237,7 @@ public class PrisonEscapeGame {
 			player.removeLeavingPrisonItem();
 		}
 		
-		if(_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
+		if (_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
 			// TODO: Do beep
 		}
 	}
