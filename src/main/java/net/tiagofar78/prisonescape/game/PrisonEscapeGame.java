@@ -237,7 +237,9 @@ public class PrisonEscapeGame {
 			player.removeLeavingPrisonItem();
 		}
 		
-		// TODO check if metal detectors are triggered
+		if(_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
+			// TODO: Do beep
+		}
 	}
 	
 	public void playerTouch(String attackerName, String attackedName, PrisonEscapeItem item) {	
