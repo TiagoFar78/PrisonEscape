@@ -18,7 +18,7 @@ public enum PrisonEscapeItem {
     COFFEE(false, false),
     ENERGYDRINK(false, false);
 
-	private final boolean isMetal;
+    private final boolean isMetal;
     private final boolean isIllegal;
 
 	PrisonEscapeItem(boolean isMetal, boolean isIllegal) {
