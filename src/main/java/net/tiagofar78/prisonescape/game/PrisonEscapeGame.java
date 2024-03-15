@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
+import net.tiagofar78.prisonescape.game.phases.Finished;
+import net.tiagofar78.prisonescape.game.phases.Ongoing;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
@@ -62,8 +64,10 @@ public class PrisonEscapeGame {
 		if (isPlayerOnGame(playerName)) {
 			return -1;
 		}
-		
-		// TODO check if already started -2
+
+		if (_phase.hasGameStarted()) {
+			return -2;
+		}
 		
 		// TODO check if is rejoin and take action 1
 		
@@ -104,43 +108,17 @@ public class PrisonEscapeGame {
 		
 		return false;
 	}
-	
-	private void distributePlayersPerTeam() {
-		int numberOfPlayers = _players.size();
-		int requiredPrisioners = (int) Math.round(
-				numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
-		);
-		int requiredOfficers = (int) Math.round(
-				numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
-		);
 
-		Collections.shuffle(_players);
-		List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
-
-		for (PrisonEscapePlayer player : _players) {
-			TeamPreference preference = player.getPreference();
-
-			if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
-				_policeTeam.addMember(player);
-				requiredOfficers--;
-			} else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
-				_prisionersTeam.addMember(player);
-				requiredPrisioners--;
-			} else {
-				remainingPlayers.add(player);
-			}
+	/**
+	* @return      0 if success<br> 
+	* 				-1 if cannot start game
+	*/
+	public int startGame() {
+		if (!_phase.hasGameStarted() && hasMinimumPlayersToStart()) {
+			startOngoingPhase();
+			return 0;
 		}
-
-		for (PrisonEscapePlayer player : remainingPlayers) {
-
-			if (requiredPrisioners != 0) {
-				_prisionersTeam.addMember(player);
-				requiredPrisioners--;
-			} else {
-				_policeTeam.addMember(player);
-				requiredOfficers--;
-			}
-		}
+		return -1;
 	}
 	
 //	########################################
@@ -148,12 +126,12 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private void startWaitingPhase() {
-		
+		_phase.next();
 	}
 	
 	private void startOngoingPhase() {
 		distributePlayersPerTeam();
-		
+
 		_phase.next();
 		
 		startDay();
@@ -168,7 +146,7 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private void startDay() {
-		if (_phase.isClockStoped()) {
+		if (_phase.isClockStopped()) {
 			return;
 		}
 		
@@ -187,7 +165,7 @@ public class PrisonEscapeGame {
 	}
 	
 	private void startNight() {
-		if (_phase.isClockStoped()) {
+		if (_phase.isClockStopped()) {
 			return;
 		}
 		
@@ -253,7 +231,7 @@ public class PrisonEscapeGame {
 			return;
 		}
 		
-		if (_phase.isClockStoped()) {
+		if (_phase.isClockStopped()) {
 			return;
 		}
 		
@@ -286,7 +264,7 @@ public class PrisonEscapeGame {
 			
 			@Override
 			public void run() {
-				if (_phase.isClockStoped()) {
+				if (_phase.isClockStopped()) {
 					return;
 				}
 				
@@ -316,6 +294,47 @@ public class PrisonEscapeGame {
 		}
 		
 		return null;
+	}
+
+	private boolean hasMinimumPlayersToStart() {
+		return _players.size() >= ConfigManager.getInstance().getMinimumPlayers();
+	}
+
+	private void distributePlayersPerTeam() {
+		int numberOfPlayers = _players.size();
+		int requiredPrisioners = (int) Math.round(
+				numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
+		);
+		int requiredOfficers = (int) Math.round(
+				numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
+		);
+
+		Collections.shuffle(_players);
+		List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
+
+		for (PrisonEscapePlayer player : _players) {
+			TeamPreference preference = player.getPreference();
+
+			if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
+				_policeTeam.addMember(player);
+				requiredOfficers--;
+			} else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
+				_prisionersTeam.addMember(player);
+				requiredPrisioners--;
+			} else {
+				remainingPlayers.add(player);
+			}
+		}
+
+		for (PrisonEscapePlayer player : remainingPlayers) {
+			if (requiredPrisioners != 0) {
+				_prisionersTeam.addMember(player);
+				requiredPrisioners--;
+			} else {
+				_policeTeam.addMember(player);
+				requiredOfficers--;
+			}
+		}
 	}
 	
 //	#########################################

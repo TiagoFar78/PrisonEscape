@@ -21,6 +21,10 @@ public class ConfigManager {
 	public Double getOfficerRatio() {
 		return 0.0; // TODO
 	}
+
+	public int getMinimumPlayers() {
+		return 0; // TODO
+	}
 	
 	public String getWorldName() {
 		return null; // TODO
