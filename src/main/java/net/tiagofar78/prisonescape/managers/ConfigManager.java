@@ -1,5 +1,7 @@
 package net.tiagofar78.prisonescape.managers;
 
+import java.util.List;
+
 public class ConfigManager {
 
 	private static ConfigManager instance = new ConfigManager();
@@ -21,6 +23,10 @@ public class ConfigManager {
 	}
 	
 	public String getWorldName() {
+		return null; // TODO
+	}
+	
+	public List<String> getAvailableLanguages() {
 		return null; // TODO
 	}
 }
