@@ -1,5 +1,7 @@
 package net.tiagofar78.prisonescape.game;
 
+import java.util.List;
+
 import org.bukkit.inventory.ItemStack;
 
 public class PrisonEscapePlayer {
@@ -9,6 +11,7 @@ public class PrisonEscapePlayer {
 	private boolean _isWanted;
 	private boolean _isOnline;
 	private boolean _hasEscaped;
+	private List<PrisonEscapeItem> _inventory;
 	
 	public PrisonEscapePlayer(String name) {
 		_name = name;
@@ -56,6 +59,24 @@ public class PrisonEscapePlayer {
 //	#########################################
 //	#               Inventory               #
 //	#########################################
+
+	public List<PrisonEscapeItem> getInventory() {
+		return _inventory;
+	}
+
+	public void addItem(PrisonEscapeItem item) {
+		_inventory.add(item);
+	}
+
+	public void deleteItem(PrisonEscapeItem item) {
+		if (_inventory.contains(item)) {
+			_inventory.remove(item);
+		}
+	}
+
+	public void clearInventory() {
+		_inventory.clear();
+	}
 	
 	/**
 	 * @return 		0 if success
