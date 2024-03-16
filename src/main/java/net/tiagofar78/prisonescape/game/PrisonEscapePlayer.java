@@ -82,8 +82,8 @@ public class PrisonEscapePlayer {
 	 * @return 		0 if success
 	 * 				-1 if full inventory
 	 */
-	public int giveItem(ItemStack item) {
-		return 0;
+	public int giveItem(PrisonEscapeItem item) {
+		return 0; // TODO
 	}
 	
 	public void giveLeavingPrisonItem() {

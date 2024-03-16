@@ -21,10 +21,10 @@ public class PrisonBuilding {
 	
 	private List<Chest> _chests;
 	private List<PrisonEscapeLocation> _metalDetectorsLocations;
-	
+
 	public PrisonBuilding(PrisonEscapeLocation reference) {
 		ConfigManager config = ConfigManager.getInstance();
-		
+
 		_prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
 		_prisonBottomRightCorner = addReferenceLocation(reference, config.getPrisonBottomRightCornerLocation());
 		
@@ -98,5 +98,11 @@ public class PrisonBuilding {
 			}
 		}
 		return false;
+	}
+
+	public void reloadChests() {
+		for (Chest chest : _chests) {
+			chest.reload();
+		}
 	}
 }

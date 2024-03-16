@@ -13,8 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.InventoryManager;
 
 public class Chest {
 	
@@ -22,26 +24,37 @@ public class Chest {
 	private static final ItemStack GRAY_PANEL = getGrayPanel();
 	
 	private List<Integer> _contentsIndexes;
-	private Hashtable<Integer, ItemStack> _contents;
+	private Hashtable<Integer, PrisonEscapeItem> _contents;
 	private List<ItemProbability> _itemsProbability;
+	private InventoryManager _inventoryManager;
+	private Inventory _inventory;
 	
 	protected Chest(int size, List<ItemProbability> itemsProbability) {
 		this._contentsIndexes = getIndexesForContents(size);
 		this._contents = new Hashtable<>();
 		this._itemsProbability = itemsProbability;
 		
+		// Create inventory
+		int lines = 3;
+		ConfigManager config = ConfigManager.getInstance();
+		this._inventory = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
+		
+		this._inventoryManager = new InventoryManager(_inventory);
+
 		reload();
 	}
 	
 	public void reload() {
 		_contents.clear();
+		_inventoryManager.clearInventory();
 		
 		for (int index : _contentsIndexes) {
 			_contents.put(index, getRandomItem());
+			buildInventory();
 		}
 	}
 	
-	private ItemStack getRandomItem() {
+	private PrisonEscapeItem getRandomItem() {
 		double totalWeight = _itemsProbability.stream().mapToDouble(ItemProbability::getProbability).sum();
         double randomValue = new Random().nextDouble() * totalWeight;
 
@@ -56,21 +69,15 @@ public class Chest {
         return null;
 	}
 	
-	public Inventory buildInventory() {
-		ConfigManager config = ConfigManager.getInstance();
-		
+	public void buildInventory() {
 		int lines = 3;
-		Inventory inv = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
-		
 		for (int i = 0; i < lines * SLOTS_PER_LINE; i++) {
-			inv.setItem(i, GRAY_PANEL);
+			_inventoryManager.addItemToInventory(i, GRAY_PANEL);
 		}
 		
 		for (int slot : _contentsIndexes) {
-			inv.setItem(slot, _contents.get(slot));
+			_inventoryManager.addItemToInventory(slot, _contents.get(slot));
 		}
-		
-		return inv;
 	}
 	
 	public void playerClickEvent(InventoryClickEvent e, PrisonEscapePlayer player) {		
@@ -81,7 +88,7 @@ public class Chest {
 			return;
 		}
 		
-		ItemStack item = _contents.get(slot);
+		PrisonEscapeItem item = _contents.get(slot);
 		if (item == null) {
 			return;
 		}
@@ -92,6 +99,7 @@ public class Chest {
 		}
 		else if (returnCode == 0) {
 			_contents.put(slot, null);
+			_inventoryManager.deleteItemFromInventory(slot);
 		}
 		
 	}
