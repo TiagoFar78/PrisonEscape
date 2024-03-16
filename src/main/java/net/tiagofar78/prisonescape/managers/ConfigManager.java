@@ -1,6 +1,9 @@
 package net.tiagofar78.prisonescape.managers;
 
+import java.util.Hashtable;
 import java.util.List;
+
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 
 public class ConfigManager {
 
@@ -31,6 +34,43 @@ public class ConfigManager {
 	}
 	
 	public List<String> getAvailableLanguages() {
+		return null; // TODO
+	}
+	
+	@Deprecated
+	public PrisonEscapeLocation getReferenceBlock() {
+		return null; // TODO
+	}
+	
+	public PrisonEscapeLocation getPrisonTopLeftCornerLocation() {
+		return null; // TODO
+	}
+	
+	public PrisonEscapeLocation getPrisonBottomRightCornerLocation() {
+		return null; // TODO
+	}
+	
+	public List<PrisonEscapeLocation> getPrisionersSpawnLocations() {
+		return null; // TODO
+	}
+	
+	public List<PrisonEscapeLocation> getPoliceSpawnLocations() {
+		return null; // TODO
+	}
+	
+	public PrisonEscapeLocation getSolitaryLocation() {
+		return null; // TODO
+	}
+	
+	public PrisonEscapeLocation getSolitaryExitLocation() {
+		return null; // TODO
+	}
+	
+	public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPrisionersSecretPassageLocations() {
+		return null; // TODO
+	}
+	
+	public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPoliceSecretPassageLocations() {
 		return null; // TODO
 	}
 }

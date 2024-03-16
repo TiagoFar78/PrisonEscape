@@ -9,12 +9,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.game.phases.Finished;
-import net.tiagofar78.prisonescape.game.phases.Ongoing;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.TeleportManager;
 
 public class PrisonEscapeGame {
 	
@@ -202,7 +202,7 @@ public class PrisonEscapeGame {
 		}
 	}
 	
-	public void playerMove(String playerName, Location loc) {
+	public void playerMove(String playerName, PrisonEscapeLocation loc) {
 		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
 		if (player == null) {
 			return;
@@ -256,7 +256,7 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
-		_prison.sendPlayerToSolitary(arrested);
+		TeleportManager.teleport(arrested, _prison.getSolitaryLocation());
 		
 		// TODO warn players
 		
@@ -273,10 +273,11 @@ public class PrisonEscapeGame {
 				// TODO warn arrested
 				
 				if (_dayPeriod == DayPeriod.DAY) {
-					_prison.takePlayerFromSolitary(arrested);
+					TeleportManager.teleport(arrested, _prison.getSolitaryExitLocation());
 				}
 				else if (_dayPeriod == DayPeriod.NIGHT) {
-					_prison.sendPlayerToCell(arrested);
+					int playerIndex = _prisionersTeam.getPlayerIndex(arrested);
+					TeleportManager.teleport(arrested, _prison.getPlayerCellLocation(playerIndex));
 				}
 			}
 		}, TICKS_PER_SECOND * _settings.getSecondsInSolitary());

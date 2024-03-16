@@ -19,6 +19,15 @@ public class PrisonEscapeTeam {
 		_players.add(player);
 	}
 	
+	public int getPlayerIndex(PrisonEscapePlayer player) {
+		for (int i = 0; i < _players.size(); i++) {
+			if (_players.get(i).equals(player)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public boolean isOnTeam(PrisonEscapePlayer player) {
 		return _players.contains(player);
 	}
