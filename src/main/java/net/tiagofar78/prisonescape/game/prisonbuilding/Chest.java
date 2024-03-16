@@ -16,6 +16,7 @@ import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.InventoryManager;
 
 public class Chest {
 	
@@ -25,11 +26,13 @@ public class Chest {
 	private List<Integer> _contentsIndexes;
 	private Hashtable<Integer, PrisonEscapeItem> _contents;
 	private List<ItemProbability> _itemsProbability;
+	private InventoryManager _inventoryManager;
 	
 	protected Chest(int size, List<ItemProbability> itemsProbability) {
 		this._contentsIndexes = getIndexesForContents(size);
 		this._contents = new Hashtable<>();
 		this._itemsProbability = itemsProbability;
+		this._inventoryManager = new InventoryManager();
 		
 		reload();
 	}
@@ -68,7 +71,8 @@ public class Chest {
 		}
 		
 		for (int slot : _contentsIndexes) {
-			// TODO: Add to inventory
+			ItemStack itemStack = _inventoryManager.convertToItemStack(_contents.get(slot));
+			inv.setItem(slot, itemStack);
 		}
 		
 		return inv;

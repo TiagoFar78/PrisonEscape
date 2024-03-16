@@ -82,10 +82,6 @@ public class ConfigManager {
 		return 0; // TODO
 	}
 
-	public int getNumberOfChests() {
-		return 0; // TODO
-	}
-
 	public int getChestSize() {
 		return 0; // TODO
 	}
