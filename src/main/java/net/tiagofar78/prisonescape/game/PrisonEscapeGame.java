@@ -153,7 +153,7 @@ public class PrisonEscapeGame {
 		_dayPeriod = DayPeriod.DAY;
 		_currentDay++;
 		
-		// TODO reload chests
+		_prison.reloadChests();
 		
 		Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
 			

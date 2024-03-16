@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
@@ -21,9 +22,20 @@ public class PrisonBuilding {
 	
 	private List<Chest> _chests;
 	private List<PrisonEscapeLocation> _metalDetectorsLocations;
-	
-	public PrisonBuilding(PrisonEscapeLocation reference) {
+
+	public PrisonBuilding (PrisonEscapeLocation reference) {
 		ConfigManager config = ConfigManager.getInstance();
+		List<ItemProbability> itemsProbabilities = new ArrayList<>();
+
+		for (PrisonEscapeItem item : PrisonEscapeItem.values()) {
+			itemsProbabilities.add(new ItemProbability(item, item.getProbability()));
+		}
+
+		int numberOfChests = config.getNumberOfChests();
+		_chests = new ArrayList<>(numberOfChests);
+		for (int i = 0; i < numberOfChests; i++) {
+			_chests.add(new Chest(config.getChestSize(), itemsProbabilities));
+		}
 		
 		_prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
 		_prisonBottomRightCorner = addReferenceLocation(reference, config.getPrisonBottomRightCornerLocation());
@@ -98,5 +110,11 @@ public class PrisonBuilding {
 			}
 		}
 		return false;
+	}
+
+	public void reloadChests() {
+		for (Chest chest : _chests) {
+			chest.reload();
+		}
 	}
 }

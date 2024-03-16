@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
@@ -22,7 +23,7 @@ public class Chest {
 	private static final ItemStack GRAY_PANEL = getGrayPanel();
 	
 	private List<Integer> _contentsIndexes;
-	private Hashtable<Integer, ItemStack> _contents;
+	private Hashtable<Integer, PrisonEscapeItem> _contents;
 	private List<ItemProbability> _itemsProbability;
 	
 	protected Chest(int size, List<ItemProbability> itemsProbability) {
@@ -41,7 +42,7 @@ public class Chest {
 		}
 	}
 	
-	private ItemStack getRandomItem() {
+	private PrisonEscapeItem getRandomItem() {
 		double totalWeight = _itemsProbability.stream().mapToDouble(ItemProbability::getProbability).sum();
         double randomValue = new Random().nextDouble() * totalWeight;
 
@@ -67,7 +68,7 @@ public class Chest {
 		}
 		
 		for (int slot : _contentsIndexes) {
-			inv.setItem(slot, _contents.get(slot));
+			// TODO: Add to inventory
 		}
 		
 		return inv;
@@ -81,7 +82,7 @@ public class Chest {
 			return;
 		}
 		
-		ItemStack item = _contents.get(slot);
+		PrisonEscapeItem item = _contents.get(slot);
 		if (item == null) {
 			return;
 		}

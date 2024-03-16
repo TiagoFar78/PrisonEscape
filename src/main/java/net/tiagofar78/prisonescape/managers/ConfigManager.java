@@ -73,4 +73,20 @@ public class ConfigManager {
 	public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPoliceSecretPassageLocations() {
 		return null; // TODO
 	}
+
+	public int getCommonItemsProbability() {
+		return 0; // TODO
+	}
+
+	public int getRareItemsProbability() {
+		return 0; // TODO
+	}
+
+	public int getNumberOfChests() {
+		return 0; // TODO
+	}
+
+	public int getChestSize() {
+		return 0; // TODO
+	}
 }
