@@ -5,10 +5,17 @@ import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.Inventory;
 
 public class InventoryManager {
 
-    public ItemStack convertToItemStack(PrisonEscapeItem item) {
+    Inventory _inventory;
+
+    public InventoryManager(Inventory inventory) {
+        this._inventory = inventory;
+    }
+
+    private ItemStack convertToItemStack(PrisonEscapeItem item) {
         ItemStack itemStack;
 
         Material material;
@@ -68,9 +75,19 @@ public class InventoryManager {
         return itemStack;
     }
 
-    // TODO add item to inventory
+    public void addItemToInventory(int slot, PrisonEscapeItem item) {
+        _inventory.setItem(slot, this.convertToItemStack(item));
+    }
 
-    // TODO remove item from inventory
+    public void addItemToInventory(int slot, ItemStack item) {
+        _inventory.setItem(slot, item);
+    }
 
-    // TODO clear inventory
+    public void deleteItemFromInventory(int slot) {
+        _inventory.clear(slot);
+    }
+
+    public void clearInventory() {
+        _inventory.clear();
+    }
 }

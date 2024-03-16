@@ -27,21 +27,30 @@ public class Chest {
 	private Hashtable<Integer, PrisonEscapeItem> _contents;
 	private List<ItemProbability> _itemsProbability;
 	private InventoryManager _inventoryManager;
+	private Inventory _inventory;
 	
 	protected Chest(int size, List<ItemProbability> itemsProbability) {
 		this._contentsIndexes = getIndexesForContents(size);
 		this._contents = new Hashtable<>();
 		this._itemsProbability = itemsProbability;
-		this._inventoryManager = new InventoryManager();
 		
+		// Create inventory
+		int lines = 3;
+		ConfigManager config = ConfigManager.getInstance();
+		this._inventory = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
+		
+		this._inventoryManager = new InventoryManager(_inventory);
+
 		reload();
 	}
 	
 	public void reload() {
 		_contents.clear();
+		_inventoryManager.clearInventory();
 		
 		for (int index : _contentsIndexes) {
 			_contents.put(index, getRandomItem());
+			buildInventory();
 		}
 	}
 	
@@ -60,22 +69,15 @@ public class Chest {
         return null;
 	}
 	
-	public Inventory buildInventory() {
-		ConfigManager config = ConfigManager.getInstance();
-		
+	public void buildInventory() {
 		int lines = 3;
-		Inventory inv = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
-		
 		for (int i = 0; i < lines * SLOTS_PER_LINE; i++) {
-			inv.setItem(i, GRAY_PANEL);
+			_inventoryManager.addItemToInventory(i, GRAY_PANEL);
 		}
 		
 		for (int slot : _contentsIndexes) {
-			ItemStack itemStack = _inventoryManager.convertToItemStack(_contents.get(slot));
-			inv.setItem(slot, itemStack);
+			_inventoryManager.addItemToInventory(slot, _contents.get(slot));
 		}
-		
-		return inv;
 	}
 	
 	public void playerClickEvent(InventoryClickEvent e, PrisonEscapePlayer player) {		
@@ -97,6 +99,7 @@ public class Chest {
 		}
 		else if (returnCode == 0) {
 			_contents.put(slot, null);
+			_inventoryManager.deleteItemFromInventory(slot);
 		}
 		
 	}
