@@ -25,7 +25,6 @@ public class PrisonEscapeTeam {
 				return i;
 			}
 		}
-		
 		return -1;
 	}
 	
