@@ -4,6 +4,8 @@ public abstract class Phase {
 	
 	public abstract Phase next();
 	
-	public abstract boolean isClockStoped();
+	public abstract boolean isClockStopped();
 
+	public abstract boolean hasGameStarted();
+	
 }
