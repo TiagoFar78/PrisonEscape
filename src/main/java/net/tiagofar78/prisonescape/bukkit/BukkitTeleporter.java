@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.managers;
+package net.tiagofar78.prisonescape.bukkit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,8 +7,9 @@ import org.bukkit.entity.Player;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 
-public class TeleportManager {
+public class BukkitTeleporter {
 	
 	private static final double CENTER_OF_BLOCK = 0.5;
 	

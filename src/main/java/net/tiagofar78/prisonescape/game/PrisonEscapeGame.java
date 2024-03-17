@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import net.tiagofar78.prisonescape.PrisonEscape;
+import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
+import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.TeleportManager;
 
 public class PrisonEscapeGame {
 	
@@ -155,7 +154,7 @@ public class PrisonEscapeGame {
 		
 		_prison.reloadChests();
 		
-		Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
+		BukkitScheduler.runSchedulerLater(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -171,7 +170,7 @@ public class PrisonEscapeGame {
 		
 		_dayPeriod = DayPeriod.NIGHT;
 		
-		Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
+		BukkitScheduler.runSchedulerLater(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -256,11 +255,11 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
-		TeleportManager.teleport(arrested, _prison.getSolitaryLocation());
+		BukkitTeleporter.teleport(arrested, _prison.getSolitaryLocation());
 		
 		// TODO warn players
 		
-		Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
+		BukkitScheduler.runSchedulerLater(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -273,11 +272,11 @@ public class PrisonEscapeGame {
 				// TODO warn arrested
 				
 				if (_dayPeriod == DayPeriod.DAY) {
-					TeleportManager.teleport(arrested, _prison.getSolitaryExitLocation());
+					BukkitTeleporter.teleport(arrested, _prison.getSolitaryExitLocation());
 				}
 				else if (_dayPeriod == DayPeriod.NIGHT) {
 					int playerIndex = _prisionersTeam.getPlayerIndex(arrested);
-					TeleportManager.teleport(arrested, _prison.getPlayerCellLocation(playerIndex));
+					BukkitTeleporter.teleport(arrested, _prison.getPlayerCellLocation(playerIndex));
 				}
 			}
 		}, TICKS_PER_SECOND * _settings.getSecondsInSolitary());

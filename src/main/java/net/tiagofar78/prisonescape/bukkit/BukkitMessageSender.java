@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.managers;
+package net.tiagofar78.prisonescape.bukkit;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 
-public class MessageManager {
+public class BukkitMessageSender {
 	
 	public static void sendChatMessage(PrisonEscapePlayer player, String message) {
 		Player bukkitPlayer = Bukkit.getPlayer(player.getName());

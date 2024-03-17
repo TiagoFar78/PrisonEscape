@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.managers;
+package net.tiagofar78.prisonescape.bukkit;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 
@@ -7,11 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.Inventory;
 
-public class InventoryManager {
+public class BukkitInventory {
 
-    Inventory _inventory;
+    private Inventory _inventory;
 
-    public InventoryManager(Inventory inventory) {
+    public BukkitInventory(Inventory inventory) {
         this._inventory = inventory;
     }
 
@@ -75,19 +75,19 @@ public class InventoryManager {
         return itemStack;
     }
 
-    public void addItemToInventory(int slot, PrisonEscapeItem item) {
+    public void addItem(int slot, PrisonEscapeItem item) {
         _inventory.setItem(slot, this.convertToItemStack(item));
     }
 
-    public void addItemToInventory(int slot, ItemStack item) {
+    public void addItem(int slot, ItemStack item) {
         _inventory.setItem(slot, item);
     }
 
-    public void deleteItemFromInventory(int slot) {
+    public void deleteItem(int slot) {
         _inventory.clear(slot);
     }
 
-    public void clearInventory() {
+    public void clear() {
         _inventory.clear();
     }
 }

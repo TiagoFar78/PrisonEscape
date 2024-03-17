@@ -12,11 +12,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitInventory;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.InventoryManager;
 
 public class Chest {
 	
@@ -26,7 +26,7 @@ public class Chest {
 	private List<Integer> _contentsIndexes;
 	private Hashtable<Integer, PrisonEscapeItem> _contents;
 	private List<ItemProbability> _itemsProbability;
-	private InventoryManager _inventoryManager;
+	private BukkitInventory _inventoryManager;
 	private Inventory _inventory;
 	
 	protected Chest(int size, List<ItemProbability> itemsProbability) {
@@ -39,14 +39,14 @@ public class Chest {
 		ConfigManager config = ConfigManager.getInstance();
 		this._inventory = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
 		
-		this._inventoryManager = new InventoryManager(_inventory);
+		this._inventoryManager = new BukkitInventory(_inventory);
 
 		reload();
 	}
 	
 	public void reload() {
 		_contents.clear();
-		_inventoryManager.clearInventory();
+		_inventoryManager.clear();
 		
 		for (int index : _contentsIndexes) {
 			_contents.put(index, getRandomItem());
@@ -72,11 +72,11 @@ public class Chest {
 	public void buildInventory() {
 		int lines = 3;
 		for (int i = 0; i < lines * SLOTS_PER_LINE; i++) {
-			_inventoryManager.addItemToInventory(i, GRAY_PANEL);
+			_inventoryManager.addItem(i, GRAY_PANEL);
 		}
 		
 		for (int slot : _contentsIndexes) {
-			_inventoryManager.addItemToInventory(slot, _contents.get(slot));
+			_inventoryManager.addItem(slot, _contents.get(slot));
 		}
 	}
 	
@@ -99,7 +99,7 @@ public class Chest {
 		}
 		else if (returnCode == 0) {
 			_contents.put(slot, null);
-			_inventoryManager.deleteItemFromInventory(slot);
+			_inventoryManager.deleteItem(slot);
 		}
 		
 	}
