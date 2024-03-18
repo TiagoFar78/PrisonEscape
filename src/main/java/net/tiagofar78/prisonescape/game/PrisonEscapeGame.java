@@ -14,6 +14,7 @@ import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
 
 public class PrisonEscapeGame {
 	
@@ -28,19 +29,18 @@ public class PrisonEscapeGame {
 	private PrisonBuilding _prison;
 	
 	private List<PrisonEscapePlayer> _players;
-	
 	private PrisonEscapeTeam _policeTeam;
 	private PrisonEscapeTeam _prisionersTeam;
 	
 	private Phase _phase;
 	
-	public PrisonEscapeGame(String mapName, Location referenceBlock, String hostName) {
+	public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
 		_settings = new Settings();
 		
 		_currentDay = 0;
+		_prison = new PrisonBuilding(referenceBlock);
 		
 		_players = new ArrayList<>();
-		
 		_policeTeam = new PrisonEscapeTeam(POLICE_TEAM_NAME);
 		_prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
 		
@@ -138,6 +138,10 @@ public class PrisonEscapeGame {
 	
 	private void startFinishedPhase(PrisonEscapeTeam winnerTeam) {
 		_phase.next();
+		
+		// TODO add delay
+		
+		GameManager.removeGame();
 	}
 	
 //	########################################

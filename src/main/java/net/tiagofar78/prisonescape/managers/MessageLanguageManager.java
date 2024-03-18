@@ -5,8 +5,6 @@ import java.util.List;
 
 public class MessageLanguageManager {
 	
-	private static final String DEFAULT_LANGUAGE = "English";
-	
 	private static Hashtable<String, MessageLanguageManager> instance = initializeLanguageMessages();
 	
 	private static Hashtable<String, MessageLanguageManager> initializeLanguageMessages() {
@@ -15,10 +13,10 @@ public class MessageLanguageManager {
 		Hashtable<String, MessageLanguageManager> languagesMessages = new Hashtable<>();
 		
 		List<String> availableLanguages = config.getAvailableLanguages();
+		String defaultLanguage = config.getDefaultLanguage();
 		
 		if (availableLanguages.size() == 0) {
-			languagesMessages.put(DEFAULT_LANGUAGE, new MessageLanguageManager(DEFAULT_LANGUAGE));
-			return languagesMessages;
+			availableLanguages.add(defaultLanguage);
 		}
 		
 		for (String language : availableLanguages) {
@@ -29,15 +27,77 @@ public class MessageLanguageManager {
 	}
 	
 	public static MessageLanguageManager getInstance(String language) {
+		if (language == null) {
+			language = ConfigManager.getInstance().getDefaultLanguage();
+		}
+		
 		return instance.get(language);
 	}
 	
-	// TODO define attributes here
+	public static String getPlayerLanguage(String playerName) {
+		return ConfigManager.getInstance().getDefaultLanguage();
+	}
+	
+//	########################################
+//	#               Warnings               #
+//	########################################
+	
+	private String _successfullyStartedGameMessage;
+	
+//	########################################
+//	#                Errors                #
+//	########################################
+	
+	private String _notAllowedMessage;
+	private String _onlyPlayersCanUseThisCommandMessage;
+	
+	private String _gameAlreadyStartedMessage;
+	
+//	########################################
+//	#                Usages                #
+//	########################################
+	
+	private String[] _usageMessage;
+	private String _startCommandUsage;
 	
 	private MessageLanguageManager(String language) {
 		// TODO set the attributes values here
 	}
 	
-	// TODO getters for attributes here
+//	########################################
+//	#               Warnings               #
+//	########################################
+	
+	public String getSuccessfullyStartedGameMessage() {
+		return _successfullyStartedGameMessage;
+	}
+	
+//	########################################
+//	#                Errors                #
+//	########################################
+	
+	public String getNotAllowedMessage() {
+		return _notAllowedMessage;
+	}
+	
+	public String getOnlyPlayersCanUseThisCommandMessage() {
+		return _onlyPlayersCanUseThisCommandMessage;
+	}
+	
+//	########################################
+//	#                Usages                #
+//	########################################
+	
+	public String[] getUsage() {
+		return _usageMessage;
+	}
+	
+	public String getStartCommandUsage() {
+		return _startCommandUsage;
+	}
+	
+	public String getGameAlreadyStartedMessage() {
+		return _gameAlreadyStartedMessage;
+	}
 
 }

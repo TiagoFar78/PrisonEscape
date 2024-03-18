@@ -36,6 +36,10 @@ public class ConfigManager {
 	public List<String> getAvailableLanguages() {
 		return null; // TODO
 	}
+
+	public String getDefaultLanguage() { 
+		return null; // TODO
+	}
 	
 	@Deprecated
 	public PrisonEscapeLocation getReferenceBlock() {
