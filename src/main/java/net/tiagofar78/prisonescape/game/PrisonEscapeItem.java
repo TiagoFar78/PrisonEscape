@@ -7,8 +7,10 @@ public enum PrisonEscapeItem {
     // also need to re-check metal items and rare items
     SEARCH(false, false, false),
     HANDCUFS(true, false, false),
-    SPOON(false, false, false),
-    SHOVEL(false, false, false),
+    PLASTIC_SPOON(false, false, false),
+    METAL_SPOON(true, false, false),
+    PLASTIC_SHOVEL(false, false, false),
+    METAL_SHOVEL(false, false, false),
     MATCHES(false, false, false),
     BOLTS(true, false, false),
     DUCTTAPE(false, false, false),

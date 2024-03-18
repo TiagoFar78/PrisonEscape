@@ -21,43 +21,49 @@ public class BukkitInventory {
         Material material;
         switch (item) {
             case SEARCH:
-                material = Material.MAP;
+                material = Material.SPYGLASS;
                 break;
             case HANDCUFS:
                 material = Material.IRON_BARS;
                 break;
-            case SPOON:
+            case PLASTIC_SPOON:
                 material = Material.WOODEN_SHOVEL;
                 break;
-            case SHOVEL:
-                material = Material.IRON_SHOVEL;
+            case METAL_SPOON:
+                material = Material.GOLDEN_SHOVEL;
+                break;
+            case PLASTIC_SHOVEL:
+                material = Material.STONE_SHOVEL;
+                break;
+            case METAL_SHOVEL:
+                material = Material.DIAMOND_SHOVEL;
                 break;
             case MATCHES:
-                material = Material.MAGMA_CREAM;
+                material = Material.TORCH;
                 break;
             case BOLTS:
                 material = Material.IRON_NUGGET;
                 break;
             case DUCTTAPE:
-                material = Material.PAPER;
+                material = Material.SLIME_BALL;
                 break;
             case WIRE:
                 material = Material.STRING;
                 break;
             case PLASTIC_PLATE:
-                material = Material.WHITE_CONCRETE;
+                material = Material.BOWL;
                 break;
             case OIL:
-                material = Material.LAVA_BUCKET;
+                material = Material.FLINT;
                 break;
             case STICK:
                 material = Material.STICK;
                 break;
             case COFFEE:
-                material = Material.COCOA_BEANS;
+                material = Material.POTION;
                 break;
             case ENERGY_DRINK:
-                material = Material.SUGAR;
+                material = Material.POTION;
                 break;
             default:
                 material = Material.STONE;
