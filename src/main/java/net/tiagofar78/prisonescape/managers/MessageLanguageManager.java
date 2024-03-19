@@ -43,6 +43,7 @@ public class MessageLanguageManager {
 //	########################################
 	
 	private String _successfullyStartedGameMessage;
+	private String _successfullyForceStartedGameMessage;
 	
 //	########################################
 //	#                Errors                #
@@ -52,6 +53,8 @@ public class MessageLanguageManager {
 	private String _onlyPlayersCanUseThisCommandMessage;
 	
 	private String _gameAlreadyStartedMessage;
+	private String _gameNotStartedYetMessage;
+	private String _gameAlreadyOngoingMessage;
 	
 //	########################################
 //	#                Usages                #
@@ -59,6 +62,7 @@ public class MessageLanguageManager {
 	
 	private String[] _usageMessage;
 	private String _startCommandUsage;
+	private String _forceStartCommandUsage;
 	
 	private MessageLanguageManager(String language) {
 		// TODO set the attributes values here
@@ -70,6 +74,10 @@ public class MessageLanguageManager {
 	
 	public String getSuccessfullyStartedGameMessage() {
 		return _successfullyStartedGameMessage;
+	}
+	
+	public String getSuccessfullyForceStartedGameMessage() {
+		return _successfullyForceStartedGameMessage;
 	}
 	
 //	########################################
@@ -84,6 +92,18 @@ public class MessageLanguageManager {
 		return _onlyPlayersCanUseThisCommandMessage;
 	}
 	
+	public String getGameAlreadyStartedMessage() {
+		return _gameAlreadyStartedMessage;
+	}
+	
+	public String getGameNotStartedYeyMessage() {
+		return _gameNotStartedYetMessage;
+	}
+	
+	public String getGameAlreadyOngoingMessage() {
+		return _gameAlreadyOngoingMessage;
+	}
+	
 //	########################################
 //	#                Usages                #
 //	########################################
@@ -96,8 +116,8 @@ public class MessageLanguageManager {
 		return _startCommandUsage;
 	}
 	
-	public String getGameAlreadyStartedMessage() {
-		return _gameAlreadyStartedMessage;
+	public String getForceStartCommandUsage() {
+		return _forceStartCommandUsage;
 	}
 
 }
