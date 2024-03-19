@@ -61,7 +61,6 @@ public class PrisonEscapeCommand implements CommandExecutor {
 		}
 		
 		executor.onCommand(sender, subcommand, newArgs);
-		
 		return true;
 	}
 	

@@ -23,14 +23,12 @@ public class StartSubcommand implements PrisonEscapeSubcommandExecutor {
 		}
 		
 		int returnCode = GameManager.startNewGame();
-		
 		if (returnCode == -1) {
 			sender.sendMessage(messages.getGameAlreadyStartedMessage());
 			return false;
 		}
 		
 		sender.sendMessage(messages.getSuccessfullyStartedGameMessage());
-		
 		return true;
 	}
 
