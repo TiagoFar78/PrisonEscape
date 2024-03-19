@@ -44,7 +44,7 @@ public class PrisonEscapeGame {
 		_policeTeam = new PrisonEscapeTeam(POLICE_TEAM_NAME);
 		_prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
 		
-		_phase = new Waiting();
+		startWaitingPhase();
 	}
 	
 //	#########################################
@@ -121,11 +121,31 @@ public class PrisonEscapeGame {
 	}
 	
 //	########################################
+//	#              Admin zone              #
+//	########################################
+	
+	/**
+	* @return      0 if successful<br> 
+	* 				-1 if already started ongoing phase
+	*/
+	public int forceStart() {
+		if (_phase.hasGameStarted()) {
+			return -1;
+		}
+		
+		startOngoingPhase();
+		return 0;
+	}
+	
+//	########################################
 //	#                Phases                #
 //	########################################
 	
 	private void startWaitingPhase() {
-		_phase.next();
+		_phase = new Waiting();
+		
+		// TODO add delay to wait for players to join
+		// TODO add warnings so players know the game is about to start
 	}
 	
 	private void startOngoingPhase() {

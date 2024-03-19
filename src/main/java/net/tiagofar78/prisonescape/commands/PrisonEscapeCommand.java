@@ -36,7 +36,7 @@ public class PrisonEscapeCommand implements CommandExecutor {
 			executor = new StartSubcommand();
 			break;
 		case FORCE_START_COMMAND:
-			// TODO
+			executor = new ForceStartSucommand();
 			break;
 		case JOIN_COMMAND:
 			// TODO
