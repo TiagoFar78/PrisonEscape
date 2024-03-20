@@ -14,5 +14,5 @@ Contributions to the development of this plugin are welcome! If you encounter an
 
 ## Credits
 - **Plugin Developers**:
-  - [Tiago Farinha](https://github.com/TiagoFar78)
+  - [TiagoFar78](https://github.com/TiagoFar78)
   - [Raquel Braunschweig](https://github.com/iquelli)
