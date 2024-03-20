@@ -29,6 +29,10 @@ public class ConfigManager {
 		return 0; // TODO
 	}
 	
+	public int getMaxPlayers() {
+		return 0; // TODO
+	}
+	
 	public String getWorldName() {
 		return null; // TODO
 	}
@@ -43,6 +47,14 @@ public class ConfigManager {
 	
 	@Deprecated
 	public PrisonEscapeLocation getReferenceBlock() {
+		return null; // TODO
+	}
+	
+	public PrisonEscapeLocation getLeavingLocation() {
+		return null; // TODO
+	}
+	
+	public PrisonEscapeLocation getWaitingLobbyLocation() {
 		return null; // TODO
 	}
 	

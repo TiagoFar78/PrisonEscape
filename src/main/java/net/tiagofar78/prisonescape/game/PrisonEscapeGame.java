@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.phases.Phase;
@@ -28,7 +25,7 @@ public class PrisonEscapeGame {
 	private DayPeriod _dayPeriod;
 	private PrisonBuilding _prison;
 	
-	private List<PrisonEscapePlayer> _players;
+	private List<PrisonEscapePlayer> _playersOnLobby;
 	private PrisonEscapeTeam _policeTeam;
 	private PrisonEscapeTeam _prisionersTeam;
 	
@@ -40,7 +37,7 @@ public class PrisonEscapeGame {
 		_currentDay = 0;
 		_prison = new PrisonBuilding(referenceBlock);
 		
-		_players = new ArrayList<>();
+		_playersOnLobby = new ArrayList<>();
 		_policeTeam = new PrisonEscapeTeam(POLICE_TEAM_NAME);
 		_prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
 		
@@ -53,13 +50,11 @@ public class PrisonEscapeGame {
 	
 	/**
 	* @return      0 if success<br> 
-	* 				1 if rejoin<br>
 	* 				-1 if already on game<br>
-	* 				-2 if already started
+	* 				-2 if already started<br>
+	* 				-3 if the lobby is full
 	*/
-	public int playerJoin(Player player) {
-		String playerName = player.getName();
-		
+	public int playerJoin(String playerName) {		
 		if (isPlayerOnGame(playerName)) {
 			return -1;
 		}
@@ -68,11 +63,15 @@ public class PrisonEscapeGame {
 			return -2;
 		}
 		
-		// TODO check if is rejoin and take action 1
+		ConfigManager config = ConfigManager.getInstance();
+		if (_playersOnLobby.size() >= config.getMaxPlayers()) {
+			return -3;
+		}
 		
-		player.teleport(getWaitingLobbyLocation());
-		_players.add(new PrisonEscapePlayer(playerName));
+		PrisonEscapePlayer player = new PrisonEscapePlayer(playerName);
+		_playersOnLobby.add(player);
 		
+		BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
 		return 0;
 	}
 	
@@ -80,44 +79,32 @@ public class PrisonEscapeGame {
 	* @return      0 if success<br>
 	* 				-1 if not on game
 	*/
-	public int playerLeft(Player player) {
-		String playerName = player.getName();
-		
+	public int playerLeft(String playerName) {		
 		if (!isPlayerOnGame(playerName)) {
 			return -1;
 		}
 		
-		player.teleport(getLeavingLocation());
-		for (int i = 0; i < _players.size(); i++) {
-			if (_players.get(i).getName().equals(playerName)) {
-				_players.remove(i);
+		PrisonEscapePlayer player = null;
+		for (int i = 0; i < _playersOnLobby.size(); i++) {
+			if (_playersOnLobby.get(i).getName().equals(playerName)) {
+				player = _playersOnLobby.get(i);
+				_playersOnLobby.remove(i);
 				break;
 			}
 		}
 		
+		BukkitTeleporter.teleport(player, getLeavingLocation());		
 		return 0;
 	}
 	
 	private boolean isPlayerOnGame(String playerName) {
-		for (int i = 0; i < _players.size(); i++) {
-			if (_players.get(i).getName().equals(playerName)) {
+		for (int i = 0; i < _playersOnLobby.size(); i++) {
+			if (_playersOnLobby.get(i).getName().equals(playerName)) {
 				return true;
 			}
 		}
 		
 		return false;
-	}
-
-	/**
-	* @return      0 if success<br> 
-	* 				-1 if cannot start game
-	*/
-	public int startGame() {
-		if (!_phase.hasGameStarted() && hasMinimumPlayersToStart()) {
-			startOngoingPhase();
-			return 0;
-		}
-		return -1;
 	}
 	
 //	########################################
@@ -311,7 +298,7 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private PrisonEscapePlayer getPrisonEscapePlayer(String playerName) {
-		for (PrisonEscapePlayer player : _players) {
+		for (PrisonEscapePlayer player : _playersOnLobby) {
 			if (player.getName().equals(playerName)) {
 				return player;
 			}
@@ -321,11 +308,11 @@ public class PrisonEscapeGame {
 	}
 
 	private boolean hasMinimumPlayersToStart() {
-		return _players.size() >= ConfigManager.getInstance().getMinimumPlayers();
+		return _playersOnLobby.size() >= ConfigManager.getInstance().getMinimumPlayers();
 	}
 
 	private void distributePlayersPerTeam() {
-		int numberOfPlayers = _players.size();
+		int numberOfPlayers = _playersOnLobby.size();
 		int requiredPrisioners = (int) Math.round(
 				numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
 		);
@@ -333,10 +320,10 @@ public class PrisonEscapeGame {
 				numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
 		);
 
-		Collections.shuffle(_players);
+		Collections.shuffle(_playersOnLobby);
 		List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
 
-		for (PrisonEscapePlayer player : _players) {
+		for (PrisonEscapePlayer player : _playersOnLobby) {
 			TeamPreference preference = player.getPreference();
 
 			if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
@@ -365,11 +352,7 @@ public class PrisonEscapeGame {
 //	#               Locations               #
 //	#########################################
 	
-	private Location getWaitingLobbyLocation() {
-		return null; // TODO
-	}
-	
-	private Location getLeavingLocation() {
+	private PrisonEscapeLocation getLeavingLocation() {
 		return null; // TODO
 	}
 	

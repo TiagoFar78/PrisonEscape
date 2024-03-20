@@ -45,6 +45,7 @@ public class MessageLanguageManager {
 	private String _successfullyStartedGameMessage;
 	private String _successfullyForceStartedGameMessage;
 	private String _successfullyJoinedGameMessage;
+	private String _successfullyLeftGameMessage;
 	
 //	########################################
 //	#                Errors                #
@@ -56,8 +57,10 @@ public class MessageLanguageManager {
 	private String _gameAlreadyStartedMessage;
 	private String _gameNotStartedYetMessage;
 	private String _gameAlreadyOngoingMessage;
+	private String _lobbyIsFullMessage;
 
 	private String _playerAlreadyJoinedMessage;
+	private String _playerNotOnLobbyMessage;
 	
 //	########################################
 //	#                Usages                #
@@ -67,6 +70,7 @@ public class MessageLanguageManager {
 	private String _startCommandUsage;
 	private String _forceStartCommandUsage;
 	private String _joinCommandUsage;
+	private String _leaveCommandUsage;
 	
 	private MessageLanguageManager(String language) {
 		// TODO set the attributes values here
@@ -86,6 +90,10 @@ public class MessageLanguageManager {
 
 	public String getSuccessfullyJoinedGameMessage() {
 		return _successfullyJoinedGameMessage;
+	}
+	
+	public String getSuccessfullyLeftGameMessage() {
+		return _successfullyLeftGameMessage;
 	}
 	
 //	########################################
@@ -111,9 +119,17 @@ public class MessageLanguageManager {
 	public String getGameAlreadyOngoingMessage() {
 		return _gameAlreadyOngoingMessage;
 	}
+	
+	public String getLobbyIsFullMessage() {
+		return _lobbyIsFullMessage;
+	}
 
 	public String getPlayerAlreadyJoinedMessage() {
 		return _playerAlreadyJoinedMessage;
+	}
+	
+	public String getPlayerNotOnLobbyMessage() {
+		return _playerNotOnLobbyMessage;
 	}
 	
 //	########################################
@@ -134,6 +150,10 @@ public class MessageLanguageManager {
 
 	public String getJoinCommandUsage() {
 		return _joinCommandUsage;
+	}
+	
+	public String getLeaveCommandUsage() {
+		return _leaveCommandUsage;
 	}
 
 }
