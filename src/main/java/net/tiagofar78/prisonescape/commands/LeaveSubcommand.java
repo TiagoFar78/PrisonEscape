@@ -8,10 +8,10 @@ import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-public class JoinSubcommand implements PrisonEscapeSubcommandExecutor {
+public class LeaveSubcommand implements PrisonEscapeSubcommandExecutor {
 
-    @Override
-    public boolean onCommand(CommandSender sender, String label, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, String label, String[] args) {
         MessageLanguageManager messages = MessageLanguageManager.getInstance(sender.getName());
 
         if (!(sender instanceof Player)) {
@@ -25,7 +25,7 @@ public class JoinSubcommand implements PrisonEscapeSubcommandExecutor {
         }
 
         if (args.length != 0) {
-            sender.sendMessage(messages.getJoinCommandUsage());
+            sender.sendMessage(messages.getLeaveCommandUsage());
             return false;
         }
 
@@ -34,22 +34,14 @@ public class JoinSubcommand implements PrisonEscapeSubcommandExecutor {
             sender.sendMessage(messages.getGameNotStartedYetMessage());
             return true;
         }
-
+        
         int returnCode = game.playerJoin(sender.getName());
         if (returnCode == -1) {
-            sender.sendMessage(messages.getPlayerAlreadyJoinedMessage());
+            sender.sendMessage(messages.getPlayerNotOnLobbyMessage());
             return true;
-        }
-        else if (returnCode == -2) {
-            sender.sendMessage(messages.getGameAlreadyOngoingMessage());
-            return true;
-        }
-        else if (returnCode == -3) {
-        	sender.sendMessage(messages.getLobbyIsFullMessage());
-        	return true;
         }
         
-        sender.sendMessage(messages.getSuccessfullyJoinedGameMessage());
+        sender.sendMessage(messages.getSuccessfullyLeftGameMessage());
         return true;
     }
 

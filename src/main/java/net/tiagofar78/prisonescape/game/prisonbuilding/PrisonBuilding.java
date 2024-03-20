@@ -10,6 +10,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public class PrisonBuilding {
 	
+	private PrisonEscapeLocation _waitingLobbyLocation;
 	private PrisonEscapeLocation _prisonTopLeftCorner;
 	private PrisonEscapeLocation _prisonBottomRightCorner;
 	private List<PrisonEscapeLocation> _prisionersSpawnLocations;
@@ -25,6 +26,7 @@ public class PrisonBuilding {
 	public PrisonBuilding(PrisonEscapeLocation reference) {
 		ConfigManager config = ConfigManager.getInstance();
 
+		_waitingLobbyLocation = addReferenceLocation(reference, config.getWaitingLobbyLocation());
 		_prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
 		_prisonBottomRightCorner = addReferenceLocation(reference, config.getPrisonBottomRightCornerLocation());
 		
@@ -58,6 +60,10 @@ public class PrisonBuilding {
 		return new PrisonEscapeLocation(loc.getX() + reference.getX(),
 				loc.getY() + reference.getX(),
 				loc.getZ() + reference.getZ());
+	}
+	
+	public PrisonEscapeLocation getWaitingLobbyLocation() {
+		return _waitingLobbyLocation;
 	}
 	
 	public boolean isOutsidePrison(PrisonEscapeLocation loc) {
