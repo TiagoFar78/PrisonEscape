@@ -353,7 +353,7 @@ public class PrisonEscapeGame {
 //	#########################################
 	
 	private PrisonEscapeLocation getLeavingLocation() {
-		return null; // TODO
+		return ConfigManager.getInstance().getLeavingLocation();
 	}
 	
 }
