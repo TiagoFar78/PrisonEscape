@@ -44,6 +44,8 @@ public class MessageLanguageManager {
 	
 	private String _successfullyStartedGameMessage;
 	private String _successfullyForceStartedGameMessage;
+	private String _successfullyForceStoppedGameMessage;
+	private String _successfullyJoinedGameMessage;
 	
 //	########################################
 //	#                Errors                #

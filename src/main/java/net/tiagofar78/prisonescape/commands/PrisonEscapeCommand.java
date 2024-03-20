@@ -51,7 +51,7 @@ public class PrisonEscapeCommand implements CommandExecutor {
 			// TODO
 			break;
 		case FORCE_STOP_COMMAND:
-			// TODO
+			executor = new ForceStopSubcommand();
 			break;
 		}
 		

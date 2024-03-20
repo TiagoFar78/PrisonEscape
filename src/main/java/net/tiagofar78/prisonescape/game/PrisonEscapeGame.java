@@ -136,7 +136,16 @@ public class PrisonEscapeGame {
 		startOngoingPhase();
 		return 0;
 	}
-	
+
+	/**
+	* @return      0 if successful<br> 
+	* 				-1 if ongoing phase has not started
+	*/
+	public int forceStop() {
+		GameManager.removeGame();
+		return 0;
+	}
+
 //	########################################
 //	#                Phases                #
 //	########################################
