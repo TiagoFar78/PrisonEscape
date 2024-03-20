@@ -7,7 +7,7 @@ import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-public class ForceStartSucommand implements PrisonEscapeSubcommandExecutor {
+public class ForceStartSubcommand implements PrisonEscapeSubcommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String label, String[] args) {
@@ -25,7 +25,7 @@ public class ForceStartSucommand implements PrisonEscapeSubcommandExecutor {
 		
 		PrisonEscapeGame game = GameManager.getGame();
 		if (game == null) {
-			sender.sendMessage(messages.getGameNotStartedYeyMessage());
+			sender.sendMessage(messages.getGameNotStartedYetMessage());
 			return true;
 		}
 		
