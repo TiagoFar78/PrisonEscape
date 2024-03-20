@@ -46,6 +46,7 @@ public class MessageLanguageManager {
 	private String _successfullyForceStartedGameMessage;
 	private String _successfullyJoinedGameMessage;
 	private String _successfullyLeftGameMessage;
+	private String _successfullyForceStoppedGameMessage;
 	
 //	########################################
 //	#                Errors                #
@@ -71,6 +72,7 @@ public class MessageLanguageManager {
 	private String _forceStartCommandUsage;
 	private String _joinCommandUsage;
 	private String _leaveCommandUsage;
+	private String _forceStopCommandUsage;
 	
 	private MessageLanguageManager(String language) {
 		// TODO set the attributes values here
@@ -94,6 +96,10 @@ public class MessageLanguageManager {
 	
 	public String getSuccessfullyLeftGameMessage() {
 		return _successfullyLeftGameMessage;
+	}
+
+	public String getSuccessfullyForceStoppedGameMessage() {
+		return _successfullyForceStoppedGameMessage;
 	}
 	
 //	########################################
@@ -154,6 +160,10 @@ public class MessageLanguageManager {
 	
 	public String getLeaveCommandUsage() {
 		return _leaveCommandUsage;
+	}
+
+	public String getForceStopCommandUsage() {
+		return _forceStopCommandUsage;
 	}
 
 }

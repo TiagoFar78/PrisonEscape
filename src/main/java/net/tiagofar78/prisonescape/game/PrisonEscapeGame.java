@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
+import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
@@ -122,6 +123,11 @@ public class PrisonEscapeGame {
 		
 		startOngoingPhase();
 		return 0;
+	}
+
+	public void forceStop() {
+		_phase = new Finished();
+		GameManager.removeGame();
 	}
 	
 //	########################################
