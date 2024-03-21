@@ -164,7 +164,8 @@ public class PrisonEscapeGame {
 						String playerLanguage = MessageLanguageManager.getPlayerLanguage(playerName);
 						MessageLanguageManager messages = MessageLanguageManager.getInstance(playerLanguage);
 						
-						List<String> announcement = messages.getGameStartingAnnouncementMessage(remainingSeconds, _playersOnLobby.size());
+						List<String> announcement = messages.
+								getGameStartingAnnouncementMessage(remainingSeconds, _playersOnLobby.size());
 						BukkitMessageSender.sendChatMessage(playerName, announcement);
 					}
 				}
