@@ -48,6 +48,7 @@ public class MessageLanguageManager {
 	private String _successfullyJoinedGameMessage;
 	private String _successfullyLeftGameMessage;
 	private String _successfullyForceStoppedGameMessage;
+	private String _successfullyRejoinedGameMessage;
 	
 	private List<String> _gameStartingAnnouncementMessage;
 	
@@ -65,6 +66,7 @@ public class MessageLanguageManager {
 
 	private String _playerAlreadyJoinedMessage;
 	private String _playerNotOnLobbyMessage;
+	private String _playerWasNeverInGameMessage;
 	
 //	########################################
 //	#                Usages                #
@@ -76,6 +78,7 @@ public class MessageLanguageManager {
 	private String _joinCommandUsage;
 	private String _leaveCommandUsage;
 	private String _forceStopCommandUsage;
+	private String _rejoinCommandUsage;
 	
 	private MessageLanguageManager(String language) {
 		// TODO set the attributes values here
@@ -104,6 +107,14 @@ public class MessageLanguageManager {
 	public String getSuccessfullyForceStoppedGameMessage() {
 		return _successfullyForceStoppedGameMessage;
 	}
+
+	public String getSuccessfullyRejoinedGameMessage() {
+		return _successfullyRejoinedGameMessage;
+	}
+
+	//	########################################
+	//	#             Announcements            #
+	//	########################################
 	
 	public List<String> getGameStartingAnnouncementMessage(int remainingTime, int playersOnLobby) {
 		List<String> message = new ArrayList<>(_gameStartingAnnouncementMessage);
@@ -153,6 +164,10 @@ public class MessageLanguageManager {
 	public String getPlayerNotOnLobbyMessage() {
 		return _playerNotOnLobbyMessage;
 	}
+
+	public String getPlayerWasNeverInGameMessage() {
+		return _playerWasNeverInGameMessage;
+	}
 	
 //	########################################
 //	#                Usages                #
@@ -180,6 +195,10 @@ public class MessageLanguageManager {
 
 	public String getForceStopCommandUsage() {
 		return _forceStopCommandUsage;
+	}
+
+	public String getRejoinCommandUsage() {
+		return _rejoinCommandUsage;
 	}
 
 }

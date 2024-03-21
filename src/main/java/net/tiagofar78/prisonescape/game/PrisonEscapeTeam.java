@@ -36,4 +36,12 @@ public class PrisonEscapeTeam {
 		return (int) _players.stream().filter(player -> !player.hasEscaped() && player.isOnline()).count();
 	}
 
+	public int getListSize() {
+		return _players.size();
+	}
+
+	public PrisonEscapePlayer getEntry(int index) {
+		return _players.get(index);
+	}
+
 }
