@@ -62,6 +62,7 @@ public class MessageLanguageManager {
 	private String _gameAlreadyStartedMessage;
 	private String _gameNotStartedYetMessage;
 	private String _gameAlreadyOngoingMessage;
+	private String _gameHasNotStartedUseJoinInsteadMessage;
 	private String _lobbyIsFullMessage;
 
 	private String _playerAlreadyJoinedMessage;
@@ -151,6 +152,10 @@ public class MessageLanguageManager {
 	
 	public String getGameAlreadyOngoingMessage() {
 		return _gameAlreadyOngoingMessage;
+	}
+
+	public String getGameHasNotStartedUseJoinInsteadMessage() {
+		return _gameHasNotStartedUseJoinInsteadMessage;
 	}
 	
 	public String getLobbyIsFullMessage() {

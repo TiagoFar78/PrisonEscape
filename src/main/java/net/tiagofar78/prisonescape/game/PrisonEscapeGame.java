@@ -80,12 +80,17 @@ public class PrisonEscapeGame {
 
 	/**
 	* @return      0 if success<br> 
-	* 				-1 if already on game<br>
-	* 				-2 if player never on game<br>
+	* 				-1 if game has not started <b>
+	* 				-2 if already on game<br>
+	* 				-3 if player never on game<br>
 	*/
 	public int playerRejoin(String playerName) {
-		if (isPlayerOnGame(playerName)) {
+		if (!_phase.hasGameStarted()) {
 			return -1;
+		}
+
+		if (isPlayerOnGame(playerName)) {
+			return -2;
 		}
 
 		PrisonEscapePlayer player = getPlayerOnPoliceTeam(playerName);
@@ -95,7 +100,7 @@ public class PrisonEscapeGame {
 		else {
 			player = getPlayerOnPrisionersTeam(playerName);
 			if (player == null) {
-				return -2;
+				return -3;
 			}
 			teleportPrisionerToSpawnPoint(player);
 		}
@@ -137,9 +142,9 @@ public class PrisonEscapeGame {
 	}
 
 	private PrisonEscapePlayer getPlayerOnPoliceTeam(String playerName) {
-		for (int i = 0; i < _policeTeam.getListSize(); i++) {
-			if (_policeTeam.getEntry(i).getName().equals(playerName)) {
-				return _policeTeam.getEntry(i);
+		for (int i = 0; i < _policeTeam.getSize(); i++) {
+			if (_policeTeam.getMember(i).getName().equals(playerName)) {
+				return _policeTeam.getMember(i);
 			}
 		}
 		
@@ -147,9 +152,9 @@ public class PrisonEscapeGame {
 	}
 
 	private PrisonEscapePlayer getPlayerOnPrisionersTeam(String playerName) {
-		for (int i = 0; i < _prisionersTeam.getListSize(); i++) {
-			if (_prisionersTeam.getEntry(i).getName().equals(playerName)) {
-				return _prisionersTeam.getEntry(i);
+		for (int i = 0; i < _prisionersTeam.getSize(); i++) {
+			if (_prisionersTeam.getMember(i).getName().equals(playerName)) {
+				return _prisionersTeam.getMember(i);
 			}
 		}
 		

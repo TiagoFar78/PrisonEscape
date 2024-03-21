@@ -36,11 +36,15 @@ public class RejoinSubcommand implements PrisonEscapeSubcommandExecutor {
         }
 
         int returnCode = game.playerRejoin(sender.getName());
-        if(returnCode == -1) {
-            sender.sendMessage(messages.getPlayerAlreadyJoinedMessage());
+        if (returnCode == -1) {
+            sender.sendMessage(messages.getGameHasNotStartedUseJoinInsteadMessage());
             return true;
         }
         else if (returnCode == -2) {
+            sender.sendMessage(messages.getPlayerAlreadyJoinedMessage());
+            return true;
+        }
+        else if (returnCode == -3) {
             sender.sendMessage(messages.getPlayerWasNeverInGameMessage());
             return true;
         }
