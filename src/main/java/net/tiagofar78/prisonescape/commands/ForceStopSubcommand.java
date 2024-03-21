@@ -29,11 +29,7 @@ public class ForceStopSubcommand implements PrisonEscapeSubcommandExecutor {
             return true;
         }
         
-        int returnCode = game.forceStop();
-        if (returnCode == -1) {
-            sender.sendMessage(messages.getGameNotOngoingMessage());
-            return true;
-        }
+        game.forceStop();
 
         sender.sendMessage(messages.getSuccessfullyForceStoppedGameMessage());
         return true;

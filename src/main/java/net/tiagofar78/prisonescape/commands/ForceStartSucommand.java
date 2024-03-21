@@ -25,7 +25,7 @@ public class ForceStartSucommand implements PrisonEscapeSubcommandExecutor {
 		
 		PrisonEscapeGame game = GameManager.getGame();
 		if (game == null) {
-			sender.sendMessage(messages.getGameNotStartedYeyMessage());
+			sender.sendMessage(messages.getGameNotStartedYetMessage());
 			return true;
 		}
 		
