@@ -80,7 +80,7 @@ public class PrisonEscapeGame {
 
 	/**
 	* @return      0 if success<br> 
-	* 				-1 if game has not started <b>
+	* 				-1 if game has not started <br>
 	* 				-2 if already on game<br>
 	* 				-3 if player never on game<br>
 	*/
