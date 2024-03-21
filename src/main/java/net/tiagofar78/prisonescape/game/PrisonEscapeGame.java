@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.phases.Finished;
@@ -13,6 +14,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public class PrisonEscapeGame {
 	
@@ -139,6 +141,43 @@ public class PrisonEscapeGame {
 		
 		// TODO add delay to wait for players to join
 		// TODO add warnings so players know the game is about to start
+		
+		ConfigManager config = ConfigManager.getInstance();
+		
+		runWaitingPhaseScheduler(config.getWaitingPhaseDuration(), true);
+	}
+	
+	private void runWaitingPhaseScheduler(int remainingSeconds, boolean isFirst) {
+		ConfigManager config = ConfigManager.getInstance();
+		
+		BukkitScheduler.runSchedulerLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (remainingSeconds == 0) {
+					return;
+				}
+				
+				if (remainingSeconds % config.getDelayBetweenAnnouncements() == 0) {
+					List<String> playersNames = BukkitMessageSender.getOnlinePlayersNames();
+					for (String playerName : playersNames) {
+						String playerLanguage = MessageLanguageManager.getPlayerLanguage(playerName);
+						MessageLanguageManager messages = MessageLanguageManager.getInstance(playerLanguage);
+						
+						List<String> announcement = messages
+								.getGameStartingAnnouncementMessage(remainingSeconds, _playersOnLobby.size());
+						BukkitMessageSender.sendChatMessage(playerName, announcement);
+					}
+				}
+				
+				int fullLobbyWaitDuration = config.getFullLobbyWaitDuration();
+				if (_playersOnLobby.size() == config.getMaxPlayers() && remainingSeconds > fullLobbyWaitDuration) {
+					runWaitingPhaseScheduler(fullLobbyWaitDuration, false);
+				}
+				
+				runWaitingPhaseScheduler(remainingSeconds - 1, false);
+			}
+		}, isFirst ? 0 : 1 * TICKS_PER_SECOND);
 	}
 	
 	private void startOngoingPhase() {

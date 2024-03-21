@@ -33,6 +33,18 @@ public class ConfigManager {
 		return 0; // TODO
 	}
 	
+	public int getWaitingPhaseDuration() {
+		return 0; // TODO
+	}
+	
+	public int getFullLobbyWaitDuration() {
+		return 0; // TODO
+	}
+	
+	public int getDelayBetweenAnnouncements() {
+		return 0; // TODO
+	}
+	
 	public String getWorldName() {
 		return null; // TODO
 	}
