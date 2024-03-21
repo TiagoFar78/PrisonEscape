@@ -77,6 +77,37 @@ public class PrisonEscapeGame {
 		BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
 		return 0;
 	}
+
+	/**
+	* @return      0 if success<br> 
+	* 				-1 if game has not started <br>
+	* 				-2 if already on game<br>
+	* 				-3 if player never on game<br>
+	*/
+	public int playerRejoin(String playerName) {
+		if (!_phase.hasGameStarted()) {
+			return -1;
+		}
+
+		if (isPlayerOnGame(playerName)) {
+			return -2;
+		}
+
+		PrisonEscapePlayer player = getPlayerOnPoliceTeam(playerName);
+		if (player != null) {
+			teleportPoliceToSpawnPoint(player);
+		}
+		else {
+			player = getPlayerOnPrisionersTeam(playerName);
+			if (player == null) {
+				return -3;
+			}
+			teleportPrisionerToSpawnPoint(player);
+		}
+
+		_playersOnLobby.add(player);
+		return 0;
+	}
 	
 	/**
 	* @return      0 if success<br>
@@ -108,6 +139,26 @@ public class PrisonEscapeGame {
 		}
 		
 		return false;
+	}
+
+	private PrisonEscapePlayer getPlayerOnPoliceTeam(String playerName) {
+		for (int i = 0; i < _policeTeam.getSize(); i++) {
+			if (_policeTeam.getMember(i).getName().equals(playerName)) {
+				return _policeTeam.getMember(i);
+			}
+		}
+		
+		return null;
+	}
+
+	private PrisonEscapePlayer getPlayerOnPrisionersTeam(String playerName) {
+		for (int i = 0; i < _prisionersTeam.getSize(); i++) {
+			if (_prisionersTeam.getMember(i).getName().equals(playerName)) {
+				return _prisionersTeam.getMember(i);
+			}
+		}
+		
+		return null;
 	}
 	
 //	########################################
@@ -311,7 +362,7 @@ public class PrisonEscapeGame {
 //	########################################
 	
 	private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
-		BukkitTeleporter.teleport(arrested, _prison.getSolitaryLocation());
+		teleportToSolitary(arrested);
 		
 		// TODO warn players
 		
@@ -328,11 +379,10 @@ public class PrisonEscapeGame {
 				// TODO warn arrested
 				
 				if (_dayPeriod == DayPeriod.DAY) {
-					BukkitTeleporter.teleport(arrested, _prison.getSolitaryExitLocation());
+					teleportToSolitaryExit(arrested);
 				}
 				else if (_dayPeriod == DayPeriod.NIGHT) {
-					int playerIndex = _prisionersTeam.getPlayerIndex(arrested);
-					BukkitTeleporter.teleport(arrested, _prison.getPlayerCellLocation(playerIndex));
+					teleportPrisionerToSpawnPoint(arrested);
 				}
 			}
 		}, TICKS_PER_SECOND * _settings.getSecondsInSolitary());
@@ -396,6 +446,24 @@ public class PrisonEscapeGame {
 //	#########################################
 //	#               Locations               #
 //	#########################################
+
+	private void teleportPoliceToSpawnPoint(PrisonEscapePlayer player) {
+		int playerIndex = _policeTeam.getPlayerIndex(player);
+		BukkitTeleporter.teleport(player, _prison.getPoliceSpawnLocation(playerIndex));
+	}
+
+	private void teleportPrisionerToSpawnPoint(PrisonEscapePlayer player) {
+		int playerIndex = _prisionersTeam.getPlayerIndex(player);
+		BukkitTeleporter.teleport(player, _prison.getPlayerCellLocation(playerIndex));
+	}
+
+	private void teleportToSolitary(PrisonEscapePlayer player) {
+		BukkitTeleporter.teleport(player, _prison.getSolitaryLocation());
+	}
+
+	private void teleportToSolitaryExit(PrisonEscapePlayer player) {
+		BukkitTeleporter.teleport(player, _prison.getSolitaryExitLocation());
+	}
 	
 	private PrisonEscapeLocation getLeavingLocation() {
 		return ConfigManager.getInstance().getLeavingLocation();

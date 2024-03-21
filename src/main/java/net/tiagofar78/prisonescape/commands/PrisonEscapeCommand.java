@@ -45,7 +45,7 @@ public class PrisonEscapeCommand implements CommandExecutor {
 			// TODO
 			break;
 		case REJOIN_COMMAND:
-			// TODO
+			executor = new RejoinSubcommand();
 			break;
 		case STOP_COMMAND:
 			// TODO
