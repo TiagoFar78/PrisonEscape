@@ -9,8 +9,16 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 
 public class BukkitMessageSender {
 	
+	public static List<String> getOnlinePlayersNames() {
+		return Bukkit.getOnlinePlayers().stream().map(p -> p.getName()).toList();
+	}
+	
 	public static void sendChatMessage(PrisonEscapePlayer player, String message) {
-		Player bukkitPlayer = Bukkit.getPlayer(player.getName());
+		sendChatMessage(player.getName(), message);
+	}
+	
+	public static void sendChatMessage(String playerName, String message) {
+		Player bukkitPlayer = Bukkit.getPlayer(playerName);
 		if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
 			return;
 		}
@@ -19,7 +27,11 @@ public class BukkitMessageSender {
 	}
 	
 	public static void sendChatMessage(PrisonEscapePlayer player, String[] message) {
-		Player bukkitPlayer = Bukkit.getPlayer(player.getName());
+		sendChatMessage(player.getName(), message);
+	}
+	
+	public static void sendChatMessage(String playerName, String[] message) {
+		Player bukkitPlayer = Bukkit.getPlayer(playerName);
 		if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
 			return;
 		}
@@ -28,9 +40,13 @@ public class BukkitMessageSender {
 	}
 	
 	public static void sendChatMessage(PrisonEscapePlayer player, List<String> message) {
+		sendChatMessage(player.getName(), message);
+	}
+	
+	public static void sendChatMessage(String playerName, List<String> message) {
 		String[] messageArray = message.toArray(new String[0]);
 		
-		sendChatMessage(player, messageArray);
+		sendChatMessage(playerName, messageArray);
 	}
 
 }

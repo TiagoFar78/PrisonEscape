@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.managers;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class MessageLanguageManager {
 	private String _successfullyJoinedGameMessage;
 	private String _successfullyLeftGameMessage;
 	private String _successfullyForceStoppedGameMessage;
+	
+	private List<String> _gameStartingAnnouncementMessage;
 	
 //	########################################
 //	#                Errors                #
@@ -100,6 +103,19 @@ public class MessageLanguageManager {
 
 	public String getSuccessfullyForceStoppedGameMessage() {
 		return _successfullyForceStoppedGameMessage;
+	}
+	
+	public List<String> getGameStartingAnnouncementMessage(int remainingTime, int playersOnLobby) {
+		List<String> message = new ArrayList<>(_gameStartingAnnouncementMessage);
+		
+		for (int i = 0; i < message.size(); i++) {
+			
+			message.set(i, message.get(i)
+					.replace("{TIME}", Integer.toString(remainingTime)
+					.replace("{PLAYERS}", Integer.toString(playersOnLobby))));
+		}
+		
+		return message;
 	}
 	
 //	########################################
