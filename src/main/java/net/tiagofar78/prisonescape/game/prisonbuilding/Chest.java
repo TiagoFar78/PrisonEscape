@@ -16,7 +16,6 @@ import net.tiagofar78.prisonescape.bukkit.BukkitInventory;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public class Chest {
 	
@@ -36,8 +35,8 @@ public class Chest {
 		
 		// Create inventory
 		int lines = 3;
-		ConfigManager config = ConfigManager.getInstance();
-		this._inventory = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, config.getContainerName());
+		String name = "TODO"; // TODO get name
+		this._inventory = Bukkit.createInventory(null, lines * SLOTS_PER_LINE, name);
 		
 		this._inventoryManager = new BukkitInventory(_inventory);
 

@@ -1,0 +1,72 @@
+PrisionersRatio: 0.73
+PoliceRatio: 0.27
+MinPlayers: 3
+MaxPlayers: 11
+WaitingPhaseDuration: 300
+FullLobbyWaitDuration: 10
+DelayBetweenAnnouncements: 30
+AvailableLanguages:
+- "english"
+DefaultLanguage: "english"
+WorldName: "PrisonEscapeWorld"
+ReferenceBlock:
+  X: 0
+  Y: 0
+  Z: 0
+LeavingLocation:
+  X: 0
+  Y: 0
+  Z: 0
+WaitingLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisonTopLeftCornerLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisonBottomRightCornerLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisionersSpawnLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+PoliceSpawnLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+SolitaryLocation:
+  X: 0
+  Y: 0
+  Z: 0
+SolitaryExitLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisionersSecretPassagesLocation:
+  "1":
+    Key:
+      X: 0
+      Y: 0
+      Z: 0
+    Value:
+      X: 0
+      Y: 0
+      Z: 0
+PoliceSecretPassagesLocation:
+  "1":
+    Key:
+      X: 0
+      Y: 0
+      Z: 0
+    Value:
+      X: 0
+      Y: 0
+      Z: 0
+CommonItemsProbability: 0.8
+RareItemsProbability: 0.25
+ChestSize: 5

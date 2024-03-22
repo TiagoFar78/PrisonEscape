@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import net.tiagofar78.prisonescape.PrisonEscapeResources;
+
 public class MessageLanguageManager {
 	
 	private static Hashtable<String, MessageLanguageManager> instance = initializeLanguageMessages();
@@ -39,6 +43,12 @@ public class MessageLanguageManager {
 		return ConfigManager.getInstance().getDefaultLanguage();
 	}
 	
+//	#######################################
+//	#              Inventory              #
+//	#######################################
+	
+	private String _containerName;
+	
 //	########################################
 //	#               Warnings               #
 //	########################################
@@ -49,6 +59,10 @@ public class MessageLanguageManager {
 	private String _successfullyLeftGameMessage;
 	private String _successfullyForceStoppedGameMessage;
 	private String _successfullyRejoinedGameMessage;
+
+//	########################################
+//	#             Announcements            #
+//	########################################
 	
 	private List<String> _gameStartingAnnouncementMessage;
 	
@@ -73,7 +87,7 @@ public class MessageLanguageManager {
 //	#                Usages                #
 //	########################################
 	
-	private String[] _usageMessage;
+	private List<String> _usageMessage;
 	private String _startCommandUsage;
 	private String _forceStartCommandUsage;
 	private String _joinCommandUsage;
@@ -82,7 +96,64 @@ public class MessageLanguageManager {
 	private String _rejoinCommandUsage;
 	
 	private MessageLanguageManager(String language) {
-		// TODO set the attributes values here
+		YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
+		
+		_containerName = createMessage(messages.getString("Inventory.Chest.Title"));
+		
+		String messagePath = "Messages.";
+		String warningPath = messagePath + "Warnings.";
+		_successfullyStartedGameMessage = createMessage(messages.getString(warningPath + "StartedGame"));
+		_successfullyForceStartedGameMessage = createMessage(messages.getString(warningPath + "ForceStartedGame"));
+		_successfullyJoinedGameMessage = createMessage(messages.getString(warningPath + "JoinedGame"));
+		_successfullyLeftGameMessage = createMessage(messages.getString(warningPath + "LeftGame"));
+		_successfullyForceStoppedGameMessage = createMessage(messages.getString(warningPath + "ForceStoppedGame"));
+		_successfullyRejoinedGameMessage = createMessage(messages.getString(warningPath + "RejoinedGame"));
+		
+		String announcementPath = messagePath + "Announcements.";
+		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
+		
+		String errorPath = messagePath + "Errors.";
+		_notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
+		_onlyPlayersCanUseThisCommandMessage = createMessage(messages.getString(errorPath + "CommandForPlayers"));
+		_gameAlreadyStartedMessage = createMessage(messages.getString(errorPath + "GameAlreadyStarted"));
+		_gameNotStartedYetMessage = createMessage(messages.getString(errorPath + "GameNotStartedYet"));
+		_gameAlreadyOngoingMessage = createMessage(messages.getString(errorPath + "GameAlreadyOngoing"));
+		_gameHasNotStartedUseJoinInsteadMessage = createMessage(messages.getString(errorPath + "GameIsStillWaiting"));
+		_lobbyIsFullMessage = createMessage(messages.getString(errorPath + "LobbyIsFull"));
+		_playerAlreadyJoinedMessage = createMessage(messages.getString(errorPath + "AlreadyJoined"));
+		_playerNotOnLobbyMessage = createMessage(messages.getString(errorPath + "NotOnLobby"));
+		_playerWasNeverInGameMessage = createMessage(messages.getString(errorPath + "NeverInGame"));
+		
+		String usagePath = messagePath + "Usage.";
+		_usageMessage = createMessage(messages.getStringList(usagePath + "General"));
+		_startCommandUsage = createMessage(messages.getString(usagePath + "Start"));
+		_forceStartCommandUsage = createMessage(messages.getString(usagePath + "ForceStart"));
+		_forceStopCommandUsage = createMessage(messages.getString(usagePath + "ForceStop"));
+		_joinCommandUsage = createMessage(messages.getString(usagePath + "Join"));
+		_leaveCommandUsage = createMessage(messages.getString(usagePath + "Leave"));
+		_rejoinCommandUsage = createMessage(messages.getString(usagePath + "Rejoin"));
+	}
+	
+	private String createMessage(String rawMessage) {
+		return rawMessage.replace("&", "§");
+	}
+	
+	private List<String> createMessage(List<String> rawMessage) {
+		List<String> message = new ArrayList<>(rawMessage);
+		
+		for (int i = 0; i < message.size(); i++) {
+			message.set(i, message.get(i).replace("&", "§"));
+		}
+		
+		return message;
+	}
+	
+//	#######################################
+//	#              Inventory              #
+//	#######################################
+
+	public String getContainerName() {
+		return _containerName;
 	}
 	
 //	########################################
@@ -113,9 +184,9 @@ public class MessageLanguageManager {
 		return _successfullyRejoinedGameMessage;
 	}
 
-	//	########################################
-	//	#             Announcements            #
-	//	########################################
+//	########################################
+//	#             Announcements            #
+//	########################################
 	
 	public List<String> getGameStartingAnnouncementMessage(int remainingTime, int playersOnLobby) {
 		List<String> message = new ArrayList<>(_gameStartingAnnouncementMessage);
@@ -178,7 +249,7 @@ public class MessageLanguageManager {
 //	#                Usages                #
 //	########################################
 	
-	public String[] getUsage() {
+	public List<String> getUsage() {
 		return _usageMessage;
 	}
 	

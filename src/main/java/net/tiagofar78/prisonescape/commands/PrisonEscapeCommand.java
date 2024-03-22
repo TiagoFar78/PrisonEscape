@@ -68,7 +68,7 @@ public class PrisonEscapeCommand implements CommandExecutor {
 		ConfigManager config = ConfigManager.getInstance();
 		MessageLanguageManager messages = MessageLanguageManager.getInstance(config.getDefaultLanguage());
 		
-		sender.sendMessage(messages.getUsage());
+		sender.sendMessage(messages.getUsage().toArray(new String[0]));
 	}
 
 }
