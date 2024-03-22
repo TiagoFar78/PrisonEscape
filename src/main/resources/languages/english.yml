@@ -1,0 +1,51 @@
+Inventory:
+  Chest:
+    Title: "Container"
+Messages:
+  Warnings:
+    StartedGame: "&aSucessfully started game."
+    ForceStartedGame: "&aSucessfully skipped waiting phase."
+    StoppedGame: "&aSucessfully skipped finished phase."
+    ForceStoppedGame: "&aSucessfully cancelled the game."
+    JoinedGame: "&aYou joined the game."
+    LeftGame: "&aYou left the game."
+    RejoinedGame: "&aYou rejoined game"
+  Announcements:
+    GameStarting:
+    - "&6==================================="
+    - "&6The Game will start in &f{SECONDS} &6seconds"
+    - "&6To join use &f/PrisonEscape join"
+    - "&6There are already &f{PLAYERS} &6waiting"
+    - "&6==================================="
+  Error:
+    NotAllowed: "&cYou don't have permission to do that."
+    CommandForPlayers: "&cOnly players have permission to use this command."
+    GameAlreadyStarted: "&cThere is a game happening already."
+    GameNotStartedYet: "&cThere isn't any game happening right now."
+    GameAlreadyOngoing: "&cThe game is already in the ongoing phase."
+    GameIsStillWaiting: "&cThe game is in the waiting phase. You can join using &f/PrisonEscape join"
+    LobbyIsFull: "&cThe game lobby is already full."
+    AlreadyJoined: "&cYou are already in the game."
+    NotOnLobby: "&cYou aren't on the game lobby."
+    NeverInGame: "&cYou can only rejoin games you were in from the start"
+  Usages:
+    General:
+    - "Usage:"
+    - "/PrisonEscape Start - to start the game"
+    - "/PrisonEscape ForceStart - to skip waiting phase"
+    - "/PrisonEscape Stop - to skip finished phase"
+    - "/PrisonEscape ForceStop - to cancel game"
+    - "/PrisonEscape Join - to join the game"
+    - "/PrisonEscape Leave - to leave the game"
+    - "/PrisonEscape Rejoin - to rejoin the game"
+    - ""
+    - "Note: commands are case insensitive and /PrisonEscape can be replaced by /PE"
+    - ""
+    Start: "/PrisonEscape Start - to start the game"
+    ForceStart: "/PrisonEscape ForceStart - to skip waiting phase"
+    Stop: "/PrisonEscape Stop - to skip finished phase"
+    ForceStop: "/PrisonEscape ForceStop - to cancel game"
+    Join: "/PrisonEscape Join - to join the game"
+    Leave: "/PrisonEscape Leave - to leave the game"
+    Rejoin: "/PrisonEscape Rejoin - to rejoin the game"
+    
