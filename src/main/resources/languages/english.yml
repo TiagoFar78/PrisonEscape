@@ -17,7 +17,7 @@ Messages:
     - "&6To join use &f/PrisonEscape join"
     - "&6There are already &f{PLAYERS} &6waiting"
     - "&6==================================="
-    PrisionerArrested: "&4Prisioner &f{PLAYER} has been sent to solitary"
+    PrisionerArrested: "&4Prisioner &f{PLAYER} &4has been sent to solitary"
     PrisionerFreedOfSolitary: "&aYou will leave solitary soon"
     PrisionersWonTitle: "&l&6PRISIONERS WON"
     PrisionersWonSubtitle: "&fEveryone was able to escape"
