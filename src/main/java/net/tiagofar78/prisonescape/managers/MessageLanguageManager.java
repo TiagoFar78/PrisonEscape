@@ -64,6 +64,7 @@ public class MessageLanguageManager {
 	private String _successfullyLeftGameMessage;
 	private String _successfullyForceStoppedGameMessage;
 	private String _successfullyRejoinedGameMessage;
+	private String _successfullyStoppedGameMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -89,6 +90,7 @@ public class MessageLanguageManager {
 	private String _gameNotStartedYetMessage;
 	private String _gameAlreadyOngoingMessage;
 	private String _gameHasNotStartedUseJoinInsteadMessage;
+	private String _gameIsNotInFinishedPhaseMessage;
 	private String _lobbyIsFullMessage;
 
 	private String _playerAlreadyJoinedMessage;
@@ -106,6 +108,7 @@ public class MessageLanguageManager {
 	private String _leaveCommandUsage;
 	private String _forceStopCommandUsage;
 	private String _rejoinCommandUsage;
+	private String _stopCommandUsage;
 	
 	private MessageLanguageManager(String language) {
 		YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
@@ -120,6 +123,7 @@ public class MessageLanguageManager {
 		_successfullyLeftGameMessage = createMessage(messages.getString(warningPath + "LeftGame"));
 		_successfullyForceStoppedGameMessage = createMessage(messages.getString(warningPath + "ForceStoppedGame"));
 		_successfullyRejoinedGameMessage = createMessage(messages.getString(warningPath + "RejoinedGame"));
+		_successfullyStoppedGameMessage = createMessage(messages.getString(warningPath + "StoppedGame"));
 		
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -138,6 +142,7 @@ public class MessageLanguageManager {
 		_gameNotStartedYetMessage = createMessage(messages.getString(errorPath + "GameNotStartedYet"));
 		_gameAlreadyOngoingMessage = createMessage(messages.getString(errorPath + "GameAlreadyOngoing"));
 		_gameHasNotStartedUseJoinInsteadMessage = createMessage(messages.getString(errorPath + "GameIsStillWaiting"));
+		_gameIsNotInFinishedPhaseMessage = createMessage(messages.getSString(errorPath + "GameIsNotFinished"));
 		_lobbyIsFullMessage = createMessage(messages.getString(errorPath + "LobbyIsFull"));
 		_playerAlreadyJoinedMessage = createMessage(messages.getString(errorPath + "AlreadyJoined"));
 		_playerNotOnLobbyMessage = createMessage(messages.getString(errorPath + "NotOnLobby"));
@@ -151,6 +156,7 @@ public class MessageLanguageManager {
 		_joinCommandUsage = createMessage(messages.getString(usagePath + "Join"));
 		_leaveCommandUsage = createMessage(messages.getString(usagePath + "Leave"));
 		_rejoinCommandUsage = createMessage(messages.getString(usagePath + "Rejoin"));
+		_stopCommandUsage = createMessage(messages.getString(usagePath + "Stop"));
 	}
 	
 	private String createMessage(String rawMessage) {
@@ -201,6 +207,10 @@ public class MessageLanguageManager {
 
 	public String getSuccessfullyRejoinedGameMessage() {
 		return _successfullyRejoinedGameMessage;
+	}
+
+	public String getSuccessfullyStoppedGameMessage() {
+		return _successfullyStoppedGameMessage;
 	}
 
 //	########################################
@@ -274,6 +284,10 @@ public class MessageLanguageManager {
 	public String getGameHasNotStartedUseJoinInsteadMessage() {
 		return _gameHasNotStartedUseJoinInsteadMessage;
 	}
+
+	public String getGameHasNotFinishedMessage() {
+		return _gameIsNotInFinishedPhaseMessage;
+	}
 	
 	public String getLobbyIsFullMessage() {
 		return _lobbyIsFullMessage;
@@ -323,4 +337,7 @@ public class MessageLanguageManager {
 		return _rejoinCommandUsage;
 	}
 
+	public String getStopCommandUsage() {
+		return _stopCommandUsage;
+	}
 }
