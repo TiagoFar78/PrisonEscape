@@ -182,6 +182,19 @@ public class PrisonEscapeGame {
 		_phase = new Finished();
 		disableGame();
 	}
+
+	/**
+	* @return      0 if successful<br> 
+	* 				-1 if not in finished phase
+	*/
+	public int stop() {
+		if (!_phase.hasGameEnded()) {
+			return -1;
+		}
+
+		disableGame();
+		return 0;
+	}
 	
 //	########################################
 //	#                Phases                #
