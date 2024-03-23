@@ -48,5 +48,9 @@ public class BukkitMessageSender {
 		
 		sendChatMessage(playerName, messageArray);
 	}
+	
+	public static void sendTitleMessage(String playerName, String titleMessage, String subtitleMessage) {
+		// TODO
+	}
 
 }

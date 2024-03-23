@@ -39,7 +39,12 @@ public class MessageLanguageManager {
 		return instance.get(language);
 	}
 	
-	public static String getPlayerLanguage(String playerName) {
+	public static MessageLanguageManager getInstanceByPlayer(String playerName) {
+		String language = MessageLanguageManager.getPlayerLanguage(playerName);
+		return MessageLanguageManager.getInstance(language);
+	}
+	
+	private static String getPlayerLanguage(String playerName) {
 		return ConfigManager.getInstance().getDefaultLanguage();
 	}
 	
@@ -65,6 +70,13 @@ public class MessageLanguageManager {
 //	########################################
 	
 	private List<String> _gameStartingAnnouncementMessage;
+	private String _prisionersWonTitle;
+	private String _prisionersWonSubtitle;
+	private String _policeWonTitle;
+	private String _policeWonSubtitle;
+	private String _victoryWord;
+	private String _defeatWord;
+	private List<String> _gameResultMessage;
 	
 //	########################################
 //	#                Errors                #
@@ -111,6 +123,13 @@ public class MessageLanguageManager {
 		
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
+		_prisionersWonTitle = createMessage(messages.getString(announcementPath + "PrisionersWonTitle"));
+		_prisionersWonSubtitle = createMessage(messages.getString(announcementPath + "PrisionersWonSubtitle"));
+		_policeWonTitle = createMessage(messages.getString(announcementPath + "PoliceWonTitle"));
+		_policeWonSubtitle = createMessage(messages.getString(announcementPath + "PoliceWonSubtitle"));
+		_victoryWord = messages.getString(announcementPath + "VictoryWord");
+		_defeatWord = messages.getString(announcementPath + "DefeatWord");
+		_gameResultMessage = createMessage(messages.getStringList(announcementPath + "GameResultMessage"));
 		
 		String errorPath = messagePath + "Errors.";
 		_notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
@@ -196,6 +215,33 @@ public class MessageLanguageManager {
 			message.set(i, message.get(i)
 					.replace("{TIME}", Integer.toString(remainingTime)
 					.replace("{PLAYERS}", Integer.toString(playersOnLobby))));
+		}
+		
+		return message;
+	}
+	
+	public String getPrisionersWonTitle() {
+		return _prisionersWonTitle;
+	}
+	
+	public String getPrisionersWonSubtitle() {
+		return _prisionersWonSubtitle;
+	}
+	
+	public String getPoliceWonTitle() {
+		return _policeWonTitle;
+	}
+	
+	public String getPoliceWonSubtitle(int playersInPrison) {
+		return _policeWonSubtitle;
+	}
+	
+	public List<String> getGameResultMessage(boolean isWinner) {
+		String result = isWinner ? _victoryWord : _defeatWord;
+		
+		List<String> message = new ArrayList<>(_gameResultMessage);
+		for (int i = 0; i < message.size(); i++) {
+			message.set(i, message.get(i).replace("{RESULT}", result));
 		}
 		
 		return message;

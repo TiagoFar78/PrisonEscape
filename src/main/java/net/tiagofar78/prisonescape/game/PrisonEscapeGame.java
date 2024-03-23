@@ -127,7 +127,7 @@ public class PrisonEscapeGame {
 			}
 		}
 		
-		BukkitTeleporter.teleport(player, getLeavingLocation());		
+		teleportToLeavingLocation(player);
 		return 0;
 	}
 	
@@ -180,7 +180,7 @@ public class PrisonEscapeGame {
 
 	public void forceStop() {
 		_phase = new Finished();
-		GameManager.removeGame();
+		disableGame();
 	}
 	
 //	########################################
@@ -189,9 +189,6 @@ public class PrisonEscapeGame {
 	
 	private void startWaitingPhase() {
 		_phase = new Waiting();
-		
-		// TODO add delay to wait for players to join
-		// TODO add warnings so players know the game is about to start
 		
 		ConfigManager config = ConfigManager.getInstance();
 		
@@ -212,8 +209,7 @@ public class PrisonEscapeGame {
 				if (remainingSeconds % config.getDelayBetweenAnnouncements() == 0) {
 					List<String> playersNames = BukkitMessageSender.getOnlinePlayersNames();
 					for (String playerName : playersNames) {
-						String playerLanguage = MessageLanguageManager.getPlayerLanguage(playerName);
-						MessageLanguageManager messages = MessageLanguageManager.getInstance(playerLanguage);
+						MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 						
 						List<String> announcement = messages
 								.getGameStartingAnnouncementMessage(remainingSeconds, _playersOnLobby.size());
@@ -234,15 +230,51 @@ public class PrisonEscapeGame {
 	private void startOngoingPhase() {
 		distributePlayersPerTeam();
 
-		_phase.next();
+		_phase = _phase.next();
 		
 		startDay();
 	}
 	
 	private void startFinishedPhase(PrisonEscapeTeam winnerTeam) {
-		_phase.next();
+		_phase = _phase.next();		
 		
-		// TODO add delay
+		boolean prisionersWon = winnerTeam.getName().equals(_prisionersTeam.getName());
+		int playersInPrison = _prisionersTeam.countArrestedPlayers();
+		
+		for (PrisonEscapePlayer player : _playersOnLobby) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+			
+			String title;
+			String subtitle;
+			if (prisionersWon) {
+				title = messages.getPrisionersWonTitle();
+				subtitle = messages.getPrisionersWonSubtitle();
+			}
+			else {
+				title = messages.getPoliceWonTitle();
+				subtitle = messages.getPoliceWonSubtitle(playersInPrison);
+			}
+			
+			List<String> resultMessage = messages.getGameResultMessage(winnerTeam.isOnTeam(player));
+			
+			BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
+			BukkitMessageSender.sendChatMessage(player, resultMessage);
+		}
+		
+		int finishedPhaseDuration = ConfigManager.getInstance().getFinishedPhaseDuration();
+		BukkitScheduler.runSchedulerLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				disableGame();
+			}
+		}, finishedPhaseDuration * TICKS_PER_SECOND);
+	}
+	
+	private void disableGame() {
+		for (PrisonEscapePlayer player : _playersOnLobby) {
+			teleportToLeavingLocation(player);
+		}
 		
 		GameManager.removeGame();
 	}
@@ -465,8 +497,8 @@ public class PrisonEscapeGame {
 		BukkitTeleporter.teleport(player, _prison.getSolitaryExitLocation());
 	}
 	
-	private PrisonEscapeLocation getLeavingLocation() {
-		return ConfigManager.getInstance().getLeavingLocation();
+	private void teleportToLeavingLocation(PrisonEscapePlayer player) {
+		BukkitTeleporter.teleport(player, ConfigManager.getInstance().getLeavingLocation());
 	}
 	
 }

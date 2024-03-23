@@ -23,6 +23,7 @@ public class ConfigManager {
 	private int _maxPlayers;
 	private int _waitingPhaseDuration;	
 	private int _fullLobbyWaitDuration;
+	private int _finishedPhaseDuration;
 	private int _delayBetweenAnnouncements;
 	
 	private List<String> _availableLanguages;
@@ -55,6 +56,7 @@ public class ConfigManager {
 		_maxPlayers = config.getInt("MaxPlayers");
 		_waitingPhaseDuration = config.getInt("WaitingPhaseDuration");
 		_fullLobbyWaitDuration = config.getInt("FullLobbyWaitDuration");
+		_finishedPhaseDuration = config.getInt("FinishedPhaseDuration");
 		_delayBetweenAnnouncements = config.getInt("DelayBetweenAnnouncements");
 		
 		_availableLanguages = config.getStringList("AvailableLanguages");
@@ -135,6 +137,10 @@ public class ConfigManager {
 	
 	public int getFullLobbyWaitDuration() {
 		return _fullLobbyWaitDuration;
+	}
+	
+	public int getFinishedPhaseDuration() {
+		return _finishedPhaseDuration;
 	}
 	
 	public int getDelayBetweenAnnouncements() {
