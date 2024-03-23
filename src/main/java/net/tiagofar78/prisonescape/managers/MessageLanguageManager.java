@@ -146,7 +146,7 @@ public class MessageLanguageManager {
 		_gameNotStartedYetMessage = createMessage(messages.getString(errorPath + "GameNotStartedYet"));
 		_gameAlreadyOngoingMessage = createMessage(messages.getString(errorPath + "GameAlreadyOngoing"));
 		_gameHasNotStartedUseJoinInsteadMessage = createMessage(messages.getString(errorPath + "GameIsStillWaiting"));
-		_gameIsNotInFinishedPhaseMessage = createMessage(messages.getSString(errorPath + "GameIsNotFinished"));
+		_gameIsNotInFinishedPhaseMessage = createMessage(messages.getString(errorPath + "GameIsNotFinished"));
 		_lobbyIsFullMessage = createMessage(messages.getString(errorPath + "LobbyIsFull"));
 		_playerAlreadyJoinedMessage = createMessage(messages.getString(errorPath + "AlreadyJoined"));
 		_playerNotOnLobbyMessage = createMessage(messages.getString(errorPath + "NotOnLobby"));
