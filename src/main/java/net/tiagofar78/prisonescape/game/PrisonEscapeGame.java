@@ -408,8 +408,12 @@ public class PrisonEscapeGame {
 	
 	private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
 		teleportToSolitary(arrested);
-		
-		// TODO warn players
+
+		for (PrisonEscapePlayer player : _playersOnLobby) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+			String announcement = messages.getPrisionerArrested(arrested.getName());
+			BukkitMessageSender.sendChatMessage(player.getName(), announcement);
+		}
 		
 		BukkitScheduler.runSchedulerLater(new Runnable() {
 			
@@ -421,7 +425,8 @@ public class PrisonEscapeGame {
 				
 				arrested.removeWanted();
 				
-				// TODO warn arrested
+				MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(arrested.getName());
+				BukkitMessageSender.sendChatMessage(arrested.getName(), messages.getPrisionerFreedOfSolitary());
 				
 				if (_dayPeriod == DayPeriod.DAY) {
 					teleportToSolitaryExit(arrested);
@@ -445,10 +450,6 @@ public class PrisonEscapeGame {
 		}
 		
 		return null;
-	}
-
-	private boolean hasMinimumPlayersToStart() {
-		return _playersOnLobby.size() >= ConfigManager.getInstance().getMinimumPlayers();
 	}
 
 	private void distributePlayersPerTeam() {
