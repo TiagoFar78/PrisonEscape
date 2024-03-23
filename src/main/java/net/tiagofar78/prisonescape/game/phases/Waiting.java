@@ -16,4 +16,9 @@ public class Waiting extends Phase {
     public boolean hasGameStarted() {
         return false;
     }
+
+    @Override
+    public boolean hasGameEnded() {
+        return false;
+    }
 }

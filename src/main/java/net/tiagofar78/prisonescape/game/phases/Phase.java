@@ -7,5 +7,7 @@ public abstract class Phase {
 	public abstract boolean isClockStopped();
 
 	public abstract boolean hasGameStarted();
+
+	public abstract boolean hasGameEnded();
 	
 }

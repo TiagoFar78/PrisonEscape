@@ -188,7 +188,7 @@ public class PrisonEscapeGame {
 	* 				-1 if not in finished phase
 	*/
 	public int stop() {
-		if (!_phase.hasGameStarted() && _phase.isClockStopped()) {
+		if (!_phase.hasGameEnded()) {
 			return -1;
 		}
 

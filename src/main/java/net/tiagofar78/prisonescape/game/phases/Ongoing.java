@@ -16,4 +16,9 @@ public class Ongoing extends Phase {
     public boolean hasGameStarted() {
         return true;
     }
+
+    @Override
+    public boolean hasGameEnded() {
+        return false;
+    }
 }
