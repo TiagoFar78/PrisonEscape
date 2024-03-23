@@ -225,8 +225,7 @@ public class MessageLanguageManager {
 	}
 
 	public String getPrisionerArrested(String playerName) {
-		String message = _prisionerArrested.replace("{PLAYER}", playerName);
-		return message;
+		return _prisionerArrested.replace("{PLAYER}", playerName);
 	}
 
 	public String getPrisionerFreedOfSolitary() {
