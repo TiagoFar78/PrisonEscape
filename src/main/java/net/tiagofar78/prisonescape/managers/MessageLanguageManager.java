@@ -70,6 +70,8 @@ public class MessageLanguageManager {
 //	########################################
 	
 	private List<String> _gameStartingAnnouncementMessage;
+	private String _prisionerArrested;
+	private String _prisionerFreedOfSolitary;
 	private String _prisionersWonTitle;
 	private String _prisionersWonSubtitle;
 	private String _policeWonTitle;
@@ -123,6 +125,8 @@ public class MessageLanguageManager {
 		
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
+		_prisionerArrested = createMessage(messages.getString(announcementPath + "PrisionerArrested"));
+		_prisionerFreedOfSolitary = createMessage(messages.getString(announcementPath + "PrisionerFreedOfSolitary"));
 		_prisionersWonTitle = createMessage(messages.getString(announcementPath + "PrisionersWonTitle"));
 		_prisionersWonSubtitle = createMessage(messages.getString(announcementPath + "PrisionersWonSubtitle"));
 		_policeWonTitle = createMessage(messages.getString(announcementPath + "PoliceWonTitle"));
@@ -218,6 +222,16 @@ public class MessageLanguageManager {
 		}
 		
 		return message;
+	}
+
+	public String getPrisionerArrested(String playerName) {
+		String message = new String(_prisionerArrested);
+		message.replace("{PLAYER}", playerName);
+		return message;
+	}
+
+	public String getPrisionerFreedOfSolitary() {
+		return _prisionerFreedOfSolitary;
 	}
 	
 	public String getPrisionersWonTitle() {

@@ -17,6 +17,8 @@ Messages:
     - "&6To join use &f/PrisonEscape join"
     - "&6There are already &f{PLAYERS} &6waiting"
     - "&6==================================="
+    PrisionerArrested: "&4 Prisioner &f{PLAYER} has been sent to solitary"
+    PrisionerFreedOfSolitary: "&a You will leave solitary soon"
     PrisionersWonTitle: "&l&6PRISIONERS WON"
     PrisionersWonSubtitle: "&fEveryone was able to escape"
     PoliceWonTitle: "&l&9POLICE WON"
@@ -63,4 +65,3 @@ Messages:
     Join: "/PrisonEscape Join - to join the game"
     Leave: "/PrisonEscape Leave - to leave the game"
     Rejoin: "/PrisonEscape Rejoin - to rejoin the game"
-    
