@@ -39,7 +39,12 @@ public class MessageLanguageManager {
 		return instance.get(language);
 	}
 	
-	public static String getPlayerLanguage(String playerName) {
+	public static MessageLanguageManager getInstanceByPlayer(String playerName) {
+		String language = MessageLanguageManager.getPlayerLanguage(playerName);
+		return MessageLanguageManager.getInstance(language);
+	}
+	
+	private static String getPlayerLanguage(String playerName) {
 		return ConfigManager.getInstance().getDefaultLanguage();
 	}
 	

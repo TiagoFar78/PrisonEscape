@@ -209,8 +209,7 @@ public class PrisonEscapeGame {
 				if (remainingSeconds % config.getDelayBetweenAnnouncements() == 0) {
 					List<String> playersNames = BukkitMessageSender.getOnlinePlayersNames();
 					for (String playerName : playersNames) {
-						String playerLanguage = MessageLanguageManager.getPlayerLanguage(playerName);
-						MessageLanguageManager messages = MessageLanguageManager.getInstance(playerLanguage);
+						MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 						
 						List<String> announcement = messages
 								.getGameStartingAnnouncementMessage(remainingSeconds, _playersOnLobby.size());
@@ -243,8 +242,7 @@ public class PrisonEscapeGame {
 		int playersInPrison = _prisionersTeam.countArrestedPlayers();
 		
 		for (PrisonEscapePlayer player : _playersOnLobby) {
-			String language = MessageLanguageManager.getPlayerLanguage(player.getName());
-			MessageLanguageManager messages = MessageLanguageManager.getInstance(language);
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 			
 			String title;
 			String subtitle;
