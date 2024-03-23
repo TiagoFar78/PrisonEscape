@@ -4,6 +4,7 @@ MinPlayers: 3
 MaxPlayers: 11
 WaitingPhaseDuration: 300
 FullLobbyWaitDuration: 10
+FinishedPhaseDuration: 30
 DelayBetweenAnnouncements: 30
 AvailableLanguages:
 - "english"
