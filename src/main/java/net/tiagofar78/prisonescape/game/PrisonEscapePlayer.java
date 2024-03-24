@@ -26,6 +26,10 @@ public class PrisonEscapePlayer {
 		return _preference;
 	}
 	
+	public void setPreference(TeamPreference preference) {
+		this._preference = preference;
+	}
+	
 //	########################################
 //	#                Escape                #
 //	########################################

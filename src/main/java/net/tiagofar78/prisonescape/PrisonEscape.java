@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
+import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 
 public class PrisonEscape extends JavaPlugin {
 	
@@ -31,6 +32,8 @@ public class PrisonEscape extends JavaPlugin {
 		
 		getCommand(COMMAND_LABEL).setAliases(COMMAND_ALIASES);
 		getCommand(COMMAND_LABEL).setExecutor(new PrisonEscapeCommand());
+		
+		getServer().getPluginManager().registerEvents(new TeamSelectorKit(), this);
 	}
 	
 	public static PrisonEscape getPrisonEscape() {

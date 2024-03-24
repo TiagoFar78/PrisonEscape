@@ -53,6 +53,14 @@ public class MessageLanguageManager {
 	}
 	
 //	#######################################
+//	#                 Kit                 #
+//	#######################################
+	
+	private String _selectPrisionerTeamItemName;
+	private String _selectPoliceTeamItemName;
+	private String _selectNoneTeamItemName;
+	
+//	#######################################
 //	#              Inventory              #
 //	#######################################
 	
@@ -69,6 +77,9 @@ public class MessageLanguageManager {
 	private String _successfullyForceStoppedGameMessage;
 	private String _successfullyRejoinedGameMessage;
 	private String _successfullyStoppedGameMessage;
+	private String _selectedPrisionersTeamMessage;
+	private String _selectedPoliceTeamMessage;
+	private String _removedTeamPreferenceMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -119,6 +130,12 @@ public class MessageLanguageManager {
 	private MessageLanguageManager(String language) {
 		YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
 		
+		String kitPath = "Kits.";
+		String teamSelector = kitPath + "TeamSelector.";
+		_selectPrisionerTeamItemName = createMessage(messages.getString(teamSelector + "SelectPrisioners.Name"));
+		_selectPoliceTeamItemName = createMessage(messages.getString(teamSelector + "SelectPolice.Name"));
+		_selectNoneTeamItemName = createMessage(messages.getString(teamSelector + "SelectNone.Name"));;
+		
 		_containerName = createMessage(messages.getString("Inventory.Chest.Title"));
 		
 		String messagePath = "Messages.";
@@ -130,6 +147,9 @@ public class MessageLanguageManager {
 		_successfullyForceStoppedGameMessage = createMessage(messages.getString(warningPath + "ForceStoppedGame"));
 		_successfullyRejoinedGameMessage = createMessage(messages.getString(warningPath + "RejoinedGame"));
 		_successfullyStoppedGameMessage = createMessage(messages.getString(warningPath + "StoppedGame"));
+		_selectedPrisionersTeamMessage = createMessage(messages.getString(warningPath + "SelectedPrisionersTeam"));
+		_selectedPoliceTeamMessage = createMessage(messages.getString(warningPath + "SelectedPoliceTeam"));
+		_removedTeamPreferenceMessage = createMessage(messages.getString(warningPath + "SelectedRandomTeam"));
 		
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -182,6 +202,22 @@ public class MessageLanguageManager {
 	}
 	
 //	#######################################
+//	#                 Kit                 #
+//	#######################################
+	
+	public String getSelectPrisionerTeamItemName() {
+		return _selectPrisionerTeamItemName;
+	}
+	
+	public String getSelectPoliceTeamItemName() {
+		return _selectPoliceTeamItemName;
+	}
+	
+	public String getSelectNoneTeamItemName() {
+		return _selectNoneTeamItemName;
+	}
+	
+//	#######################################
 //	#              Inventory              #
 //	#######################################
 
@@ -219,6 +255,18 @@ public class MessageLanguageManager {
 
 	public String getSuccessfullyStoppedGameMessage() {
 		return _successfullyStoppedGameMessage;
+	}
+	
+	public String getSelectedPrisionersTeamMessage() {
+		return _selectedPrisionersTeamMessage;
+	}
+	
+	public String getSelectedPoliceTeamMessage() {
+		return _selectedPoliceTeamMessage;
+	}
+	
+	public String getRemovedTeamPreferenceMessage() {
+		return _removedTeamPreferenceMessage;
 	}
 
 //	########################################

@@ -3,6 +3,11 @@ package net.tiagofar78.prisonescape.game;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public enum PrisonEscapeItem {
+	
+	SELECT_PRISIONER_TEAM(false, false, false),
+	SELECT_POLICE_TEAM(false, false, false),
+	SELECT_NONE_TEAM(false, false, false),
+	
     // TODO: for now all illegals are set to false
     // also need to re-check metal items and rare items
     SEARCH(false, false, false),

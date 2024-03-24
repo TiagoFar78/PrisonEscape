@@ -1,3 +1,11 @@
+Kits:
+  TeamSelector:
+    SelectPrisioners:
+      Name: "&6Select prisioner team"
+    SelectPolice:
+      Name: "&9Select police team"
+    SelectNone:
+      Name: "&8Remove preference"
 Inventory:
   Chest:
     Title: "Container"
@@ -10,6 +18,9 @@ Messages:
     JoinedGame: "&aYou joined the game."
     LeftGame: "&aYou left the game."
     RejoinedGame: "&aYou rejoined game"
+    SelectedPrisionersTeam: "&aYou set &6Prisioners &ateam as your prefered."
+    SelectedPoliceTeam: "&aYou set &9Police &ateam as your prefered."
+    SelectedRandomTeam: "&aYou removed your prefered team. You will be placed randomly."
   Announcements:
     GameStarting:
     - "&6==================================="
