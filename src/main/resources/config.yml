@@ -9,7 +9,7 @@ DelayBetweenAnnouncements: 30
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
-WorldName: "PrisonEscapeWorld"
+WorldName: "PrisonEscape"
 ReferenceBlock:
   X: 0
   Y: 0

@@ -41,6 +41,10 @@ public class MessageLanguageManager {
 	
 	public static MessageLanguageManager getInstanceByPlayer(String playerName) {
 		String language = MessageLanguageManager.getPlayerLanguage(playerName);
+		if (language == null) {
+			language = ConfigManager.getInstance().getDefaultLanguage();
+		}
+		
 		return MessageLanguageManager.getInstance(language);
 	}
 	
@@ -152,7 +156,7 @@ public class MessageLanguageManager {
 		_playerNotOnLobbyMessage = createMessage(messages.getString(errorPath + "NotOnLobby"));
 		_playerWasNeverInGameMessage = createMessage(messages.getString(errorPath + "NeverInGame"));
 		
-		String usagePath = messagePath + "Usage.";
+		String usagePath = messagePath + "Usages.";
 		_usageMessage = createMessage(messages.getStringList(usagePath + "General"));
 		_startCommandUsage = createMessage(messages.getString(usagePath + "Start"));
 		_forceStartCommandUsage = createMessage(messages.getString(usagePath + "ForceStart"));
@@ -225,10 +229,9 @@ public class MessageLanguageManager {
 		List<String> message = new ArrayList<>(_gameStartingAnnouncementMessage);
 		
 		for (int i = 0; i < message.size(); i++) {
-			
 			message.set(i, message.get(i)
-					.replace("{TIME}", Integer.toString(remainingTime)
-					.replace("{PLAYERS}", Integer.toString(playersOnLobby))));
+					.replace("{SECONDS}", Integer.toString(remainingTime))
+					.replace("{PLAYERS}", Integer.toString(playersOnLobby)));
 		}
 		
 		return message;

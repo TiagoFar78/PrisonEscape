@@ -12,7 +12,7 @@ public class JoinSubcommand implements PrisonEscapeSubcommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, String[] args) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstance(sender.getName());
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(sender.getName());
 
         if (!(sender instanceof Player)) {
             sender.sendMessage(messages.getOnlyPlayersCanUseThisCommandMessage());

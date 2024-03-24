@@ -11,7 +11,7 @@ public class ForceStopSubcommand implements PrisonEscapeSubcommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, String[] args) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstance(sender.getName());
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(sender.getName());
 
         if (!sender.hasPermission(PrisonEscape.ADMIN_PERMISSION)) {
             sender.sendMessage(messages.getNotAllowedMessage());
