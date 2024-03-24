@@ -38,7 +38,7 @@ public class PrisonEscapeResources {
 	}
 	
 	private static File languageFile(String language) {
-		return new File(PrisonEscape.getPrisonEscape().getDataFolder(), "languages\\" + language + ".yml");
+		return new File(PrisonEscape.getPrisonEscape().getDataFolder() + File.separator + "languages", language + ".yml");
 	}
 
 }

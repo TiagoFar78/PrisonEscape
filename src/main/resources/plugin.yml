@@ -1,0 +1,8 @@
+name: TF_PrisonEscape
+version: 0.5
+api-version: '1.20'
+authors: [TiagoFar78, iquelli]
+main: net.tiagofar78.prisonescape.PrisonEscape
+commands:
+  prisonescape:
+    aliases: [pe]

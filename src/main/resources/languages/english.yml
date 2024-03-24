@@ -34,7 +34,7 @@ Messages:
     - "      - &4COMMING SOON"
     - ""
     - "&6==================================="
-  Error:
+  Errors:
     NotAllowed: "&cYou don't have permission to do that."
     CommandForPlayers: "&cOnly players have permission to use this command."
     GameAlreadyStarted: "&cThere is a game happening already."

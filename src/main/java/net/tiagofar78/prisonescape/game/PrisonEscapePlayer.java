@@ -2,8 +2,6 @@ package net.tiagofar78.prisonescape.game;
 
 import java.util.List;
 
-import org.bukkit.inventory.ItemStack;
-
 public class PrisonEscapePlayer {
 	
 	private String _name;
