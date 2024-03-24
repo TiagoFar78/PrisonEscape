@@ -12,6 +12,7 @@ import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -75,6 +76,7 @@ public class PrisonEscapeGame {
 		_playersOnLobby.add(player);
 		
 		BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
+		TeamSelectorKit.giveToPlayer(playerName);
 		return 0;
 	}
 
@@ -400,6 +402,48 @@ public class PrisonEscapeGame {
 				touched.setWanted();
 			}
 		}
+	}
+	
+	public void playerInteract(String playerName, PrisonEscapeItem item) {
+		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+		if (player == null) {
+			return;
+		}
+		
+		switch (item) {
+		case SELECT_PRISIONER_TEAM:
+			playerSelectPrisionersTeam(player);
+			return;
+		case SELECT_POLICE_TEAM:
+			playerSelectPoliceTeam(player);
+			return;
+		case SELECT_NONE_TEAM:
+			playerRemovedTeamPreference(player);
+			return;
+		default:
+			break;
+		}
+	}
+	
+	private void playerSelectPrisionersTeam(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.PRISIONERS);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisionersTeamMessage());
+	}
+	
+	private void playerSelectPoliceTeam(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.POLICE);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
+	}
+	
+	private void playerRemovedTeamPreference(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.RANDOM);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
 	}
 	
 //	########################################
