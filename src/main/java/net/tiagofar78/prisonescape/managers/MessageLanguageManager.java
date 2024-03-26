@@ -95,6 +95,7 @@ public class MessageLanguageManager {
 	private String _victoryWord;
 	private String _defeatWord;
 	private List<String> _gameResultMessage;
+	private String _playerEscapedMessage;
 	
 //	########################################
 //	#                Errors                #
@@ -162,6 +163,7 @@ public class MessageLanguageManager {
 		_victoryWord = messages.getString(announcementPath + "VictoryWord");
 		_defeatWord = messages.getString(announcementPath + "DefeatWord");
 		_gameResultMessage = createMessage(messages.getStringList(announcementPath + "GameResultMessage"));
+		_playerEscapedMessage = createMessage(messages.getString(announcementPath + "PlayerEscaped"));
 		
 		String errorPath = messagePath + "Errors.";
 		_notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
@@ -318,6 +320,10 @@ public class MessageLanguageManager {
 		}
 		
 		return message;
+	}
+	
+	public String getPlayerEscapedMessage(String playerName) {
+		return _playerEscapedMessage.replace("{PLAYER}", playerName);
 	}
 	
 //	########################################

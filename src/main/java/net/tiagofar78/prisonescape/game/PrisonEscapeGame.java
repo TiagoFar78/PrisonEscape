@@ -449,6 +449,11 @@ public class PrisonEscapeGame {
 	private void playerEscaped(PrisonEscapePlayer player) {
 		player.escaped();
 		
+		for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
+			BukkitMessageSender.sendChatMessage(playerOnLobby, messages.getPlayerEscapedMessage(player.getName()));
+		}
+		
 		if (_prisionersTeam.countArrestedPlayers() == 0) {
 			startFinishedPhase(_prisionersTeam);
 		}

@@ -45,6 +45,7 @@ Messages:
     - "      - &4COMMING SOON"
     - ""
     - "&6==================================="
+    PlayerEscaped: "&ePlayer &f{PLAYER} &eescaped the prison."
   Errors:
     NotAllowed: "&cYou don't have permission to do that."
     CommandForPlayers: "&cOnly players have permission to use this command."
