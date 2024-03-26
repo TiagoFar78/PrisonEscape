@@ -30,6 +30,10 @@ public class PrisonEscapeTeam {
 		return -1;
 	}
 	
+	public List<PrisonEscapePlayer> getMembers() {
+		return _players;
+	}
+	
 	public boolean isOnTeam(PrisonEscapePlayer player) {
 		return _players.contains(player);
 	}

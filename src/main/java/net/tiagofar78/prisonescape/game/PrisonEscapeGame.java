@@ -224,8 +224,15 @@ public class PrisonEscapeGame {
 				if (remainingSeconds == 0) {
 					if (_playersOnLobby.size() >= config.getMinimumPlayers()) {
 						startOngoingPhase();
+						return;
 					}
 					
+					for (PrisonEscapePlayer player : _playersOnLobby) {
+						MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+						BukkitMessageSender.sendChatMessage(player, messages.getGameCancelledFewPlayersMessage());
+					}
+					
+					disableGame();
 					return;
 				}
 				
@@ -254,6 +261,16 @@ public class PrisonEscapeGame {
 		distributePlayersPerTeam();
 
 		_phase = _phase.next();
+		
+		for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+			BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
+		}
+		
+		for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+			BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
+		}
 		
 		startDay();
 	}
