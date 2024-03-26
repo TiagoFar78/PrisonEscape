@@ -217,10 +217,14 @@ public class PrisonEscapeGame {
 			
 			@Override
 			public void run() {
+				if (_phase.hasGameStarted()) {
+					return;
+				}
+				
 				if (remainingSeconds == 0) {
 					if (_playersOnLobby.size() >= config.getMinimumPlayers()) {
 						startOngoingPhase();
-					}					
+					}
 					
 					return;
 				}
