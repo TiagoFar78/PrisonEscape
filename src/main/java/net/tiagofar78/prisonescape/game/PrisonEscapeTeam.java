@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrisonEscapeTeam {
@@ -9,6 +10,7 @@ public class PrisonEscapeTeam {
 	
 	public PrisonEscapeTeam(String name) {
 		this._name = name;
+		this._players = new ArrayList<>();
 	}
 	
 	public String getName() {
