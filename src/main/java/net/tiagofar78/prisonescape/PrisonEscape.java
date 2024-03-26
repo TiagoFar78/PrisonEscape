@@ -33,6 +33,7 @@ public class PrisonEscape extends JavaPlugin {
 		getCommand(COMMAND_LABEL).setAliases(COMMAND_ALIASES);
 		getCommand(COMMAND_LABEL).setExecutor(new PrisonEscapeCommand());
 		
+		getServer().getPluginManager().registerEvents(new Events(), this);
 		getServer().getPluginManager().registerEvents(new TeamSelectorKit(), this);
 	}
 	

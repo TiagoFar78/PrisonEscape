@@ -346,30 +346,22 @@ public class PrisonEscapeGame {
 //	#                Events                #
 //	########################################
 	
-	public void playerEscaped(String playerName) {
-		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
-		if (player == null) {
-			return;
-		}
-		
-		player.escaped();
-		
-		if (_prisionersTeam.countArrestedPlayers() == 0) {
-			startFinishedPhase(_prisionersTeam);
-		}
-	}
-	
 	public void playerMove(String playerName, PrisonEscapeLocation loc) {
 		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
 		if (player == null) {
 			return;
 		}
 		
-		if (_prison.isOutsidePrison(loc)) {
-			player.giveLeavingPrisonItem();
+		if (!_phase.hasGameStarted() || _phase.hasGameEnded()) {
+			return;
 		}
-		else {
-			player.removeLeavingPrisonItem();
+		
+		if (player.hasEscaped()) {
+			return;
+		}
+		
+		if (_prison.isOutsidePrison(loc)) {
+			playerEscaped(player);
 		}
 		
 		if (_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
@@ -451,8 +443,16 @@ public class PrisonEscapeGame {
 	}
 	
 //	########################################
-//	#                Arrest                #
+//	#            Events Results            #
 //	########################################
+	
+	private void playerEscaped(PrisonEscapePlayer player) {
+		player.escaped();
+		
+		if (_prisionersTeam.countArrestedPlayers() == 0) {
+			startFinishedPhase(_prisionersTeam);
+		}
+	}
 	
 	private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
 		teleportToSolitary(arrested);

@@ -23,8 +23,11 @@ public class PrisonBuilding {
 	private List<Chest> _chests;
 	private List<PrisonEscapeLocation> _metalDetectorsLocations;
 
-	public PrisonBuilding(PrisonEscapeLocation reference) {
+	public PrisonBuilding(PrisonEscapeLocation reference) {		
 		ConfigManager config = ConfigManager.getInstance();
+		
+		_chests = new ArrayList<>();
+		_metalDetectorsLocations = new ArrayList<>();
 
 		_waitingLobbyLocation = addReferenceLocation(reference, config.getWaitingLobbyLocation());
 		_prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
