@@ -377,6 +377,10 @@ public class PrisonEscapeGame {
 			return;
 		}
 		
+		if (!_prisionersTeam.isOnTeam(player)) {
+			return;
+		}
+		
 		if (player.hasEscaped()) {
 			return;
 		}

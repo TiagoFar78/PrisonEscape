@@ -167,9 +167,9 @@ public class MessageLanguageManager {
 		_policeWonSubtitle = createMessage(messages.getString(announcementPath + "PoliceWonSubtitle"));
 		_victoryWord = messages.getString(announcementPath + "VictoryWord");
 		_defeatWord = messages.getString(announcementPath + "DefeatWord");
-		_gameResultMessage = createMessage(messages.getStringList(announcementPath + "GameResultMessage"));
+		_gameResultMessage = createMessage(messages.getStringList(announcementPath + "GameResult"));
 		_playerEscapedMessage = createMessage(messages.getString(announcementPath + "PlayerEscaped"));
-		_gameCancelledNotEnoughPlayers = createMessage(messages.getString(announcementPath + "GameCancelledForFewPlayers"));
+		_gameCancelledNotEnoughPlayers = createMessage(messages.getString(announcementPath + "GameCancelledFewPlayers"));
 		
 		String errorPath = messagePath + "Errors.";
 		_notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));

@@ -38,7 +38,7 @@ Messages:
     PoliceWonSubtitle: "&f{PLAYERS} was still in prison"
     VictoryWord: "Victory"
     DefeatWord: "Defeat"
-    GameResultMessage:
+    GameResult:
     - "&6==================================="
     - ""
     - "                &f&l{RESULT}"
@@ -48,7 +48,7 @@ Messages:
     - ""
     - "&6==================================="
     PlayerEscaped: "&ePlayer &f{PLAYER} &eescaped the prison."
-    GameCancelledFewPlayersMessage: "&cThe game was cancelled because there were not enough players."
+    GameCancelledFewPlayers: "&cThe game was cancelled because there were not enough players."
   Errors:
     NotAllowed: "&cYou don't have permission to do that."
     CommandForPlayers: "&cOnly players have permission to use this command."

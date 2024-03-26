@@ -70,9 +70,9 @@ public class PrisonBuilding {
 	}
 	
 	public boolean isOutsidePrison(PrisonEscapeLocation loc) {
-		return loc.getX() > _prisonTopLeftCorner.getX() || _prisonBottomRightCorner.getX() < loc.getX() ||
-				loc.getY() > _prisonTopLeftCorner.getY() || _prisonBottomRightCorner.getY() < loc.getY() ||
-				loc.getZ() > _prisonTopLeftCorner.getZ() || _prisonBottomRightCorner.getZ() < loc.getZ();
+		return loc.getX() > _prisonTopLeftCorner.getX() || loc.getX() < _prisonBottomRightCorner.getX() ||
+				loc.getY() > _prisonTopLeftCorner.getY() || loc.getY() < _prisonBottomRightCorner.getY() ||
+				loc.getZ() > _prisonTopLeftCorner.getZ() || loc.getZ() < _prisonBottomRightCorner.getZ();
 	}
 	
 	public PrisonEscapeLocation getPoliceSpawnLocation(int index) {
