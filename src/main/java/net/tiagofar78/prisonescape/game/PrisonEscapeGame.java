@@ -217,7 +217,22 @@ public class PrisonEscapeGame {
 			
 			@Override
 			public void run() {
+				if (_phase.hasGameStarted()) {
+					return;
+				}
+				
 				if (remainingSeconds == 0) {
+					if (_playersOnLobby.size() >= config.getMinimumPlayers()) {
+						startOngoingPhase();
+						return;
+					}
+					
+					for (PrisonEscapePlayer player : _playersOnLobby) {
+						MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+						BukkitMessageSender.sendChatMessage(player, messages.getGameCancelledFewPlayersMessage());
+					}
+					
+					disableGame();
 					return;
 				}
 				
@@ -246,6 +261,16 @@ public class PrisonEscapeGame {
 		distributePlayersPerTeam();
 
 		_phase = _phase.next();
+		
+		for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+			BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
+		}
+		
+		for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+			BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
+		}
 		
 		startDay();
 	}
@@ -342,30 +367,22 @@ public class PrisonEscapeGame {
 //	#                Events                #
 //	########################################
 	
-	public void playerEscaped(String playerName) {
-		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
-		if (player == null) {
-			return;
-		}
-		
-		player.escaped();
-		
-		if (_prisionersTeam.countArrestedPlayers() == 0) {
-			startFinishedPhase(_prisionersTeam);
-		}
-	}
-	
 	public void playerMove(String playerName, PrisonEscapeLocation loc) {
 		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
 		if (player == null) {
 			return;
 		}
 		
-		if (_prison.isOutsidePrison(loc)) {
-			player.giveLeavingPrisonItem();
+		if (!_phase.hasGameStarted() || _phase.hasGameEnded()) {
+			return;
 		}
-		else {
-			player.removeLeavingPrisonItem();
+		
+		if (player.hasEscaped()) {
+			return;
+		}
+		
+		if (_prison.isOutsidePrison(loc)) {
+			playerEscaped(player);
 		}
 		
 		if (_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
@@ -447,8 +464,21 @@ public class PrisonEscapeGame {
 	}
 	
 //	########################################
-//	#                Arrest                #
+//	#            Events Results            #
 //	########################################
+	
+	private void playerEscaped(PrisonEscapePlayer player) {
+		player.escaped();
+		
+		for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
+			MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
+			BukkitMessageSender.sendChatMessage(playerOnLobby, messages.getPlayerEscapedMessage(player.getName()));
+		}
+		
+		if (_prisionersTeam.countArrestedPlayers() == 0) {
+			startFinishedPhase(_prisionersTeam);
+		}
+	}
 	
 	private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
 		teleportToSolitary(arrested);

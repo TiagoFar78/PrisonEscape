@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrisonEscapeTeam {
@@ -9,6 +10,7 @@ public class PrisonEscapeTeam {
 	
 	public PrisonEscapeTeam(String name) {
 		this._name = name;
+		this._players = new ArrayList<>();
 	}
 	
 	public String getName() {
@@ -26,6 +28,10 @@ public class PrisonEscapeTeam {
 			}
 		}
 		return -1;
+	}
+	
+	public List<PrisonEscapePlayer> getMembers() {
+		return _players;
 	}
 	
 	public boolean isOnTeam(PrisonEscapePlayer player) {

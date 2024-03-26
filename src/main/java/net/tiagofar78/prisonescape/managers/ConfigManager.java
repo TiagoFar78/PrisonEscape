@@ -21,6 +21,10 @@ public class ConfigManager {
 	private double _officerRatio;
 	private int _minimumPlayers;
 	private int _maxPlayers;
+	private int _secondsInSolitary;
+	private int _daysAmount;
+	private int _dayDuration;
+	private int _nightDuration;
 	private int _waitingPhaseDuration;	
 	private int _fullLobbyWaitDuration;
 	private int _finishedPhaseDuration;
@@ -58,6 +62,10 @@ public class ConfigManager {
 		_fullLobbyWaitDuration = config.getInt("FullLobbyWaitDuration");
 		_finishedPhaseDuration = config.getInt("FinishedPhaseDuration");
 		_delayBetweenAnnouncements = config.getInt("DelayBetweenAnnouncements");
+		_secondsInSolitary = config.getInt("SecondsInSolitary");
+		_daysAmount = config.getInt("DaysAmount");
+		_dayDuration = config.getInt("DayDuration");
+		_nightDuration = config.getInt("NightDuration");
 		
 		_availableLanguages = config.getStringList("AvailableLanguages");
 		_defaultLanguage = config.getString("DefaultLanguage");
@@ -129,6 +137,22 @@ public class ConfigManager {
 	
 	public int getMaxPlayers() {
 		return _maxPlayers;
+	}
+	
+	public int getSecondsInSolitary() {
+		return _secondsInSolitary;
+	}
+
+	public int getDaysAmount() {
+		return _daysAmount;
+	}
+	
+	public int getDayDuration() {
+		return _dayDuration;
+	}
+
+	public int getNightDuration() {
+		return _nightDuration;
 	}
 	
 	public int getWaitingPhaseDuration() {

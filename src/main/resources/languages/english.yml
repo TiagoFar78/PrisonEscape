@@ -21,6 +21,8 @@ Messages:
     SelectedPrisionersTeam: "&aYou set &6Prisioners &ateam as your prefered."
     SelectedPoliceTeam: "&aYou set &9Police &ateam as your prefered."
     SelectedRandomTeam: "&aYou removed your prefered team. You will be placed randomly."
+    PrisionerGameStart: "&6You are on prisioners team. Escape with everyone. Nobody stays behind."
+    PoliceGameStart: "&9You are on police team. Stop prisioners from escaping."
   Announcements:
     GameStarting:
     - "&6==================================="
@@ -45,6 +47,8 @@ Messages:
     - "      - &4COMMING SOON"
     - ""
     - "&6==================================="
+    PlayerEscaped: "&ePlayer &f{PLAYER} &eescaped the prison."
+    GameCancelledFewPlayersMessage: "&cThe game was cancelled because there were not enough players."
   Errors:
     NotAllowed: "&cYou don't have permission to do that."
     CommandForPlayers: "&cOnly players have permission to use this command."

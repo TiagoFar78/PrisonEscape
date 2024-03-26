@@ -88,14 +88,6 @@ public class PrisonEscapePlayer {
 		return 0; // TODO
 	}
 	
-	public void giveLeavingPrisonItem() {
-		
-	}
-	
-	public void removeLeavingPrisonItem() {
-		
-	}
-	
 	public boolean hasIllegalItems() {
 		return false; // TODO
 	}

@@ -80,6 +80,8 @@ public class MessageLanguageManager {
 	private String _selectedPrisionersTeamMessage;
 	private String _selectedPoliceTeamMessage;
 	private String _removedTeamPreferenceMessage;
+	private String _prisionerGameStartedMessage;
+	private String _policeGameStartedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -95,6 +97,8 @@ public class MessageLanguageManager {
 	private String _victoryWord;
 	private String _defeatWord;
 	private List<String> _gameResultMessage;
+	private String _playerEscapedMessage;
+	private String _gameCancelledNotEnoughPlayers;
 	
 //	########################################
 //	#                Errors                #
@@ -150,6 +154,8 @@ public class MessageLanguageManager {
 		_selectedPrisionersTeamMessage = createMessage(messages.getString(warningPath + "SelectedPrisionersTeam"));
 		_selectedPoliceTeamMessage = createMessage(messages.getString(warningPath + "SelectedPoliceTeam"));
 		_removedTeamPreferenceMessage = createMessage(messages.getString(warningPath + "SelectedRandomTeam"));
+		_prisionerGameStartedMessage = createMessage(messages.getString(warningPath + "PrisionerGameStart"));
+		_policeGameStartedMessage = createMessage(messages.getString(warningPath + "PoliceGameStart"));
 		
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -162,6 +168,8 @@ public class MessageLanguageManager {
 		_victoryWord = messages.getString(announcementPath + "VictoryWord");
 		_defeatWord = messages.getString(announcementPath + "DefeatWord");
 		_gameResultMessage = createMessage(messages.getStringList(announcementPath + "GameResultMessage"));
+		_playerEscapedMessage = createMessage(messages.getString(announcementPath + "PlayerEscaped"));
+		_gameCancelledNotEnoughPlayers = createMessage(messages.getString(announcementPath + "GameCancelledForFewPlayers"));
 		
 		String errorPath = messagePath + "Errors.";
 		_notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
@@ -269,6 +277,14 @@ public class MessageLanguageManager {
 		return _removedTeamPreferenceMessage;
 	}
 
+	public String getPrisionerGameStartedMessage() {
+		return _prisionerGameStartedMessage;
+	}
+	
+	public String getPoliceGameStartedMessage() {
+		return _policeGameStartedMessage;
+	}
+
 //	########################################
 //	#             Announcements            #
 //	########################################
@@ -318,6 +334,14 @@ public class MessageLanguageManager {
 		}
 		
 		return message;
+	}
+	
+	public String getPlayerEscapedMessage(String playerName) {
+		return _playerEscapedMessage.replace("{PLAYER}", playerName);
+	}
+	
+	public String getGameCancelledFewPlayersMessage() {
+		return _gameCancelledNotEnoughPlayers;
 	}
 	
 //	########################################
