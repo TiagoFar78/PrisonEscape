@@ -9,7 +9,7 @@ public class Waiting extends Phase {
 
     @Override
     public boolean isClockStopped() {
-        return false;
+        return true;
     }
 
     @Override

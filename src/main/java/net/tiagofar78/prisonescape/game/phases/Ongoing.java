@@ -9,7 +9,7 @@ public class Ongoing extends Phase {
 
     @Override
     public boolean isClockStopped() {
-        return true;
+        return false;
     }
 
     @Override
