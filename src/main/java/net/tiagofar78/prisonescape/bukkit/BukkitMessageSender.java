@@ -8,6 +8,10 @@ import org.bukkit.entity.Player;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 
 public class BukkitMessageSender {
+
+    private static final int TICKS_PER_SECOND = 20;
+    private static final int FADE = (int) (1 * TICKS_PER_SECOND);
+    private static final int STAY = (int) (3.5 * TICKS_PER_SECOND);
 	
 	public static List<String> getOnlinePlayersNames() {
 		return Bukkit.getOnlinePlayers().stream().map(p -> p.getName()).toList();
@@ -50,7 +54,12 @@ public class BukkitMessageSender {
 	}
 	
 	public static void sendTitleMessage(String playerName, String titleMessage, String subtitleMessage) {
-		// TODO
+	    Player bukkitPlayer = Bukkit.getPlayer(playerName);
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+			return;
+		}
+        
+        bukkitPlayer.sendTitle(titleMessage, subtitleMessage, FADE, STAY, FADE);
 	}
 
 }

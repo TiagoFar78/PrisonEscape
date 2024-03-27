@@ -9,67 +9,67 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import net.tiagofar78.prisonescape.PrisonEscapeResources;
 
 public class MessageLanguageManager {
-	
+
 	private static Hashtable<String, MessageLanguageManager> instance = initializeLanguageMessages();
-	
+
 	private static Hashtable<String, MessageLanguageManager> initializeLanguageMessages() {
 		ConfigManager config = ConfigManager.getInstance();
-		
+
 		Hashtable<String, MessageLanguageManager> languagesMessages = new Hashtable<>();
-		
+
 		List<String> availableLanguages = config.getAvailableLanguages();
 		String defaultLanguage = config.getDefaultLanguage();
-		
+
 		if (availableLanguages.size() == 0) {
 			availableLanguages.add(defaultLanguage);
 		}
-		
+
 		for (String language : availableLanguages) {
 			languagesMessages.put(language, new MessageLanguageManager(language));
 		}
-		
+
 		return languagesMessages;
 	}
-	
+
 	public static MessageLanguageManager getInstance(String language) {
 		if (language == null) {
 			language = ConfigManager.getInstance().getDefaultLanguage();
 		}
-		
+
 		return instance.get(language);
 	}
-	
+
 	public static MessageLanguageManager getInstanceByPlayer(String playerName) {
 		String language = MessageLanguageManager.getPlayerLanguage(playerName);
 		if (language == null) {
 			language = ConfigManager.getInstance().getDefaultLanguage();
 		}
-		
+
 		return MessageLanguageManager.getInstance(language);
 	}
-	
+
 	private static String getPlayerLanguage(String playerName) {
 		return ConfigManager.getInstance().getDefaultLanguage();
 	}
-	
+
 //	#######################################
 //	#                 Kit                 #
 //	#######################################
-	
+
 	private String _selectPrisionerTeamItemName;
 	private String _selectPoliceTeamItemName;
 	private String _selectNoneTeamItemName;
-	
+
 //	#######################################
 //	#              Inventory              #
 //	#######################################
-	
+
 	private String _containerName;
-	
+
 //	########################################
 //	#               Warnings               #
 //	########################################
-	
+
 	private String _successfullyStartedGameMessage;
 	private String _successfullyForceStartedGameMessage;
 	private String _successfullyJoinedGameMessage;
@@ -86,7 +86,7 @@ public class MessageLanguageManager {
 //	########################################
 //	#             Announcements            #
 //	########################################
-	
+
 	private List<String> _gameStartingAnnouncementMessage;
 	private String _prisionerArrested;
 	private String _prisionerFreedOfSolitary;
@@ -99,14 +99,18 @@ public class MessageLanguageManager {
 	private List<String> _gameResultMessage;
 	private String _playerEscapedMessage;
 	private String _gameCancelledNotEnoughPlayers;
-	
+	private String _newDayTitleMessage;
+	private String _newDaySubtitleMessage;
+	private String _nightTitleMessage;
+	private String _nightSubtitleMessage;
+
 //	########################################
 //	#                Errors                #
 //	########################################
-	
+
 	private String _notAllowedMessage;
 	private String _onlyPlayersCanUseThisCommandMessage;
-	
+
 	private String _gameAlreadyStartedMessage;
 	private String _gameNotStartedYetMessage;
 	private String _gameAlreadyOngoingMessage;
@@ -117,11 +121,11 @@ public class MessageLanguageManager {
 	private String _playerAlreadyJoinedMessage;
 	private String _playerNotOnLobbyMessage;
 	private String _playerWasNeverInGameMessage;
-	
+
 //	########################################
 //	#                Usages                #
 //	########################################
-	
+
 	private List<String> _usageMessage;
 	private String _startCommandUsage;
 	private String _forceStartCommandUsage;
@@ -130,18 +134,18 @@ public class MessageLanguageManager {
 	private String _forceStopCommandUsage;
 	private String _rejoinCommandUsage;
 	private String _stopCommandUsage;
-	
+
 	private MessageLanguageManager(String language) {
 		YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
-		
+
 		String kitPath = "Kits.";
 		String teamSelector = kitPath + "TeamSelector.";
 		_selectPrisionerTeamItemName = createMessage(messages.getString(teamSelector + "SelectPrisioners.Name"));
 		_selectPoliceTeamItemName = createMessage(messages.getString(teamSelector + "SelectPolice.Name"));
 		_selectNoneTeamItemName = createMessage(messages.getString(teamSelector + "SelectNone.Name"));;
-		
+
 		_containerName = createMessage(messages.getString("Inventory.Chest.Title"));
-		
+
 		String messagePath = "Messages.";
 		String warningPath = messagePath + "Warnings.";
 		_successfullyStartedGameMessage = createMessage(messages.getString(warningPath + "StartedGame"));
@@ -156,7 +160,7 @@ public class MessageLanguageManager {
 		_removedTeamPreferenceMessage = createMessage(messages.getString(warningPath + "SelectedRandomTeam"));
 		_prisionerGameStartedMessage = createMessage(messages.getString(warningPath + "PrisionerGameStart"));
 		_policeGameStartedMessage = createMessage(messages.getString(warningPath + "PoliceGameStart"));
-		
+
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
 		_prisionerArrested = createMessage(messages.getString(announcementPath + "PrisionerArrested"));
@@ -170,7 +174,11 @@ public class MessageLanguageManager {
 		_gameResultMessage = createMessage(messages.getStringList(announcementPath + "GameResult"));
 		_playerEscapedMessage = createMessage(messages.getString(announcementPath + "PlayerEscaped"));
 		_gameCancelledNotEnoughPlayers = createMessage(messages.getString(announcementPath + "GameCancelledFewPlayers"));
-		
+		_newDayTitleMessage = createMessage(messages.getString(announcementPath + "NewDayTitle"));
+		_newDaySubtitleMessage = createMessage(messages.getString(announcementPath + "NewDaySubtitle"));
+		_nightTitleMessage = createMessage(messages.getString(announcementPath + "NightTitle"));
+		_nightSubtitleMessage = createMessage(messages.getString(announcementPath + "NightSubtitle"));
+
 		String errorPath = messagePath + "Errors.";
 		_notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
 		_onlyPlayersCanUseThisCommandMessage = createMessage(messages.getString(errorPath + "CommandForPlayers"));
@@ -183,7 +191,7 @@ public class MessageLanguageManager {
 		_playerAlreadyJoinedMessage = createMessage(messages.getString(errorPath + "AlreadyJoined"));
 		_playerNotOnLobbyMessage = createMessage(messages.getString(errorPath + "NotOnLobby"));
 		_playerWasNeverInGameMessage = createMessage(messages.getString(errorPath + "NeverInGame"));
-		
+
 		String usagePath = messagePath + "Usages.";
 		_usageMessage = createMessage(messages.getStringList(usagePath + "General"));
 		_startCommandUsage = createMessage(messages.getString(usagePath + "Start"));
@@ -194,37 +202,37 @@ public class MessageLanguageManager {
 		_rejoinCommandUsage = createMessage(messages.getString(usagePath + "Rejoin"));
 		_stopCommandUsage = createMessage(messages.getString(usagePath + "Stop"));
 	}
-	
+
 	private String createMessage(String rawMessage) {
 		return rawMessage.replace("&", "§");
 	}
-	
+
 	private List<String> createMessage(List<String> rawMessage) {
 		List<String> message = new ArrayList<>(rawMessage);
-		
+
 		for (int i = 0; i < message.size(); i++) {
 			message.set(i, message.get(i).replace("&", "§"));
 		}
-		
+
 		return message;
 	}
-	
+
 //	#######################################
 //	#                 Kit                 #
 //	#######################################
-	
+
 	public String getSelectPrisionerTeamItemName() {
 		return _selectPrisionerTeamItemName;
 	}
-	
+
 	public String getSelectPoliceTeamItemName() {
 		return _selectPoliceTeamItemName;
 	}
-	
+
 	public String getSelectNoneTeamItemName() {
 		return _selectNoneTeamItemName;
 	}
-	
+
 //	#######################################
 //	#              Inventory              #
 //	#######################################
@@ -232,15 +240,15 @@ public class MessageLanguageManager {
 	public String getContainerName() {
 		return _containerName;
 	}
-	
+
 //	########################################
 //	#               Warnings               #
 //	########################################
-	
+
 	public String getSuccessfullyStartedGameMessage() {
 		return _successfullyStartedGameMessage;
 	}
-	
+
 	public String getSuccessfullyForceStartedGameMessage() {
 		return _successfullyForceStartedGameMessage;
 	}
@@ -248,7 +256,7 @@ public class MessageLanguageManager {
 	public String getSuccessfullyJoinedGameMessage() {
 		return _successfullyJoinedGameMessage;
 	}
-	
+
 	public String getSuccessfullyLeftGameMessage() {
 		return _successfullyLeftGameMessage;
 	}
@@ -264,15 +272,15 @@ public class MessageLanguageManager {
 	public String getSuccessfullyStoppedGameMessage() {
 		return _successfullyStoppedGameMessage;
 	}
-	
+
 	public String getSelectedPrisionersTeamMessage() {
 		return _selectedPrisionersTeamMessage;
 	}
-	
+
 	public String getSelectedPoliceTeamMessage() {
 		return _selectedPoliceTeamMessage;
 	}
-	
+
 	public String getRemovedTeamPreferenceMessage() {
 		return _removedTeamPreferenceMessage;
 	}
@@ -280,7 +288,7 @@ public class MessageLanguageManager {
 	public String getPrisionerGameStartedMessage() {
 		return _prisionerGameStartedMessage;
 	}
-	
+
 	public String getPoliceGameStartedMessage() {
 		return _policeGameStartedMessage;
 	}
@@ -288,16 +296,16 @@ public class MessageLanguageManager {
 //	########################################
 //	#             Announcements            #
 //	########################################
-	
+
 	public List<String> getGameStartingAnnouncementMessage(int remainingTime, int playersOnLobby) {
 		List<String> message = new ArrayList<>(_gameStartingAnnouncementMessage);
-		
+
 		for (int i = 0; i < message.size(); i++) {
 			message.set(i, message.get(i)
 					.replace("{SECONDS}", Integer.toString(remainingTime))
 					.replace("{PLAYERS}", Integer.toString(playersOnLobby)));
 		}
-		
+
 		return message;
 	}
 
@@ -308,62 +316,78 @@ public class MessageLanguageManager {
 	public String getPrisionerFreedOfSolitary() {
 		return _prisionerFreedOfSolitary;
 	}
-	
+
 	public String getPrisionersWonTitle() {
 		return _prisionersWonTitle;
 	}
-	
+
 	public String getPrisionersWonSubtitle() {
 		return _prisionersWonSubtitle;
 	}
-	
+
 	public String getPoliceWonTitle() {
 		return _policeWonTitle;
 	}
-	
+
 	public String getPoliceWonSubtitle(int playersInPrison) {
 		return _policeWonSubtitle;
 	}
-	
+
 	public List<String> getGameResultMessage(boolean isWinner) {
 		String result = isWinner ? _victoryWord : _defeatWord;
-		
+
 		List<String> message = new ArrayList<>(_gameResultMessage);
 		for (int i = 0; i < message.size(); i++) {
 			message.set(i, message.get(i).replace("{RESULT}", result));
 		}
-		
+
 		return message;
 	}
-	
+
 	public String getPlayerEscapedMessage(String playerName) {
 		return _playerEscapedMessage.replace("{PLAYER}", playerName);
 	}
-	
+
 	public String getGameCancelledFewPlayersMessage() {
 		return _gameCancelledNotEnoughPlayers;
 	}
-	
+
+	public String getNewDayTitleMessage(int day) {
+		return _newDayTitleMessage.replace("{DAYNUMBER}", String.valueOf(day));
+	}
+
+	public String getNewDaySubtitleMessage() {
+		return _newDaySubtitleMessage;
+	}
+
+	public String getNightTitleMessage() {
+		return _nightTitleMessage;
+	}
+
+	public String getNightSubtitleMessage() {
+		return _nightSubtitleMessage;
+	}
+
 //	########################################
 //	#                Errors                #
 //	########################################
-	
+
 	public String getNotAllowedMessage() {
 		return _notAllowedMessage;
 	}
-	
+
 	public String getOnlyPlayersCanUseThisCommandMessage() {
 		return _onlyPlayersCanUseThisCommandMessage;
 	}
-	
+
 	public String getGameAlreadyStartedMessage() {
 		return _gameAlreadyStartedMessage;
 	}
-	
+
 	public String getGameNotStartedYetMessage() {
 		return _gameNotStartedYetMessage;
 	}
-	
+
 	public String getGameAlreadyOngoingMessage() {
 		return _gameAlreadyOngoingMessage;
 	}
@@ -375,7 +399,7 @@ public class MessageLanguageManager {
 	public String getGameHasNotFinishedMessage() {
 		return _gameIsNotInFinishedPhaseMessage;
 	}
-	
+
 	public String getLobbyIsFullMessage() {
 		return _lobbyIsFullMessage;
 	}
@@ -383,7 +407,7 @@ public class MessageLanguageManager {
 	public String getPlayerAlreadyJoinedMessage() {
 		return _playerAlreadyJoinedMessage;
 	}
-	
+
 	public String getPlayerNotOnLobbyMessage() {
 		return _playerNotOnLobbyMessage;
 	}
@@ -391,19 +415,19 @@ public class MessageLanguageManager {
 	public String getPlayerWasNeverInGameMessage() {
 		return _playerWasNeverInGameMessage;
 	}
-	
+
 //	########################################
 //	#                Usages                #
 //	########################################
-	
+
 	public List<String> getUsage() {
 		return _usageMessage;
 	}
-	
+
 	public String getStartCommandUsage() {
 		return _startCommandUsage;
 	}
-	
+
 	public String getForceStartCommandUsage() {
 		return _forceStartCommandUsage;
 	}
@@ -411,7 +435,7 @@ public class MessageLanguageManager {
 	public String getJoinCommandUsage() {
 		return _joinCommandUsage;
 	}
-	
+
 	public String getLeaveCommandUsage() {
 		return _leaveCommandUsage;
 	}

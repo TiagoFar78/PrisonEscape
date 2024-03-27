@@ -49,6 +49,10 @@ Messages:
     - "&6==================================="
     PlayerEscaped: "&ePlayer &f{PLAYER} &eescaped the prison."
     GameCancelledFewPlayers: "&cThe game was cancelled because there were not enough players."
+    NewDayTitle: "&aDay &a{DAYNUMBER}"
+    NewDaySubtitle: "&fThe sun has risen"
+    NightTitle: "&4Nightfall approaches"
+    NightSubtitle: "&fPlan your escape"
   Errors:
     NotAllowed: "&cYou don't have permission to do that."
     CommandForPlayers: "&cOnly players have permission to use this command."
