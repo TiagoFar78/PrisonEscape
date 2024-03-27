@@ -54,6 +54,10 @@ public class BukkitMessageSender {
 	
 	public static void sendTitleMessage(String playerName, String titleMessage, String subtitleMessage) {
 	    Player bukkitPlayer = Bukkit.getPlayer(playerName);
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+			return;
+		}
+        
         bukkitPlayer.sendTitle(titleMessage, subtitleMessage, FADE, STAY, FADE);
 	}
 
