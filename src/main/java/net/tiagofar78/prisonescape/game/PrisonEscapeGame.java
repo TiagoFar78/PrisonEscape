@@ -330,9 +330,16 @@ public class PrisonEscapeGame {
 		
 		_dayPeriod = DayPeriod.DAY;
 		_currentDay++;
-		
+
 		_prison.reloadChests();
-		
+
+        for (PrisonEscapePlayer player : _playersOnLobby) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            String title = messages.getNewDayTitleMessage(_currentDay);
+            String subtitle = messages.getNewDaySubtitleMessage();
+            BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
+        }
+
 		BukkitScheduler.runSchedulerLater(new Runnable() {
 			
 			@Override
@@ -348,6 +355,13 @@ public class PrisonEscapeGame {
 		}
 		
 		_dayPeriod = DayPeriod.NIGHT;
+
+        for (PrisonEscapePlayer player : _playersOnLobby) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            String title = messages.getNightTitleMessage();
+            String subtitle = messages.getNightSubtitleMessage();
+            BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
+        }
 		
 		BukkitScheduler.runSchedulerLater(new Runnable() {
 			

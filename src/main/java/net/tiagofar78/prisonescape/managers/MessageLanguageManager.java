@@ -99,6 +99,10 @@ public class MessageLanguageManager {
 	private List<String> _gameResultMessage;
 	private String _playerEscapedMessage;
 	private String _gameCancelledNotEnoughPlayers;
+    private String _newDayTitleMessage;
+    private String _newDaySubtitleMessage;
+    private String _nightTitleMessage;
+    private String _nightSubtitleMessage;
 	
 //	########################################
 //	#                Errors                #
@@ -170,6 +174,10 @@ public class MessageLanguageManager {
 		_gameResultMessage = createMessage(messages.getStringList(announcementPath + "GameResult"));
 		_playerEscapedMessage = createMessage(messages.getString(announcementPath + "PlayerEscaped"));
 		_gameCancelledNotEnoughPlayers = createMessage(messages.getString(announcementPath + "GameCancelledFewPlayers"));
+        _newDayTitleMessage = createMessage(messages.getString(announcementPath + "NewDayTitle"));
+        _newDaySubtitleMessage = createMessage(messages.getString(announcementPath + "NewDaySubtitle"));
+        _nightTitleMessage = createMessage(messages.getString(announcementPath + "NightTitle"));
+        _nightSubtitleMessage = createMessage(messages.getString(announcementPath + "NightSubtitle"));
 		
 		String errorPath = messagePath + "Errors.";
 		_notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
@@ -343,6 +351,22 @@ public class MessageLanguageManager {
 	public String getGameCancelledFewPlayersMessage() {
 		return _gameCancelledNotEnoughPlayers;
 	}
+
+    public String getNewDayTitleMessage(int day) {
+        return _newDayTitleMessage.replace("{DAYNUMBER}",  String.valueOf(day));
+    }
+
+    public String getNewDaySubtitleMessage() {
+        return _newDaySubtitleMessage;
+    }
+
+    public String getNightTitleMessage() {
+        return _nightTitleMessage;
+    }
+    
+    public String getNightSubtitleMessage() {
+        return _nightSubtitleMessage;
+    }
 	
 //	########################################
 //	#                Errors                #
