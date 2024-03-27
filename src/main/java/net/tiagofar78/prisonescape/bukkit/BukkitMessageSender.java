@@ -9,8 +9,9 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 
 public class BukkitMessageSender {
 
-    private static final int FADE = 20;
-    private static final int STAY = 70;
+    private static final int TICKS_PER_SECOND = 20;
+    private static final int FADE = (int) (1 * TICKS_PER_SECOND);
+    private static final int STAY = (int) (3.5 * TICKS_PER_SECOND);
 	
 	public static List<String> getOnlinePlayersNames() {
 		return Bukkit.getOnlinePlayers().stream().map(p -> p.getName()).toList();

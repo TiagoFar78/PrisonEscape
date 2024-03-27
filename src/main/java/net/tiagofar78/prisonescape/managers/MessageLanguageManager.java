@@ -52,23 +52,23 @@ public class MessageLanguageManager {
 		return ConfigManager.getInstance().getDefaultLanguage();
 	}
 
-	//	#######################################
-	//	#                 Kit                 #
-	//	#######################################
+//	#######################################
+//	#                 Kit                 #
+//	#######################################
 
 	private String _selectPrisionerTeamItemName;
 	private String _selectPoliceTeamItemName;
 	private String _selectNoneTeamItemName;
 
-	//	#######################################
-	//	#              Inventory              #
-	//	#######################################
+//	#######################################
+//	#              Inventory              #
+//	#######################################
 
 	private String _containerName;
 
-	//	########################################
-	//	#               Warnings               #
-	//	########################################
+//	########################################
+//	#               Warnings               #
+//	########################################
 
 	private String _successfullyStartedGameMessage;
 	private String _successfullyForceStartedGameMessage;
@@ -83,9 +83,9 @@ public class MessageLanguageManager {
 	private String _prisionerGameStartedMessage;
 	private String _policeGameStartedMessage;
 
-	//	########################################
-	//	#             Announcements            #
-	//	########################################
+//	########################################
+//	#             Announcements            #
+//	########################################
 
 	private List<String> _gameStartingAnnouncementMessage;
 	private String _prisionerArrested;
@@ -104,9 +104,9 @@ public class MessageLanguageManager {
 	private String _nightTitleMessage;
 	private String _nightSubtitleMessage;
 
-	//	########################################
-	//	#                Errors                #
-	//	########################################
+//	########################################
+//	#                Errors                #
+//	########################################
 
 	private String _notAllowedMessage;
 	private String _onlyPlayersCanUseThisCommandMessage;
@@ -122,9 +122,9 @@ public class MessageLanguageManager {
 	private String _playerNotOnLobbyMessage;
 	private String _playerWasNeverInGameMessage;
 
-	//	########################################
-	//	#                Usages                #
-	//	########################################
+//	########################################
+//	#                Usages                #
+//	########################################
 
 	private List<String> _usageMessage;
 	private String _startCommandUsage;
@@ -217,9 +217,9 @@ public class MessageLanguageManager {
 		return message;
 	}
 
-	//	#######################################
-	//	#                 Kit                 #
-	//	#######################################
+//	#######################################
+//	#                 Kit                 #
+//	#######################################
 
 	public String getSelectPrisionerTeamItemName() {
 		return _selectPrisionerTeamItemName;
@@ -233,17 +233,17 @@ public class MessageLanguageManager {
 		return _selectNoneTeamItemName;
 	}
 
-	//	#######################################
-	//	#              Inventory              #
-	//	#######################################
+//	#######################################
+//	#              Inventory              #
+//	#######################################
 
 	public String getContainerName() {
 		return _containerName;
 	}
 
-	//	########################################
-	//	#               Warnings               #
-	//	########################################
+//	########################################
+//	#               Warnings               #
+//	########################################
 
 	public String getSuccessfullyStartedGameMessage() {
 		return _successfullyStartedGameMessage;
@@ -293,9 +293,9 @@ public class MessageLanguageManager {
 		return _policeGameStartedMessage;
 	}
 
-	//	########################################
-	//	#             Announcements            #
-	//	########################################
+//	########################################
+//	#             Announcements            #
+//	########################################
 
 	public List<String> getGameStartingAnnouncementMessage(int remainingTime, int playersOnLobby) {
 		List<String> message = new ArrayList<>(_gameStartingAnnouncementMessage);
@@ -368,9 +368,9 @@ public class MessageLanguageManager {
 		return _nightSubtitleMessage;
 	}
 
-	//	########################################
-	//	#                Errors                #
-	//	########################################
+//	########################################
+//	#                Errors                #
+//	########################################
 
 	public String getNotAllowedMessage() {
 		return _notAllowedMessage;
@@ -416,9 +416,9 @@ public class MessageLanguageManager {
 		return _playerWasNeverInGameMessage;
 	}
 
-	//	########################################
-	//	#                Usages                #
-	//	########################################
+//	########################################
+//	#                Usages                #
+//	########################################
 
 	public List<String> getUsage() {
 		return _usageMessage;
