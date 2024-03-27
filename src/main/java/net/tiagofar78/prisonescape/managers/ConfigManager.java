@@ -29,8 +29,6 @@ public class ConfigManager {
 	private int _fullLobbyWaitDuration;
 	private int _finishedPhaseDuration;
 	private int _delayBetweenAnnouncements;
-	private int _vaultNonHiddenSize;
-	private int _vaultHiddenSize;
 	
 	private List<String> _availableLanguages;
 	private String _defaultLanguage;
@@ -69,8 +67,6 @@ public class ConfigManager {
 		_daysAmount = config.getInt("DaysAmount");
 		_dayDuration = config.getInt("DayDuration");
 		_nightDuration = config.getInt("NightDuration");
-		_vaultNonHiddenSize = config.getInt("VaultNonHiddenSize");
-		_vaultHiddenSize = config.getInt("VaultHiddenSize");
 		
 		_availableLanguages = config.getStringList("AvailableLanguages");
 		_defaultLanguage = config.getString("DefaultLanguage");
@@ -159,14 +155,6 @@ public class ConfigManager {
 
 	public int getNightDuration() {
 		return _nightDuration;
-	}
-	
-	public int getVaultNonHiddenSize() {
-		return _vaultNonHiddenSize;
-	}
-	
-	public int getVaultHiddenSize() {
-		return _vaultHiddenSize;
 	}
 	
 	public int getWaitingPhaseDuration() {

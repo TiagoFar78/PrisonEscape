@@ -62,6 +62,9 @@ public class PrisonBuilding {
 		
 		_vaults = new ArrayList<>();
 		_vaultsLocations = new ArrayList<>();
+		for (PrisonEscapeLocation location : config.getVaultsLocations()) {
+			_vaultsLocations.add(addReferenceLocation(reference, location));
+		}
 		
 		_chests = new ArrayList<>();
 		_metalDetectorsLocations = new ArrayList<>();
@@ -96,6 +99,10 @@ public class PrisonBuilding {
 		}
 	}
 	
+//	#########################################
+//	#                 Vault                 #
+//	#########################################
+	
 	public void addVaults(List<PrisonEscapePlayer> prisioners) {
 		for (int i = 0; i < prisioners.size(); i++) {
 			_vaults.add(new Vault());
@@ -105,6 +112,20 @@ public class PrisonBuilding {
 			BukkitWorldEditor.addSignAboveVault(vaultLocation, signText);
 			BukkitWorldEditor.addVault(vaultLocation);
 		}
+	}
+	
+	public Vault getVault(int index) {
+		return _vaults.get(index);
+	}
+	
+	public int getVaultIndex(PrisonEscapeLocation location) {
+		for (int i = 0; i < _vaultsLocations.size(); i++) {
+			if (_vaultsLocations.get(i).equals(location)) {
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 	
 //	#########################################

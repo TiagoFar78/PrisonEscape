@@ -10,8 +10,6 @@ WaitingPhaseDuration: 300
 FullLobbyWaitDuration: 10
 FinishedPhaseDuration: 30
 DelayBetweenAnnouncements: 30
-VaultNonHiddenSize: 4
-VaultHiddenSize: 1
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"

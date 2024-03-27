@@ -1,8 +1,12 @@
 package net.tiagofar78.prisonescape;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
@@ -35,6 +39,36 @@ public class Events implements Listener {
 		PrisonEscapeLocation location = new PrisonEscapeLocation(x, y, z);
 		
 		game.playerMove(e.getPlayer().getName(), location);
+	}
+	
+	@EventHandler
+	public void playerInteractWithPrison(PlayerInteractEvent e) {
+		Block block = e.getClickedBlock();
+		if (block == null) {
+			return;
+		}
+
+		PrisonEscapeGame game = GameManager.getGame();
+		if (game == null) {
+			return;
+		}
+		
+		PrisonEscapeLocation location = new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
+		
+		if (block.getType() == Material.CHEST) {			
+			game.playerInteractWithPrison(e.getPlayer().getName(), location, null);
+			return;
+		}
+	}
+	
+	@EventHandler
+	public void playerCloseInventory(InventoryCloseEvent e) {
+		PrisonEscapeGame game = GameManager.getGame();
+		if (game == null) {
+			return;
+		}
+		
+		game.playerCloseMenu(e.getPlayer().getName());
 	}
 	
 }

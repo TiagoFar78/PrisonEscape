@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
@@ -33,6 +34,8 @@ public class PrisonEscapeGame {
 	private PrisonEscapeTeam _policeTeam;
 	private PrisonEscapeTeam _prisionersTeam;
 	
+	private Hashtable<String, MenuType> _playerOpenMenu; 
+	
 	private Phase _phase;
 	
 	public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
@@ -44,6 +47,8 @@ public class PrisonEscapeGame {
 		_playersOnLobby = new ArrayList<>();
 		_policeTeam = new PrisonEscapeTeam(POLICE_TEAM_NAME);
 		_prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
+		
+		_playerOpenMenu = new Hashtable<>();
 		
 		startWaitingPhase();
 	}
@@ -462,25 +467,26 @@ public class PrisonEscapeGame {
 		}
 	}
 	
-	private void playerSelectPrisionersTeam(PrisonEscapePlayer player) {
-		player.setPreference(TeamPreference.PRISIONERS);
+	public void playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
+		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+		if (player == null) {
+			return;
+		}
 		
-		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisionersTeamMessage());
+		int vaultIndex = _prison.getVaultIndex(blockLocation);
+		if (vaultIndex != -1) {
+			playerOpenVault(player, vaultIndex);
+		}
 	}
 	
-	private void playerSelectPoliceTeam(PrisonEscapePlayer player) {
-		player.setPreference(TeamPreference.POLICE);
+	public void playerCloseMenu(String playerName) {
+		if (getPrisonEscapePlayer(playerName) == null) {
+			return;
+		}
 		
-		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
-	}
-	
-	private void playerRemovedTeamPreference(PrisonEscapePlayer player) {
-		player.setPreference(TeamPreference.RANDOM);
-		
-		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-		BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
+		if (_playerOpenMenu.containsKey(playerName)) {
+			_playerOpenMenu.remove(playerName);
+		}
 	}
 	
 //	########################################
@@ -530,6 +536,42 @@ public class PrisonEscapeGame {
 				}
 			}
 		}, TICKS_PER_SECOND * _settings.getSecondsInSolitary());
+	}
+	
+	private void playerSelectPrisionersTeam(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.PRISIONERS);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisionersTeamMessage());
+	}
+	
+	private void playerSelectPoliceTeam(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.POLICE);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
+	}
+	
+	private void playerRemovedTeamPreference(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.RANDOM);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
+	}
+	
+	private void playerOpenVault(PrisonEscapePlayer player, int vaultIndex) {
+		if (_policeTeam.isOnTeam(player)) {
+			// TODO send message to cop
+			return;
+		}
+		
+		if (_prisionersTeam.getPlayerIndex(player) != vaultIndex) {
+			// TODO send message to prisioner
+			return;
+		}
+		
+		_playerOpenMenu.put(player.getName(), MenuType.VAULT);
+		_prison.getVault(vaultIndex).open(player.getName());
 	}
 	
 //	########################################
