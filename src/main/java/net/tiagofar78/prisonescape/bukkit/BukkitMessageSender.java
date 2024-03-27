@@ -53,7 +53,7 @@ public class BukkitMessageSender {
 	}
 	
 	public static void sendTitleMessage(String playerName, String titleMessage, String subtitleMessage) {
-		Player bukkitPlayer = Bukkit.getPlayer(playerName);
+	    Player bukkitPlayer = Bukkit.getPlayer(playerName);
         bukkitPlayer.sendTitle(titleMessage, subtitleMessage, FADE, STAY, FADE);
 	}
 
