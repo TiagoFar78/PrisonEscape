@@ -272,6 +272,8 @@ public class PrisonEscapeGame {
 			BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
 		}
 		
+		_prison.addVaults(_prisionersTeam.getMembers());
+		
 		startDay();
 	}
 	

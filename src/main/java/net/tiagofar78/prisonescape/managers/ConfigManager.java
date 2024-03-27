@@ -29,6 +29,8 @@ public class ConfigManager {
 	private int _fullLobbyWaitDuration;
 	private int _finishedPhaseDuration;
 	private int _delayBetweenAnnouncements;
+	private int _vaultNonHiddenSize;
+	private int _vaultHiddenSize;
 	
 	private List<String> _availableLanguages;
 	private String _defaultLanguage;
@@ -45,6 +47,7 @@ public class ConfigManager {
 	private PrisonEscapeLocation _solitaryExitLocation;
 	private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
 	private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
+	private List<PrisonEscapeLocation> _vaultsLocations;
 	
 	private int _commonItemsProbability;
 	private int _rareItemsProbability;
@@ -66,6 +69,8 @@ public class ConfigManager {
 		_daysAmount = config.getInt("DaysAmount");
 		_dayDuration = config.getInt("DayDuration");
 		_nightDuration = config.getInt("NightDuration");
+		_vaultNonHiddenSize = config.getInt("VaultNonHiddenSize");
+		_vaultHiddenSize = config.getInt("VaultHiddenSize");
 		
 		_availableLanguages = config.getStringList("AvailableLanguages");
 		_defaultLanguage = config.getString("DefaultLanguage");
@@ -82,6 +87,7 @@ public class ConfigManager {
 		_solitaryExitLocation = createLocation(config, "SolitaryExitLocation");
 		_prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
 		_policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
+		_vaultsLocations = createLocationList(config, "VaultsLocations");
 		
 		_commonItemsProbability = config.getInt("CommonItemsProbability");
 		_rareItemsProbability = config.getInt("RareItemsProbability");
@@ -155,6 +161,14 @@ public class ConfigManager {
 		return _nightDuration;
 	}
 	
+	public int getVaultNonHiddenSize() {
+		return _vaultNonHiddenSize;
+	}
+	
+	public int getVaultHiddenSize() {
+		return _vaultHiddenSize;
+	}
+	
 	public int getWaitingPhaseDuration() {
 		return _waitingPhaseDuration;
 	}
@@ -226,6 +240,10 @@ public class ConfigManager {
 	
 	public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPoliceSecretPassageLocations() {
 		return _policeSecretPassageLocations;
+	}
+	
+	public List<PrisonEscapeLocation> getVaultsLocations() {
+		return _vaultsLocations;
 	}
 
 	public int getCommonItemsProbability() {
