@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
@@ -30,6 +31,12 @@ public class PrisonEscape extends JavaPlugin {
 			saveDefaultConfig();
 		}
 		
+        World world = Bukkit.getWorld("PrisonEscape");
+        if (world != null) {
+            world.setStorm(false);
+            world.setThundering(false);
+        }
+
 		getCommand(COMMAND_LABEL).setAliases(COMMAND_ALIASES);
 		getCommand(COMMAND_LABEL).setExecutor(new PrisonEscapeCommand());
 		
