@@ -2,8 +2,10 @@ package net.tiagofar78.prisonescape.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
@@ -12,6 +14,7 @@ import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
@@ -33,6 +36,8 @@ public class PrisonEscapeGame {
 	private PrisonEscapeTeam _policeTeam;
 	private PrisonEscapeTeam _prisionersTeam;
 	
+	private Hashtable<String, MenuType> _playerOpenMenu; 
+	
 	private Phase _phase;
 	
 	public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
@@ -44,6 +49,8 @@ public class PrisonEscapeGame {
 		_playersOnLobby = new ArrayList<>();
 		_policeTeam = new PrisonEscapeTeam(POLICE_TEAM_NAME);
 		_prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
+		
+		_playerOpenMenu = new Hashtable<>();
 		
 		startWaitingPhase();
 	}
@@ -272,6 +279,8 @@ public class PrisonEscapeGame {
 			BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
 		}
 		
+		_prison.addVaults(_prisionersTeam.getMembers());
+		
 		startDay();
 	}
 	
@@ -315,6 +324,8 @@ public class PrisonEscapeGame {
 		for (PrisonEscapePlayer player : _playersOnLobby) {
 			teleportToLeavingLocation(player);
 		}
+		
+		_prison.deleteVaults();
 		
 		GameManager.removeGame();
 	}
@@ -445,6 +456,10 @@ public class PrisonEscapeGame {
 			return;
 		}
 		
+		if (item == null) {
+			return;
+		}
+		
 		switch (item) {
 		case SELECT_PRISIONER_TEAM:
 			playerSelectPrisionersTeam(player);
@@ -460,25 +475,40 @@ public class PrisonEscapeGame {
 		}
 	}
 	
-	private void playerSelectPrisionersTeam(PrisonEscapePlayer player) {
-		player.setPreference(TeamPreference.PRISIONERS);
+	public void playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
+		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+		if (player == null) {
+			return;
+		}
 		
-		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisionersTeamMessage());
+		int vaultIndex = _prison.getVaultIndex(blockLocation);
+		if (vaultIndex != -1) {
+			playerOpenVault(player, vaultIndex, item);
+		}
 	}
 	
-	private void playerSelectPoliceTeam(PrisonEscapePlayer player) {
-		player.setPreference(TeamPreference.POLICE);
+	public void playerCloseMenu(String playerName) {
+		if (getPrisonEscapePlayer(playerName) == null) {
+			return;
+		}
 		
-		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
+		if (_playerOpenMenu.containsKey(playerName)) {
+			_playerOpenMenu.remove(playerName);
+		}
 	}
 	
-	private void playerRemovedTeamPreference(PrisonEscapePlayer player) {
-		player.setPreference(TeamPreference.RANDOM);
+	public int playerClickMenu(String playerName, int slot, PrisonEscapeItem itemHeld) {
+		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+		if (player == null) {
+			return -1;
+		}
 		
-		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-		BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
+		MenuType menu = _playerOpenMenu.get(player.getName());
+		if (menu == MenuType.VAULT) {
+			return playerClickVaultMenu(player, slot, itemHeld);
+		}
+		
+		return 0;
 	}
 	
 //	########################################
@@ -528,6 +558,85 @@ public class PrisonEscapeGame {
 				}
 			}
 		}, TICKS_PER_SECOND * _settings.getSecondsInSolitary());
+	}
+	
+	private void playerSelectPrisionersTeam(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.PRISIONERS);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisionersTeamMessage());
+	}
+	
+	private void playerSelectPoliceTeam(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.POLICE);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
+	}
+	
+	private void playerRemovedTeamPreference(PrisonEscapePlayer player) {
+		player.setPreference(TeamPreference.RANDOM);
+		
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
+	}
+	
+	private void playerOpenVault(PrisonEscapePlayer player, int vaultIndex, PrisonEscapeItem item) {
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		
+		if (_policeTeam.isOnTeam(player)) {
+			if (item != PrisonEscapeItem.SEARCH) {
+				BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
+				return;
+			}
+			
+			policeSearchVault(player, vaultIndex, messages);
+			return;
+		}
+		
+		if (_prisionersTeam.getPlayerIndex(player) != vaultIndex) {
+			BukkitMessageSender.sendChatMessage(player, messages.getPrisionerOtherVaultMessage());
+			return;
+		}
+		
+		_playerOpenMenu.put(player.getName(), MenuType.VAULT);
+		_prison.getVault(vaultIndex).open(player.getName());
+	}
+	
+	private void policeSearchVault(PrisonEscapePlayer player, int vaultIndex, MessageLanguageManager messagesPolice) {
+		Vault vault = _prison.getVault(vaultIndex);
+		
+		PrisonEscapePlayer vaultOwner = vault.getOwner();
+		MessageLanguageManager messagesPrisioner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
+		
+		int returnCode = vault.search();
+		if (returnCode == 1) {
+			player.setWanted();
+			
+			BukkitMessageSender.sendChatMessage(player, messagesPolice.getPoliceFoundIllegalItemsMessage(vaultOwner.getName()));
+			BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisioner.getPrisionerFoundIllegalItemsMessage());
+		}
+		else if (returnCode == 0) {
+			BukkitMessageSender.sendChatMessage(player, messagesPolice.getPoliceNoIllegalItemsFoundMessage());
+			BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisioner.getPrisionerNoIllegalItemsFoundMessage());
+		}
+		
+		return;
+	}
+	
+	private int playerClickVaultMenu(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
+		int playerIndex = _prisionersTeam.getPlayerIndex(player);
+		
+		int itemIndex = BukkitMenu.convertToIndexVault(slot);
+		if (itemIndex == -1) {
+			return -1;
+		}
+		
+		boolean isHidden = BukkitMenu.isHiddenIndexVault(slot);
+		
+		_prison.getVault(playerIndex).setItem(isHidden, itemIndex, itemHeld);
+		
+		return 0;
 	}
 	
 //	########################################

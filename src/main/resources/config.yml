@@ -72,6 +72,11 @@ PoliceSecretPassagesLocation:
       X: 0
       Y: 0
       Z: 0
+VaultsLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
 CommonItemsProbability: 0.8
 RareItemsProbability: 0.25
 ChestSize: 5
