@@ -17,7 +17,7 @@ public class BukkitMenu {
 	private static ItemStack createGlassItem() {
 		ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 		ItemMeta itemMeta = item.getItemMeta();
-		itemMeta.setDisplayName("");
+		itemMeta.setDisplayName(" ");
 		item.setItemMeta(itemMeta);
 		
 		return item;
@@ -40,21 +40,24 @@ public class BukkitMenu {
 			inv.setItem(i, glassItem);
 		}
 		
+		int[] indexes = { 9 + 2, 9 + 3, 9 + 5, 9 + 6 };
 		for (int i = 0; i < contents.size(); i++) {
 			ItemStack item = BukkitItems.convertToItemStack(contents.get(i));
-			inv.setItem(9 + 2, item);
+			inv.setItem(indexes[i], item);
 		}
 		
 		ItemStack hiddenIndicatorItem = createHiddenIndicatorItem(messages); 
-		for (int line = 3; line < 6; line++) {
+		for (int line = 4; line < 7; line++) {
 			for (int column = 4; column < 7; column++) {
-				int index = (line - 1) + (column - 1);
+				int index = (line - 1) * 9 + (column - 1);
 				inv.setItem(index, hiddenIndicatorItem);
 			}
 		}
 		
 		ItemStack hiddenItem = BukkitItems.convertToItemStack(hiddenContents.get(0));
 		inv.setItem(9 * 4 + 4, hiddenItem);
+		
+		bukkitPlayer.openInventory(inv);
 	}
 	
 	private static ItemStack createHiddenIndicatorItem(MessageLanguageManager messages) {

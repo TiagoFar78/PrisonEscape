@@ -58,6 +58,7 @@ public class Events implements Listener {
 		
 		if (block.getType() == Material.CHEST) {			
 			game.playerInteractWithPrison(e.getPlayer().getName(), location, null);
+			e.setCancelled(true);
 			return;
 		}
 	}
