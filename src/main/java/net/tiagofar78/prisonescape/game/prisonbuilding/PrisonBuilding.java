@@ -128,6 +128,12 @@ public class PrisonBuilding {
 		return -1;
 	}
 	
+	public void deleteVaults() {
+		for (PrisonEscapeLocation location : _vaultsLocations) {
+			BukkitWorldEditor.deleteVaultAndRespectiveSign(location);
+		}
+	}
+	
 //	#########################################
 //	#               Locations               #
 //	#########################################

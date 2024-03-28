@@ -325,6 +325,8 @@ public class PrisonEscapeGame {
 			teleportToLeavingLocation(player);
 		}
 		
+		_prison.deleteVaults();
+		
 		GameManager.removeGame();
 	}
 	
