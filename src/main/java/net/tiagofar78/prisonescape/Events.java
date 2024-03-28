@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
@@ -59,6 +60,16 @@ public class Events implements Listener {
 			game.playerInteractWithPrison(e.getPlayer().getName(), location, null);
 			return;
 		}
+	}
+	
+	@EventHandler
+	public void playerLeave(PlayerQuitEvent e) {
+		PrisonEscapeGame game = GameManager.getGame();
+		if (game == null) {
+			return;
+		}
+		
+		game.playerCloseMenu(e.getPlayer().getName());
 	}
 	
 	@EventHandler
