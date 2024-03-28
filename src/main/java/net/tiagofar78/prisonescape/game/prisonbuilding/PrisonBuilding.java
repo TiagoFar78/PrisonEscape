@@ -5,7 +5,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public class PrisonBuilding {
@@ -20,14 +22,14 @@ public class PrisonBuilding {
 	private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
 	private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
 	
+	private List<Vault> _vaults;
+	private List<PrisonEscapeLocation> _vaultsLocations;
+	
 	private List<Chest> _chests;
 	private List<PrisonEscapeLocation> _metalDetectorsLocations;
 
-	public PrisonBuilding(PrisonEscapeLocation reference) {		
+	public PrisonBuilding(PrisonEscapeLocation reference) {
 		ConfigManager config = ConfigManager.getInstance();
-		
-		_chests = new ArrayList<>();
-		_metalDetectorsLocations = new ArrayList<>();
 
 		_waitingLobbyLocation = addReferenceLocation(reference, config.getWaitingLobbyLocation());
 		_prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
@@ -57,6 +59,15 @@ public class PrisonBuilding {
 			_policeSecretPassageLocations.put(addReferenceLocation(reference, entry.getKey()), 
 					addReferenceLocation(reference, entry.getValue()));
 		}
+		
+		_vaults = new ArrayList<>();
+		_vaultsLocations = new ArrayList<>();
+		for (PrisonEscapeLocation location : config.getVaultsLocations()) {
+			_vaultsLocations.add(addReferenceLocation(reference, location));
+		}
+		
+		_chests = new ArrayList<>();
+		_metalDetectorsLocations = new ArrayList<>();
 	}
 	
 	private PrisonEscapeLocation addReferenceLocation(PrisonEscapeLocation reference, PrisonEscapeLocation loc) {
@@ -65,14 +76,70 @@ public class PrisonBuilding {
 				loc.getZ() + reference.getZ());
 	}
 	
-	public PrisonEscapeLocation getWaitingLobbyLocation() {
-		return _waitingLobbyLocation;
-	}
-	
 	public boolean isOutsidePrison(PrisonEscapeLocation loc) {
 		return loc.getX() > _prisonTopLeftCorner.getX() || loc.getX() < _prisonBottomRightCorner.getX() ||
 				loc.getY() > _prisonTopLeftCorner.getY() || loc.getY() < _prisonBottomRightCorner.getY() ||
 				loc.getZ() > _prisonTopLeftCorner.getZ() || loc.getZ() < _prisonBottomRightCorner.getZ();
+	}
+
+	public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, List<PrisonEscapeItem> playerItems) {
+		if (_metalDetectorsLocations.contains(location)) {
+			for (PrisonEscapeItem item : playerItems) {
+				if (item.isMetal()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void reloadChests() {
+		for (Chest chest : _chests) {
+			chest.reload();
+		}
+	}
+	
+//	#########################################
+//	#                 Vault                 #
+//	#########################################
+	
+	public void addVaults(List<PrisonEscapePlayer> prisioners) {
+		for (int i = 0; i < prisioners.size(); i++) {
+			_vaults.add(new Vault(prisioners.get(i)));
+			
+			String signText = prisioners.get(i).getName();
+			PrisonEscapeLocation vaultLocation = _vaultsLocations.get(i);
+			BukkitWorldEditor.addSignAboveVault(vaultLocation, signText);
+			BukkitWorldEditor.addVault(vaultLocation);
+		}
+	}
+	
+	public Vault getVault(int index) {
+		return _vaults.get(index);
+	}
+	
+	public int getVaultIndex(PrisonEscapeLocation location) {
+		for (int i = 0; i < _vaultsLocations.size(); i++) {
+			if (_vaultsLocations.get(i).equals(location)) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public void deleteVaults() {
+		for (PrisonEscapeLocation location : _vaultsLocations) {
+			BukkitWorldEditor.deleteVaultAndRespectiveSign(location);
+		}
+	}
+	
+//	#########################################
+//	#               Locations               #
+//	#########################################
+	
+	public PrisonEscapeLocation getWaitingLobbyLocation() {
+		return _waitingLobbyLocation;
 	}
 	
 	public PrisonEscapeLocation getPoliceSpawnLocation(int index) {
@@ -96,22 +163,5 @@ public class PrisonBuilding {
 				isPrisioner ? _prisionersSecretPassageLocations : _policeSecretPassageLocations; 
 		
 		return secretPassageLocations.get(entranceBlock);
-	}
-
-	public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, List<PrisonEscapeItem> playerItems) {
-		if (_metalDetectorsLocations.contains(location)) {
-			for (PrisonEscapeItem item : playerItems) {
-				if (item.isMetal()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public void reloadChests() {
-		for (Chest chest : _chests) {
-			chest.reload();
-		}
 	}
 }
