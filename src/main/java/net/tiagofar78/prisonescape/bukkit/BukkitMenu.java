@@ -14,6 +14,8 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public class BukkitMenu {
 	
+	private static final ItemStack GLASS_ITEM = createGlassItem();
+	
 	private static ItemStack createGlassItem() {
 		ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 		ItemMeta itemMeta = item.getItemMeta();
@@ -22,6 +24,9 @@ public class BukkitMenu {
 		
 		return item;
 	}
+	
+	private static final int[] NON_HIDDEN_ITEMS_INDEXES = { 9 + 2, 9 + 3, 9 + 5, 9 + 6 };
+	private static final int HIDDEN_ITEM_INDEX = 9 * 4 + 4;
 	
 	public static void openVault(String playerName, List<PrisonEscapeItem> contents,  List<PrisonEscapeItem> hiddenContents) {
 		Player bukkitPlayer = Bukkit.getPlayer(playerName);
@@ -35,15 +40,13 @@ public class BukkitMenu {
 		int lines = 6;
 		Inventory inv = Bukkit.createInventory(null, lines*9, title);
 		
-		ItemStack glassItem = createGlassItem();
 		for (int i = 0; i < lines * 9; i++) {
-			inv.setItem(i, glassItem);
+			inv.setItem(i, GLASS_ITEM);
 		}
 		
-		int[] indexes = { 9 + 2, 9 + 3, 9 + 5, 9 + 6 };
 		for (int i = 0; i < contents.size(); i++) {
 			ItemStack item = BukkitItems.convertToItemStack(contents.get(i));
-			inv.setItem(indexes[i], item);
+			inv.setItem(NON_HIDDEN_ITEMS_INDEXES[i], item);
 		}
 		
 		ItemStack hiddenIndicatorItem = createHiddenIndicatorItem(messages); 
@@ -55,9 +58,27 @@ public class BukkitMenu {
 		}
 		
 		ItemStack hiddenItem = BukkitItems.convertToItemStack(hiddenContents.get(0));
-		inv.setItem(9 * 4 + 4, hiddenItem);
+		inv.setItem(HIDDEN_ITEM_INDEX, hiddenItem);
 		
 		bukkitPlayer.openInventory(inv);
+	}
+	
+	public static int convertToIndexVault(int slot) {
+		for (int i = 0; i < NON_HIDDEN_ITEMS_INDEXES.length; i++) {
+			if (NON_HIDDEN_ITEMS_INDEXES[i] == slot) {
+				return i;
+			}
+		}
+		
+		if (HIDDEN_ITEM_INDEX == slot) {
+			return 0;
+		}
+		
+		return -1;
+	}
+	
+	public static boolean isHiddenIndexVault(int slot) {
+		return HIDDEN_ITEM_INDEX == slot;
 	}
 	
 	private static ItemStack createHiddenIndicatorItem(MessageLanguageManager messages) {

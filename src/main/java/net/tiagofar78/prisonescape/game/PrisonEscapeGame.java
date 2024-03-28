@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
@@ -452,6 +453,10 @@ public class PrisonEscapeGame {
 			return;
 		}
 		
+		if (item == null) {
+			return;
+		}
+		
 		switch (item) {
 		case SELECT_PRISIONER_TEAM:
 			playerSelectPrisionersTeam(player);
@@ -487,6 +492,20 @@ public class PrisonEscapeGame {
 		if (_playerOpenMenu.containsKey(playerName)) {
 			_playerOpenMenu.remove(playerName);
 		}
+	}
+	
+	public int playerClickMenu(String playerName, int slot, PrisonEscapeItem itemHeld) {
+		PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+		if (player == null) {
+			return -1;
+		}
+		
+		MenuType menu = _playerOpenMenu.get(player.getName());
+		if (menu == MenuType.VAULT) {
+			return playerClickVaultMenu(player, slot, itemHeld);
+		}
+		
+		return 0;
 	}
 	
 //	########################################
@@ -574,6 +593,21 @@ public class PrisonEscapeGame {
 		
 		_playerOpenMenu.put(player.getName(), MenuType.VAULT);
 		_prison.getVault(vaultIndex).open(player.getName());
+	}
+	
+	private int playerClickVaultMenu(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
+		int playerIndex = _prisionersTeam.getPlayerIndex(player);
+		
+		int itemIndex = BukkitMenu.convertToIndexVault(slot);
+		if (itemIndex == -1) {
+			return -1;
+		}
+		
+		boolean isHidden = BukkitMenu.isHiddenIndexVault(slot);
+		
+		_prison.getVault(playerIndex).setItem(isHidden, itemIndex, itemHeld);
+		
+		return 0;
 	}
 	
 //	########################################

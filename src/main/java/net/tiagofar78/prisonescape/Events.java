@@ -5,12 +5,16 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
@@ -81,6 +85,28 @@ public class Events implements Listener {
 		}
 		
 		game.playerCloseMenu(e.getPlayer().getName());
+	}
+	
+	@EventHandler
+	public void playerClickInventory(InventoryClickEvent e) {
+		PrisonEscapeGame game = GameManager.getGame();
+		if (game == null) {
+			return;
+		}
+		
+		if (e.getInventory() == null) {
+			return;
+		}
+		
+		if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
+			return;
+		}
+		
+		PrisonEscapeItem item = BukkitItems.convertToPrisonEscapeItem(e.getCursor());
+		int returnCode = game.playerClickMenu(e.getWhoClicked().getName(), e.getSlot(), item);
+		if (returnCode == -1) {
+			e.setCancelled(true);
+		}
 	}
 	
 }

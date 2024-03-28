@@ -29,7 +29,7 @@ public class Vault {
 		return list;
 	}
 	
-	public void addItem(boolean isHidden, int index, PrisonEscapeItem item) {
+	public void setItem(boolean isHidden, int index, PrisonEscapeItem item) {
 		List<PrisonEscapeItem> contents = isHidden ? _hiddenContents : _nonHiddenContents;
 		int size = isHidden ? HIDDEN_SIZE : NON_HIDDEN_SIZE;
 		
@@ -38,15 +38,6 @@ public class Vault {
 		}
 		
 		contents.set(index, item);
-	}
-	
-	public PrisonEscapeItem removeItem(boolean isHidden, int index) {
-		List<PrisonEscapeItem> contents = isHidden ? _hiddenContents : _nonHiddenContents;
-		
-		PrisonEscapeItem item = contents.get(index);
-		
-		contents.set(index, null);
-		return item;
 	}
 	
 	/**
