@@ -32,9 +32,11 @@ public class BukkitWorldEditor {
 	}
 	
 	public static void deleteVaultAndRespectiveSign(PrisonEscapeLocation location) {
-		Location bukkitLocation = new Location(WORLD, location.getX(), location.getY(), location.getZ());
+		Location vaultLocation = new Location(WORLD, location.getX(), location.getY(), location.getZ());
+		Location signLocation = new Location(WORLD, location.getX(), location.getY() + 1, location.getZ());
 		
-		bukkitLocation.getBlock().setType(Material.AIR);;
+		vaultLocation.getBlock().setType(Material.AIR);
+		signLocation.getBlock().setType(Material.AIR);
 	}
 
 }
