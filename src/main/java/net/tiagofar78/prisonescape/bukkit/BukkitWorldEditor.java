@@ -19,8 +19,9 @@ public class BukkitWorldEditor {
 	public static void addSignAboveVault(PrisonEscapeLocation location, String text) {
 		Location bukkitLocation = new Location(WORLD, location.getX(), location.getY() + 1, location.getZ());
 		bukkitLocation.getBlock().setType(Material.OAK_WALL_SIGN);
-		Sign sign = (Sign) bukkitLocation.getBlock();
+		Sign sign = (Sign) bukkitLocation.getBlock().getState();
 		sign.getSide(Side.FRONT).setLine(SIGN_INDEX, text);
+		sign.update();
 	}
 	
 	public static void addVault(PrisonEscapeLocation location) {
