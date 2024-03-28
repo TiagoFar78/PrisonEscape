@@ -560,13 +560,15 @@ public class PrisonEscapeGame {
 	}
 	
 	private void playerOpenVault(PrisonEscapePlayer player, int vaultIndex) {
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+		
 		if (_policeTeam.isOnTeam(player)) {
-			// TODO send message to cop
+			BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
 			return;
 		}
 		
 		if (_prisionersTeam.getPlayerIndex(player) != vaultIndex) {
-			// TODO send message to prisioner
+			BukkitMessageSender.sendChatMessage(player, messages.getPrisionerOtherVaultMessage());
 			return;
 		}
 		

@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public class BukkitMenu {
 	
@@ -28,8 +29,9 @@ public class BukkitMenu {
 			return;
 		}
 		
-		String title = null; // TODO Change name
+		MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 		
+		String title = messages.getVaultTitle();
 		int lines = 6;
 		Inventory inv = Bukkit.createInventory(null, lines*9, title);
 		
@@ -43,7 +45,7 @@ public class BukkitMenu {
 			inv.setItem(9 + 2, item);
 		}
 		
-		ItemStack hiddenIndicatorItem = createHiddenIndicatorItem(); 
+		ItemStack hiddenIndicatorItem = createHiddenIndicatorItem(messages); 
 		for (int line = 3; line < 6; line++) {
 			for (int column = 4; column < 7; column++) {
 				int index = (line - 1) + (column - 1);
@@ -55,10 +57,10 @@ public class BukkitMenu {
 		inv.setItem(9 * 4 + 4, hiddenItem);
 	}
 	
-	private static ItemStack createHiddenIndicatorItem() {
+	private static ItemStack createHiddenIndicatorItem(MessageLanguageManager messages) {
 		ItemStack item = new ItemStack(Material.RED_STAINED_GLASS_PANE);
 		ItemMeta itemMeta = item.getItemMeta();
-		itemMeta.setDisplayName(""); // TODO CHANGE NAME
+		itemMeta.setDisplayName(messages.getVaultHiddenGlassName());
 		item.setItemMeta(itemMeta);
 		
 		return item;

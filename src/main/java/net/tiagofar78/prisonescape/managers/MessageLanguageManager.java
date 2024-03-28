@@ -65,6 +65,8 @@ public class MessageLanguageManager {
 //	#######################################
 
 	private String _containerName;
+	private String _vaultTitle;
+	private String _vaultHiddenGlassName;
 
 //	########################################
 //	#               Warnings               #
@@ -82,6 +84,8 @@ public class MessageLanguageManager {
 	private String _removedTeamPreferenceMessage;
 	private String _prisionerGameStartedMessage;
 	private String _policeGameStartedMessage;
+	private String _policeOpenVaultMessage;
+	private String _prisionerOtherVaultMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -145,6 +149,8 @@ public class MessageLanguageManager {
 		_selectNoneTeamItemName = createMessage(messages.getString(teamSelector + "SelectNone.Name"));;
 
 		_containerName = createMessage(messages.getString("Inventory.Chest.Title"));
+		_vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));
+		_vaultHiddenGlassName = createMessage(messages.getString("Inventory.Vault.HiddenGlass.Name"));
 
 		String messagePath = "Messages.";
 		String warningPath = messagePath + "Warnings.";
@@ -160,6 +166,8 @@ public class MessageLanguageManager {
 		_removedTeamPreferenceMessage = createMessage(messages.getString(warningPath + "SelectedRandomTeam"));
 		_prisionerGameStartedMessage = createMessage(messages.getString(warningPath + "PrisionerGameStart"));
 		_policeGameStartedMessage = createMessage(messages.getString(warningPath + "PoliceGameStart"));
+		_policeOpenVaultMessage = createMessage(messages.getString(warningPath + "PoliceOpenVault"));
+		_prisionerOtherVaultMessage = createMessage(messages.getString(warningPath + "PrisionerOtherVault"));
 
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -240,6 +248,14 @@ public class MessageLanguageManager {
 	public String getContainerName() {
 		return _containerName;
 	}
+	
+	public String getVaultTitle() {
+		return _vaultTitle;
+	}
+	
+	public String getVaultHiddenGlassName() {
+		return _vaultHiddenGlassName;
+	}
 
 //	########################################
 //	#               Warnings               #
@@ -291,6 +307,14 @@ public class MessageLanguageManager {
 
 	public String getPoliceGameStartedMessage() {
 		return _policeGameStartedMessage;
+	}
+
+	public String getPoliceOpenVaultMessage() {
+		return _policeOpenVaultMessage;
+	}
+	
+	public String getPrisionerOtherVaultMessage() {
+		return _prisionerOtherVaultMessage;
 	}
 
 //	########################################

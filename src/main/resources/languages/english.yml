@@ -7,6 +7,10 @@ Kits:
     SelectNone:
       Name: "&8Remove preference"
 Inventory:
+  Vault:
+    Title: "Personal Storage"
+    HiddenGlass:
+      Name: "&cHidden"
   Chest:
     Title: "Container"
 Messages:
@@ -23,6 +27,8 @@ Messages:
     SelectedRandomTeam: "&aYou removed your prefered team. You will be placed randomly."
     PrisionerGameStart: "&6You are on prisioners team. Escape with everyone. Nobody stays behind."
     PoliceGameStart: "&9You are on police team. Stop prisioners from escaping."
+    PoliceOpenVault: "&cYou can not open personal vaults. However, you can search them."
+    PrisionerOtherVault: "&cYou can only access your own vault."
   Announcements:
     GameStarting:
     - "&6==================================="
