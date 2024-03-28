@@ -409,11 +409,17 @@ public class PrisonEscapeGame {
 		if (player.hasEscaped()) {
 			return;
 		}
-		
-		if (_prison.isOutsidePrison(loc)) {
-			playerEscaped(player);
+
+        if (_prison.isOutsidePrison(loc)) {
+        	playerEscaped(player);
+        }
+
+		if ( _prison.isInRestrictedAreas(loc)) {
+			player.setInRestrictedArea();
+		} else if (player.isInRestrictedArea()) {
+			player.removeInRestrictedArea();
 		}
-		
+
 		if (_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
 			// TODO: Do beep
 		}
