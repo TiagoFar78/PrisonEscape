@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 
 public class Vault {
 	
@@ -13,10 +14,14 @@ public class Vault {
 	
 	private List<PrisonEscapeItem> _nonHiddenContents;
 	private List<PrisonEscapeItem> _hiddenContents;
+	
+	private PrisonEscapePlayer _owner;
 
-	public Vault() {
+	public Vault(PrisonEscapePlayer owner) {
 		_nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
 		_hiddenContents = createContentsList(HIDDEN_SIZE);
+		
+		this._owner = owner; 
 	}
 	
 	private List<PrisonEscapeItem> createContentsList(int size) {
@@ -27,6 +32,10 @@ public class Vault {
 		}
 		
 		return list;
+	}
+	
+	public PrisonEscapePlayer getOwner() {
+		return _owner;
 	}
 	
 	public void setItem(boolean isHidden, int index, PrisonEscapeItem item) {
@@ -50,7 +59,7 @@ public class Vault {
 			if (item != null && item.isIllegal()) {
 				clearContents(_nonHiddenContents, NON_HIDDEN_SIZE);
 				clearContents(_hiddenContents, HIDDEN_SIZE);
-				return -1;
+				return 1;
 			}
 		}
 		

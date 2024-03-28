@@ -86,6 +86,10 @@ public class MessageLanguageManager {
 	private String _policeGameStartedMessage;
 	private String _policeOpenVaultMessage;
 	private String _prisionerOtherVaultMessage;
+	private String _policeFoundIllegalItemsMessage;
+	private String _prisionerFoundIllegalItemsMessage;
+	private String _policeNoIllegalItemsFoundMessage;
+	private String _prisionerNoIllegalItemsFoundMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -168,6 +172,10 @@ public class MessageLanguageManager {
 		_policeGameStartedMessage = createMessage(messages.getString(warningPath + "PoliceGameStart"));
 		_policeOpenVaultMessage = createMessage(messages.getString(warningPath + "PoliceOpenVault"));
 		_prisionerOtherVaultMessage = createMessage(messages.getString(warningPath + "PrisionerOtherVault"));
+		_policeFoundIllegalItemsMessage = createMessage(messages.getString(warningPath + "PoliceFoundIllegalItems"));
+		_prisionerFoundIllegalItemsMessage = createMessage(messages.getString(warningPath + "PrisionerFoundIllegalItems"));
+		_policeNoIllegalItemsFoundMessage = createMessage(messages.getString(warningPath + "PoliceNoIllegalItemsFound"));
+		_prisionerNoIllegalItemsFoundMessage = createMessage(messages.getString(warningPath + "PrisionerNoIllegalItemsFound"));
 
 		String announcementPath = messagePath + "Announcements.";
 		_gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -315,6 +323,22 @@ public class MessageLanguageManager {
 	
 	public String getPrisionerOtherVaultMessage() {
 		return _prisionerOtherVaultMessage;
+	}
+
+	public String getPoliceFoundIllegalItemsMessage(String vaultOwner) {
+		return _policeFoundIllegalItemsMessage.replace("{PLAYER}", vaultOwner);
+	}
+	
+	public String getPrisionerFoundIllegalItemsMessage() {
+		return _prisionerFoundIllegalItemsMessage;
+	}
+	
+	public String getPoliceNoIllegalItemsFoundMessage() {
+		return _policeNoIllegalItemsFoundMessage;
+	}
+	
+	public String getPrisionerNoIllegalItemsFoundMessage() {
+		return _prisionerNoIllegalItemsFoundMessage;
 	}
 
 //	########################################

@@ -105,7 +105,7 @@ public class PrisonBuilding {
 	
 	public void addVaults(List<PrisonEscapePlayer> prisioners) {
 		for (int i = 0; i < prisioners.size(); i++) {
-			_vaults.add(new Vault());
+			_vaults.add(new Vault(prisioners.get(i)));
 			
 			String signText = prisioners.get(i).getName();
 			PrisonEscapeLocation vaultLocation = _vaultsLocations.get(i);

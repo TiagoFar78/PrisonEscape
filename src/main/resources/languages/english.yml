@@ -29,6 +29,10 @@ Messages:
     PoliceGameStart: "&9You are on police team. Stop prisioners from escaping."
     PoliceOpenVault: "&cYou can not open personal vaults. However, you can search them."
     PrisionerOtherVault: "&cYou can only access your own vault."
+    PoliceFoundIllegalItems: "&eYou found illegal items and the player &4{PLAYER} &ehas become wanted."
+    PrisionerFoundIllegalItems: "&eIllegal items were found in your vault and now you are wanted."
+    PoliceNoIllegalItemsFound: "&eThere are no illegal items here."
+    PrisionerNoIllegalItemsFound: "&eSomeone search your vault, but no illegal items were found."
   Announcements:
     GameStarting:
     - "&6==================================="
