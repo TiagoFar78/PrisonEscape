@@ -7,7 +7,7 @@ public class PrisonEscapePlayer {
 	private String _name;
 	private TeamPreference _preference;
 	private boolean _isWanted;
-    private boolean _inRestrictedArea;
+	private boolean _inRestrictedArea;
 	private boolean _isOnline;
 	private boolean _hasEscaped;
 	private List<PrisonEscapeItem> _inventory;
@@ -16,7 +16,7 @@ public class PrisonEscapePlayer {
 		_name = name;
 		_preference = TeamPreference.RANDOM;
 		_isWanted = false;
-        _inRestrictedArea = false;
+		_inRestrictedArea = false;
 		_isOnline = true;
 	}
 	
@@ -99,7 +99,7 @@ public class PrisonEscapePlayer {
 //	########################################
 	
 	public boolean isWanted() {
-		return _isWanted || _inRestrictedArea;
+		return _isWanted;
 	}
 	
 	public void setWanted() {
@@ -110,17 +110,21 @@ public class PrisonEscapePlayer {
 		_isWanted = false;
 	}
 
-    public boolean isInRestrictedArea() {
-        return _inRestrictedArea;
-    }
+	public boolean isInRestrictedArea() {
+		return _inRestrictedArea;
+	}
 
-    public void setInRestrictedArea() {
-        _inRestrictedArea = true;
-    }
+	public void enteredRestrictedArea() {
+		_inRestrictedArea = true;
+	}
 
-    public void removeInRestrictedArea() {
-        _inRestrictedArea = false;
-    }
+	public void leftRestrictedArea() {
+		_inRestrictedArea = false;
+	}
+
+	public boolean canBeArrested() {
+		return _isWanted || _inRestrictedArea;
+	}
 	
 //	########################################
 //	#                 Util                 #
