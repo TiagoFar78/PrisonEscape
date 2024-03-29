@@ -3,9 +3,9 @@ package net.tiagofar78.prisonescape.bukkit;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.Inventory;
 
 public class BukkitInventory {
 
@@ -77,7 +77,7 @@ public class BukkitInventory {
             meta.setDisplayName(item.toString());
             itemStack.setItemMeta(meta);
         }
-        
+
         return itemStack;
     }
 
