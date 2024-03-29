@@ -12,6 +12,23 @@ This Minecraft plugin replicates "Prison Life" game on Steam. Players join a ser
 ## Contributing
 Contributions to the development of this plugin are welcome! If you encounter any bugs or have suggestions for new features, please open an issue or submit a pull request on GitHub.
 
+## Formatting
+
+This project uses [Spotless](https://github.com/diffplug/spotless) to ensure code formatting rules
+are followed.
+
+It is possible to check if the code adheres to the formatting rules by running:
+
+```s
+mvn spotless:check
+```
+
+Or, alternatively, format the code:
+
+```s
+mvn spotless:apply
+```
+
 ## Credits
 - **Plugin Developers**:
   - [TiagoFar78](https://github.com/TiagoFar78)
