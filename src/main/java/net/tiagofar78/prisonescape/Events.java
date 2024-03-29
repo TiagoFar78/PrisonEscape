@@ -11,6 +11,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
@@ -111,4 +112,11 @@ public class Events implements Listener {
 		}
 	}
 	
+	@EventHandler
+	public void onWeatherChange(WeatherChangeEvent event) {
+		if (event.toWeatherState()) {
+			event.setCancelled(true);
+		}
+	}
+
 }
