@@ -1,11 +1,11 @@
 package net.tiagofar78.prisonescape.commands;
 
-import org.bukkit.command.CommandSender;
-
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.command.CommandSender;
 
 public class ForceStopSubcommand implements PrisonEscapeSubcommandExecutor {
 
