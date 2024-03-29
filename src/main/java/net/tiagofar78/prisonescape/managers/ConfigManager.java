@@ -39,8 +39,8 @@ public class ConfigManager {
 	private PrisonEscapeLocation _waitingLocation;
 	private PrisonEscapeLocation _prisonTopLeftCornerLocation;
 	private PrisonEscapeLocation _prisonBottomRightCornerLocation;
-    private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
-    private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
+	private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
+	private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
 	private List<PrisonEscapeLocation> _prisionersSpawnLocation;
 	private List<PrisonEscapeLocation> _policeSpawnLocation;
 	private PrisonEscapeLocation _solitaryLocation;
@@ -79,8 +79,8 @@ public class ConfigManager {
 		_waitingLocation = createLocation(config, "WaitingLocation");
 		_prisonTopLeftCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation");
 		_prisonBottomRightCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation");
-        _restrictedAreasBottomRightCornerLocations = createLocationList(config,"PrisonOfficeBottomRightCornerLocations");
-        _restrictedAreasTopLeftCornerLocations = createLocationList(config, "PrisonOfficeTopLeftCornerLocations");
+		_restrictedAreasBottomRightCornerLocations = createLocationList(config,"PrisonOfficeBottomRightCornerLocations");
+		_restrictedAreasTopLeftCornerLocations = createLocationList(config, "PrisonOfficeTopLeftCornerLocations");
 		_prisionersSpawnLocation = createLocationList(config, "PrisionersSpawnLocations");
 		_policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations");
 		_solitaryLocation = createLocation(config, "SolitaryLocation");
@@ -210,13 +210,13 @@ public class ConfigManager {
 		return _prisonBottomRightCornerLocation;
 	}
 
-    public List<PrisonEscapeLocation> getRestrictedAreasBottomRightCornerLocations() {
-        return _restrictedAreasBottomRightCornerLocations;
-    }
+	public List<PrisonEscapeLocation> getRestrictedAreasBottomRightCornerLocations() {
+		return _restrictedAreasBottomRightCornerLocations;
+	}
 
-    public List<PrisonEscapeLocation> getRestrictedAreasTopLeftCornerLocations() {
-        return _restrictedAreasTopLeftCornerLocations;
-    }
+	public List<PrisonEscapeLocation> getRestrictedAreasTopLeftCornerLocations() {
+		return _restrictedAreasTopLeftCornerLocations;
+	}
 	
 	public List<PrisonEscapeLocation> getPrisionersSpawnLocations() {
 		return _prisionersSpawnLocation;

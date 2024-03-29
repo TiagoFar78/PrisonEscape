@@ -17,8 +17,8 @@ public class PrisonBuilding {
 	private PrisonEscapeLocation _prisonBottomRightCorner;
 	private List<PrisonEscapeLocation> _prisionersSpawnLocations;
 	private List<PrisonEscapeLocation> _policeSpawnLocations;
-    private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
-    private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
+	private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
+	private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
 	private PrisonEscapeLocation _solitaryLocation;
 	private PrisonEscapeLocation _solitaryExitLocation;
 	private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
@@ -37,15 +37,15 @@ public class PrisonBuilding {
 		_prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
 		_prisonBottomRightCorner = addReferenceLocation(reference, config.getPrisonBottomRightCornerLocation());
 
-        _restrictedAreasBottomRightCornerLocations = new ArrayList<>();
-        for (PrisonEscapeLocation loc : config.getRestrictedAreasBottomRightCornerLocations()) {
-            _restrictedAreasBottomRightCornerLocations.add(addReferenceLocation(reference, loc));
-        }
+		_restrictedAreasBottomRightCornerLocations = new ArrayList<>();
+		for (PrisonEscapeLocation loc : config.getRestrictedAreasBottomRightCornerLocations()) {
+    		_restrictedAreasBottomRightCornerLocations.add(addReferenceLocation(reference, loc));
+		}
 
-        _restrictedAreasTopLeftCornerLocations = new ArrayList<>();
-        for (PrisonEscapeLocation loc : config.getRestrictedAreasTopLeftCornerLocations()) {
-            _restrictedAreasTopLeftCornerLocations.add(addReferenceLocation(reference, loc));
-        }
+		_restrictedAreasTopLeftCornerLocations = new ArrayList<>();
+		for (PrisonEscapeLocation loc : config.getRestrictedAreasTopLeftCornerLocations()) {
+			_restrictedAreasTopLeftCornerLocations.add(addReferenceLocation(reference, loc));
+		}
 		
 		_prisionersSpawnLocations = new ArrayList<>();
 		for (PrisonEscapeLocation loc : config.getPrisionersSpawnLocations()) {
@@ -94,18 +94,18 @@ public class PrisonBuilding {
 				loc.getZ() > _prisonTopLeftCorner.getZ() || loc.getZ() < _prisonBottomRightCorner.getZ();
 	}
 
-    public boolean isInRestrictedAreas(PrisonEscapeLocation loc) {
-        for (int i = 0; i < _restrictedAreasTopLeftCornerLocations.size(); i++) {
-            PrisonEscapeLocation bottomRight = _restrictedAreasBottomRightCornerLocations.get(i);
-            PrisonEscapeLocation topLeft = _restrictedAreasTopLeftCornerLocations.get(i);
+	public boolean isInRestrictedAreas(PrisonEscapeLocation loc) {
+		for (int i = 0; i < _restrictedAreasTopLeftCornerLocations.size(); i++) {
+			PrisonEscapeLocation bottomRight = _restrictedAreasBottomRightCornerLocations.get(i);
+			PrisonEscapeLocation topLeft = _restrictedAreasTopLeftCornerLocations.get(i);
 
-            if (loc.getX() > bottomRight.getX() && loc.getX() < topLeft.getX() &&
-                loc.getZ() > bottomRight.getZ() && loc.getZ() < topLeft.getZ()) {
-                return true;
-            }
-        }
-        return false;
-    }
+			if (loc.getX() > bottomRight.getX() && loc.getX() < topLeft.getX() &&
+				loc.getZ() > bottomRight.getZ() && loc.getZ() < topLeft.getZ()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, List<PrisonEscapeItem> playerItems) {
 		if (_metalDetectorsLocations.contains(location)) {

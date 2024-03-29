@@ -411,7 +411,7 @@ public class PrisonEscapeGame {
 		}
 
 		if (_prison.isOutsidePrison(loc)) {
-    		playerEscaped(player);
+			playerEscaped(player);
 		}
 
 		if ( _prison.isInRestrictedAreas(loc)) {
