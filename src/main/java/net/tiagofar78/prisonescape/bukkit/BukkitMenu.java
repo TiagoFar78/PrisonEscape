@@ -14,6 +14,7 @@ import java.util.List;
 
 public class BukkitMenu {
 
+    private static final int SLOTS_PER_LINE = 9;
     private static final ItemStack GLASS_ITEM = createGlassItem();
 
     private static ItemStack createGlassItem() {
@@ -24,6 +25,10 @@ public class BukkitMenu {
 
         return item;
     }
+
+//  #########################################
+//  #                 Vault                 #
+//  #########################################
 
     private static final int[] NON_HIDDEN_ITEMS_INDEXES = {9 + 2, 9 + 3, 9 + 5, 9 + 6};
     private static final int HIDDEN_ITEM_INDEX = 9 * 4 + 4;
@@ -92,6 +97,37 @@ public class BukkitMenu {
         item.setItemMeta(itemMeta);
 
         return item;
+    }
+
+//  #########################################
+//  #                 Chest                 #
+//  #########################################
+
+    private static final int[] CHEST_CONTENT_INDEXES =
+            {SLOTS_PER_LINE * 1 + 2, SLOTS_PER_LINE * 1 + 3, SLOTS_PER_LINE * 1 + 4, SLOTS_PER_LINE * 1 + 5, SLOTS_PER_LINE * 1 + 6};
+
+    public static void openChest(String playerName, List<PrisonEscapeItem> contents) {
+        Player bukkitPlayer = Bukkit.getPlayer(playerName);
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
+        int lines = 3;
+        String title = messages.getContainerName();
+        Inventory inv = Bukkit.createInventory(bukkitPlayer, lines * SLOTS_PER_LINE, title);
+
+        for (int i = 0; i < lines * SLOTS_PER_LINE; i++) {
+            inv.setItem(i, GLASS_ITEM);
+        }
+
+        for (int i = 0; i < contents.size(); i++) {
+            ItemStack item = BukkitItems.convertToItemStack(contents.get(i));
+            inv.setItem(CHEST_CONTENT_INDEXES[i], item);
+        }
+
+        bukkitPlayer.openInventory(inv);
     }
 
 }

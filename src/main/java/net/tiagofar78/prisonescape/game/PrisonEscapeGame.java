@@ -7,6 +7,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
@@ -477,16 +478,25 @@ public class PrisonEscapeGame {
         }
     }
 
-    public void playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
+    public int playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
-            return;
+            return -1;
         }
 
         int vaultIndex = _prison.getVaultIndex(blockLocation);
         if (vaultIndex != -1) {
             playerOpenVault(player, vaultIndex, item);
+            return 0;
         }
+
+        Chest chest = _prison.getChest(blockLocation);
+        if (chest != null) {
+            chest.open(playerName);
+            return 0;
+        }
+
+        return -1;
     }
 
     public void playerCloseMenu(String playerName) {

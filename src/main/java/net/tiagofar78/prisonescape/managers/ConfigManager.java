@@ -48,9 +48,10 @@ public class ConfigManager {
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
+    private List<PrisonEscapeLocation> _chestsLocations;
 
-    private int _commonItemsProbability;
-    private int _rareItemsProbability;
+    private double _commonItemsProbability;
+    private double _rareItemsProbability;
 
     private int _chestSize;
 
@@ -91,9 +92,10 @@ public class ConfigManager {
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
+        _chestsLocations = createLocationList(config, "ChestsLocations");
 
-        _commonItemsProbability = config.getInt("CommonItemsProbability");
-        _rareItemsProbability = config.getInt("RareItemsProbability");
+        _commonItemsProbability = config.getDouble("CommonItemsProbability");
+        _rareItemsProbability = config.getDouble("RareItemsProbability");
 
         _chestSize = config.getInt("ChestSize");
     }
@@ -256,11 +258,15 @@ public class ConfigManager {
         return _vaultsLocations;
     }
 
-    public int getCommonItemsProbability() {
+    public List<PrisonEscapeLocation> getChestsLocations() {
+        return _chestsLocations;
+    }
+
+    public double getCommonItemsProbability() {
         return _commonItemsProbability;
     }
 
-    public int getRareItemsProbability() {
+    public double getRareItemsProbability() {
         return _rareItemsProbability;
     }
 

@@ -27,7 +27,7 @@ public class PrisonBuilding {
     private List<Vault> _vaults;
     private List<PrisonEscapeLocation> _vaultsLocations;
 
-    private List<Chest> _chests;
+    private Hashtable<String, Chest> _chests;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
 
     public PrisonBuilding(PrisonEscapeLocation reference) {
@@ -84,7 +84,13 @@ public class PrisonBuilding {
             _vaultsLocations.add(addReferenceLocation(reference, location));
         }
 
-        _chests = new ArrayList<>();
+        _chests = new Hashtable<>();
+        for (PrisonEscapeLocation loc : config.getChestsLocations()) {
+            _chests.put(addReferenceLocation(reference, loc).createKey(), new Chest());
+        }
+
+        System.out.println("Ha " + _chests.size() + " chests");
+
         _metalDetectorsLocations = new ArrayList<>();
     }
 
@@ -126,12 +132,6 @@ public class PrisonBuilding {
         return false;
     }
 
-    public void reloadChests() {
-        for (Chest chest : _chests) {
-            chest.reload();
-        }
-    }
-
 //	#########################################
 //	#                 Vault                 #
 //	#########################################
@@ -165,6 +165,20 @@ public class PrisonBuilding {
         for (PrisonEscapeLocation location : _vaultsLocations) {
             BukkitWorldEditor.deleteVaultAndRespectiveSign(location);
         }
+    }
+
+//  #########################################
+//  #                 Chest                 #
+//  #########################################
+
+    public void reloadChests() {
+        for (Chest chest : _chests.values()) {
+            chest.reload();
+        }
+    }
+
+    public Chest getChest(PrisonEscapeLocation location) {
+        return _chests.get(location.createKey());
     }
 
 //	#########################################
