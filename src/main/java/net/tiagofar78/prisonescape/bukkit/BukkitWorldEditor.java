@@ -15,6 +15,8 @@ public class BukkitWorldEditor {
 
     private static final int SIGN_INDEX = 1;
     private static final World WORLD = Bukkit.getWorld(ConfigManager.getInstance().getWorldName());
+    private static final int DAY_START_TIME = 0;
+    private static final int NIGHT_START_TIME = 13000;
 
     public static void addSignAboveVault(PrisonEscapeLocation location, String text) {
         Location bukkitLocation = new Location(WORLD, location.getX(), location.getY() + 1, location.getZ());
@@ -37,6 +39,14 @@ public class BukkitWorldEditor {
 
         vaultLocation.getBlock().setType(Material.AIR);
         signLocation.getBlock().setType(Material.AIR);
+    }
+
+    public static void changeTimeToDay() {
+        WORLD.setTime(DAY_START_TIME);
+    }
+
+    public static void changeTimeToNight() {
+        WORLD.setTime(NIGHT_START_TIME);
     }
 
 }
