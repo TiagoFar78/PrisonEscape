@@ -643,13 +643,15 @@ public class PrisonEscapeGame {
     }
 
     private void playerOpenChest(PrisonEscapePlayer player, Chest chest) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
         if (_policeTeam.isOnTeam(player)) {
-            // TODO send message police cant open
+            BukkitMessageSender.sendChatMessage(player, messages.getPoliceCanNotOpenChestMessage());
             return;
         }
 
         if (chest.isOpened()) {
-            // TODO send message already opened
+            BukkitMessageSender.sendChatMessage(player, messages.getChestAlreadyOpenedMessage());
             return;
         }
 

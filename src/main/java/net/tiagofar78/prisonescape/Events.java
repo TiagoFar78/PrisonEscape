@@ -1,5 +1,12 @@
 package net.tiagofar78.prisonescape;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitItems;
+import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.managers.GameManager;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -12,13 +19,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
-
-import net.tiagofar78.prisonescape.bukkit.BukkitItems;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
-import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
-import net.tiagofar78.prisonescape.managers.GameManager;
 
 public class Events implements Listener {
 
@@ -113,17 +113,16 @@ public class Events implements Listener {
         if (returnAction == ClickReturnAction.IGNORE) {
             return;
         }
-        
+
         e.setCancelled(true);
-        
+
         if (returnAction == ClickReturnAction.DELETE_HOLD_AND_SELECTED) {
             e.setCursor(null);
             e.setCurrentItem(null);
-        }
-        else if (returnAction == ClickReturnAction.CHANGE_HOLD_AND_SELECTED) {
+        } else if (returnAction == ClickReturnAction.CHANGE_HOLD_AND_SELECTED) {
             ItemStack cursor = e.getCursor();
             ItemStack current = e.getCurrentItem();
-            
+
             e.setCursor(current);
             e.setCurrentItem(cursor);
         }

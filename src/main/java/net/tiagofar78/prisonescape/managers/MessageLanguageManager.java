@@ -90,6 +90,9 @@ public class MessageLanguageManager {
     private String _prisionerFoundIllegalItemsMessage;
     private String _policeNoIllegalItemsFoundMessage;
     private String _prisionerNoIllegalItemsFoundMessage;
+    private String _policeCanNotOpenChestMessage;
+    private String _chestAlreadyOpenedMessage;
+    private String _fullInventoryMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -182,6 +185,9 @@ public class MessageLanguageManager {
         _prisionerNoIllegalItemsFoundMessage = createMessage(
                 messages.getString(warningPath + "PrisionerNoIllegalItemsFound")
         );
+        _policeCanNotOpenChestMessage = createMessage(messages.getString(warningPath + "PoliceCanNotOpenChest"));
+        _chestAlreadyOpenedMessage = createMessage(messages.getString(warningPath + "ChestAlreadyOpened"));
+        _fullInventoryMessage = createMessage(messages.getString(warningPath + "FullInventory"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -347,6 +353,18 @@ public class MessageLanguageManager {
 
     public String getPrisionerNoIllegalItemsFoundMessage() {
         return _prisionerNoIllegalItemsFoundMessage;
+    }
+
+    public String getPoliceCanNotOpenChestMessage() {
+        return _policeCanNotOpenChestMessage;
+    }
+
+    public String getChestAlreadyOpenedMessage() {
+        return _chestAlreadyOpenedMessage;
+    }
+
+    public String getFullInventoryMessage() {
+        return _fullInventoryMessage;
     }
 
 //	########################################
