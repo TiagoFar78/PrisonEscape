@@ -509,8 +509,8 @@ public class PrisonEscapeGame {
         }
 
         if (_playerOpenMenu.containsKey(playerName)) {
-            _playerOpenMenu.remove(playerName);
             _playerOpenMenu.get(playerName).close();
+            _playerOpenMenu.remove(playerName);
         }
     }
 
@@ -520,7 +520,7 @@ public class PrisonEscapeGame {
             return ClickReturnAction.IGNORE;
         }
 
-        if (_playerOpenMenu.containsKey(playerName)) {
+        if (!_playerOpenMenu.containsKey(playerName)) {
             return ClickReturnAction.IGNORE;
         }
 
