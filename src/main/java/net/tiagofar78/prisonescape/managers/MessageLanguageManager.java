@@ -151,7 +151,6 @@ public class MessageLanguageManager {
         _selectPrisionerTeamItemName = createMessage(messages.getString(teamSelector + "SelectPrisioners.Name"));
         _selectPoliceTeamItemName = createMessage(messages.getString(teamSelector + "SelectPolice.Name"));
         _selectNoneTeamItemName = createMessage(messages.getString(teamSelector + "SelectNone.Name"));
-        ;
 
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));

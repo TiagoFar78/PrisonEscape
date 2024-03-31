@@ -7,7 +7,6 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -65,10 +64,9 @@ public class Events implements Listener {
         );
         PrisonEscapeLocation location = new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
 
-        if (block.getType() == Material.CHEST) {
-            game.playerInteractWithPrison(e.getPlayer().getName(), location, itemInHand);
+        int returnCode = game.playerInteractWithPrison(e.getPlayer().getName(), location, itemInHand);
+        if (returnCode == 0) {
             e.setCancelled(true);
-            return;
         }
     }
 
