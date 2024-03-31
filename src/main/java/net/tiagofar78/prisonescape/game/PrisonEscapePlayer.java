@@ -83,7 +83,7 @@ public class PrisonEscapePlayer {
     }
 
     /**
-     * @return 0 if success
+     * @return 0 if success<br>
      *         -1 if full inventory
      */
     public int giveItem(PrisonEscapeItem item) {

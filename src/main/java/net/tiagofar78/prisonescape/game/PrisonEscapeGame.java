@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
@@ -9,6 +8,7 @@ import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
@@ -38,7 +38,7 @@ public class PrisonEscapeGame {
     private PrisonEscapeTeam _policeTeam;
     private PrisonEscapeTeam _prisionersTeam;
 
-    private Hashtable<String, MenuType> _playerOpenMenu;
+    private Hashtable<String, Clickable> _playerOpenMenu;
 
     private Phase _phase;
 
@@ -495,7 +495,7 @@ public class PrisonEscapeGame {
 
         Chest chest = _prison.getChest(blockLocation);
         if (chest != null) {
-            chest.open(playerName);
+            playerOpenChest(player, chest);
             return 0;
         }
 
@@ -509,6 +509,7 @@ public class PrisonEscapeGame {
 
         if (_playerOpenMenu.containsKey(playerName)) {
             _playerOpenMenu.remove(playerName);
+            _playerOpenMenu.get(playerName).close();
         }
     }
 
@@ -518,10 +519,12 @@ public class PrisonEscapeGame {
             return -1;
         }
 
-        MenuType menu = _playerOpenMenu.get(player.getName());
-        if (menu == MenuType.VAULT) {
-            return playerClickVaultMenu(player, slot, itemHeld);
+        if (_playerOpenMenu.containsKey(playerName)) {
+            return -1;
         }
+
+        Clickable clicakble = _playerOpenMenu.get(player.getName());
+        clicakble.click(player, slot, itemHeld);
 
         return 0;
     }
@@ -598,13 +601,15 @@ public class PrisonEscapeGame {
     private void playerOpenVault(PrisonEscapePlayer player, int vaultIndex, PrisonEscapeItem item) {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
+        Vault vault = _prison.getVault(vaultIndex);
+
         if (_policeTeam.isOnTeam(player)) {
             if (item != PrisonEscapeItem.SEARCH) {
                 BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
                 return;
             }
 
-            policeSearchVault(player, vaultIndex, messages);
+            policeSearchVault(player, vault, messages);
             return;
         }
 
@@ -613,13 +618,11 @@ public class PrisonEscapeGame {
             return;
         }
 
-        _playerOpenMenu.put(player.getName(), MenuType.VAULT);
-        _prison.getVault(vaultIndex).open(player.getName());
+        _playerOpenMenu.put(player.getName(), vault);
+        vault.open(player);
     }
 
-    private void policeSearchVault(PrisonEscapePlayer player, int vaultIndex, MessageLanguageManager messagesPolice) {
-        Vault vault = _prison.getVault(vaultIndex);
-
+    private void policeSearchVault(PrisonEscapePlayer player, Vault vault, MessageLanguageManager messagesPolice) {
         PrisonEscapePlayer vaultOwner = vault.getOwner();
         MessageLanguageManager messagesPrisioner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
 
@@ -640,19 +643,19 @@ public class PrisonEscapeGame {
         return;
     }
 
-    private int playerClickVaultMenu(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
-        int playerIndex = _prisionersTeam.getPlayerIndex(player);
-
-        int itemIndex = BukkitMenu.convertToIndexVault(slot);
-        if (itemIndex == -1) {
-            return -1;
+    private void playerOpenChest(PrisonEscapePlayer player, Chest chest) {
+        if (_policeTeam.isOnTeam(player)) {
+            // TODO send message police cant open
+            return;
         }
 
-        boolean isHidden = BukkitMenu.isHiddenIndexVault(slot);
+        if (chest.isOpened()) {
+            // TODO send message already opened
+            return;
+        }
 
-        _prison.getVault(playerIndex).setItem(isHidden, itemIndex, itemHeld);
-
-        return 0;
+        chest.open(player);
+        _playerOpenMenu.put(player.getName(), chest);
     }
 
 //	########################################

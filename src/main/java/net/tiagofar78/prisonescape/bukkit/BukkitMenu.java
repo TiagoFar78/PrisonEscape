@@ -130,4 +130,14 @@ public class BukkitMenu {
         bukkitPlayer.openInventory(inv);
     }
 
+    public static int convertToIndexChest(int slot) {
+        for (int i = 0; i < CHEST_CONTENT_INDEXES.length; i++) {
+            if (CHEST_CONTENT_INDEXES[i] == slot) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
 }

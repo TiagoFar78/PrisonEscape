@@ -7,19 +7,21 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vault {
+public class Vault implements Clickable {
 
     private static final int NON_HIDDEN_SIZE = 4;
     private static final int HIDDEN_SIZE = 1;
 
     private List<PrisonEscapeItem> _nonHiddenContents;
     private List<PrisonEscapeItem> _hiddenContents;
+    private boolean _isOpen;
 
     private PrisonEscapePlayer _owner;
 
     public Vault(PrisonEscapePlayer owner) {
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
+        _isOpen = false;
 
         this._owner = owner;
     }
@@ -72,8 +74,33 @@ public class Vault {
         }
     }
 
-    public void open(String playerName) {
-        BukkitMenu.openVault(playerName, _nonHiddenContents, _hiddenContents);
+    @Override
+    public void open(PrisonEscapePlayer player) {
+        BukkitMenu.openVault(player.getName(), _nonHiddenContents, _hiddenContents);
+        _isOpen = true;
+    }
+
+    @Override
+    public void close() {
+        _isOpen = false;
+    }
+
+    @Override
+    public boolean isOpened() {
+        return _isOpen;
+    }
+
+    @Override
+    public int click(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
+        int itemIndex = BukkitMenu.convertToIndexVault(slot);
+        if (itemIndex == -1) {
+            return -1;
+        }
+
+        boolean isHidden = BukkitMenu.isHiddenIndexVault(slot);
+
+        setItem(isHidden, itemIndex, itemHeld);
+        return 0;
     }
 
 }
