@@ -4,13 +4,17 @@ import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -80,6 +84,18 @@ public class Events implements Listener {
         }
 
         game.playerCloseMenu(e.getPlayer().getName());
+    }
+
+    @EventHandler
+    public void onPlayerLoseHealth(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            World world = player.getWorld();
+
+            if (world.getName().equals(ConfigManager.getInstance().getWorldName())) {
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
