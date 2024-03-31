@@ -4,10 +4,12 @@ import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -86,7 +88,12 @@ public class Events implements Listener {
     @EventHandler
     public void onPlayerLoseHealth(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
-            event.setCancelled(true);
+            Player player = (Player) event.getEntity();
+            World world = player.getWorld();
+
+            if (world.getName().equals(ConfigManager.getInstance().getWorldName())) {
+                event.setCancelled(true);
+            }
         }
     }
 
