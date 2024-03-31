@@ -91,16 +91,16 @@ public class Vault implements Clickable {
     }
 
     @Override
-    public int click(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
+    public ClickReturnAction click(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
         int itemIndex = BukkitMenu.convertToIndexVault(slot);
         if (itemIndex == -1) {
-            return -1;
+            return ClickReturnAction.NOTHING;
         }
 
         boolean isHidden = BukkitMenu.isHiddenIndexVault(slot);
 
         setItem(isHidden, itemIndex, itemHeld);
-        return 0;
+        return ClickReturnAction.CHANGE_HOLD_AND_SELECTED;
     }
 
 }
