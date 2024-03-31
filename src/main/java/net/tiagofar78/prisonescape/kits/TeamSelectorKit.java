@@ -67,7 +67,8 @@ public class TeamSelectorKit implements Listener {
         String playerName = e.getPlayer().getName();
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
-        @SuppressWarnings("deprecation") ItemStack item = e.getPlayer().getItemInHand();
+        @SuppressWarnings("deprecation")
+        ItemStack item = e.getPlayer().getItemInHand();
         if (item == null || item.getType() == Material.AIR) {
             return;
         }
