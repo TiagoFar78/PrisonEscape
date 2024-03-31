@@ -63,7 +63,8 @@ public class Events implements Listener {
             return;
         }
 
-        @SuppressWarnings("deprecation") PrisonEscapeItem itemInHand = BukkitItems.convertToPrisonEscapeItem(
+        @SuppressWarnings("deprecation")
+        PrisonEscapeItem itemInHand = BukkitItems.convertToPrisonEscapeItem(
                 e.getPlayer().getItemInHand()
         );
         PrisonEscapeLocation location = new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
