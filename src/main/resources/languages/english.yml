@@ -33,6 +33,9 @@ Messages:
     PrisionerFoundIllegalItems: "&eIllegal items were found in your vault and now you are wanted."
     PoliceNoIllegalItemsFound: "&eThere are no illegal items here."
     PrisionerNoIllegalItemsFound: "&eSomeone search your vault, but no illegal items were found."
+    PoliceCanNotOpenChest: "&cOnly prisioners can open containers."
+    ChestAlreadyOpened: "&eSomeone is accessing that container already."
+    FullInventory: "&cYour inventory is full."
   Announcements:
     GameStarting:
     - "&6==================================="

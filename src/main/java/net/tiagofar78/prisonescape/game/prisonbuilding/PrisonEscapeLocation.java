@@ -24,6 +24,10 @@ public class PrisonEscapeLocation {
         return this.z;
     }
 
+    public String createKey() {
+        return "X" + this.x + "Y" + this.y + "Z" + this.z;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof PrisonEscapeLocation)) {

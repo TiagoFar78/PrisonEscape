@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
@@ -8,6 +7,9 @@ import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
+import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
@@ -38,7 +40,7 @@ public class PrisonEscapeGame {
     private PrisonEscapeTeam _policeTeam;
     private PrisonEscapeTeam _prisionersTeam;
 
-    private Hashtable<String, MenuType> _playerOpenMenu;
+    private Hashtable<String, Clickable> _playerOpenMenu;
 
     private Phase _phase;
 
@@ -422,7 +424,7 @@ public class PrisonEscapeGame {
             player.leftRestrictedArea();
         }
 
-        if (_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
+        if (_prison.checkIfMetalDetectorTriggered(loc, player)) {
             // TODO: Do beep
         }
     }
@@ -482,16 +484,25 @@ public class PrisonEscapeGame {
         }
     }
 
-    public void playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
+    public int playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
-            return;
+            return -1;
         }
 
         int vaultIndex = _prison.getVaultIndex(blockLocation);
         if (vaultIndex != -1) {
             playerOpenVault(player, vaultIndex, item);
+            return 0;
         }
+
+        Chest chest = _prison.getChest(blockLocation);
+        if (chest != null) {
+            playerOpenChest(player, chest);
+            return 0;
+        }
+
+        return -1;
     }
 
     public void playerCloseMenu(String playerName) {
@@ -500,22 +511,23 @@ public class PrisonEscapeGame {
         }
 
         if (_playerOpenMenu.containsKey(playerName)) {
+            _playerOpenMenu.get(playerName).close();
             _playerOpenMenu.remove(playerName);
         }
     }
 
-    public int playerClickMenu(String playerName, int slot, PrisonEscapeItem itemHeld) {
+    public ClickReturnAction playerClickMenu(String playerName, int slot, PrisonEscapeItem itemHeld) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
-            return -1;
+            return ClickReturnAction.IGNORE;
         }
 
-        MenuType menu = _playerOpenMenu.get(player.getName());
-        if (menu == MenuType.VAULT) {
-            return playerClickVaultMenu(player, slot, itemHeld);
+        if (!_playerOpenMenu.containsKey(playerName)) {
+            return ClickReturnAction.IGNORE;
         }
 
-        return 0;
+        Clickable clicakble = _playerOpenMenu.get(player.getName());
+        return clicakble.click(player, slot, itemHeld);
     }
 
 //	########################################
@@ -590,13 +602,15 @@ public class PrisonEscapeGame {
     private void playerOpenVault(PrisonEscapePlayer player, int vaultIndex, PrisonEscapeItem item) {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
+        Vault vault = _prison.getVault(vaultIndex);
+
         if (_policeTeam.isOnTeam(player)) {
             if (item != PrisonEscapeItem.SEARCH) {
                 BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
                 return;
             }
 
-            policeSearchVault(player, vaultIndex, messages);
+            policeSearchVault(player, vault, messages);
             return;
         }
 
@@ -605,13 +619,11 @@ public class PrisonEscapeGame {
             return;
         }
 
-        _playerOpenMenu.put(player.getName(), MenuType.VAULT);
-        _prison.getVault(vaultIndex).open(player.getName());
+        _playerOpenMenu.put(player.getName(), vault);
+        vault.open(player);
     }
 
-    private void policeSearchVault(PrisonEscapePlayer player, int vaultIndex, MessageLanguageManager messagesPolice) {
-        Vault vault = _prison.getVault(vaultIndex);
-
+    private void policeSearchVault(PrisonEscapePlayer player, Vault vault, MessageLanguageManager messagesPolice) {
         PrisonEscapePlayer vaultOwner = vault.getOwner();
         MessageLanguageManager messagesPrisioner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
 
@@ -632,19 +644,21 @@ public class PrisonEscapeGame {
         return;
     }
 
-    private int playerClickVaultMenu(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
-        int playerIndex = _prisionersTeam.getPlayerIndex(player);
+    private void playerOpenChest(PrisonEscapePlayer player, Chest chest) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
-        int itemIndex = BukkitMenu.convertToIndexVault(slot);
-        if (itemIndex == -1) {
-            return -1;
+        if (_policeTeam.isOnTeam(player)) {
+            BukkitMessageSender.sendChatMessage(player, messages.getPoliceCanNotOpenChestMessage());
+            return;
         }
 
-        boolean isHidden = BukkitMenu.isHiddenIndexVault(slot);
+        if (chest.isOpened()) {
+            BukkitMessageSender.sendChatMessage(player, messages.getChestAlreadyOpenedMessage());
+            return;
+        }
 
-        _prison.getVault(playerIndex).setItem(isHidden, itemIndex, itemHeld);
-
-        return 0;
+        chest.open(player);
+        _playerOpenMenu.put(player.getName(), chest);
     }
 
 //	########################################

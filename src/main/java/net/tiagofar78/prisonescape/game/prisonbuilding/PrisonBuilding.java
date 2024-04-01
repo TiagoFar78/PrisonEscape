@@ -1,7 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
@@ -27,7 +26,7 @@ public class PrisonBuilding {
     private List<Vault> _vaults;
     private List<PrisonEscapeLocation> _vaultsLocations;
 
-    private List<Chest> _chests;
+    private Hashtable<String, Chest> _chests;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
 
     public PrisonBuilding(PrisonEscapeLocation reference) {
@@ -84,7 +83,13 @@ public class PrisonBuilding {
             _vaultsLocations.add(addReferenceLocation(reference, location));
         }
 
-        _chests = new ArrayList<>();
+        _chests = new Hashtable<>();
+        for (PrisonEscapeLocation loc : config.getChestsLocations()) {
+            _chests.put(addReferenceLocation(reference, loc).createKey(), new Chest());
+        }
+
+        System.out.println("Ha " + _chests.size() + " chests");
+
         _metalDetectorsLocations = new ArrayList<>();
     }
 
@@ -115,21 +120,8 @@ public class PrisonBuilding {
         return false;
     }
 
-    public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, List<PrisonEscapeItem> playerItems) {
-        if (_metalDetectorsLocations.contains(location)) {
-            for (PrisonEscapeItem item : playerItems) {
-                if (item.isMetal()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public void reloadChests() {
-        for (Chest chest : _chests) {
-            chest.reload();
-        }
+    public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, PrisonEscapePlayer player) {
+        return _metalDetectorsLocations.contains(location) && player.hasMetalItems();
     }
 
 //	#########################################
@@ -165,6 +157,20 @@ public class PrisonBuilding {
         for (PrisonEscapeLocation location : _vaultsLocations) {
             BukkitWorldEditor.deleteVaultAndRespectiveSign(location);
         }
+    }
+
+//  #########################################
+//  #                 Chest                 #
+//  #########################################
+
+    public void reloadChests() {
+        for (Chest chest : _chests.values()) {
+            chest.reload();
+        }
+    }
+
+    public Chest getChest(PrisonEscapeLocation location) {
+        return _chests.get(location.createKey());
     }
 
 //	#########################################

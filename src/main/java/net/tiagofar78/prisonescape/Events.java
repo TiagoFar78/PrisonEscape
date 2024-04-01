@@ -3,12 +3,12 @@ package net.tiagofar78.prisonescape;
 import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class Events implements Listener {
 
@@ -69,10 +70,9 @@ public class Events implements Listener {
         );
         PrisonEscapeLocation location = new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
 
-        if (block.getType() == Material.CHEST) {
-            game.playerInteractWithPrison(e.getPlayer().getName(), location, itemInHand);
+        int returnCode = game.playerInteractWithPrison(e.getPlayer().getName(), location, itemInHand);
+        if (returnCode == 0) {
             e.setCancelled(true);
-            return;
         }
     }
 
@@ -108,6 +108,7 @@ public class Events implements Listener {
         game.playerCloseMenu(e.getPlayer().getName());
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void playerClickInventory(InventoryClickEvent e) {
         PrisonEscapeGame game = GameManager.getGame();
@@ -124,9 +125,22 @@ public class Events implements Listener {
         }
 
         PrisonEscapeItem item = BukkitItems.convertToPrisonEscapeItem(e.getCursor());
-        int returnCode = game.playerClickMenu(e.getWhoClicked().getName(), e.getSlot(), item);
-        if (returnCode == -1) {
-            e.setCancelled(true);
+        ClickReturnAction returnAction = game.playerClickMenu(e.getWhoClicked().getName(), e.getSlot(), item);
+        if (returnAction == ClickReturnAction.IGNORE) {
+            return;
+        }
+
+        e.setCancelled(true);
+
+        if (returnAction == ClickReturnAction.DELETE_HOLD_AND_SELECTED) {
+            e.setCursor(null);
+            e.setCurrentItem(null);
+        } else if (returnAction == ClickReturnAction.CHANGE_HOLD_AND_SELECTED) {
+            ItemStack cursor = e.getCursor();
+            ItemStack current = e.getCurrentItem();
+
+            e.setCursor(current);
+            e.setCurrentItem(cursor);
         }
     }
 
