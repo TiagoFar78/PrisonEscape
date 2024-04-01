@@ -578,6 +578,25 @@ public class PrisonEscapeGame {
         }, TICKS_PER_SECOND * _settings.getSecondsInSolitary());
     }
 
+    private void playerCompleteMission(PrisonEscapePlayer player) {
+        int missionPay = 1; // TODO
+        player.increaseBalance(missionPay);
+        // Send message
+    }
+
+    private void playerTriesToBuyItem(PrisonEscapePlayer player) {
+        int itemPrice = 1;
+
+        if (itemPrice > player.getBalance()) {
+            // Send message cannot buy
+            return;
+        }
+
+        player.decreaseBalance(itemPrice);
+        // Add item to inventory
+        // Send message that bought successfully
+    }
+
     private void playerSelectPrisionersTeam(PrisonEscapePlayer player) {
         player.setPreference(TeamPreference.PRISIONERS);
 
