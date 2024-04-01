@@ -1,8 +1,13 @@
 package net.tiagofar78.prisonescape.game;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PrisonEscapePlayer {
+
+    private static final int INVENTORY_SIZE = 4;
 
     private String _name;
     private TeamPreference _preference;
@@ -18,6 +23,17 @@ public class PrisonEscapePlayer {
         _isWanted = false;
         _inRestrictedArea = false;
         _isOnline = true;
+        _inventory = createInventory();
+    }
+
+    private List<PrisonEscapeItem> createInventory() {
+        List<PrisonEscapeItem> list = new ArrayList<>();
+
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            list.add(null);
+        }
+
+        return list;
     }
 
     public String getName() {
@@ -64,33 +80,32 @@ public class PrisonEscapePlayer {
 //	#               Inventory               #
 //	#########################################
 
-    public List<PrisonEscapeItem> getInventory() {
-        return _inventory;
-    }
-
-    public void addItem(PrisonEscapeItem item) {
-        _inventory.add(item);
-    }
-
-    public void deleteItem(PrisonEscapeItem item) {
-        if (_inventory.contains(item)) {
-            _inventory.remove(item);
-        }
-    }
-
-    public void clearInventory() {
-        _inventory.clear();
-    }
-
     /**
      * @return 0 if success<br>
      *         -1 if full inventory
      */
     public int giveItem(PrisonEscapeItem item) {
-        return 0; // TODO
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            if (_inventory.get(i) == null) {
+                setItem(i, item);
+                return 0;
+            }
+        }
+
+        return -1;
+    }
+
+    public void setItem(int index, PrisonEscapeItem item) {
+        _inventory.set(index, item);
+
+        BukkitMenu.setItem(_name, index, item);
     }
 
     public boolean hasIllegalItems() {
+        return false; // TODO
+    }
+
+    public boolean hasMetalItems() {
         return false; // TODO
     }
 

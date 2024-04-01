@@ -140,4 +140,18 @@ public class BukkitMenu {
         return -1;
     }
 
+//  ########################################
+//  #           Player Inventory           #
+//  ########################################
+
+    public static void setItem(String playerName, int slot, PrisonEscapeItem item) {
+        Player bukkitPlayer = Bukkit.getPlayer(playerName);
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        ItemStack bukkitItem = BukkitItems.convertToItemStack(item);
+        bukkitPlayer.getInventory().setItem(slot, bukkitItem);
+    }
+
 }

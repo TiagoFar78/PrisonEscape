@@ -422,7 +422,7 @@ public class PrisonEscapeGame {
             player.leftRestrictedArea();
         }
 
-        if (_prison.checkIfMetalDetectorTriggered(loc, player.getInventory())) {
+        if (_prison.checkIfMetalDetectorTriggered(loc, player)) {
             // TODO: Do beep
         }
     }

@@ -1,7 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
@@ -121,15 +120,8 @@ public class PrisonBuilding {
         return false;
     }
 
-    public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, List<PrisonEscapeItem> playerItems) {
-        if (_metalDetectorsLocations.contains(location)) {
-            for (PrisonEscapeItem item : playerItems) {
-                if (item.isMetal()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, PrisonEscapePlayer player) {
+        return _metalDetectorsLocations.contains(location) && player.hasMetalItems();
     }
 
 //	#########################################
