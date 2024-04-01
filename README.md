@@ -14,6 +14,18 @@ Contributions to the development of this plugin are welcome! If you encounter an
 
 Please note that if you want to work on an issue, leave a comment, and we will assign it to you.
 
+### Building
+
+To build PrisonEscape, you need JDK 17 or higher installed on your system.
+
+Clone this repository, then run the following command:
+
+```s
+mvn install
+```
+
+You can then find the .jar file of PrisonEscape in the `target/` directory.
+
 ### Formatting
 
 This project uses [Spotless](https://github.com/diffplug/spotless) to ensure code formatting rules
