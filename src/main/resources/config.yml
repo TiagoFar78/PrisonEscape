@@ -13,6 +13,7 @@ DelayBetweenAnnouncements: 30
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
+TeamChatPrefix: "t "
 WorldName: "PrisonEscape"
 ReferenceBlock:
   X: 0

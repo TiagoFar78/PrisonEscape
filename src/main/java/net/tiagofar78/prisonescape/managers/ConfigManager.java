@@ -33,6 +33,8 @@ public class ConfigManager {
     private List<String> _availableLanguages;
     private String _defaultLanguage;
 
+    private String _teamChatPrefix;
+
     private String _worldName;
     private PrisonEscapeLocation _referenceBlock;
     private PrisonEscapeLocation _leavingLocation;
@@ -73,6 +75,8 @@ public class ConfigManager {
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
+
+        _teamChatPrefix = config.getString("TeamChatPrefix");
 
         _worldName = config.getString("WorldName");
         _referenceBlock = createLocation(config, "ReferenceBlock");
@@ -195,6 +199,10 @@ public class ConfigManager {
 
     public String getDefaultLanguage() {
         return _defaultLanguage;
+    }
+
+    public String getTeamChatPrefix() {
+        return _teamChatPrefix;
     }
 
     public String getWorldName() {

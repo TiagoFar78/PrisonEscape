@@ -19,6 +19,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -169,6 +170,26 @@ public class Events implements Listener {
         if (event.toWeatherState()) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game == null) {
+            return;
+        }
+
+        String teamChatPrefix = ConfigManager.getInstance().getTeamChatPrefix();
+        String playerName = event.getPlayer().getName();
+        String message = event.getMessage();
+
+        if (message.startsWith(teamChatPrefix)) {
+            game.sendTeamOnlyMessage(playerName, message.replace(teamChatPrefix, ""));
+        } else {
+            game.sendGeneralMessage(playerName, message);
+        }
+
+        event.setCancelled(true);
     }
 
 }
