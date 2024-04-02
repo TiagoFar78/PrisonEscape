@@ -145,13 +145,9 @@ public class Events implements Listener {
         ItemStack cursor = e.getCursor();
         ItemStack current = e.getCurrentItem();
 
+        Player player = (Player) e.getWhoClicked();
         PrisonEscapeItem item = BukkitItems.convertToPrisonEscapeItem(e.getCursor());
-        ClickReturnAction returnAction = game.playerClickMenu(
-                e.getWhoClicked().getName(),
-                e.getSlot(),
-                item,
-                isPlayerInv
-        );
+        ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), item, isPlayerInv);
         if (returnAction == ClickReturnAction.IGNORE) {
             return;
         }
@@ -159,11 +155,11 @@ public class Events implements Listener {
         e.setCancelled(true);
 
         if (returnAction == ClickReturnAction.DELETE_HOLD_AND_SELECTED) {
-            e.getWhoClicked().setItemOnCursor(null);
+            player.setItemOnCursor(null);
             e.setCurrentItem(null);
         } else if (returnAction == ClickReturnAction.CHANGE_HOLD_AND_SELECTED) {
             // NOTE: cursor and current variables must be defined before game.playerClickMenu() is executed.
-            e.getWhoClicked().setItemOnCursor(current);
+            player.setItemOnCursor(current);
             e.setCurrentItem(cursor);
         }
     }
