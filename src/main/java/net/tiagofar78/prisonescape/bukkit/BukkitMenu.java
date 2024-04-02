@@ -144,6 +144,8 @@ public class BukkitMenu {
 //  #           Player Inventory           #
 //  ########################################
 
+    private static final int[] UNCOVERED_INDEXES = {0, 1, 2, 3};
+
     public static void setItem(String playerName, int slot, PrisonEscapeItem item) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
@@ -152,6 +154,16 @@ public class BukkitMenu {
 
         ItemStack bukkitItem = BukkitItems.convertToItemStack(item);
         bukkitPlayer.getInventory().setItem(slot, bukkitItem);
+    }
+
+    public static int convertToIndexPlayerInventory(int slot) {
+        for (int i = 0; i < UNCOVERED_INDEXES.length; i++) {
+            if (slot == UNCOVERED_INDEXES[i]) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 }

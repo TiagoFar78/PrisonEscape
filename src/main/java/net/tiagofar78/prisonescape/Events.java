@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class Events implements Listener {
@@ -119,7 +120,6 @@ public class Events implements Listener {
         game.playerCloseMenu(e.getPlayer().getName());
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void playerClickInventory(InventoryClickEvent e) {
         PrisonEscapeGame game = GameManager.getGame();
@@ -127,16 +127,31 @@ public class Events implements Listener {
             return;
         }
 
-        if (e.getInventory() == null) {
+        if (e.getClickedInventory() == null) {
             return;
         }
 
+        boolean isPlayerInv = false;
         if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
-            return;
+            Inventory topInv = e.getView().getTopInventory();
+            if (topInv == null) {
+                e.setCancelled(true);
+                return;
+            }
+
+            isPlayerInv = true;
         }
+
+        ItemStack cursor = e.getCursor();
+        ItemStack current = e.getCurrentItem();
 
         PrisonEscapeItem item = BukkitItems.convertToPrisonEscapeItem(e.getCursor());
-        ClickReturnAction returnAction = game.playerClickMenu(e.getWhoClicked().getName(), e.getSlot(), item);
+        ClickReturnAction returnAction = game.playerClickMenu(
+                e.getWhoClicked().getName(),
+                e.getSlot(),
+                item,
+                isPlayerInv
+        );
         if (returnAction == ClickReturnAction.IGNORE) {
             return;
         }
@@ -144,13 +159,11 @@ public class Events implements Listener {
         e.setCancelled(true);
 
         if (returnAction == ClickReturnAction.DELETE_HOLD_AND_SELECTED) {
-            e.setCursor(null);
+            e.getWhoClicked().setItemOnCursor(null);
             e.setCurrentItem(null);
         } else if (returnAction == ClickReturnAction.CHANGE_HOLD_AND_SELECTED) {
-            ItemStack cursor = e.getCursor();
-            ItemStack current = e.getCurrentItem();
-
-            e.setCursor(current);
+            // NOTE: cursor and current variables must be defined before game.playerClickMenu() is executed.
+            e.getWhoClicked().setItemOnCursor(current);
             e.setCurrentItem(cursor);
         }
     }

@@ -87,7 +87,16 @@ public class Chest implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld) {
+    public ClickReturnAction click(
+            PrisonEscapePlayer player,
+            int slot,
+            PrisonEscapeItem itemHeld,
+            boolean clickedPlayerInv
+    ) {
+        if (clickedPlayerInv) {
+            return ClickReturnAction.NOTHING;
+        }
+
         int index = BukkitMenu.convertToIndexChest(slot);
         if (index == -1) {
             return ClickReturnAction.NOTHING;
