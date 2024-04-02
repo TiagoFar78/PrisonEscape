@@ -543,17 +543,12 @@ public class PrisonEscapeGame {
 
         if (_prisionersTeam.isOnTeam(player)) {
             sendMessageToPrisionersTeam(senderName, message);
-        }
-        else if (_policeTeam.isOnTeam(player)) {
+        } else if (_policeTeam.isOnTeam(player)) {
             sendMessageToPoliceTeam(senderName, message);
-        } 
+        }
     }
 
     public void sendGeneralMessage(String senderName, String message) {
-        if (getPrisonEscapePlayer(senderName) == null) {
-            return;
-        }
-
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getGeneralMessage(senderName, message));
