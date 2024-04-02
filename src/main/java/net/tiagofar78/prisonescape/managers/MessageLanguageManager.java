@@ -69,6 +69,14 @@ public class MessageLanguageManager {
     private String _vaultHiddenGlassName;
 
 //	########################################
+//	#                Chat                #
+//	########################################
+
+    private String _generalMessage;
+    private String _policeTeamMessage;
+    private String _prisionerTeamMessage;
+
+//	########################################
 //	#               Warnings               #
 //	########################################
 
@@ -160,6 +168,10 @@ public class MessageLanguageManager {
         _vaultHiddenGlassName = createMessage(messages.getString("Inventory.Vault.HiddenGlass.Name"));
 
         String messagePath = "Messages.";
+        _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
+        _policeTeamMessage = createMessage(messages.getString(messagePath + "PoliceTeamMessage"));
+        _prisionerTeamMessage = createMessage(messages.getString(messagePath + "PrisionerTeamMessage"));
+
         String warningPath = messagePath + "Warnings.";
         _successfullyStartedGameMessage = createMessage(messages.getString(warningPath + "StartedGame"));
         _successfullyForceStartedGameMessage = createMessage(messages.getString(warningPath + "ForceStartedGame"));
@@ -277,6 +289,22 @@ public class MessageLanguageManager {
 
     public String getVaultHiddenGlassName() {
         return _vaultHiddenGlassName;
+    }
+
+//	########################################
+//	#                Chat                #
+//	########################################
+
+    public String getGeneralMessage(String playerName, String message) {
+        return _generalMessage.replace("{PLAYER}", playerName).replace("{MESSAGE}", message);
+    }
+
+    public String getPoliceTeamMessage(String playerName, String message) {
+        return _policeTeamMessage.replace("{PLAYER}", playerName).replace("{MESSAGE}", message);
+    }
+
+    public String getPrisionerTeamMessage(String playerName, String message) {
+        return _prisionerTeamMessage.replace("{PLAYER}", playerName).replace("{MESSAGE}", message);
     }
 
 //	########################################
@@ -528,4 +556,5 @@ public class MessageLanguageManager {
     public String getStopCommandUsage() {
         return _stopCommandUsage;
     }
+
 }

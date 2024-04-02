@@ -535,6 +535,23 @@ public class PrisonEscapeGame {
         return clicakble.click(player, slot, itemHeld, clickedPlayerInv);
     }
 
+    public void sendTeamOnlyMessage(String senderName, String message) {
+        PrisonEscapePlayer player = getPlayerOnPrisionersTeam(senderName);
+        if (player != null) {
+            sendMessageToPrisionersTeam(senderName, message);
+            return;
+        }
+
+        sendMessageToPoliceTeam(senderName, message);
+    }
+
+    public void sendGeneralMessage(String senderName, String message) {
+        for (PrisonEscapePlayer player : _playersOnLobby) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, messages.getGeneralMessage(senderName, message));
+        }
+    }
+
 //	########################################
 //	#            Events Results            #
 //	########################################
@@ -678,6 +695,20 @@ public class PrisonEscapeGame {
         }
 
         return null;
+    }
+
+    private void sendMessageToPoliceTeam(String senderName, String message) {
+        for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, messages.getPoliceTeamMessage(senderName, message));
+        }
+    }
+
+    private void sendMessageToPrisionersTeam(String senderName, String message) {
+        for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, messages.getPrisionerTeamMessage(senderName, message));
+        }
     }
 
     private void distributePlayersPerTeam() {

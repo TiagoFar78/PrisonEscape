@@ -14,6 +14,9 @@ Inventory:
   Chest:
     Title: "Container"
 Messages:
+  GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
+  PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
+  PrisionerTeamMessage: "&6[TEAM] <{PLAYER}> &f{MESSAGE}"
   Warnings:
     StartedGame: "&aSucessfully started game."
     ForceStartedGame: "&aSucessfully skipped waiting phase."
