@@ -516,7 +516,12 @@ public class PrisonEscapeGame {
         }
     }
 
-    public ClickReturnAction playerClickMenu(String playerName, int slot, PrisonEscapeItem itemHeld) {
+    public ClickReturnAction playerClickMenu(
+            String playerName,
+            int slot,
+            PrisonEscapeItem itemHeld,
+            boolean clickedPlayerInv
+    ) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return ClickReturnAction.IGNORE;
@@ -527,7 +532,7 @@ public class PrisonEscapeGame {
         }
 
         Clickable clicakble = _playerOpenMenu.get(player.getName());
-        return clicakble.click(player, slot, itemHeld);
+        return clicakble.click(player, slot, itemHeld, clickedPlayerInv);
     }
 
 //	########################################

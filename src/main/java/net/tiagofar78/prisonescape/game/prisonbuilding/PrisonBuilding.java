@@ -88,8 +88,6 @@ public class PrisonBuilding {
             _chests.put(addReferenceLocation(reference, loc).createKey(), new Chest());
         }
 
-        System.out.println("Ha " + _chests.size() + " chests");
-
         _metalDetectorsLocations = new ArrayList<>();
     }
 

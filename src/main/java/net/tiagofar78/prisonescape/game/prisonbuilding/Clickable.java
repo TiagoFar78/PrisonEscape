@@ -11,6 +11,11 @@ public interface Clickable {
 
     public boolean isOpened();
 
-    public ClickReturnAction click(PrisonEscapePlayer player, int slot, PrisonEscapeItem itemHeld);
+    public ClickReturnAction click(
+            PrisonEscapePlayer player,
+            int slot,
+            PrisonEscapeItem itemHeld,
+            boolean clickedPlayerInv
+    );
 
 }
