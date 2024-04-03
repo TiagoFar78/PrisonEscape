@@ -11,10 +11,12 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -169,6 +171,18 @@ public class Events implements Listener {
     public void onWeatherChange(WeatherChangeEvent event) {
         if (event.toWeatherState()) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onMobSpawn(EntitySpawnEvent e) {
+        Entity entity = e.getEntity();
+        if (entity instanceof Player) {
+            return;
+        }
+
+        if (entity.getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
+            e.setCancelled(true);
         }
     }
 
