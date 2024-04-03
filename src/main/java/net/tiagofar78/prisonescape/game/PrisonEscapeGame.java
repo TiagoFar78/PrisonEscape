@@ -502,6 +502,15 @@ public class PrisonEscapeGame {
             return 0;
         }
 
+        PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
+                blockLocation,
+                _prisionersTeam.isOnTeam(player)
+        );
+        if (destination != null) {
+            BukkitTeleporter.teleport(player, destination);
+            return 0;
+        }
+
         return -1;
     }
 

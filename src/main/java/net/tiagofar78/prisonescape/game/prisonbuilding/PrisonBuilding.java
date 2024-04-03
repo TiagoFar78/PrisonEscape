@@ -20,8 +20,8 @@ public class PrisonBuilding {
     private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
-    private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
-    private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
+    private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
+    private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
 
     private List<Vault> _vaults;
     private List<PrisonEscapeLocation> _vaultsLocations;
@@ -63,7 +63,7 @@ public class PrisonBuilding {
         for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : config.getPrisionersSecretPassageLocations()
                 .entrySet()) {
             _prisionersSecretPassageLocations.put(
-                    addReferenceLocation(reference, entry.getKey()),
+                    addReferenceLocation(reference, entry.getKey()).createKey(),
                     addReferenceLocation(reference, entry.getValue())
             );
         }
@@ -72,7 +72,7 @@ public class PrisonBuilding {
         for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : config.getPoliceSecretPassageLocations()
                 .entrySet()) {
             _policeSecretPassageLocations.put(
-                    addReferenceLocation(reference, entry.getKey()),
+                    addReferenceLocation(reference, entry.getKey()).createKey(),
                     addReferenceLocation(reference, entry.getValue())
             );
         }
@@ -196,12 +196,12 @@ public class PrisonBuilding {
     }
 
     public PrisonEscapeLocation getSecretPassageDestinationLocation(
-            PrisonEscapeLocation entranceBlock,
+            PrisonEscapeLocation location,
             boolean isPrisioner
     ) {
-        Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> secretPassageLocations =
+        Hashtable<String, PrisonEscapeLocation> secretPassageLocations =
                 isPrisioner ? _prisionersSecretPassageLocations : _policeSecretPassageLocations;
 
-        return secretPassageLocations.get(entranceBlock);
+        return secretPassageLocations.get(location.createKey());
     }
 }
