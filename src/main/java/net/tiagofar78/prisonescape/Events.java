@@ -15,6 +15,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -204,6 +206,28 @@ public class Events implements Listener {
         }
 
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (GameManager.getGame() == null && event.getPlayer().hasPermission(PrisonEscape.ADMIN_PERMISSION)) {
+            return;
+        }
+
+        if (event.getPlayer().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (GameManager.getGame() == null && event.getPlayer().hasPermission(PrisonEscape.ADMIN_PERMISSION)) {
+            return;
+        }
+
+        if (event.getPlayer().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
+            event.setCancelled(true);
+        }
     }
 
 }
