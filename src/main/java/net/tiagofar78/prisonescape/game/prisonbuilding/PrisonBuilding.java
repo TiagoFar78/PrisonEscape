@@ -29,6 +29,10 @@ public class PrisonBuilding {
     private Hashtable<String, Chest> _chests;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
 
+//  #########################################
+//  #              Constructor              #
+//  #########################################
+
     public PrisonBuilding(PrisonEscapeLocation reference) {
         ConfigManager config = ConfigManager.getInstance();
 
@@ -36,52 +40,26 @@ public class PrisonBuilding {
         _prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
         _prisonBottomRightCorner = addReferenceLocation(reference, config.getPrisonBottomRightCornerLocation());
 
-        _restrictedAreasBottomRightCornerLocations = new ArrayList<>();
-        for (PrisonEscapeLocation loc : config.getRestrictedAreasBottomRightCornerLocations()) {
-            _restrictedAreasBottomRightCornerLocations.add(addReferenceLocation(reference, loc));
-        }
+        _restrictedAreasBottomRightCornerLocations = createLocationsList(
+                reference,
+                config.getRestrictedAreasBottomRightCornerLocations()
+        );
+        _restrictedAreasTopLeftCornerLocations = createLocationsList(
+                reference,
+                config.getRestrictedAreasTopLeftCornerLocations()
+        );
 
-        _restrictedAreasTopLeftCornerLocations = new ArrayList<>();
-        for (PrisonEscapeLocation loc : config.getRestrictedAreasTopLeftCornerLocations()) {
-            _restrictedAreasTopLeftCornerLocations.add(addReferenceLocation(reference, loc));
-        }
-
-        _prisionersSpawnLocations = new ArrayList<>();
-        for (PrisonEscapeLocation loc : config.getPrisionersSpawnLocations()) {
-            _prisionersSpawnLocations.add(addReferenceLocation(reference, loc));
-        }
-
-        _policeSpawnLocations = new ArrayList<>();
-        for (PrisonEscapeLocation loc : config.getPoliceSpawnLocations()) {
-            _policeSpawnLocations.add(addReferenceLocation(reference, loc));
-        }
+        _prisionersSpawnLocations = createLocationsList(reference, config.getPrisionersSpawnLocations());
+        _policeSpawnLocations = createLocationsList(reference, config.getPoliceSpawnLocations());
 
         _solitaryLocation = addReferenceLocation(reference, config.getSolitaryLocation());
         _solitaryExitLocation = addReferenceLocation(reference, config.getSolitaryExitLocation());
 
-        _prisionersSecretPassageLocations = new Hashtable<>();
-        for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : config.getPrisionersSecretPassageLocations()
-                .entrySet()) {
-            _prisionersSecretPassageLocations.put(
-                    addReferenceLocation(reference, entry.getKey()).createKey(),
-                    addReferenceLocation(reference, entry.getValue())
-            );
-        }
-
-        _policeSecretPassageLocations = new Hashtable<>();
-        for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : config.getPoliceSecretPassageLocations()
-                .entrySet()) {
-            _policeSecretPassageLocations.put(
-                    addReferenceLocation(reference, entry.getKey()).createKey(),
-                    addReferenceLocation(reference, entry.getValue())
-            );
-        }
+        _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
+        _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
 
         _vaults = new ArrayList<>();
-        _vaultsLocations = new ArrayList<>();
-        for (PrisonEscapeLocation location : config.getVaultsLocations()) {
-            _vaultsLocations.add(addReferenceLocation(reference, location));
-        }
+        _vaultsLocations = createLocationsList(reference, config.getVaultsLocations());
 
         _chests = new Hashtable<>();
         for (PrisonEscapeLocation loc : config.getChestsLocations()) {
@@ -99,11 +77,37 @@ public class PrisonBuilding {
         );
     }
 
-    public boolean isOutsidePrison(PrisonEscapeLocation loc) {
-        return loc.getX() > _prisonTopLeftCorner.getX() || loc.getX() < _prisonBottomRightCorner.getX() || loc
-                .getY() > _prisonTopLeftCorner.getY() || loc.getY() < _prisonBottomRightCorner.getY() || loc
-                        .getZ() > _prisonTopLeftCorner.getZ() || loc.getZ() < _prisonBottomRightCorner.getZ();
+    private List<PrisonEscapeLocation> createLocationsList(
+            PrisonEscapeLocation reference,
+            List<PrisonEscapeLocation> locs
+    ) {
+        List<PrisonEscapeLocation> list = new ArrayList<>();
+
+        for (PrisonEscapeLocation loc : locs) {
+            list.add(addReferenceLocation(reference, loc));
+        }
+
+        return list;
     }
+
+    private Hashtable<String, PrisonEscapeLocation> createLocationsMap(
+            PrisonEscapeLocation reference,
+            Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> locs
+    ) {
+        Hashtable<String, PrisonEscapeLocation> map = new Hashtable<>();
+
+        for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : locs.entrySet()) {
+            String key = addReferenceLocation(reference, entry.getKey()).createKey();
+            PrisonEscapeLocation value = addReferenceLocation(reference, entry.getValue());
+            map.put(key, value);
+        }
+
+        return map;
+    }
+
+//  #########################################
+//  #            Metal Detectors            #
+//  #########################################
 
     public boolean isInRestrictedAreas(PrisonEscapeLocation loc) {
         for (int i = 0; i < _restrictedAreasTopLeftCornerLocations.size(); i++) {
@@ -203,5 +207,11 @@ public class PrisonBuilding {
                 isPrisioner ? _prisionersSecretPassageLocations : _policeSecretPassageLocations;
 
         return secretPassageLocations.get(location.createKey());
+    }
+
+    public boolean isOutsidePrison(PrisonEscapeLocation loc) {
+        return loc.getX() > _prisonTopLeftCorner.getX() || loc.getX() < _prisonBottomRightCorner.getX() || loc
+                .getY() > _prisonTopLeftCorner.getY() || loc.getY() < _prisonBottomRightCorner.getY() || loc
+                        .getZ() > _prisonTopLeftCorner.getZ() || loc.getZ() < _prisonBottomRightCorner.getZ();
     }
 }
