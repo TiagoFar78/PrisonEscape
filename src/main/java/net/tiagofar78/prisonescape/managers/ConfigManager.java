@@ -2,6 +2,8 @@ package net.tiagofar78.prisonescape.managers;
 
 import net.tiagofar78.prisonescape.PrisonEscapeResources;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -39,8 +41,9 @@ public class ConfigManager {
     private PrisonEscapeLocation _referenceBlock;
     private PrisonEscapeLocation _leavingLocation;
     private PrisonEscapeLocation _waitingLocation;
-    private PrisonEscapeLocation _prisonTopLeftCornerLocation;
-    private PrisonEscapeLocation _prisonBottomRightCornerLocation;
+    private PrisonEscapeLocation _prisonUpperCornerLocation;
+    private PrisonEscapeLocation _prisonLowerCornerLocation;
+    private List<Region> _regions;
     private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
     private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
     private List<PrisonEscapeLocation> _prisionersSpawnLocation;
@@ -82,8 +85,9 @@ public class ConfigManager {
         _referenceBlock = createLocation(config, "ReferenceBlock");
         _leavingLocation = createLocation(config, "LeavingLocation");
         _waitingLocation = createLocation(config, "WaitingLocation");
-        _prisonTopLeftCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation");
-        _prisonBottomRightCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation");
+        _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation");
+        _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation");
+        _regions = createRegionsList(config);
         _restrictedAreasBottomRightCornerLocations = createLocationList(
                 config,
                 "PrisonOfficeBottomRightCornerLocations"
@@ -143,6 +147,37 @@ public class ConfigManager {
         }
 
         return map;
+    }
+
+    private List<Region> createRegionsList(YamlConfiguration config) {
+        List<Region> list = new ArrayList<>();
+
+        List<String> regionsNamesPaths = config.getKeys(true)
+                .stream()
+                .filter(key -> key.startsWith("Regions.") && key.lastIndexOf(".") == "Regions".length())
+                .toList();
+
+        for (String regionNamePath : regionsNamesPaths) {
+            String name = regionNamePath.substring("Regions.".length());
+            boolean isRestricted = config.getBoolean(regionNamePath + ".IsRestricted");
+
+            List<String> regionsPaths = config.getKeys(true)
+                    .stream()
+                    .filter(
+                            key -> key.startsWith(regionNamePath + ".") && key.lastIndexOf(".") == regionNamePath
+                                    .length() && !key.contains("IsRestricted")
+                    )
+                    .toList();
+
+            for (String regionPath : regionsPaths) {
+                PrisonEscapeLocation upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
+                PrisonEscapeLocation lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner");
+
+                list.add(new SquaredRegion(name, isRestricted, upperCornerLocation, lowerCornerLocation));
+            }
+        }
+
+        return list;
     }
 
     public Double getPrisionerRatio() {
@@ -222,12 +257,16 @@ public class ConfigManager {
         return _waitingLocation;
     }
 
-    public PrisonEscapeLocation getPrisonTopLeftCornerLocation() {
-        return _prisonTopLeftCornerLocation;
+    public PrisonEscapeLocation getPrisonUpperCornerLocation() {
+        return _prisonUpperCornerLocation;
     }
 
-    public PrisonEscapeLocation getPrisonBottomRightCornerLocation() {
-        return _prisonBottomRightCornerLocation;
+    public PrisonEscapeLocation getPrisonLowerCornerLocation() {
+        return _prisonLowerCornerLocation;
+    }
+
+    public List<Region> getRegions() {
+        return _regions;
     }
 
     public List<PrisonEscapeLocation> getRestrictedAreasBottomRightCornerLocations() {

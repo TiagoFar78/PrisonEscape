@@ -2,6 +2,8 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import java.util.ArrayList;
@@ -11,9 +13,11 @@ import java.util.Map.Entry;
 
 public class PrisonBuilding {
 
+    private static final String PRISON_REGION_NAME = "PRISON";
+
     private PrisonEscapeLocation _waitingLobbyLocation;
-    private PrisonEscapeLocation _prisonTopLeftCorner;
-    private PrisonEscapeLocation _prisonBottomRightCorner;
+    private Region _prison;
+    private List<Region> _regions;
     private List<PrisonEscapeLocation> _prisionersSpawnLocations;
     private List<PrisonEscapeLocation> _policeSpawnLocations;
     private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
@@ -36,9 +40,13 @@ public class PrisonBuilding {
     public PrisonBuilding(PrisonEscapeLocation reference) {
         ConfigManager config = ConfigManager.getInstance();
 
-        _waitingLobbyLocation = addReferenceLocation(reference, config.getWaitingLobbyLocation());
-        _prisonTopLeftCorner = addReferenceLocation(reference, config.getPrisonTopLeftCornerLocation());
-        _prisonBottomRightCorner = addReferenceLocation(reference, config.getPrisonBottomRightCornerLocation());
+        PrisonEscapeLocation _prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
+        PrisonEscapeLocation _prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
+        _prison = new SquaredRegion(PRISON_REGION_NAME, false, _prisonUpperCorner, _prisonLowerCorner);
+
+        _regions = createRegionsList(reference, config.getRegions());
+
+        _waitingLobbyLocation = config.getWaitingLobbyLocation().add(reference);
 
         _restrictedAreasBottomRightCornerLocations = createLocationsList(
                 reference,
@@ -52,8 +60,8 @@ public class PrisonBuilding {
         _prisionersSpawnLocations = createLocationsList(reference, config.getPrisionersSpawnLocations());
         _policeSpawnLocations = createLocationsList(reference, config.getPoliceSpawnLocations());
 
-        _solitaryLocation = addReferenceLocation(reference, config.getSolitaryLocation());
-        _solitaryExitLocation = addReferenceLocation(reference, config.getSolitaryExitLocation());
+        _solitaryLocation = config.getSolitaryLocation().add(reference);
+        _solitaryExitLocation = config.getSolitaryExitLocation().add(reference);
 
         _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
@@ -63,18 +71,10 @@ public class PrisonBuilding {
 
         _chests = new Hashtable<>();
         for (PrisonEscapeLocation loc : config.getChestsLocations()) {
-            _chests.put(addReferenceLocation(reference, loc).createKey(), new Chest());
+            _chests.put(loc.add(reference).createKey(), new Chest());
         }
 
         _metalDetectorsLocations = new ArrayList<>();
-    }
-
-    private PrisonEscapeLocation addReferenceLocation(PrisonEscapeLocation reference, PrisonEscapeLocation loc) {
-        return new PrisonEscapeLocation(
-                loc.getX() + reference.getX(),
-                loc.getY() + reference.getX(),
-                loc.getZ() + reference.getZ()
-        );
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -84,7 +84,7 @@ public class PrisonBuilding {
         List<PrisonEscapeLocation> list = new ArrayList<>();
 
         for (PrisonEscapeLocation loc : locs) {
-            list.add(addReferenceLocation(reference, loc));
+            list.add(loc.add(reference));
         }
 
         return list;
@@ -97,12 +97,36 @@ public class PrisonBuilding {
         Hashtable<String, PrisonEscapeLocation> map = new Hashtable<>();
 
         for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : locs.entrySet()) {
-            String key = addReferenceLocation(reference, entry.getKey()).createKey();
-            PrisonEscapeLocation value = addReferenceLocation(reference, entry.getValue());
+            String key = entry.getKey().add(reference).createKey();
+            PrisonEscapeLocation value = entry.getValue().add(reference);
             map.put(key, value);
         }
 
         return map;
+    }
+
+    private List<Region> createRegionsList(PrisonEscapeLocation reference, List<Region> regions) {
+        List<Region> list = new ArrayList<>();
+
+        for (Region region : regions) {
+            list.add(region.add(reference));
+        }
+
+        return list;
+    }
+
+//  #########################################
+//  #                Regions                #
+//  #########################################
+
+    public String getRegionName(PrisonEscapeLocation location) {
+        for (Region region : _regions) {
+            if (region.isInside(location)) {
+                return region.getName();
+            }
+        }
+
+        return null;
     }
 
 //  #########################################
@@ -210,8 +234,6 @@ public class PrisonBuilding {
     }
 
     public boolean isOutsidePrison(PrisonEscapeLocation loc) {
-        return loc.getX() > _prisonTopLeftCorner.getX() || loc.getX() < _prisonBottomRightCorner.getX() || loc
-                .getY() > _prisonTopLeftCorner.getY() || loc.getY() < _prisonBottomRightCorner.getY() || loc
-                        .getZ() > _prisonTopLeftCorner.getZ() || loc.getZ() < _prisonBottomRightCorner.getZ();
+        return !_prison.isInside(loc);
     }
 }

@@ -24,6 +24,14 @@ public class PrisonEscapeLocation {
         return this.z;
     }
 
+    public PrisonEscapeLocation add(PrisonEscapeLocation location) {
+        return add(location.getX(), location.getY(), location.getZ());
+    }
+
+    public PrisonEscapeLocation add(int x, int y, int z) {
+        return new PrisonEscapeLocation(this.x + x, this.y + y, this.z + z);
+    }
+
     public String createKey() {
         return "X" + this.x + "Y" + this.y + "Z" + this.z;
     }
