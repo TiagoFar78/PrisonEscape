@@ -23,6 +23,6 @@ public abstract class Region implements Locatable {
     public abstract void add(PrisonEscapeLocation location);
 
     @Override
-    public abstract boolean isInside(PrisonEscapeLocation loc);
+    public abstract boolean contains(PrisonEscapeLocation loc);
 
 }

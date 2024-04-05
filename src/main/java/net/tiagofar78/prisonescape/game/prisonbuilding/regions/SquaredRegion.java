@@ -34,7 +34,7 @@ public class SquaredRegion extends Region {
     }
 
     @Override
-    public boolean isInside(PrisonEscapeLocation loc) {
+    public boolean contains(PrisonEscapeLocation loc) {
         int x = loc.getX();
         int y = loc.getY();
         int z = loc.getZ();

@@ -20,8 +20,6 @@ public class PrisonBuilding {
     private List<Region> _regions;
     private List<PrisonEscapeLocation> _prisionersSpawnLocations;
     private List<PrisonEscapeLocation> _policeSpawnLocations;
-    private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
-    private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
     private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
@@ -47,15 +45,6 @@ public class PrisonBuilding {
         _regions = createRegionsList(reference, config.getRegions());
 
         _waitingLobbyLocation = config.getWaitingLobbyLocation().add(reference);
-
-        _restrictedAreasBottomRightCornerLocations = createLocationsList(
-                reference,
-                config.getRestrictedAreasBottomRightCornerLocations()
-        );
-        _restrictedAreasTopLeftCornerLocations = createLocationsList(
-                reference,
-                config.getRestrictedAreasTopLeftCornerLocations()
-        );
 
         _prisionersSpawnLocations = createLocationsList(reference, config.getPrisionersSpawnLocations());
         _policeSpawnLocations = createLocationsList(reference, config.getPoliceSpawnLocations());
@@ -122,7 +111,7 @@ public class PrisonBuilding {
 
     public String getRegionName(PrisonEscapeLocation location) {
         for (Region region : _regions) {
-            if (region.isInside(location)) {
+            if (region.contains(location)) {
                 return region.getName();
             }
         }
@@ -134,16 +123,13 @@ public class PrisonBuilding {
 //  #            Metal Detectors            #
 //  #########################################
 
-    public boolean isInRestrictedAreas(PrisonEscapeLocation loc) {
-        for (int i = 0; i < _restrictedAreasTopLeftCornerLocations.size(); i++) {
-            PrisonEscapeLocation bottomRight = _restrictedAreasBottomRightCornerLocations.get(i);
-            PrisonEscapeLocation topLeft = _restrictedAreasTopLeftCornerLocations.get(i);
-
-            if (loc.getX() > bottomRight.getX() && loc.getX() < topLeft.getX() && loc.getZ() > bottomRight.getZ() && loc
-                    .getZ() < topLeft.getZ()) {
-                return true;
+    public boolean isInRestrictedArea(PrisonEscapeLocation loc) {
+        for (Region region : _regions) {
+            if (region.contains(loc)) {
+                return region.isRestricted();
             }
         }
+
         return false;
     }
 
@@ -235,6 +221,6 @@ public class PrisonBuilding {
     }
 
     public boolean isOutsidePrison(PrisonEscapeLocation loc) {
-        return !_prison.isInside(loc);
+        return !_prison.contains(loc);
     }
 }

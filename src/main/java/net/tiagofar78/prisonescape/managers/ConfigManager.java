@@ -44,8 +44,6 @@ public class ConfigManager {
     private PrisonEscapeLocation _prisonUpperCornerLocation;
     private PrisonEscapeLocation _prisonLowerCornerLocation;
     private List<SquaredRegion> _regions;
-    private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
-    private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
     private List<PrisonEscapeLocation> _prisionersSpawnLocation;
     private List<PrisonEscapeLocation> _policeSpawnLocation;
     private PrisonEscapeLocation _solitaryLocation;
@@ -88,11 +86,6 @@ public class ConfigManager {
         _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation");
         _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation");
         _regions = createRegionsList(config);
-        _restrictedAreasBottomRightCornerLocations = createLocationList(
-                config,
-                "PrisonOfficeBottomRightCornerLocations"
-        );
-        _restrictedAreasTopLeftCornerLocations = createLocationList(config, "PrisonOfficeTopLeftCornerLocations");
         _prisionersSpawnLocation = createLocationList(config, "PrisionersSpawnLocations");
         _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations");
         _solitaryLocation = createLocation(config, "SolitaryLocation");
@@ -267,14 +260,6 @@ public class ConfigManager {
 
     public List<SquaredRegion> getRegions() {
         return createRegionsListCopy(_regions);
-    }
-
-    public List<PrisonEscapeLocation> getRestrictedAreasBottomRightCornerLocations() {
-        return createLocationsListCopy(_restrictedAreasBottomRightCornerLocations);
-    }
-
-    public List<PrisonEscapeLocation> getRestrictedAreasTopLeftCornerLocations() {
-        return createLocationsListCopy(_restrictedAreasTopLeftCornerLocations);
     }
 
     public List<PrisonEscapeLocation> getPrisionersSpawnLocations() {

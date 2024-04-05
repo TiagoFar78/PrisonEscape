@@ -11,7 +11,7 @@ public class ComplexRegion extends Region {
     }
 
     @Override
-    public boolean isInside(PrisonEscapeLocation loc) {
+    public boolean contains(PrisonEscapeLocation loc) {
         // TODO
         return false;
     }
