@@ -40,9 +40,9 @@ public class PrisonBuilding {
     public PrisonBuilding(PrisonEscapeLocation reference) {
         ConfigManager config = ConfigManager.getInstance();
 
-        PrisonEscapeLocation _prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
-        PrisonEscapeLocation _prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
-        _prison = new SquaredRegion(PRISON_REGION_NAME, false, _prisonUpperCorner, _prisonLowerCorner);
+        PrisonEscapeLocation prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
+        PrisonEscapeLocation prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
+        _prison = new SquaredRegion(PRISON_REGION_NAME, false, prisonUpperCorner, prisonLowerCorner);
 
         _regions = createRegionsList(reference, config.getRegions());
 
@@ -105,11 +105,12 @@ public class PrisonBuilding {
         return map;
     }
 
-    private List<Region> createRegionsList(PrisonEscapeLocation reference, List<Region> regions) {
+    private List<Region> createRegionsList(PrisonEscapeLocation reference, List<SquaredRegion> regions) {
         List<Region> list = new ArrayList<>();
 
         for (Region region : regions) {
-            list.add(region.add(reference));
+            region.add(reference);
+            list.add(region);
         }
 
         return list;

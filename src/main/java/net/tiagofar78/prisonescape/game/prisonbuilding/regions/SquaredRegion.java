@@ -4,8 +4,17 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 
 public class SquaredRegion extends Region {
 
-    private PrisonEscapeLocation _upperCorner;
-    private PrisonEscapeLocation _lowerCorner;
+    private PrisonEscapeLocation _upperCornerLocation;
+    private PrisonEscapeLocation _lowerCornerLocation;
+
+    public SquaredRegion(SquaredRegion region) {
+        this(
+                region.getName(),
+                region.isRestricted(),
+                new PrisonEscapeLocation(region._upperCornerLocation),
+                new PrisonEscapeLocation(region._lowerCornerLocation)
+        );
+    }
 
     public SquaredRegion(
             String name,
@@ -14,20 +23,25 @@ public class SquaredRegion extends Region {
             PrisonEscapeLocation lowerCorner
     ) {
         super(name, isRestricted);
-        _upperCorner = upperCorner;
-        _lowerCorner = lowerCorner;
+        _upperCornerLocation = upperCorner;
+        _lowerCornerLocation = lowerCorner;
     }
 
     @Override
-    public Region add(PrisonEscapeLocation location) {
-        return new SquaredRegion(getName(), isRestricted(), _upperCorner.add(location), _lowerCorner).add(location);
+    public void add(PrisonEscapeLocation location) {
+        _upperCornerLocation.add(location);
+        _lowerCornerLocation.add(location);
     }
 
     @Override
     public boolean isInside(PrisonEscapeLocation loc) {
-        boolean isXBetweenBoundaries = _upperCorner.getX() >= loc.getX() && _lowerCorner.getX() <= loc.getX();
-        boolean isYBetweenBoundaries = _upperCorner.getY() >= loc.getY() && _lowerCorner.getY() <= loc.getY();
-        boolean isZBetweenBoundaries = _upperCorner.getZ() >= loc.getZ() && _lowerCorner.getZ() <= loc.getZ();
+        int x = loc.getX();
+        int y = loc.getY();
+        int z = loc.getZ();
+
+        boolean isXBetweenBoundaries = _upperCornerLocation.getX() >= x && _lowerCornerLocation.getX() <= x;
+        boolean isYBetweenBoundaries = _upperCornerLocation.getY() >= y && _lowerCornerLocation.getY() <= y;
+        boolean isZBetweenBoundaries = _upperCornerLocation.getZ() >= z && _lowerCornerLocation.getZ() <= z;
 
         return isXBetweenBoundaries && isYBetweenBoundaries && isZBetweenBoundaries;
     }

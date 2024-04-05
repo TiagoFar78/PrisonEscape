@@ -6,6 +6,10 @@ public class PrisonEscapeLocation {
     private int y;
     private int z;
 
+    public PrisonEscapeLocation(PrisonEscapeLocation location) {
+        this(location.getX(), location.getY(), location.getZ());
+    }
+
     public PrisonEscapeLocation(int x, int y, int z) {
         this.x = x;
         this.y = y;
@@ -29,7 +33,11 @@ public class PrisonEscapeLocation {
     }
 
     public PrisonEscapeLocation add(int x, int y, int z) {
-        return new PrisonEscapeLocation(this.x + x, this.y + y, this.z + z);
+        this.x += x;
+        this.y += y;
+        this.z += z;
+
+        return this;
     }
 
     public String createKey() {

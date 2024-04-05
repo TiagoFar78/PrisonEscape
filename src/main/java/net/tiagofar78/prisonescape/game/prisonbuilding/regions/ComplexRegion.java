@@ -17,9 +17,8 @@ public class ComplexRegion extends Region {
     }
 
     @Override
-    public Region add(PrisonEscapeLocation location) {
+    public void add(PrisonEscapeLocation location) {
         // TODO
-        return null;
     }
 
 }

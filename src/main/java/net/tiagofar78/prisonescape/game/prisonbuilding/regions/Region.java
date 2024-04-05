@@ -20,7 +20,7 @@ public abstract class Region implements Locatable {
         return _isRestricted;
     }
 
-    public abstract Region add(PrisonEscapeLocation location);
+    public abstract void add(PrisonEscapeLocation location);
 
     @Override
     public abstract boolean isInside(PrisonEscapeLocation loc);

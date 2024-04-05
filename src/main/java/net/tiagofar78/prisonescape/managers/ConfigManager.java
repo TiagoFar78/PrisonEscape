@@ -2,7 +2,6 @@ package net.tiagofar78.prisonescape.managers;
 
 import net.tiagofar78.prisonescape.PrisonEscapeResources;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
-import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class ConfigManager {
 
@@ -43,7 +43,7 @@ public class ConfigManager {
     private PrisonEscapeLocation _waitingLocation;
     private PrisonEscapeLocation _prisonUpperCornerLocation;
     private PrisonEscapeLocation _prisonLowerCornerLocation;
-    private List<Region> _regions;
+    private List<SquaredRegion> _regions;
     private List<PrisonEscapeLocation> _restrictedAreasBottomRightCornerLocations;
     private List<PrisonEscapeLocation> _restrictedAreasTopLeftCornerLocations;
     private List<PrisonEscapeLocation> _prisionersSpawnLocation;
@@ -149,8 +149,8 @@ public class ConfigManager {
         return map;
     }
 
-    private List<Region> createRegionsList(YamlConfiguration config) {
-        List<Region> list = new ArrayList<>();
+    private List<SquaredRegion> createRegionsList(YamlConfiguration config) {
+        List<SquaredRegion> list = new ArrayList<>();
 
         List<String> regionsNamesPaths = config.getKeys(true)
                 .stream()
@@ -246,67 +246,67 @@ public class ConfigManager {
 
     @Deprecated
     public PrisonEscapeLocation getReferenceBlock() {
-        return _referenceBlock;
+        return createLocationCopy(_referenceBlock);
     }
 
     public PrisonEscapeLocation getLeavingLocation() {
-        return _leavingLocation;
+        return createLocationCopy(_leavingLocation);
     }
 
     public PrisonEscapeLocation getWaitingLobbyLocation() {
-        return _waitingLocation;
+        return createLocationCopy(_waitingLocation);
     }
 
     public PrisonEscapeLocation getPrisonUpperCornerLocation() {
-        return _prisonUpperCornerLocation;
+        return createLocationCopy(_prisonUpperCornerLocation);
     }
 
     public PrisonEscapeLocation getPrisonLowerCornerLocation() {
-        return _prisonLowerCornerLocation;
+        return createLocationCopy(_prisonLowerCornerLocation);
     }
 
-    public List<Region> getRegions() {
-        return _regions;
+    public List<SquaredRegion> getRegions() {
+        return createRegionsListCopy(_regions);
     }
 
     public List<PrisonEscapeLocation> getRestrictedAreasBottomRightCornerLocations() {
-        return _restrictedAreasBottomRightCornerLocations;
+        return createLocationsListCopy(_restrictedAreasBottomRightCornerLocations);
     }
 
     public List<PrisonEscapeLocation> getRestrictedAreasTopLeftCornerLocations() {
-        return _restrictedAreasTopLeftCornerLocations;
+        return createLocationsListCopy(_restrictedAreasTopLeftCornerLocations);
     }
 
     public List<PrisonEscapeLocation> getPrisionersSpawnLocations() {
-        return _prisionersSpawnLocation;
+        return createLocationsListCopy(_prisionersSpawnLocation);
     }
 
     public List<PrisonEscapeLocation> getPoliceSpawnLocations() {
-        return _policeSpawnLocation;
+        return createLocationsListCopy(_policeSpawnLocation);
     }
 
     public PrisonEscapeLocation getSolitaryLocation() {
-        return _solitaryLocation;
+        return createLocationCopy(_solitaryLocation);
     }
 
     public PrisonEscapeLocation getSolitaryExitLocation() {
-        return _solitaryExitLocation;
+        return createLocationCopy(_solitaryExitLocation);
     }
 
     public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPrisionersSecretPassageLocations() {
-        return _prisionersSecretPassageLocations;
+        return createLocationsMapCopy(_prisionersSecretPassageLocations);
     }
 
     public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPoliceSecretPassageLocations() {
-        return _policeSecretPassageLocations;
+        return createLocationsMapCopy(_policeSecretPassageLocations);
     }
 
     public List<PrisonEscapeLocation> getVaultsLocations() {
-        return _vaultsLocations;
+        return createLocationsListCopy(_vaultsLocations);
     }
 
     public List<PrisonEscapeLocation> getChestsLocations() {
-        return _chestsLocations;
+        return createLocationsListCopy(_chestsLocations);
     }
 
     public double getCommonItemsProbability() {
@@ -320,4 +320,45 @@ public class ConfigManager {
     public int getChestSize() {
         return _chestSize;
     }
+
+//  ########################################
+//  #                 Copy                 #
+//  ########################################
+
+    private PrisonEscapeLocation createLocationCopy(PrisonEscapeLocation location) {
+        return new PrisonEscapeLocation(location);
+    }
+
+    private List<PrisonEscapeLocation> createLocationsListCopy(List<PrisonEscapeLocation> locations) {
+        List<PrisonEscapeLocation> list = new ArrayList<>();
+
+        for (PrisonEscapeLocation location : locations) {
+            list.add(createLocationCopy(location));
+        }
+
+        return list;
+    }
+
+    private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> createLocationsMapCopy(
+            Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> locations
+    ) {
+        Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> map = new Hashtable<>();
+
+        for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : locations.entrySet()) {
+            map.put(createLocationCopy(entry.getKey()), createLocationCopy(entry.getValue()));
+        }
+
+        return map;
+    }
+
+    private List<SquaredRegion> createRegionsListCopy(List<SquaredRegion> regions) {
+        List<SquaredRegion> list = new ArrayList<>();
+
+        for (SquaredRegion region : regions) {
+            list.add(new SquaredRegion(region));
+        }
+
+        return list;
+    }
+
 }
