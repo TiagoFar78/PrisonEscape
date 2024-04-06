@@ -22,7 +22,7 @@ public class Chest implements Clickable {
 
     protected Chest(String regionName) {
         ConfigManager config = ConfigManager.getInstance();
-        
+
         this._contents = createContentsList();
         this._itemsProbability = config.getChestContents(regionName);
         this._isOpened = false;
