@@ -95,6 +95,10 @@ Regions:
         X: 0
         Y: 0
         Z: 0
+ChestsContents:
+  RegionName:
+    Item1Name: 0.25
+    Item2Name: 0.05
 CommonItemsProbability: 0.8
 RareItemsProbability: 0.25
 ChestSize: 5

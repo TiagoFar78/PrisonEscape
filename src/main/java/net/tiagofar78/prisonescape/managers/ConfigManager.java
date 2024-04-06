@@ -1,6 +1,8 @@
 package net.tiagofar78.prisonescape.managers;
 
 import net.tiagofar78.prisonescape.PrisonEscapeResources;
+import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 
@@ -52,6 +54,8 @@ public class ConfigManager {
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
     private List<PrisonEscapeLocation> _chestsLocations;
+    
+    private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
     private double _commonItemsProbability;
     private double _rareItemsProbability;
@@ -94,6 +98,8 @@ public class ConfigManager {
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
         _chestsLocations = createLocationList(config, "ChestsLocations");
+        
+        _regionsChestContents = createRegionsChestContentsMap(config);
 
         _commonItemsProbability = config.getDouble("CommonItemsProbability");
         _rareItemsProbability = config.getDouble("RareItemsProbability");
@@ -171,6 +177,30 @@ public class ConfigManager {
         }
 
         return list;
+    }
+    
+    private Hashtable<String, List<ItemProbability>> createRegionsChestContentsMap(YamlConfiguration config) {
+        Hashtable<String, List<ItemProbability>> map = new Hashtable<>();
+        
+        String chestsContentsPath = "ChestsContents";
+        
+        List<String> paths = config.getKeys(true).stream().filter(key -> key.startsWith(chestsContentsPath) && key.lastIndexOf(".") != chestsContentsPath.length()).toList();
+        for (String path : paths) {
+            int lastIndexOfDot = path.lastIndexOf(".");
+            String regionName = path.substring(chestsContentsPath.length(), lastIndexOfDot);
+            
+            List<ItemProbability> itemsProbabilities = map.get(regionName);
+            if (itemsProbabilities == null) {
+                itemsProbabilities = new ArrayList<>();
+                map.put(regionName, itemsProbabilities);
+            }
+            
+            String itemName = path.substring(lastIndexOfDot);
+            double probability = config.getDouble(path);
+            itemsProbabilities.add(new ItemProbability(PrisonEscapeItem.valueOf(itemName), probability));
+        }
+        
+        return map;
     }
 
     public Double getPrisionerRatio() {
@@ -293,6 +323,14 @@ public class ConfigManager {
     public List<PrisonEscapeLocation> getChestsLocations() {
         return createLocationsListCopy(_chestsLocations);
     }
+    
+    public List<ItemProbability> getChestContents(String regionName) {
+        if (!_regionsChestContents.containsKey(regionName)) {
+            return null;
+        }
+        
+        return createItemProbabilityListCopy(_regionsChestContents.get(regionName));
+    }
 
     public double getCommonItemsProbability() {
         return _commonItemsProbability;
@@ -343,6 +381,16 @@ public class ConfigManager {
             list.add(new SquaredRegion(region));
         }
 
+        return list;
+    }
+    
+    private List<ItemProbability> createItemProbabilityListCopy(List<ItemProbability> itemsProbabilities) {
+        List<ItemProbability> list = new ArrayList<>();
+        
+        for (ItemProbability itemProbability : itemsProbabilities) {
+            list.add(new ItemProbability(itemProbability.getItem(), itemProbability.getProbability()));
+        }
+        
         return list;
     }
 

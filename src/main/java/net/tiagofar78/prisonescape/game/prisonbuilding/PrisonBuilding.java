@@ -60,7 +60,8 @@ public class PrisonBuilding {
 
         _chests = new Hashtable<>();
         for (PrisonEscapeLocation loc : config.getChestsLocations()) {
-            _chests.put(loc.add(reference).createKey(), new Chest());
+            String regionName = getRegionName(loc);
+            _chests.put(loc.add(reference).createKey(), new Chest(regionName));
         }
 
         _metalDetectorsLocations = new ArrayList<>();
