@@ -189,12 +189,13 @@ public class ConfigManager {
         List<String> paths = config.getKeys(true)
                 .stream()
                 .filter(
-                        key -> key.startsWith(chestsContentsPath) && key.lastIndexOf(".") != chestsContentsPath.length()
+                        key -> key.startsWith(chestsContentsPath + ".") && key.lastIndexOf(".") != chestsContentsPath
+                                .length()
                 )
                 .toList();
         for (String path : paths) {
             int lastIndexOfDot = path.lastIndexOf(".");
-            String regionName = path.substring(chestsContentsPath.length(), lastIndexOfDot);
+            String regionName = path.substring(chestsContentsPath.length() + 1, lastIndexOfDot);
 
             List<ItemProbability> itemsProbabilities = map.get(regionName);
             if (itemsProbabilities == null) {
@@ -202,7 +203,7 @@ public class ConfigManager {
                 map.put(regionName, itemsProbabilities);
             }
 
-            String itemName = path.substring(lastIndexOfDot);
+            String itemName = path.substring(lastIndexOfDot + 1);
             double probability = config.getDouble(path);
             itemsProbabilities.add(new ItemProbability(PrisonEscapeItem.valueOf(itemName), probability));
         }

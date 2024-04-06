@@ -53,8 +53,7 @@ public class Chest implements Clickable {
     }
 
     private PrisonEscapeItem getRandomItem() {
-        double totalWeight = _itemsProbability.stream().mapToDouble(ItemProbability::getProbability).sum();
-        double randomValue = new Random().nextDouble(totalWeight);
+        double randomValue = new Random().nextDouble();
 
         double cumulativeWeight = 0;
         for (ItemProbability itemProbability : _itemsProbability) {
