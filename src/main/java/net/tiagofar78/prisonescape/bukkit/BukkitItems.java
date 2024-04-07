@@ -1,11 +1,32 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 
 public class BukkitItems {
+    
+    public static ItemStack createItemStack(Material type) {
+        return new ItemStack(type);
+    }
+    
+    public static void setName(ItemStack item, String name) {
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        
+        item.setItemMeta(meta);
+    }
+    
+    public static void setLore(ItemStack item, List<String> lore) {
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(lore);
+        
+        item.setItemMeta(meta);
+    }
 
     public static PrisonEscapeItem convertToPrisonEscapeItem(ItemStack item) {
         if (item == null) {

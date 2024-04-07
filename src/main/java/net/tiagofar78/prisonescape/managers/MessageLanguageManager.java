@@ -53,7 +53,7 @@ public class MessageLanguageManager {
     }
 
 //	#######################################
-//	#                 Kit                 #
+//	#                Items                #
 //	#######################################
 
     private String _selectPrisionerTeamItemName;
@@ -157,11 +157,10 @@ public class MessageLanguageManager {
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
 
-        String kitPath = "Kits.";
-        String teamSelector = kitPath + "TeamSelector.";
-        _selectPrisionerTeamItemName = createMessage(messages.getString(teamSelector + "SelectPrisioners.Name"));
-        _selectPoliceTeamItemName = createMessage(messages.getString(teamSelector + "SelectPolice.Name"));
-        _selectNoneTeamItemName = createMessage(messages.getString(teamSelector + "SelectNone.Name"));
+        String itemsPath = "Items.";
+        _selectPrisionerTeamItemName = createMessage(messages.getString(itemsPath + "SelectPrisionersTeam.Name"));
+        _selectPoliceTeamItemName = createMessage(messages.getString(itemsPath + "SelectPoliceTeam.Name"));
+        _selectNoneTeamItemName = createMessage(messages.getString(itemsPath + "SelectNoneTeam.Name"));
 
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));

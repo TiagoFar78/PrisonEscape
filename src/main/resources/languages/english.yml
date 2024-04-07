@@ -1,11 +1,10 @@
-Kits:
-  TeamSelector:
-    SelectPrisioners:
-      Name: "&6Select prisioner team"
-    SelectPolice:
-      Name: "&9Select police team"
-    SelectNone:
-      Name: "&8Remove preference"
+Items:
+  SelectPrisionerTeam:
+    Name: "&6Select prisioner team"
+  SelectPoliceTeam:
+    Name: "&9Select police team"
+  SelectNoneTeam:
+    Name: "&8Remove preference"
 Inventory:
   Vault:
     Title: "Personal Storage"

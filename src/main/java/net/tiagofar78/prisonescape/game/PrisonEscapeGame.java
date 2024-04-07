@@ -459,31 +459,6 @@ public class PrisonEscapeGame {
         }
     }
 
-    public void playerInteract(String playerName, PrisonEscapeItem item) {
-        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        if (item == null) {
-            return;
-        }
-
-        switch (item) {
-            case SELECT_PRISIONER_TEAM:
-                playerSelectPrisionersTeam(player);
-                return;
-            case SELECT_POLICE_TEAM:
-                playerSelectPoliceTeam(player);
-                return;
-            case SELECT_NONE_TEAM:
-                playerRemovedTeamPreference(player);
-                return;
-            default:
-                break;
-        }
-    }
-
     public int playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
@@ -612,21 +587,36 @@ public class PrisonEscapeGame {
         }, TICKS_PER_SECOND * _settings.getSecondsInSolitary());
     }
 
-    private void playerSelectPrisionersTeam(PrisonEscapePlayer player) {
+    public void playerSelectPrisionersTeam(String playerName) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+        
         player.setPreference(TeamPreference.PRISIONERS);
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisionersTeamMessage());
     }
 
-    private void playerSelectPoliceTeam(PrisonEscapePlayer player) {
+    public void playerSelectPoliceTeam(String playerName) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+        
         player.setPreference(TeamPreference.POLICE);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
     }
 
-    private void playerRemovedTeamPreference(PrisonEscapePlayer player) {
+    public void playerRemovedTeamPreference(String playerName) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+        
         player.setPreference(TeamPreference.RANDOM);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
