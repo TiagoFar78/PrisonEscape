@@ -176,7 +176,7 @@ public class MessageLanguageManager {
                 _itemsLores.put(itemConfigName, createMessage(itemLore));
             }
         }
-        
+
         String itemsPropertiesPath = "ItemsProperties.";
         _itemMetalicProperty = createMessage(messages.getString(itemsPropertiesPath + "Metalic"));
         _itemIllegalProperty = createMessage(messages.getString(itemsPropertiesPath + "Illegal"));
@@ -297,21 +297,21 @@ public class MessageLanguageManager {
     public List<String> getItemLore(String configName) {
         return _itemsLores.get(configName);
     }
-    
+
     public List<String> getItemPropertiesLore(boolean isMetalic, boolean isIllegal) {
         List<String> itemPropertiesLore = new ArrayList<>();
-        
+
         if (isMetalic) {
             itemPropertiesLore.add(_itemLoreLine.replace("{PROPERTY}", _itemMetalicProperty));
         }
-        
+
         if (isIllegal) {
             itemPropertiesLore.add(_itemLoreLine.replace("{PROPERTY}", _itemIllegalProperty));
         }
-        
+
         return itemPropertiesLore;
     }
- 
+
 //	#######################################
 //	#              Inventory              #
 //	#######################################

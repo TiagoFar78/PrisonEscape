@@ -18,7 +18,7 @@ public abstract class Item {
     public abstract Material getMaterial();
 
     public String getConfigName() {
-        String subClassName = this.getClass().getName();
+        String subClassName = this.getClass().getSimpleName();
         int itemWordLength = "Item".length();
 
         return subClassName.substring(0, subClassName.length() - itemWordLength);
@@ -33,29 +33,29 @@ public abstract class Item {
     }
 
     public ItemStack toItemStack(MessageLanguageManager messages) {
-        ItemStack item = BukkitItems.createItemStack(Material.ORANGE_WOOL);
+        ItemStack item = BukkitItems.createItemStack(getMaterial());
         BukkitItems.setName(item, getDisplayName(messages));
         setLore(item, messages);
-        
+
         return item;
     }
-    
+
     private void setLore(ItemStack item, MessageLanguageManager messages) {
         List<String> lore = getLore(messages);
         if (lore == null) {
             lore = new ArrayList<>();
         }
-        
+
         List<String> itemPropertiesLore = messages.getItemPropertiesLore(isMetalic(), isIllegal());
         if (itemPropertiesLore.size() > 0) {
             lore.add("");
             lore.addAll(itemPropertiesLore);
             lore.add("");
         }
-        
+
         if (lore.size() > 0) {
             BukkitItems.setLore(item, lore);
-        }        
+        }
     }
 
     public boolean matches(Material material) {

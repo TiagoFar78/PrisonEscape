@@ -7,6 +7,30 @@ Items:
     Name: "&8Remove preference"
   Bolts:
     Name: "Bolts"
+  DuctTape:
+    Name: "Duct Tape"
+  Matches:
+    Name: "Matches"
+  Oil:
+    Name: "Oil"
+  Stick:
+    Name: "Stick"
+  PlasticPlate:
+    Name: "Plastic Plate"
+  MetalPlate:
+    Name: "Metal Plate"
+  Copper:
+    Name: "Copper"
+  CircuitBoard:
+    Name: "Circuit Board"
+  Antena:
+    Name: "Antena"
+  Battery:
+    Name: "Battery"
+  NotePart:
+    Name: "Note Part {NUMBER}"
+  GoldBar:
+    Name: "Gold Bar"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
