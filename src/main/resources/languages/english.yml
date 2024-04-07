@@ -5,6 +5,12 @@ Items:
     Name: "&9Select police team"
   SelectNoneTeam:
     Name: "&8Remove preference"
+  Bolts:
+    Name: "Bolts"
+ItemsProperties:
+  Metalic: "&8Metalic"
+  Illegal: "&cIllegal"
+  LoreLine: "- {PROPERTY}"
 Inventory:
   Vault:
     Title: "Personal Storage"

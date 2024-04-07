@@ -58,6 +58,9 @@ public class MessageLanguageManager {
 
     private Hashtable<String, String> _itemsNames;
     private Hashtable<String, List<String>> _itemsLores;
+    private String _itemMetalicProperty;
+    private String _itemIllegalProperty;
+    private String _itemLoreLine;
 
 //	#######################################
 //	#              Inventory              #
@@ -173,6 +176,11 @@ public class MessageLanguageManager {
                 _itemsLores.put(itemConfigName, createMessage(itemLore));
             }
         }
+        
+        String itemsPropertiesPath = "ItemsProperties.";
+        _itemMetalicProperty = createMessage(messages.getString(itemsPropertiesPath + "Metalic"));
+        _itemIllegalProperty = createMessage(messages.getString(itemsPropertiesPath + "Illegal"));
+        _itemLoreLine = createMessage(messages.getString(itemsPropertiesPath + "LoreLine"));
 
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));
@@ -289,7 +297,21 @@ public class MessageLanguageManager {
     public List<String> getItemLore(String configName) {
         return _itemsLores.get(configName);
     }
-
+    
+    public List<String> getItemPropertiesLore(boolean isMetalic, boolean isIllegal) {
+        List<String> itemPropertiesLore = new ArrayList<>();
+        
+        if (isMetalic) {
+            itemPropertiesLore.add(_itemLoreLine.replace("{PROPERTY}", _itemMetalicProperty));
+        }
+        
+        if (isIllegal) {
+            itemPropertiesLore.add(_itemLoreLine.replace("{PROPERTY}", _itemIllegalProperty));
+        }
+        
+        return itemPropertiesLore;
+    }
+ 
 //	#######################################
 //	#              Inventory              #
 //	#######################################

@@ -6,6 +6,7 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Item {
@@ -34,13 +35,27 @@ public abstract class Item {
     public ItemStack toItemStack(MessageLanguageManager messages) {
         ItemStack item = BukkitItems.createItemStack(Material.ORANGE_WOOL);
         BukkitItems.setName(item, getDisplayName(messages));
-
-        List<String> lore = getLore(messages);
-        if (lore != null) {
-            BukkitItems.setLore(item, lore);
-        }
-
+        setLore(item, messages);
+        
         return item;
+    }
+    
+    private void setLore(ItemStack item, MessageLanguageManager messages) {
+        List<String> lore = getLore(messages);
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+        
+        List<String> itemPropertiesLore = messages.getItemPropertiesLore(isMetalic(), isIllegal());
+        if (itemPropertiesLore.size() > 0) {
+            lore.add("");
+            lore.addAll(itemPropertiesLore);
+            lore.add("");
+        }
+        
+        if (lore.size() > 0) {
+            BukkitItems.setLore(item, lore);
+        }        
     }
 
     public boolean matches(Material material) {
