@@ -1,18 +1,18 @@
 package net.tiagofar78.prisonescape;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
+import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
+import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
+import net.tiagofar78.prisonescape.items.SelectPrisionerTeamItem;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
-import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
-import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
-import net.tiagofar78.prisonescape.items.SelectPrisionerTeamItem;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrisonEscape extends JavaPlugin {
 
@@ -47,14 +47,14 @@ public class PrisonEscape extends JavaPlugin {
     public static PrisonEscape getPrisonEscape() {
         return (PrisonEscape) Bukkit.getServer().getPluginManager().getPlugin("TF_PrisonEscape");
     }
-    
+
     private static List<Listener> getListenerItems() {
         List<Listener> list = new ArrayList<>();
-        
+
         list.add(new SelectPrisionerTeamItem());
         list.add(new SelectPoliceTeamItem());
         list.add(new SelectNoneTeamItem());
-        
+
         return list;
     }
 

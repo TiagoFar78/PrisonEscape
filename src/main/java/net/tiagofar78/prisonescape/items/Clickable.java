@@ -8,5 +8,5 @@ public interface Clickable extends Listener {
 
     @EventHandler
     public void click(PlayerInteractEvent e);
-    
+
 }

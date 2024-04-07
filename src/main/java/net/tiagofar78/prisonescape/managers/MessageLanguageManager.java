@@ -56,9 +56,8 @@ public class MessageLanguageManager {
 //	#                Items                #
 //	#######################################
 
-    private String _selectPrisionerTeamItemName;
-    private String _selectPoliceTeamItemName;
-    private String _selectNoneTeamItemName;
+    private Hashtable<String, String> _itemsNames;
+    private Hashtable<String, List<String>> _itemsLores;
 
 //	#######################################
 //	#              Inventory              #
@@ -157,10 +156,23 @@ public class MessageLanguageManager {
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
 
-        String itemsPath = "Items.";
-        _selectPrisionerTeamItemName = createMessage(messages.getString(itemsPath + "SelectPrisionersTeam.Name"));
-        _selectPoliceTeamItemName = createMessage(messages.getString(itemsPath + "SelectPoliceTeam.Name"));
-        _selectNoneTeamItemName = createMessage(messages.getString(itemsPath + "SelectNoneTeam.Name"));
+        _itemsNames = new Hashtable<>();
+        _itemsLores = new Hashtable<>();
+
+        String itemsPath = "Items";
+        for (String itemConfigName : getItemsConfigNames(messages, itemsPath)) {
+            String itemPath = itemsPath + "." + itemConfigName;
+
+            String itemName = messages.getString(itemPath + ".Name");
+            if (itemName != null) {
+                _itemsNames.put(itemConfigName, createMessage(itemName));
+            }
+
+            List<String> itemLore = messages.getStringList(itemPath + ".Lore");
+            if (itemLore != null) {
+                _itemsLores.put(itemConfigName, createMessage(itemLore));
+            }
+        }
 
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));
@@ -259,19 +271,23 @@ public class MessageLanguageManager {
     }
 
 //	#######################################
-//	#                 Kit                 #
+//	#                Items                #
 //	#######################################
 
-    public String getSelectPrisionerTeamItemName() {
-        return _selectPrisionerTeamItemName;
+    private List<String> getItemsConfigNames(YamlConfiguration messages, String itemsPath) {
+        return messages.getConfigurationSection(itemsPath)
+                .getKeys(true)
+                .stream()
+                .filter(key -> !key.contains("."))
+                .toList();
     }
 
-    public String getSelectPoliceTeamItemName() {
-        return _selectPoliceTeamItemName;
+    public String getItemName(String configName) {
+        return _itemsNames.get(configName);
     }
 
-    public String getSelectNoneTeamItemName() {
-        return _selectNoneTeamItemName;
+    public List<String> getItemLore(String configName) {
+        return _itemsLores.get(configName);
     }
 
 //	#######################################

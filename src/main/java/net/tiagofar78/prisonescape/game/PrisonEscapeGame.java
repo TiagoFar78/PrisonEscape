@@ -592,7 +592,7 @@ public class PrisonEscapeGame {
         if (player == null) {
             return;
         }
-        
+
         player.setPreference(TeamPreference.PRISIONERS);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
@@ -604,7 +604,7 @@ public class PrisonEscapeGame {
         if (player == null) {
             return;
         }
-        
+
         player.setPreference(TeamPreference.POLICE);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -616,7 +616,7 @@ public class PrisonEscapeGame {
         if (player == null) {
             return;
         }
-        
+
         player.setPreference(TeamPreference.RANDOM);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
