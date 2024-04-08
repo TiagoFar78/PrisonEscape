@@ -63,6 +63,10 @@ public abstract class Item {
     }
 
     public boolean matches(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+
         return matches(item.getType());
     }
 

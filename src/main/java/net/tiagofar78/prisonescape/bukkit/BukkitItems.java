@@ -1,8 +1,11 @@
 package net.tiagofar78.prisonescape.bukkit;
 
+import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -26,6 +29,21 @@ public class BukkitItems {
         meta.setLore(lore);
 
         item.setItemMeta(meta);
+    }
+
+    public static ItemStack getEventItem(PlayerInteractEvent e) {
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game == null) {
+            return null;
+        }
+
+        @SuppressWarnings("deprecation")
+        ItemStack item = e.getPlayer().getItemInHand();
+        if (item == null || item.getType() == Material.AIR) {
+            return null;
+        }
+
+        return item;
     }
 
     public static PrisonEscapeItem convertToPrisonEscapeItem(ItemStack item) {
