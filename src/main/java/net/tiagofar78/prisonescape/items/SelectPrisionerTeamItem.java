@@ -3,6 +3,7 @@ package net.tiagofar78.prisonescape.items;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 public class SelectPrisionerTeamItem extends UsableItem {
 
@@ -22,8 +23,8 @@ public class SelectPrisionerTeamItem extends UsableItem {
     }
 
     @Override
-    public void use(String playerName) {
-        GameManager.getGame().playerSelectPrisionersTeam(playerName);
+    public void use(Player player) {
+        GameManager.getGame().playerSelectPrisionersTeam(player.getName());
     }
 
 }

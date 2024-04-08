@@ -101,6 +101,10 @@ public class PrisonEscapePlayer {
         BukkitMenu.setItem(_name, index, item);
     }
 
+    public void removeItem(int index) {
+        setItem(index, null);
+    }
+
     public boolean hasIllegalItems() {
         return false; // TODO
     }

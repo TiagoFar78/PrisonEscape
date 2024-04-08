@@ -33,6 +33,8 @@ public class ConfigManager {
     private int _fullLobbyWaitDuration;
     private int _finishedPhaseDuration;
     private int _delayBetweenAnnouncements;
+    private int _speedDuration;
+    private int _speedLevel;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -77,6 +79,8 @@ public class ConfigManager {
         _daysAmount = config.getInt("DaysAmount");
         _dayDuration = config.getInt("DayDuration");
         _nightDuration = config.getInt("NightDuration");
+        _speedDuration = config.getInt("SpeedDuration");
+        _speedLevel = config.getInt("SpeedLevel");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -257,6 +261,14 @@ public class ConfigManager {
 
     public int getDelayBetweenAnnouncements() {
         return _delayBetweenAnnouncements;
+    }
+
+    public int getSpeedDuration() {
+        return _speedDuration;
+    }
+
+    public int getSpeedLevel() {
+        return _speedLevel;
     }
 
     public List<String> getAvailableLanguages() {

@@ -1,5 +1,7 @@
 package net.tiagofar78.prisonescape.game;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitEffectGiver;
+import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
@@ -683,6 +685,20 @@ public class PrisonEscapeGame {
 
         chest.open(player);
         _playerOpenMenu.put(player.getName(), chest);
+    }
+
+    public void playerDrankEnergyDrink(String playerName, int eneryDrinkIndex) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+
+        ConfigManager config = ConfigManager.getInstance();
+
+        BukkitEffectGiver.giveSpeedEffect(playerName, config.getSpeedDuration(), config.getSpeedLevel());
+
+        int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
+        player.removeItem(contentIndex);
     }
 
 //	########################################
