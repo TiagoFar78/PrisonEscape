@@ -20,9 +20,11 @@ public class Chest implements Clickable {
     private List<ItemProbability> _itemsProbability;
     private boolean _isOpened;
 
-    protected Chest() {
+    protected Chest(String regionName) {
+        ConfigManager config = ConfigManager.getInstance();
+
         this._contents = createContentsList();
-        this._itemsProbability = createItemsProbabilityList();
+        this._itemsProbability = config.getChestContents(regionName);
         this._isOpened = false;
     }
 
@@ -31,21 +33,6 @@ public class Chest implements Clickable {
 
         for (int i = 0; i < CONTENTS_SIZE; i++) {
             list.add(null);
-        }
-
-        return list;
-    }
-
-    private List<ItemProbability> createItemsProbabilityList() {
-        List<ItemProbability> list = new ArrayList<>();
-
-        ConfigManager config = ConfigManager.getInstance();
-        double commonProbability = config.getCommonItemsProbability();
-        double rareProbability = config.getRareItemsProbability();
-
-        for (PrisonEscapeItem item : PrisonEscapeItem.values()) {
-            double probability = item.isRare() ? rareProbability : commonProbability;
-            list.add(new ItemProbability(item, probability));
         }
 
         return list;
@@ -66,8 +53,7 @@ public class Chest implements Clickable {
     }
 
     private PrisonEscapeItem getRandomItem() {
-        double totalWeight = _itemsProbability.stream().mapToDouble(ItemProbability::getProbability).sum();
-        double randomValue = new Random().nextDouble(totalWeight);
+        double randomValue = new Random().nextDouble();
 
         double cumulativeWeight = 0;
         for (ItemProbability itemProbability : _itemsProbability) {

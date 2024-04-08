@@ -35,32 +35,6 @@ PrisonBottomRightCornerLocation:
   X: 0
   Y: 0
   Z: 0
-PrisonOfficeBottomRightCornerLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-  "2":
-    X: 0
-    Y: 0
-    Z: 0
-  "3":
-    X: 0
-    Y: 0
-    Z: 0
-PrisonOfficeTopLeftCornerLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-  "2":
-    X: 0
-    Y: 0
-    Z: 0
-  "3":
-    X: 0
-    Y: 0
-    Z: 0  
 PrisionersSpawnLocations:
   "1":
     X: 0
@@ -109,6 +83,22 @@ ChestsLocations:
     X: 0
     Y: 0
     Z: 0
+Regions:
+  RegionName:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: 0
+        Y: 0
+        Z: 0
+      LowerCorner:
+        X: 0
+        Y: 0
+        Z: 0
+ChestsContents:
+  RegionName:
+    Item1Name: 0.25
+    Item2Name: 0.05
 CommonItemsProbability: 0.8
 RareItemsProbability: 0.25
 ChestSize: 5
