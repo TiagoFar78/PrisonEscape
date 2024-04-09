@@ -1,5 +1,10 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitItems;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,11 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import net.tiagofar78.prisonescape.bukkit.BukkitItems;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public class EnergyDrinkItem extends Item implements Listener {
 
@@ -52,7 +52,7 @@ public class EnergyDrinkItem extends Item implements Listener {
 
         return item;
     }
-    
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (matches(BukkitItems.getEventItem(e))) {

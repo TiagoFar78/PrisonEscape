@@ -433,7 +433,7 @@ public class MessageLanguageManager {
     public String getFullInventoryMessage() {
         return _fullInventoryMessage;
     }
-    
+
     public String getNotWantedPlayerMessage() {
         return _notWantedPlayerMessage;
     }

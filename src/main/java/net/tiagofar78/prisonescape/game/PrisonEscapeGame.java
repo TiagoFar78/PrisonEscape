@@ -696,26 +696,25 @@ public class PrisonEscapeGame {
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);
     }
-    
+
     public void policeHandcuffedPrisioner(String policeName, String prisionerName) {
         PrisonEscapePlayer police = getPrisonEscapePlayer(policeName);
         PrisonEscapePlayer prisioner = getPrisonEscapePlayer(prisionerName);
         if (police == null || prisioner == null) {
             return;
         }
-        
+
         if (_phase.isClockStopped()) {
             return;
         }
-        
+
         if (!_prisionersTeam.isOnTeam(prisioner) || !_policeTeam.isOnTeam(police)) {
             return;
         }
-        
+
         if (prisioner.canBeArrested()) {
             arrestPlayer(prisioner, police);
-        }
-        else {
+        } else {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
             BukkitMessageSender.sendChatMessage(prisionerName, messages.getNotWantedPlayerMessage());
         }
