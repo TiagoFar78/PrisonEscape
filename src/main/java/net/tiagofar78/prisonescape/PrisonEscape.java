@@ -1,6 +1,8 @@
 package net.tiagofar78.prisonescape;
 
 import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
+import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
+import net.tiagofar78.prisonescape.items.HandcuffsItem;
 import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
 import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
 import net.tiagofar78.prisonescape.items.SelectPrisionerTeamItem;
@@ -54,6 +56,8 @@ public class PrisonEscape extends JavaPlugin {
         list.add(new SelectPrisionerTeamItem());
         list.add(new SelectPoliceTeamItem());
         list.add(new SelectNoneTeamItem());
+        list.add(new EnergyDrinkItem());
+        list.add(new HandcuffsItem());
 
         return list;
     }

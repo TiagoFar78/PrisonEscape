@@ -103,6 +103,7 @@ public class MessageLanguageManager {
     private String _policeCanNotOpenChestMessage;
     private String _chestAlreadyOpenedMessage;
     private String _fullInventoryMessage;
+    private String _notWantedPlayerMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -219,6 +220,7 @@ public class MessageLanguageManager {
         _policeCanNotOpenChestMessage = createMessage(messages.getString(warningPath + "PoliceCanNotOpenChest"));
         _chestAlreadyOpenedMessage = createMessage(messages.getString(warningPath + "ChestAlreadyOpened"));
         _fullInventoryMessage = createMessage(messages.getString(warningPath + "FullInventory"));
+        _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -430,6 +432,10 @@ public class MessageLanguageManager {
 
     public String getFullInventoryMessage() {
         return _fullInventoryMessage;
+    }
+    
+    public String getNotWantedPlayerMessage() {
+        return _notWantedPlayerMessage;
     }
 
 //	########################################

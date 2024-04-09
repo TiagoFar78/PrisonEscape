@@ -1,11 +1,14 @@
 package net.tiagofar78.prisonescape.items;
 
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
-public class SelectPoliceTeamItem extends UsableItem {
+public class SelectPoliceTeamItem extends Item implements Listener {
 
     @Override
     public boolean isMetalic() {
@@ -21,10 +24,12 @@ public class SelectPoliceTeamItem extends UsableItem {
     public Material getMaterial() {
         return Material.BLUE_WOOL;
     }
-
-    @Override
-    public void use(Player player) {
-        GameManager.getGame().playerSelectPoliceTeam(player.getName());
+    
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (matches(BukkitItems.getEventItem(e))) {
+            GameManager.getGame().playerSelectPoliceTeam(e.getPlayer().getName());
+        }
     }
 
 }

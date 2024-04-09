@@ -450,11 +450,7 @@ public class PrisonEscapeGame {
             return;
         }
 
-        if (item == PrisonEscapeItem.HANDCUFS) {
-            if (touched.canBeArrested()) {
-                arrestPlayer(touched, toucher);
-            }
-        } else if (item == PrisonEscapeItem.SEARCH) {
+        if (item == PrisonEscapeItem.SEARCH) {
             if (touched.hasIllegalItems()) {
                 touched.setWanted();
             }
@@ -699,6 +695,30 @@ public class PrisonEscapeGame {
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);
+    }
+    
+    public void policeHandcuffedPrisioner(String policeName, String prisionerName) {
+        PrisonEscapePlayer police = getPrisonEscapePlayer(policeName);
+        PrisonEscapePlayer prisioner = getPrisonEscapePlayer(prisionerName);
+        if (police == null || prisioner == null) {
+            return;
+        }
+        
+        if (_phase.isClockStopped()) {
+            return;
+        }
+        
+        if (!_prisionersTeam.isOnTeam(prisioner) || !_policeTeam.isOnTeam(police)) {
+            return;
+        }
+        
+        if (prisioner.canBeArrested()) {
+            arrestPlayer(prisioner, police);
+        }
+        else {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
+            BukkitMessageSender.sendChatMessage(prisionerName, messages.getNotWantedPlayerMessage());
+        }
     }
 
 //	########################################

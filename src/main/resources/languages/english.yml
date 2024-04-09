@@ -31,6 +31,10 @@ Items:
     Name: "Note Part {NUMBER}"
   GoldBar:
     Name: "Gold Bar"
+  EnergyDrink:
+    Name: "Energy Drink"
+  Handcuffs:
+    Name: "Handcuffs"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -68,6 +72,7 @@ Messages:
     PoliceCanNotOpenChest: "&cOnly prisioners can open containers."
     ChestAlreadyOpened: "&eSomeone is accessing that container already."
     FullInventory: "&cYour inventory is full."
+    NotWantedPlayer: "&cYou can only send to solitary wanted players."
   Announcements:
     GameStarting:
     - "&6==================================="

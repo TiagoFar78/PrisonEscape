@@ -1,26 +1,23 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class EnergyDrinkItem extends UsableItem {
+import net.tiagofar78.prisonescape.bukkit.BukkitItems;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+public class EnergyDrinkItem extends Item implements Listener {
 
     private final static int TICKS_PER_SECOND = 20;
-
-    @Override
-    public void use(Player player) {
-        int heldItemSlot = player.getInventory().getHeldItemSlot();
-
-        GameManager.getGame().playerDrankEnergyDrink(player.getName(), heldItemSlot);
-    }
 
     @Override
     public boolean isMetalic() {
@@ -54,6 +51,15 @@ public class EnergyDrinkItem extends UsableItem {
         item.setItemMeta(meta);
 
         return item;
+    }
+    
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (matches(BukkitItems.getEventItem(e))) {
+            Player player = e.getPlayer();
+            int heldItemSlot = player.getInventory().getHeldItemSlot();
+            GameManager.getGame().playerDrankEnergyDrink(player.getName(), heldItemSlot);
+        }
     }
 
 }

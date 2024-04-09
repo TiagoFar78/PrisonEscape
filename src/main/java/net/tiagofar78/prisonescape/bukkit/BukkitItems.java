@@ -5,6 +5,7 @@ import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,18 +32,26 @@ public class BukkitItems {
         item.setItemMeta(meta);
     }
 
+    @SuppressWarnings("deprecation")
     public static ItemStack getEventItem(PlayerInteractEvent e) {
+        return getEventItem(e.getPlayer().getItemInHand());
+    }
+    
+    @SuppressWarnings("deprecation")
+    public static ItemStack getEventItem(PlayerInteractEntityEvent e) {
+        return getEventItem(e.getPlayer().getItemInHand());
+    }
+    
+    private static ItemStack getEventItem(ItemStack item) {
         PrisonEscapeGame game = GameManager.getGame();
         if (game == null) {
             return null;
         }
 
-        @SuppressWarnings("deprecation")
-        ItemStack item = e.getPlayer().getItemInHand();
         if (item == null || item.getType() == Material.AIR) {
             return null;
         }
-
+        
         return item;
     }
 
