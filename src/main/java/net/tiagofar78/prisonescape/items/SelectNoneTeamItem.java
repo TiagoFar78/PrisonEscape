@@ -1,14 +1,13 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitItems;
+import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class SelectNoneTeamItem extends Item implements Listener {
+public class SelectNoneTeamItem extends FunctionalItem {
 
     @Override
     public boolean isMetalic() {
@@ -25,11 +24,20 @@ public class SelectNoneTeamItem extends Item implements Listener {
         return Material.GRAY_WOOL;
     }
 
-    @EventHandler
-    public void onInteract(PlayerInteractEvent e) {
-        if (matches(BukkitItems.getEventItem(e))) {
-            GameManager.getGame().playerRemovedTeamPreference(e.getPlayer().getName());
+    @Override
+    public void use(Event event) {
+        if (!(event instanceof PlayerInteractEvent)) {
+            return;
         }
+
+        PlayerInteractEvent e = (PlayerInteractEvent) event;
+
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game == null) {
+            return;
+        }
+
+        game.playerRemovedTeamPreference(e.getPlayer().getName());
     }
 
 }

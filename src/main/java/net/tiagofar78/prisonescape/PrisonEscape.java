@@ -1,15 +1,8 @@
 package net.tiagofar78.prisonescape;
 
 import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
-import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
-import net.tiagofar78.prisonescape.items.HandcuffsItem;
-import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
-import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
-import net.tiagofar78.prisonescape.items.SelectPrisionerTeamItem;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -39,27 +32,11 @@ public class PrisonEscape extends JavaPlugin {
         getCommand(COMMAND_LABEL).setAliases(COMMAND_ALIASES);
         getCommand(COMMAND_LABEL).setExecutor(new PrisonEscapeCommand());
 
-        PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new Events(), this);
-        for (Listener item : getListenerItems()) {
-            pluginManager.registerEvents(item, getPrisonEscape());
-        }
+        getServer().getPluginManager().registerEvents(new Events(), this);
     }
 
     public static PrisonEscape getPrisonEscape() {
         return (PrisonEscape) Bukkit.getServer().getPluginManager().getPlugin("TF_PrisonEscape");
-    }
-
-    private static List<Listener> getListenerItems() {
-        List<Listener> list = new ArrayList<>();
-
-        list.add(new SelectPrisionerTeamItem());
-        list.add(new SelectPoliceTeamItem());
-        list.add(new SelectNoneTeamItem());
-        list.add(new EnergyDrinkItem());
-        list.add(new HandcuffsItem());
-
-        return list;
     }
 
 }

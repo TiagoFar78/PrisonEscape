@@ -15,11 +15,16 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
+import net.tiagofar78.prisonescape.items.FunctionalItem;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.kits.PrisionerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -457,7 +462,7 @@ public class PrisonEscapeGame {
         }
     }
 
-    public int playerInteractWithPrison(String playerName, PrisonEscapeLocation blockLocation, PrisonEscapeItem item) {
+    public int playerInteract(String playerName, PrisonEscapeLocation blockLocation, Item item, Event e) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return -1;
@@ -484,7 +489,11 @@ public class PrisonEscapeGame {
             return 0;
         }
 
-        return -1;
+        if (item.isFunctional()) {
+            ((FunctionalItem) item).use(e);
+        }
+
+        return 0;
     }
 
     public void playerCloseMenu(String playerName) {
@@ -621,13 +630,13 @@ public class PrisonEscapeGame {
         BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
     }
 
-    private void playerOpenVault(PrisonEscapePlayer player, int vaultIndex, PrisonEscapeItem item) {
+    private void playerOpenVault(PrisonEscapePlayer player, int vaultIndex, Item item) {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
         Vault vault = _prison.getVault(vaultIndex);
 
         if (_policeTeam.isOnTeam(player)) {
-            if (item != PrisonEscapeItem.SEARCH) {
+            if (!(item instanceof SearchItem)) {
                 BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
                 return;
             }

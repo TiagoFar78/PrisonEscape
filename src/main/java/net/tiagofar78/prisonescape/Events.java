@@ -5,6 +5,9 @@ import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.items.FunctionalItem;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
@@ -17,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -24,6 +28,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -61,23 +66,20 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerInteractWithPrison(PlayerInteractEvent e) {
-        Block block = e.getClickedBlock();
-        if (block == null) {
-            return;
-        }
-
         PrisonEscapeGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
 
-        @SuppressWarnings("deprecation")
-        PrisonEscapeItem itemInHand = BukkitItems.convertToPrisonEscapeItem(
-                e.getPlayer().getItemInHand()
-        );
-        PrisonEscapeLocation location = new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
+        Block block = e.getClickedBlock();
 
-        int returnCode = game.playerInteractWithPrison(e.getPlayer().getName(), location, itemInHand);
+        @SuppressWarnings("deprecation")
+        Item itemInHand = ItemFactory.createItem(e.getPlayer().getItemInHand());
+        PrisonEscapeLocation location = block == null
+                ? null
+                : new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
+
+        int returnCode = game.playerInteract(e.getPlayer().getName(), location, itemInHand, e);
         if (returnCode == 0) {
             e.setCancelled(true);
         }
@@ -227,6 +229,41 @@ public class Events implements Listener {
 
         if (event.getPlayer().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteractWithPlayer(PlayerInteractEntityEvent e) {
+        if (GameManager.getGame() == null) {
+            return;
+        }
+
+        @SuppressWarnings("deprecation")
+        Item item = ItemFactory.createItem(e.getPlayer().getItemInHand());
+
+        if (item.isFunctional()) {
+            ((FunctionalItem) item).use(e);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerCombat(EntityDamageByEntityEvent e) {
+        if (GameManager.getGame() == null) {
+            return;
+        }
+
+        Entity eAttacker = e.getDamager();
+        if (!(eAttacker instanceof Player)) {
+            return;
+        }
+
+        Player pAttacker = (Player) eAttacker;
+
+        @SuppressWarnings("deprecation")
+        Item item = ItemFactory.createItem(pAttacker.getItemInHand());
+
+        if (item.isFunctional()) {
+            ((FunctionalItem) item).use(e);
         }
     }
 

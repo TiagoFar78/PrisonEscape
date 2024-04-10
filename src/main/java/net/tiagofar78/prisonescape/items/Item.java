@@ -15,6 +15,10 @@ public abstract class Item {
 
     public abstract boolean isIllegal();
 
+    public boolean isFunctional() {
+        return false;
+    }
+
     public abstract Material getMaterial();
 
     public String getConfigName() {

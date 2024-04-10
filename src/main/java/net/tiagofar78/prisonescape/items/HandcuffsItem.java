@@ -6,13 +6,12 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class HandcuffsItem extends Item implements Listener {
+public class HandcuffsItem extends FunctionalItem {
 
     @Override
     public boolean isMetalic() {
@@ -27,16 +26,6 @@ public class HandcuffsItem extends Item implements Listener {
     @Override
     public Material getMaterial() {
         return Material.IRON_BARS;
-    }
-
-    @EventHandler(ignoreCancelled = false)
-    public void onInteract(PlayerInteractEntityEvent e) {
-        onInteract(e.getPlayer(), e.getRightClicked());
-    }
-
-    @EventHandler(ignoreCancelled = false)
-    public void onInteract(EntityDamageByEntityEvent e) {
-        onInteract(e.getDamager(), e.getEntity());
     }
 
     private void onInteract(Entity police, Entity prisioner) {
@@ -56,6 +45,25 @@ public class HandcuffsItem extends Item implements Listener {
         }
 
         game.policeHandcuffedPrisioner(police.getName(), prisioner.getName());
+    }
+
+    @Override
+    public void use(Event event) {
+        Entity police;
+        Entity prisioner;
+        if (event instanceof PlayerInteractEntityEvent) {
+            PlayerInteractEntityEvent e = (PlayerInteractEntityEvent) event;
+            police = e.getPlayer();
+            prisioner = e.getRightClicked();
+        } else if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
+            police = e.getDamager();
+            prisioner = e.getEntity();
+        } else {
+            return;
+        }
+
+        onInteract(police, prisioner);
     }
 
 }
