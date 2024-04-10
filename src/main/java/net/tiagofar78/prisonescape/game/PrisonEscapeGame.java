@@ -24,7 +24,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -462,7 +462,7 @@ public class PrisonEscapeGame {
         }
     }
 
-    public int playerInteract(String playerName, PrisonEscapeLocation blockLocation, Item item, Event e) {
+    public int playerInteract(String playerName, PrisonEscapeLocation blockLocation, Item item, PlayerInteractEvent e) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return -1;

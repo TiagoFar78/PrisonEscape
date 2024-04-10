@@ -1,10 +1,8 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
-import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SelectNoneTeamItem extends FunctionalItem {
@@ -25,19 +23,8 @@ public class SelectNoneTeamItem extends FunctionalItem {
     }
 
     @Override
-    public void use(Event event) {
-        if (!(event instanceof PlayerInteractEvent)) {
-            return;
-        }
-
-        PlayerInteractEvent e = (PlayerInteractEvent) event;
-
-        PrisonEscapeGame game = GameManager.getGame();
-        if (game == null) {
-            return;
-        }
-
-        game.playerRemovedTeamPreference(e.getPlayer().getName());
+    public void use(PlayerInteractEvent e) {
+        GameManager.getGame().playerRemovedTeamPreference(e.getPlayer().getName());
     }
 
 }

@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.items;
 
 import org.bukkit.Material;
-import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class SearchItem extends FunctionalItem {
 
@@ -21,7 +21,7 @@ public class SearchItem extends FunctionalItem {
     }
 
     @Override
-    public void use(Event event) {
+    public void use(PlayerInteractEntityEvent e) {
         // TODO add search interaction to player
     }
 

@@ -6,7 +6,6 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -52,12 +51,8 @@ public class EnergyDrinkItem extends FunctionalItem {
     }
 
     @Override
-    public void use(Event event) {
-        if (!(event instanceof PlayerInteractEvent)) {
-            return;
-        }
-
-        Player player = ((PlayerInteractEvent) event).getPlayer();
+    public void use(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
         int heldItemSlot = player.getInventory().getHeldItemSlot();
         GameManager.getGame().playerDrankEnergyDrink(player.getName(), heldItemSlot);
 
