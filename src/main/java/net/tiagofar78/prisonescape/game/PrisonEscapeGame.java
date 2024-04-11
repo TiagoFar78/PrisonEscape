@@ -436,32 +436,6 @@ public class PrisonEscapeGame {
         }
     }
 
-    public void playerTouch(String attackerName, String attackedName, PrisonEscapeItem item) {
-        PrisonEscapePlayer toucher = getPrisonEscapePlayer(attackerName);
-        if (toucher == null) {
-            return;
-        }
-
-        PrisonEscapePlayer touched = getPrisonEscapePlayer(attackedName);
-        if (touched == null) {
-            return;
-        }
-
-        if (_phase.isClockStopped()) {
-            return;
-        }
-
-        if (_prisionersTeam.isOnTeam(toucher)) {
-            return;
-        }
-
-        if (item == PrisonEscapeItem.SEARCH) {
-            if (touched.hasIllegalItems()) {
-                touched.setWanted();
-            }
-        }
-    }
-
     public int playerInteract(String playerName, PrisonEscapeLocation blockLocation, Item item, PlayerInteractEvent e) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
@@ -509,12 +483,7 @@ public class PrisonEscapeGame {
         }
     }
 
-    public ClickReturnAction playerClickMenu(
-            String playerName,
-            int slot,
-            PrisonEscapeItem itemHeld,
-            boolean clickedPlayerInv
-    ) {
+    public ClickReturnAction playerClickMenu(String playerName, int slot, Item itemHeld, boolean clickedPlayerInv) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return ClickReturnAction.IGNORE;

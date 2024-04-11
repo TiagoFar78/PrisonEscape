@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.items.Item;
 
 public interface Clickable {
 
@@ -11,11 +11,6 @@ public interface Clickable {
 
     public boolean isOpened();
 
-    public ClickReturnAction click(
-            PrisonEscapePlayer player,
-            int slot,
-            PrisonEscapeItem itemHeld,
-            boolean clickedPlayerInv
-    );
+    public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv);
 
 }

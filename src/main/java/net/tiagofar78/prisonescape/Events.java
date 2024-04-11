@@ -1,8 +1,6 @@
 package net.tiagofar78.prisonescape;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
@@ -153,7 +151,7 @@ public class Events implements Listener {
         ItemStack current = e.getCurrentItem();
 
         Player player = (Player) e.getWhoClicked();
-        PrisonEscapeItem item = BukkitItems.convertToPrisonEscapeItem(e.getCursor());
+        Item item = ItemFactory.createItem(e.getCursor());
         ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), item, isPlayerInv);
         if (returnAction == ClickReturnAction.IGNORE) {
             return;

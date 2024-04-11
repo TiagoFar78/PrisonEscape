@@ -301,7 +301,7 @@ public class MessageLanguageManager {
     }
 
     public List<String> getItemLore(String configName) {
-        return _itemsLores.get(configName);
+        return new ArrayList<>(_itemsLores.get(configName));
     }
 
     public List<String> getItemPropertiesLore(boolean isMetalic, boolean isIllegal) {

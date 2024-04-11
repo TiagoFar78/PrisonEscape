@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
+import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
@@ -33,11 +33,7 @@ public class BukkitMenu {
     private static final int[] NON_HIDDEN_ITEMS_INDEXES = {9 + 2, 9 + 3, 9 + 5, 9 + 6};
     private static final int HIDDEN_ITEM_INDEX = 9 * 4 + 4;
 
-    public static void openVault(
-            String playerName,
-            List<PrisonEscapeItem> contents,
-            List<PrisonEscapeItem> hiddenContents
-    ) {
+    public static void openVault(String playerName, List<Item> contents, List<Item> hiddenContents) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
@@ -54,7 +50,7 @@ public class BukkitMenu {
         }
 
         for (int i = 0; i < contents.size(); i++) {
-            ItemStack item = BukkitItems.convertToItemStack(contents.get(i));
+            ItemStack item = contents.get(i).toItemStack(messages);
             inv.setItem(NON_HIDDEN_ITEMS_INDEXES[i], item);
         }
 
@@ -66,7 +62,7 @@ public class BukkitMenu {
             }
         }
 
-        ItemStack hiddenItem = BukkitItems.convertToItemStack(hiddenContents.get(0));
+        ItemStack hiddenItem = hiddenContents.get(0).toItemStack(messages);
         inv.setItem(HIDDEN_ITEM_INDEX, hiddenItem);
 
         bukkitPlayer.openInventory(inv);
@@ -106,7 +102,7 @@ public class BukkitMenu {
     private static final int[] CHEST_CONTENT_INDEXES =
             {SLOTS_PER_LINE * 1 + 2, SLOTS_PER_LINE * 1 + 3, SLOTS_PER_LINE * 1 + 4, SLOTS_PER_LINE * 1 + 5, SLOTS_PER_LINE * 1 + 6};
 
-    public static void openChest(String playerName, List<PrisonEscapeItem> contents) {
+    public static void openChest(String playerName, List<Item> contents) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
@@ -123,7 +119,7 @@ public class BukkitMenu {
         }
 
         for (int i = 0; i < contents.size(); i++) {
-            ItemStack item = BukkitItems.convertToItemStack(contents.get(i));
+            ItemStack item = contents.get(i).toItemStack(messages);
             inv.setItem(CHEST_CONTENT_INDEXES[i], item);
         }
 
@@ -146,13 +142,14 @@ public class BukkitMenu {
 
     private static final int[] UNCOVERED_INDEXES = {0, 1, 2, 3};
 
-    public static void setItem(String playerName, int slot, PrisonEscapeItem item) {
+    public static void setItem(String playerName, int slot, Item item) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
         }
 
-        ItemStack bukkitItem = BukkitItems.convertToItemStack(item);
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+        ItemStack bukkitItem = item.toItemStack(messages);
         bukkitPlayer.getInventory().setItem(slot, bukkitItem);
     }
 

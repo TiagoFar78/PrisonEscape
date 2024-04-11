@@ -17,4 +17,14 @@ public class ItemFactory {
         return new NullItem();
     }
 
+    public static Item createItem(String name) {
+        for (Item item : items) {
+            if (item.getConfigName().equals(name)) {
+                return item;
+            }
+        }
+
+        return new NullItem();
+    }
+
 }
