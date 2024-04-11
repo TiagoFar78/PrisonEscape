@@ -532,7 +532,7 @@ public class MessageLanguageManager {
 //	########################################
 
     public List<String> getUsage() {
-        return _usageMessage;
+        return new ArrayList<>(_usageMessage);
     }
 
     public String getStartCommandUsage() {

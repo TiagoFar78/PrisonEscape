@@ -260,7 +260,7 @@ public class ConfigManager {
     }
 
     public List<String> getAvailableLanguages() {
-        return _availableLanguages;
+        return new ArrayList<>(_availableLanguages);
     }
 
     public String getDefaultLanguage() {
