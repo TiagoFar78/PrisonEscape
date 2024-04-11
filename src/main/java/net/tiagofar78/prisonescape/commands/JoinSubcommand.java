@@ -47,7 +47,6 @@ public class JoinSubcommand implements PrisonEscapeSubcommandExecutor {
             return true;
         }
 
-        sender.sendMessage(messages.getSuccessfullyJoinedGameMessage());
         return true;
     }
 

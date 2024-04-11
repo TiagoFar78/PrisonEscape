@@ -41,7 +41,6 @@ public class LeaveSubcommand implements PrisonEscapeSubcommandExecutor {
             return true;
         }
 
-        sender.sendMessage(messages.getSuccessfullyLeftGameMessage());
         return true;
     }
 

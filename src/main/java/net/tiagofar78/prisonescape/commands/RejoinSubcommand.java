@@ -47,7 +47,6 @@ public class RejoinSubcommand implements PrisonEscapeSubcommandExecutor {
             return true;
         }
 
-        sender.sendMessage(messages.getSuccessfullyRejoinedGameMessage());
         return true;
     }
 

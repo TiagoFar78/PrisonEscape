@@ -82,10 +82,7 @@ public class MessageLanguageManager {
 
     private String _successfullyStartedGameMessage;
     private String _successfullyForceStartedGameMessage;
-    private String _successfullyJoinedGameMessage;
-    private String _successfullyLeftGameMessage;
     private String _successfullyForceStoppedGameMessage;
-    private String _successfullyRejoinedGameMessage;
     private String _successfullyStoppedGameMessage;
     private String _selectedPrisionersTeamMessage;
     private String _selectedPoliceTeamMessage;
@@ -122,6 +119,9 @@ public class MessageLanguageManager {
     private String _newDaySubtitleMessage;
     private String _nightTitleMessage;
     private String _nightSubtitleMessage;
+    private String _successfullyJoinedGameMessage;
+    private String _successfullyLeftGameMessage;
+    private String _successfullyRejoinedGameMessage;
 
 //	########################################
 //	#                Errors                #
@@ -175,10 +175,7 @@ public class MessageLanguageManager {
         String warningPath = messagePath + "Warnings.";
         _successfullyStartedGameMessage = createMessage(messages.getString(warningPath + "StartedGame"));
         _successfullyForceStartedGameMessage = createMessage(messages.getString(warningPath + "ForceStartedGame"));
-        _successfullyJoinedGameMessage = createMessage(messages.getString(warningPath + "JoinedGame"));
-        _successfullyLeftGameMessage = createMessage(messages.getString(warningPath + "LeftGame"));
         _successfullyForceStoppedGameMessage = createMessage(messages.getString(warningPath + "ForceStoppedGame"));
-        _successfullyRejoinedGameMessage = createMessage(messages.getString(warningPath + "RejoinedGame"));
         _successfullyStoppedGameMessage = createMessage(messages.getString(warningPath + "StoppedGame"));
         _selectedPrisionersTeamMessage = createMessage(messages.getString(warningPath + "SelectedPrisionersTeam"));
         _selectedPoliceTeamMessage = createMessage(messages.getString(warningPath + "SelectedPoliceTeam"));
@@ -220,6 +217,9 @@ public class MessageLanguageManager {
         _newDaySubtitleMessage = createMessage(messages.getString(announcementPath + "NewDaySubtitle"));
         _nightTitleMessage = createMessage(messages.getString(announcementPath + "NightTitle"));
         _nightSubtitleMessage = createMessage(messages.getString(announcementPath + "NightSubtitle"));
+        _successfullyJoinedGameMessage = createMessage(messages.getString(announcementPath + "JoinedGame"));
+        _successfullyLeftGameMessage = createMessage(messages.getString(announcementPath + "LeftGame"));
+        _successfullyRejoinedGameMessage = createMessage(messages.getString(announcementPath + "RejoinedGame"));
 
         String errorPath = messagePath + "Errors.";
         _notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
@@ -319,20 +319,8 @@ public class MessageLanguageManager {
         return _successfullyForceStartedGameMessage;
     }
 
-    public String getSuccessfullyJoinedGameMessage() {
-        return _successfullyJoinedGameMessage;
-    }
-
-    public String getSuccessfullyLeftGameMessage() {
-        return _successfullyLeftGameMessage;
-    }
-
     public String getSuccessfullyForceStoppedGameMessage() {
         return _successfullyForceStoppedGameMessage;
-    }
-
-    public String getSuccessfullyRejoinedGameMessage() {
-        return _successfullyRejoinedGameMessage;
     }
 
     public String getSuccessfullyStoppedGameMessage() {
@@ -471,6 +459,24 @@ public class MessageLanguageManager {
 
     public String getNightSubtitleMessage() {
         return _nightSubtitleMessage;
+    }
+
+    public String getSuccessfullyJoinedGameMessage(String playerName, int playerNumber, int maxPlayers) {
+        return _successfullyJoinedGameMessage.replace("{PLAYER}", playerName)
+                .replace("{PLAYERNUMBER}", Integer.toString(playerNumber))
+                .replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
+    }
+
+    public String getSuccessfullyLeftGameMessage(String playerName, int playerNumber, int maxPlayers) {
+        return _successfullyLeftGameMessage.replace("{PLAYER}", playerName)
+                .replace("{PLAYERNUMBER}", Integer.toString(playerNumber))
+                .replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
+    }
+
+    public String getSuccessfullyRejoinedGameMessage(String playerName, int playerNumber, int maxPlayers) {
+        return _successfullyRejoinedGameMessage.replace("{PLAYER}", playerName)
+                .replace("{PLAYERNUMBER}", Integer.toString(playerNumber))
+                .replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
     }
 
 //	########################################
