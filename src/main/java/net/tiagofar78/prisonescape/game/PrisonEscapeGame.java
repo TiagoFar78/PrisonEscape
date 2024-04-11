@@ -468,25 +468,27 @@ public class PrisonEscapeGame {
             return -1;
         }
 
-        int vaultIndex = _prison.getVaultIndex(blockLocation);
-        if (vaultIndex != -1) {
-            playerOpenVault(player, vaultIndex, item);
-            return 0;
-        }
+        if (blockLocation != null) {
+            int vaultIndex = _prison.getVaultIndex(blockLocation);
+            if (vaultIndex != -1) {
+                playerOpenVault(player, vaultIndex, item);
+                return 0;
+            }
 
-        Chest chest = _prison.getChest(blockLocation);
-        if (chest != null) {
-            playerOpenChest(player, chest);
-            return 0;
-        }
+            Chest chest = _prison.getChest(blockLocation);
+            if (chest != null) {
+                playerOpenChest(player, chest);
+                return 0;
+            }
 
-        PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
-                blockLocation,
-                _prisionersTeam.isOnTeam(player)
-        );
-        if (destination != null) {
-            BukkitTeleporter.teleport(player, destination);
-            return 0;
+            PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
+                    blockLocation,
+                    _prisionersTeam.isOnTeam(player)
+            );
+            if (destination != null) {
+                BukkitTeleporter.teleport(player, destination);
+                return 0;
+            }
         }
 
         if (item.isFunctional()) {
