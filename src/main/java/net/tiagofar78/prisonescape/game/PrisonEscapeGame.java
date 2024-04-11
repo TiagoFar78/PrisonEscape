@@ -88,6 +88,17 @@ public class PrisonEscapeGame {
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
         TeamSelectorKit.giveToPlayer(playerName);
+
+        int maxPlayers = config.getMaxPlayers();
+        int playerNumber = _playersOnLobby.size();
+        for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
+            BukkitMessageSender.sendChatMessage(
+                    playerOnLobby,
+                    messages.getSuccessfullyJoinedGameMessage(playerName, playerNumber, maxPlayers)
+            );
+        }
+
         return 0;
     }
 
@@ -118,6 +129,19 @@ public class PrisonEscapeGame {
         }
 
         _playersOnLobby.add(player);
+
+        ConfigManager config = ConfigManager.getInstance();
+        int maxPlayers = config.getMaxPlayers();
+        int playerNumber = _playersOnLobby.size();
+        for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
+            BukkitMessageSender.sendChatMessage(
+                    playerOnLobby,
+                    messages.getSuccessfullyRejoinedGameMessage(playerName, playerNumber, maxPlayers)
+            );
+        }
+
+
         return 0;
     }
 
@@ -140,6 +164,18 @@ public class PrisonEscapeGame {
         }
 
         teleportToLeavingLocation(player);
+
+        ConfigManager config = ConfigManager.getInstance();
+        int maxPlayers = config.getMaxPlayers();
+        int playerNumber = _playersOnLobby.size();
+        for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
+            BukkitMessageSender.sendChatMessage(
+                    playerOnLobby,
+                    messages.getSuccessfullyLeftGameMessage(playerName, playerNumber, maxPlayers)
+            );
+        }
+
         return 0;
     }
 
