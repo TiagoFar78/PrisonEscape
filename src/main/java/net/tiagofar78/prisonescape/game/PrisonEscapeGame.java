@@ -729,6 +729,32 @@ public class PrisonEscapeGame {
         }
     }
 
+    public void policeInspectedPrisioner(String policeName, String prisionerName) {
+        PrisonEscapePlayer police = getPrisonEscapePlayer(policeName);
+        PrisonEscapePlayer prisioner = getPrisonEscapePlayer(prisionerName);
+        if (police == null || prisioner == null) {
+            return;
+        }
+
+        if (_phase.isClockStopped()) {
+            return;
+        }
+
+        if (!_prisionersTeam.isOnTeam(prisioner) || !_policeTeam.isOnTeam(police)) {
+            return;
+        }
+
+        if (prisioner.hasIllegalItems()) {
+            prisioner.setWanted();
+        } else {
+            MessageLanguageManager prisionerMessages = MessageLanguageManager.getInstanceByPlayer(prisionerName);
+            BukkitMessageSender.sendChatMessage(prisionerName, prisionerMessages.getPrisionerInspectedMessage());
+
+            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
+            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisionerName));
+        }
+    }
+
 //	########################################
 //	#                 Util                 #
 //	########################################

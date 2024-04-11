@@ -73,6 +73,8 @@ Messages:
     ChestAlreadyOpened: "&eSomeone is accessing that container already."
     FullInventory: "&cYour inventory is full."
     NotWantedPlayer: "&cYou can only send to solitary wanted players."
+    PrisionerInspected: "&aA police inspected your inventory, but no illegal items were found."
+    PoliceInspected: "&a{PLAYER} don't have any illegal items."
   Announcements:
     GameStarting:
     - "&6==================================="
