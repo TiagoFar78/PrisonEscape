@@ -53,12 +53,14 @@ public class MessageLanguageManager {
     }
 
 //	#######################################
-//	#                 Kit                 #
+//	#                Items                #
 //	#######################################
 
-    private String _selectPrisionerTeamItemName;
-    private String _selectPoliceTeamItemName;
-    private String _selectNoneTeamItemName;
+    private Hashtable<String, String> _itemsNames;
+    private Hashtable<String, List<String>> _itemsLores;
+    private String _itemMetalicProperty;
+    private String _itemIllegalProperty;
+    private String _itemLoreLine;
 
 //	#######################################
 //	#              Inventory              #
@@ -98,6 +100,9 @@ public class MessageLanguageManager {
     private String _policeCanNotOpenChestMessage;
     private String _chestAlreadyOpenedMessage;
     private String _fullInventoryMessage;
+    private String _notWantedPlayerMessage;
+    private String _policeInspectedMessage;
+    private String _prisionerInspectedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -157,11 +162,28 @@ public class MessageLanguageManager {
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
 
-        String kitPath = "Kits.";
-        String teamSelector = kitPath + "TeamSelector.";
-        _selectPrisionerTeamItemName = createMessage(messages.getString(teamSelector + "SelectPrisioners.Name"));
-        _selectPoliceTeamItemName = createMessage(messages.getString(teamSelector + "SelectPolice.Name"));
-        _selectNoneTeamItemName = createMessage(messages.getString(teamSelector + "SelectNone.Name"));
+        _itemsNames = new Hashtable<>();
+        _itemsLores = new Hashtable<>();
+
+        String itemsPath = "Items";
+        for (String itemConfigName : getItemsConfigNames(messages, itemsPath)) {
+            String itemPath = itemsPath + "." + itemConfigName;
+
+            String itemName = messages.getString(itemPath + ".Name");
+            if (itemName != null) {
+                _itemsNames.put(itemConfigName, createMessage(itemName));
+            }
+
+            List<String> itemLore = messages.getStringList(itemPath + ".Lore");
+            if (itemLore != null) {
+                _itemsLores.put(itemConfigName, createMessage(itemLore));
+            }
+        }
+
+        String itemsPropertiesPath = "ItemsProperties.";
+        _itemMetalicProperty = createMessage(messages.getString(itemsPropertiesPath + "Metalic"));
+        _itemIllegalProperty = createMessage(messages.getString(itemsPropertiesPath + "Illegal"));
+        _itemLoreLine = createMessage(messages.getString(itemsPropertiesPath + "LoreLine"));
 
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));
@@ -197,6 +219,9 @@ public class MessageLanguageManager {
         _policeCanNotOpenChestMessage = createMessage(messages.getString(warningPath + "PoliceCanNotOpenChest"));
         _chestAlreadyOpenedMessage = createMessage(messages.getString(warningPath + "ChestAlreadyOpened"));
         _fullInventoryMessage = createMessage(messages.getString(warningPath + "FullInventory"));
+        _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
+        _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
+        _prisionerInspectedMessage = createMessage(messages.getString(warningPath + "PrisionerInspected"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -260,19 +285,37 @@ public class MessageLanguageManager {
     }
 
 //	#######################################
-//	#                 Kit                 #
+//	#                Items                #
 //	#######################################
 
-    public String getSelectPrisionerTeamItemName() {
-        return _selectPrisionerTeamItemName;
+    private List<String> getItemsConfigNames(YamlConfiguration messages, String itemsPath) {
+        return messages.getConfigurationSection(itemsPath)
+                .getKeys(true)
+                .stream()
+                .filter(key -> !key.contains("."))
+                .toList();
     }
 
-    public String getSelectPoliceTeamItemName() {
-        return _selectPoliceTeamItemName;
+    public String getItemName(String configName) {
+        return _itemsNames.get(configName);
     }
 
-    public String getSelectNoneTeamItemName() {
-        return _selectNoneTeamItemName;
+    public List<String> getItemLore(String configName) {
+        return new ArrayList<>(_itemsLores.get(configName));
+    }
+
+    public List<String> getItemPropertiesLore(boolean isMetalic, boolean isIllegal) {
+        List<String> itemPropertiesLore = new ArrayList<>();
+
+        if (isMetalic) {
+            itemPropertiesLore.add(_itemLoreLine.replace("{PROPERTY}", _itemMetalicProperty));
+        }
+
+        if (isIllegal) {
+            itemPropertiesLore.add(_itemLoreLine.replace("{PROPERTY}", _itemIllegalProperty));
+        }
+
+        return itemPropertiesLore;
     }
 
 //	#######################################
@@ -381,6 +424,18 @@ public class MessageLanguageManager {
 
     public String getFullInventoryMessage() {
         return _fullInventoryMessage;
+    }
+
+    public String getNotWantedPlayerMessage() {
+        return _notWantedPlayerMessage;
+    }
+
+    public String getPoliceInspectedMessage(String playerName) {
+        return _policeInspectedMessage.replace("{PLAYER}", playerName);
+    }
+
+    public String getPrisionerInspectedMessage() {
+        return _prisionerInspectedMessage;
     }
 
 //	########################################

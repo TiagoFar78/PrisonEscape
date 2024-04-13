@@ -1,11 +1,44 @@
-Kits:
-  TeamSelector:
-    SelectPrisioners:
-      Name: "&6Select prisioner team"
-    SelectPolice:
-      Name: "&9Select police team"
-    SelectNone:
-      Name: "&8Remove preference"
+Items:
+  SelectPrisionerTeam:
+    Name: "&6Select prisioner team"
+  SelectPoliceTeam:
+    Name: "&9Select police team"
+  SelectNoneTeam:
+    Name: "&8Remove preference"
+  Bolts:
+    Name: "Bolts"
+  DuctTape:
+    Name: "Duct Tape"
+  Matches:
+    Name: "Matches"
+  Oil:
+    Name: "Oil"
+  Stick:
+    Name: "Stick"
+  PlasticPlate:
+    Name: "Plastic Plate"
+  MetalPlate:
+    Name: "Metal Plate"
+  Copper:
+    Name: "Copper"
+  CircuitBoard:
+    Name: "Circuit Board"
+  Antena:
+    Name: "Antena"
+  Battery:
+    Name: "Battery"
+  NotePart:
+    Name: "Note Part {NUMBER}"
+  GoldBar:
+    Name: "Gold Bar"
+  EnergyDrink:
+    Name: "Energy Drink"
+  Handcuffs:
+    Name: "Handcuffs"
+ItemsProperties:
+  Metalic: "&8Metalic"
+  Illegal: "&cIllegal"
+  LoreLine: "- {PROPERTY}"
 Inventory:
   Vault:
     Title: "Personal Storage"
@@ -36,6 +69,9 @@ Messages:
     PoliceCanNotOpenChest: "&cOnly prisioners can open containers."
     ChestAlreadyOpened: "&eSomeone is accessing that container already."
     FullInventory: "&cYour inventory is full."
+    NotWantedPlayer: "&cYou can only send to solitary wanted players."
+    PrisionerInspected: "&aA police inspected your inventory, but no illegal items were found."
+    PoliceInspected: "&a{PLAYER} don't have any illegal items."
   Announcements:
     GameStarting:
     - "&6==================================="

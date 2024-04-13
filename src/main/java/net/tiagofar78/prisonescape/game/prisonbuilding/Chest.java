@@ -3,8 +3,9 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
@@ -16,7 +17,7 @@ public class Chest implements Clickable {
 
     private static final int CONTENTS_SIZE = 5;
 
-    private List<PrisonEscapeItem> _contents;
+    private List<Item> _contents;
     private List<ItemProbability> _itemsProbability;
     private boolean _isOpened;
 
@@ -28,11 +29,11 @@ public class Chest implements Clickable {
         this._isOpened = false;
     }
 
-    private List<PrisonEscapeItem> createContentsList() {
-        List<PrisonEscapeItem> list = new ArrayList<>();
+    private List<Item> createContentsList() {
+        List<Item> list = new ArrayList<>();
 
         for (int i = 0; i < CONTENTS_SIZE; i++) {
-            list.add(null);
+            list.add(new NullItem());
         }
 
         return list;
@@ -52,7 +53,7 @@ public class Chest implements Clickable {
         }
     }
 
-    private PrisonEscapeItem getRandomItem() {
+    private Item getRandomItem() {
         double randomValue = new Random().nextDouble();
 
         double cumulativeWeight = 0;
@@ -63,7 +64,7 @@ public class Chest implements Clickable {
             }
         }
 
-        return null;
+        return new NullItem();
     }
 
     @Override
@@ -73,12 +74,7 @@ public class Chest implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(
-            PrisonEscapePlayer player,
-            int slot,
-            PrisonEscapeItem itemHeld,
-            boolean clickedPlayerInv
-    ) {
+    public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
         if (clickedPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
@@ -88,8 +84,8 @@ public class Chest implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        PrisonEscapeItem item = _contents.get(index);
-        if (item == null) {
+        Item item = _contents.get(index);
+        if (item instanceof NullItem) {
             return ClickReturnAction.NOTHING;
         }
 
@@ -101,7 +97,7 @@ public class Chest implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        _contents.set(index, null);
+        _contents.set(index, new NullItem());
         return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
     }
 

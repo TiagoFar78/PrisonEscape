@@ -10,6 +10,8 @@ WaitingPhaseDuration: 300
 FullLobbyWaitDuration: 10
 FinishedPhaseDuration: 30
 DelayBetweenAnnouncements: 30
+SpeedDuration: 15
+SpeedLevel: 2
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"

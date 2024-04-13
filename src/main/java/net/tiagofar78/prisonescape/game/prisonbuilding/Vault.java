@@ -1,8 +1,9 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.NullItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,8 @@ public class Vault implements Clickable {
     private static final int NON_HIDDEN_SIZE = 4;
     private static final int HIDDEN_SIZE = 1;
 
-    private List<PrisonEscapeItem> _nonHiddenContents;
-    private List<PrisonEscapeItem> _hiddenContents;
+    private List<Item> _nonHiddenContents;
+    private List<Item> _hiddenContents;
     private boolean _isOpen;
 
     private PrisonEscapePlayer _owner;
@@ -26,11 +27,11 @@ public class Vault implements Clickable {
         this._owner = owner;
     }
 
-    private List<PrisonEscapeItem> createContentsList(int size) {
-        List<PrisonEscapeItem> list = new ArrayList<>();
+    private List<Item> createContentsList(int size) {
+        List<Item> list = new ArrayList<>();
 
         for (int i = 0; i < size; i++) {
-            list.add(null);
+            list.add(new NullItem());
         }
 
         return list;
@@ -40,8 +41,8 @@ public class Vault implements Clickable {
         return _owner;
     }
 
-    public void setItem(boolean isHidden, int index, PrisonEscapeItem item) {
-        List<PrisonEscapeItem> contents = isHidden ? _hiddenContents : _nonHiddenContents;
+    public void setItem(boolean isHidden, int index, Item item) {
+        List<Item> contents = isHidden ? _hiddenContents : _nonHiddenContents;
         int size = isHidden ? HIDDEN_SIZE : NON_HIDDEN_SIZE;
 
         if (index >= size) {
@@ -57,7 +58,7 @@ public class Vault implements Clickable {
      *         1 if illegal items were found
      */
     public int search() {
-        for (PrisonEscapeItem item : _nonHiddenContents) {
+        for (Item item : _nonHiddenContents) {
             if (item != null && item.isIllegal()) {
                 clearContents(_nonHiddenContents, NON_HIDDEN_SIZE);
                 clearContents(_hiddenContents, HIDDEN_SIZE);
@@ -68,7 +69,7 @@ public class Vault implements Clickable {
         return 0;
     }
 
-    private void clearContents(List<PrisonEscapeItem> contents, int size) {
+    private void clearContents(List<Item> contents, int size) {
         for (int i = 0; i < size; i++) {
             contents.set(i, null);
         }
@@ -91,12 +92,7 @@ public class Vault implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(
-            PrisonEscapePlayer player,
-            int slot,
-            PrisonEscapeItem itemHeld,
-            boolean clickedPlayerInv
-    ) {
+    public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
         if (clickedPlayerInv) {
             int index = BukkitMenu.convertToIndexPlayerInventory(slot);
             if (index == -1) {

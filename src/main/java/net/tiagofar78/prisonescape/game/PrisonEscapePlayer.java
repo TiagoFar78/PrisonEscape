@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
+import net.tiagofar78.prisonescape.items.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class PrisonEscapePlayer {
     private boolean _inRestrictedArea;
     private boolean _isOnline;
     private boolean _hasEscaped;
-    private List<PrisonEscapeItem> _inventory;
+    private List<Item> _inventory;
 
     public PrisonEscapePlayer(String name) {
         _name = name;
@@ -26,8 +27,8 @@ public class PrisonEscapePlayer {
         _inventory = createInventory();
     }
 
-    private List<PrisonEscapeItem> createInventory() {
-        List<PrisonEscapeItem> list = new ArrayList<>();
+    private List<Item> createInventory() {
+        List<Item> list = new ArrayList<>();
 
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             list.add(null);
@@ -84,7 +85,7 @@ public class PrisonEscapePlayer {
      * @return 0 if success<br>
      *         -1 if full inventory
      */
-    public int giveItem(PrisonEscapeItem item) {
+    public int giveItem(Item item) {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             if (_inventory.get(i) == null) {
                 setItem(i, item);
@@ -95,10 +96,14 @@ public class PrisonEscapePlayer {
         return -1;
     }
 
-    public void setItem(int index, PrisonEscapeItem item) {
+    public void setItem(int index, Item item) {
         _inventory.set(index, item);
 
         BukkitMenu.setItem(_name, index, item);
+    }
+
+    public void removeItem(int index) {
+        setItem(index, null);
     }
 
     public boolean hasIllegalItems() {

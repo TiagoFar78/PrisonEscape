@@ -2,9 +2,9 @@ package net.tiagofar78.prisonescape.managers;
 
 import net.tiagofar78.prisonescape.PrisonEscapeResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
-import net.tiagofar78.prisonescape.game.PrisonEscapeItem;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
+import net.tiagofar78.prisonescape.items.ItemFactory;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -33,6 +33,8 @@ public class ConfigManager {
     private int _fullLobbyWaitDuration;
     private int _finishedPhaseDuration;
     private int _delayBetweenAnnouncements;
+    private int _speedDuration;
+    private int _speedLevel;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -77,6 +79,8 @@ public class ConfigManager {
         _daysAmount = config.getInt("DaysAmount");
         _dayDuration = config.getInt("DayDuration");
         _nightDuration = config.getInt("NightDuration");
+        _speedDuration = config.getInt("SpeedDuration");
+        _speedLevel = config.getInt("SpeedLevel");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -205,7 +209,7 @@ public class ConfigManager {
 
             String itemName = path.substring(lastIndexOfDot + 1);
             double probability = config.getDouble(path);
-            itemsProbabilities.add(new ItemProbability(PrisonEscapeItem.valueOf(itemName), probability));
+            itemsProbabilities.add(new ItemProbability(ItemFactory.createItem(itemName), probability));
         }
 
         return map;
@@ -257,6 +261,14 @@ public class ConfigManager {
 
     public int getDelayBetweenAnnouncements() {
         return _delayBetweenAnnouncements;
+    }
+
+    public int getSpeedDuration() {
+        return _speedDuration;
+    }
+
+    public int getSpeedLevel() {
+        return _speedLevel;
     }
 
     public List<String> getAvailableLanguages() {
