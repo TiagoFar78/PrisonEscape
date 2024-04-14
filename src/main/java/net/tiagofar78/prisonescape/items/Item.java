@@ -19,6 +19,10 @@ public abstract class Item {
         return false;
     }
 
+    public boolean isTool() {
+        return false;
+    }
+
     public abstract Material getMaterial();
 
     public String getConfigName() {
