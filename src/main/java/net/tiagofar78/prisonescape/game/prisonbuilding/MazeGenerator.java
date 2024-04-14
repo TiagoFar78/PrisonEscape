@@ -62,7 +62,7 @@ public class MazeGenerator extends Canvas {
 
     }
 
-    // Leaving this function here to it can serve as an example for createMaze
+    // Leaving this function here so it can serve as an example for createMaze
     public void paint(Graphics g) {
         super.paint(g);
 
