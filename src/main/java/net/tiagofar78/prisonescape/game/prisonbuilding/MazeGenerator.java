@@ -62,7 +62,7 @@ public class MazeGenerator extends Canvas {
 
     }
 
-    // Leaving this function here so it can serve as an example for createMaze
+    // Leaving this function here so it can serve as an example for buildMaze
     public void paint(Graphics g) {
         super.paint(g);
 
@@ -96,14 +96,6 @@ public class MazeGenerator extends Canvas {
     public void generateMaze() {
         List<Integer> visited = new ArrayList<>();
         List<Cell> toVisit = new ArrayList<>();
-
-        int middleX = WIDTH / 2;
-        int middleY = HEIGHT / 2;
-        int middlePoint = middleY * WIDTH + middleX;
-
-        // Add middle point as spawn point without walls
-        maze.add(new Cell(middleX, middleY));
-        visited.add(middlePoint);
 
         visited.add(0);
         toVisit.add(new Cell(0, 1));
