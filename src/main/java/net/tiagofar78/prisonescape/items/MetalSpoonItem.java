@@ -24,6 +24,5 @@ public class MetalSpoonItem extends ToolItem {
         return Material.GOLDEN_SHOVEL;
     }
 
-    
-    
+
 }

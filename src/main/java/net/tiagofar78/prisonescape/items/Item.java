@@ -18,7 +18,7 @@ public abstract class Item {
     public boolean isFunctional() {
         return false;
     }
-    
+
     public boolean isTool() {
         return false;
     }
