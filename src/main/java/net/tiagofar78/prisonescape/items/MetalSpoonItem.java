@@ -5,8 +5,13 @@ import org.bukkit.Material;
 public class MetalSpoonItem extends ToolItem {
 
     @Override
-    protected double durabilityLostOnUse() {
-        return 0;
+    protected int usesAmount() {
+        return 8;
+    }
+
+    @Override
+    public int damageToBlock() {
+        return 50;
     }
 
     @Override

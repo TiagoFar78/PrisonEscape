@@ -5,8 +5,13 @@ import org.bukkit.Material;
 public class MetalShovelItem extends ToolItem {
 
     @Override
-    protected double durabilityLostOnUse() {
-        return 0;
+    protected int usesAmount() {
+        return 11;
+    }
+
+    @Override
+    public int damageToBlock() {
+        return 100;
     }
 
     @Override

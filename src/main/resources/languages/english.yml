@@ -35,6 +35,18 @@ Items:
     Name: "Energy Drink"
   Handcuffs:
     Name: "Handcuffs"
+  PlasticSpoon:
+    Name: "Wooden Shovel"
+  MetalSpoon:
+    Name: "Golden Shovel"
+  PlasticShovel:
+    Name: "Stone Shovel"
+  MetalShovel:
+    Name: "Diamond Shovel"
+  WireCutter:
+    Name: "Wire Cutter"
+  Wrench:
+    Name: "Pickaxe"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"

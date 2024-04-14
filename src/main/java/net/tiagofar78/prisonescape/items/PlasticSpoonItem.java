@@ -5,8 +5,13 @@ import org.bukkit.Material;
 public class PlasticSpoonItem extends ToolItem {
 
     @Override
-    protected double durabilityLostOnUse() {
-        return 0;
+    protected int usesAmount() {
+        return 6;
+    }
+
+    @Override
+    public int damageToBlock() {
+        return 25;
     }
 
     @Override

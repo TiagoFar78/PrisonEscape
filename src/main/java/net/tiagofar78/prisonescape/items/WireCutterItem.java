@@ -5,8 +5,13 @@ import org.bukkit.Material;
 public class WireCutterItem extends ToolItem {
 
     @Override
-    protected double durabilityLostOnUse() {
-        return 0;
+    protected int usesAmount() {
+        return 5;
+    }
+
+    @Override
+    public int damageToBlock() {
+        return 20;
     }
 
     @Override
