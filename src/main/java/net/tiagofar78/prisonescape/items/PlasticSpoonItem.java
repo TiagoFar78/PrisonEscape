@@ -1,10 +1,10 @@
 package net.tiagofar78.prisonescape.items;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class PlasticSpoonItem extends ToolItem {
 
@@ -27,13 +27,13 @@ public class PlasticSpoonItem extends ToolItem {
     public boolean isIllegal() {
         return false;
     }
-    
+
     @Override
     public ItemStack toItemStack(MessageLanguageManager messages) {
         ItemStack item = super.toItemStack(messages);
-        
+
         BukkitItems.removeAttributes(item);
-        
+
         return item;
     }
 

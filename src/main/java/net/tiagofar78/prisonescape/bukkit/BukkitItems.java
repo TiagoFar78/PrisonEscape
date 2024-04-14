@@ -31,11 +31,11 @@ public class BukkitItems {
 
         item.setItemMeta(meta);
     }
-    
+
     public static void removeAttributes(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        
+
         item.setItemMeta(meta);
     }
 
