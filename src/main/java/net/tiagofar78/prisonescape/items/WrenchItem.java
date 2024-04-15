@@ -1,6 +1,10 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitItems;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class WrenchItem extends ToolItem {
 
@@ -22,6 +26,15 @@ public class WrenchItem extends ToolItem {
     @Override
     public boolean isIllegal() {
         return true;
+    }
+
+    @Override
+    public ItemStack toItemStack(MessageLanguageManager messages) {
+        ItemStack item = super.toItemStack(messages);
+
+        BukkitItems.removeAttributes(item);
+
+        return item;
     }
 
     @Override
