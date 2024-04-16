@@ -193,11 +193,11 @@ public class PrisonBuilding {
 //  #########################################
 //  #                 Walls                 #
 //  #########################################
-    
+
     public void raiseWall() {
         _wall.raiseFixedWall();
     }
-    
+
     public void putRandomCracks() {
         _wall.putRandomCracks();
     }

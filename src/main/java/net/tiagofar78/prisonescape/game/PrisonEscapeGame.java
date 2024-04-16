@@ -257,7 +257,7 @@ public class PrisonEscapeGame {
 
     private void startWaitingPhase() {
         _phase = new Waiting();
-        
+
         _prison.raiseWall();
 
         ConfigManager config = ConfigManager.getInstance();

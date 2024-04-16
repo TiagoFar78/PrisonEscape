@@ -19,14 +19,18 @@ public class Wall {
 
     private List<PrisonEscapeLocation> _cornersLocations;
 
-    public Wall() {        
-        _cornersLocations = ConfigManager.getInstance().getWallCornersLocations(); 
+    public Wall() {
+        _cornersLocations = ConfigManager.getInstance().getWallCornersLocations();
     }
 
     public void raiseFixedWall() {
         for (int i = 0; i < _cornersLocations.size() - 1; i++) {
             PrisonEscapeLocation loc1 = _cornersLocations.get(i);
-            PrisonEscapeLocation loc2 = new PrisonEscapeLocation(_cornersLocations.get(i + 1)).add(0, WALL_HEIGHT - 1, 0);
+            PrisonEscapeLocation loc2 = new PrisonEscapeLocation(_cornersLocations.get(i + 1)).add(
+                    0,
+                    WALL_HEIGHT - 1,
+                    0
+            );
             BukkitWorldEditor.buildWall(loc1, loc2);
         }
     }
@@ -36,7 +40,7 @@ public class Wall {
             return;
         }
 
-        int crackPos = 0;
+        int accumulatedDistance = MIN_CRACK_DISTANCE;
         for (int i = 0; i < _cornersLocations.size() - 1; i++) {
             PrisonEscapeLocation corner1 = _cornersLocations.get(i);
             PrisonEscapeLocation corner2 = _cornersLocations.get(i + 1);
@@ -48,16 +52,23 @@ public class Wall {
 
             int xDirection = xDiff == 0 ? 0 : xDiff > 0 ? 1 : -1;
             int zDirection = zDiff == 0 ? 0 : zDiff > 0 ? 1 : -1;
-            
+
+            int crackPos = 0;
             while (true) {
-                Random random = new Random();
-                crackPos += random.nextInt(MIN_CRACK_DISTANCE, MAX_CRACK_DISTANCE + 1);
+                int prevCrackPos = crackPos;
+                crackPos += getRandomDistance(accumulatedDistance);
+                accumulatedDistance = 0;
 
                 int nextX = crackPos * xDirection;
                 int nextZ = crackPos * zDirection;
                 int crackLength = CRACK_FORMAT[0].length();
-                if (Math.abs(nextX + crackLength * xDirection) > xAbsDiff || Math.abs(nextZ + crackLength * zDirection) > zAbsDiff) {
-                    crackPos = 0;
+                boolean isXAfterNextCorner = Math.abs(nextX + crackLength * xDirection) > xAbsDiff;
+                boolean isZAfterNextCorner = Math.abs(nextZ + crackLength * zDirection) > zAbsDiff;
+                if (isXAfterNextCorner) {
+                    accumulatedDistance = xAbsDiff - prevCrackPos;
+                    break;
+                } else if (isZAfterNextCorner) {
+                    accumulatedDistance = zAbsDiff - prevCrackPos;
                     break;
                 }
 
@@ -66,6 +77,22 @@ public class Wall {
                 crackPos += crackLength;
             }
         }
+    }
+
+    private int getRandomDistance(int accumulatedDistance) {
+        int minDistance = MIN_CRACK_DISTANCE - accumulatedDistance;
+        if (minDistance < 0) {
+            minDistance = 0;
+        }
+
+        int maxDistance = MAX_CRACK_DISTANCE - accumulatedDistance;
+        if (maxDistance < 0) {
+            return 0;
+        }
+
+        Random random = new Random();
+        return random.nextInt(minDistance, maxDistance + 1);
+
     }
 
     private void putCrack(PrisonEscapeLocation crackLocation, String[] crackFormat, int xDirection, int zDirection) {
@@ -77,8 +104,8 @@ public class Wall {
                 if (crackFormat[crackHeight - 1 - h].charAt(l) == CRACK_CHAR) {
                     int x = crackLocation.getX() + xDirection * l;
                     int y = crackLocation.getY() + h;
-                    int z = crackLocation.getZ() + xDirection * l;
-                    
+                    int z = crackLocation.getZ() + zDirection * l;
+
                     BukkitWorldEditor.putCrackOnWall(x, y, z);
                 }
             }
