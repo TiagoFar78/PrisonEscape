@@ -68,7 +68,6 @@ public class PrisonBuilding {
         _metalDetectorsLocations = new ArrayList<>();
 
         _wall = new Wall();
-        _wall.raiseFixedWall();
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -189,6 +188,18 @@ public class PrisonBuilding {
 
     public Chest getChest(PrisonEscapeLocation location) {
         return _chests.get(location.createKey());
+    }
+
+//  #########################################
+//  #                 Walls                 #
+//  #########################################
+    
+    public void raiseWall() {
+        _wall.raiseFixedWall();
+    }
+    
+    public void putRandomCracks() {
+        _wall.putRandomCracks();
     }
 
 //	#########################################

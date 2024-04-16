@@ -257,6 +257,8 @@ public class PrisonEscapeGame {
 
     private void startWaitingPhase() {
         _phase = new Waiting();
+        
+        _prison.raiseWall();
 
         ConfigManager config = ConfigManager.getInstance();
 
@@ -327,6 +329,7 @@ public class PrisonEscapeGame {
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
+        _prison.putRandomCracks();
 
         startDay();
     }

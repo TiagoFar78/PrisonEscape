@@ -106,8 +106,8 @@ public class BukkitWorldEditor {
         }
     }
 
-    public static void putCrackOnWall(PrisonEscapeLocation loc) {
-        WORLD.getBlockAt(loc.getX(), loc.getY(), loc.getZ()).setType(CRACKED_BLOCK);
+    public static void putCrackOnWall(int x, int y, int z) {
+        WORLD.getBlockAt(x, y, z).setType(CRACKED_BLOCK);
     }
 
 }
