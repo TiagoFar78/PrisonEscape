@@ -66,7 +66,7 @@ public class PrisonBuilding {
         }
 
         _metalDetectorsLocations = new ArrayList<>();
-        
+
         _wall = new Wall();
         _wall.raiseFixedWall();
     }

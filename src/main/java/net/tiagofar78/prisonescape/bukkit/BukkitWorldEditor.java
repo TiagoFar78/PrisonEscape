@@ -20,7 +20,7 @@ public class BukkitWorldEditor {
 //  #########################################
 
     private static final int SIGN_INDEX = 1;
-    
+
     public static void addSignAboveVault(PrisonEscapeLocation location, String text) {
         Location bukkitLocation = new Location(WORLD, location.getX(), location.getY() + 1, location.getZ());
         bukkitLocation.getBlock().setType(Material.OAK_WALL_SIGN);
@@ -47,7 +47,7 @@ public class BukkitWorldEditor {
 //  ########################################
 //  #                 Time                 #
 //  ########################################
-    
+
     private static final int DAY_START_TIME = 0;
     private static final int NIGHT_START_TIME = 13000;
 
@@ -62,44 +62,41 @@ public class BukkitWorldEditor {
 //  ########################################
 //  #                 Wall                 #
 //  ########################################
-    
+
     private static final Material DEFAULT_BLOCK = Material.STONE_BRICKS;
     private static final Material CRACKED_BLOCK = Material.CRACKED_STONE_BRICKS;
-    
+
     public static void buildWall(PrisonEscapeLocation loc1, PrisonEscapeLocation loc2) {
         int lowerX;
         int higherX;
         if (loc1.getX() >= loc2.getX()) {
             higherX = loc1.getX();
             lowerX = loc2.getX();
-        }
-        else {
+        } else {
             higherX = loc2.getX();
             lowerX = loc1.getX();
         }
-        
+
         int lowerZ;
         int higherZ;
         if (loc1.getZ() >= loc2.getZ()) {
             higherZ = loc1.getZ();
             lowerZ = loc2.getZ();
-        }
-        else {
+        } else {
             higherZ = loc2.getZ();
             lowerZ = loc1.getZ();
         }
-        
+
         int lowerY;
         int higherY;
         if (loc1.getY() >= loc2.getY()) {
             higherY = loc1.getY();
             lowerY = loc2.getY();
-        }
-        else {
+        } else {
             higherY = loc2.getY();
             lowerY = loc1.getY();
         }
-        
+
         for (int x = lowerX; x <= higherX; x++) {
             for (int z = lowerZ; z <= higherZ; z++) {
                 for (int y = lowerY; y <= higherY; y++) {
@@ -108,7 +105,7 @@ public class BukkitWorldEditor {
             }
         }
     }
-    
+
     public static void putCrackOnWall(PrisonEscapeLocation loc) {
         WORLD.getBlockAt(loc.getX(), loc.getY(), loc.getZ()).setType(CRACKED_BLOCK);
     }
