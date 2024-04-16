@@ -16,7 +16,7 @@ public class TeamSelectorKit implements Listener {
     private static final int SELECT_POLICE_ITEM_INDEX = 7;
     private static final int SELECT_NONE_ITEM_INDEX = 4;
 
-    public static void giveToPlayer(String playerName) {
+    public static void giveKitToPlayer(String playerName) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;

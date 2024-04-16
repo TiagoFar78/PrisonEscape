@@ -18,6 +18,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
+import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisionerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -94,7 +95,7 @@ public class PrisonEscapeGame {
         _playersOnLobby.add(player);
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
-        TeamSelectorKit.giveToPlayer(playerName);
+        TeamSelectorKit.giveKitToPlayer(playerName);
 
         int maxPlayers = config.getMaxPlayers();
         int playerNumber = _playersOnLobby.size();
@@ -318,12 +319,13 @@ public class PrisonEscapeGame {
         for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
-            PrisionerKit.giveToPlayer(player.getName());
+            PrisionerKit.giveKitToPlayer(player.getName());
         }
 
         for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
+            PoliceKit.giveKitToPlayer(player.getName());
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
