@@ -47,6 +47,16 @@ Items:
     Name: "Wire Cutter"
   Wrench:
     Name: "Pickaxe"
+  Glass:
+    Name: " "
+  Missions:
+    Name: "Missions Book"
+  Camera:
+    Name: "Camera"
+  Shop:
+    Name: "Shop"
+  Search:
+    Name: "Search"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
