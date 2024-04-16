@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
+import org.bukkit.entity.TNTPrimed;
 
 public class BukkitWorldEditor {
 
@@ -64,7 +65,8 @@ public class BukkitWorldEditor {
 //  ########################################
 
     private static final Material DEFAULT_BLOCK = Material.STONE_BRICKS;
-    private static final Material CRACKED_BLOCK = Material.CRACKED_STONE_BRICKS;
+    public static final Material CRACKED_BLOCK = Material.CRACKED_STONE_BRICKS;
+    private static final int EXPLOSION_TICKS = 20 * 4;
 
     public static void buildWall(PrisonEscapeLocation loc1, PrisonEscapeLocation loc2) {
         int lowerX;
@@ -108,6 +110,18 @@ public class BukkitWorldEditor {
 
     public static void putCrackOnWall(int x, int y, int z) {
         WORLD.getBlockAt(x, y, z).setType(CRACKED_BLOCK);
+    }
+
+    public static void removeWallBlock(PrisonEscapeLocation location) {
+        int x = location.getX();
+        int y = location.getY();
+        int z = location.getZ();
+        WORLD.getBlockAt(x, y, z).setType(Material.AIR);
+    }
+
+    public static void placeTNT(PrisonEscapeLocation location) {
+        Location bukkitLocation = new Location(WORLD, location.getX(), location.getY(), location.getZ());
+        ((TNTPrimed) WORLD.spawn(bukkitLocation, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
     }
 
 }

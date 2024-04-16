@@ -24,6 +24,8 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import org.bukkit.block.Block;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -511,6 +513,17 @@ public class PrisonEscapeGame {
         return 0;
     }
 
+    public void playerPlaceBlock(String playerName, Item item, BlockPlaceEvent e) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+
+        if (item.isFunctional()) {
+            ((FunctionalItem) item).use(e);
+        }
+    }
+
     public void playerCloseMenu(String playerName) {
         if (getPrisonEscapePlayer(playerName) == null) {
             return;
@@ -554,6 +567,10 @@ public class PrisonEscapeGame {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getGeneralMessage(senderName, message));
         }
+    }
+
+    public void explosion(List<Block> explodedBlocks) {
+        _prison.removeExplodedBlocks(explodedBlocks);
     }
 
 //	########################################
@@ -763,6 +780,10 @@ public class PrisonEscapeGame {
             MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
             BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisionerName));
         }
+    }
+
+    public void placeBomb(PrisonEscapeLocation location) {
+        _prison.placeBomb(location);
     }
 
 //	########################################

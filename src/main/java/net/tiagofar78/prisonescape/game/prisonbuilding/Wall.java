@@ -112,4 +112,10 @@ public class Wall {
         }
     }
 
+    public void crackedBlocksExploded(List<PrisonEscapeLocation> explodedBlocksLocations) {
+        for (PrisonEscapeLocation location : explodedBlocksLocations) {
+            BukkitWorldEditor.removeWallBlock(location);
+        }
+    }
+
 }

@@ -20,6 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -227,6 +228,20 @@ public class Events implements Listener {
 
         if (event.getPlayer().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onExplosion(EntityExplodeEvent e) {
+        if (!e.getEntity().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
+            return;
+        }
+
+        e.setCancelled(true);
+
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game != null) {
+            game.explosion(e.blockList());
         }
     }
 

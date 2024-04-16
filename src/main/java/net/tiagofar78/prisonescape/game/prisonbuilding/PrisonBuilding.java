@@ -6,6 +6,8 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
+import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -200,6 +202,20 @@ public class PrisonBuilding {
 
     public void putRandomCracks() {
         _wall.putRandomCracks();
+    }
+
+    public void removeExplodedBlocks(List<Block> explodedBlocks) {
+        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream()
+                .filter(b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK)
+                .map(b -> b.getLocation())
+                .map(l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ()))
+                .toList();
+
+        _wall.crackedBlocksExploded(crackedBlocksLocations);
+    }
+
+    public void placeBomb(PrisonEscapeLocation location) {
+        BukkitWorldEditor.placeTNT(location);
     }
 
 //	#########################################
