@@ -30,6 +30,7 @@ public class PrisonBuilding {
 
     private Hashtable<String, Chest> _chests;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
+    private Wall _wall;
 
 //  #########################################
 //  #              Constructor              #
@@ -65,6 +66,9 @@ public class PrisonBuilding {
         }
 
         _metalDetectorsLocations = new ArrayList<>();
+        
+        _wall = new Wall();
+        _wall.raiseFixedWall();
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
