@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
-import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
+import net.tiagofar78.prisonescape.game.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;

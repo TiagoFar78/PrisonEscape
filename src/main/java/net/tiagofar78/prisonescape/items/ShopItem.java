@@ -1,8 +1,11 @@
 package net.tiagofar78.prisonescape.items;
 
-import org.bukkit.Material;
+import net.tiagofar78.prisonescape.managers.GameManager;
 
-public class ShopItem extends Item {
+import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+public class ShopItem extends FunctionalItem {
 
     @Override
     public boolean isMetalic() {
@@ -19,4 +22,8 @@ public class ShopItem extends Item {
         return Material.MAP;
     }
 
+    @Override
+    public void use(PlayerInteractEvent e) {
+        GameManager.getGame().policeOpenShop(e.getPlayer().getName());
+    }
 }

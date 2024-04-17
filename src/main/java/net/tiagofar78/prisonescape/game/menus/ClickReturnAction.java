@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game.prisonbuilding;
+package net.tiagofar78.prisonescape.game.menus;
 
 public enum ClickReturnAction {
 

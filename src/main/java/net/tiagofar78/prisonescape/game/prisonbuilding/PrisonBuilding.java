@@ -2,6 +2,8 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.menus.Chest;
+import net.tiagofar78.prisonescape.game.menus.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;

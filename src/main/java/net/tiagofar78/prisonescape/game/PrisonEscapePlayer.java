@@ -17,6 +17,7 @@ public class PrisonEscapePlayer {
     private boolean _isOnline;
     private boolean _hasEscaped;
     private List<Item> _inventory;
+    private int _balance;
 
     public PrisonEscapePlayer(String name) {
         _name = name;
@@ -25,6 +26,7 @@ public class PrisonEscapePlayer {
         _inRestrictedArea = false;
         _isOnline = true;
         _inventory = createInventory();
+        _balance = 100; // Some value just to test
     }
 
     private List<Item> createInventory() {
@@ -144,6 +146,36 @@ public class PrisonEscapePlayer {
 
     public boolean canBeArrested() {
         return _isWanted || _inRestrictedArea;
+    }
+
+//	########################################
+//	#                Balance               #
+//	########################################
+
+    public int getBalance() {
+        return _balance;
+    }
+
+    public void setBalance(int balance) {
+        _balance = balance;
+    }
+
+    public void increaseBalance(int amount) {
+        _balance += amount;
+    }
+
+    public void decreaseBalance(int amount) {
+        _balance -= amount;
+    }
+
+    public int buyItem(int price) {
+        //TODO: Add check to see if limit of object reached
+
+        if (price > _balance) {
+            return -1;
+        }
+        decreaseBalance(price);
+        return _balance;
     }
 
 //	########################################

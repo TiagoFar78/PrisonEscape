@@ -163,4 +163,38 @@ public class BukkitMenu {
         return -1;
     }
 
+//  ########################################
+//  #                 Shop                 #
+//  ########################################
+
+    private static final int NUM_OF_ITEMS_FOR_SALE = 1;
+
+    public static void openShop(String playerName) {
+        Player bukkitPlayer = Bukkit.getPlayer(playerName);
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        Inventory shopMenu = Bukkit.createInventory(null, 9, "Buy Menu");
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
+        // Adicionar items para vender
+        ItemStack item = new ItemStack(Material.DIAMOND);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("Diamond");
+        item.setItemMeta(meta);
+        shopMenu.setItem(0, item);
+
+        bukkitPlayer.openInventory(shopMenu);
+    }
+
+    public static int convertToIndexShop(int slot) {
+        for (int i = 0; i < NUM_OF_ITEMS_FOR_SALE; i++) {
+            if (NUM_OF_ITEMS_FOR_SALE <= slot) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }

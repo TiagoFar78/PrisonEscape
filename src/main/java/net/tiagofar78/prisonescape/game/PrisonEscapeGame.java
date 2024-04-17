@@ -6,15 +6,17 @@ import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.menus.Chest;
+import net.tiagofar78.prisonescape.game.menus.ClickReturnAction;
+import net.tiagofar78.prisonescape.game.menus.Clickable;
+import net.tiagofar78.prisonescape.game.menus.Shop;
+import net.tiagofar78.prisonescape.game.menus.Vault;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
-import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
+import net.tiagofar78.prisonescape.game.menus.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
@@ -730,6 +732,17 @@ public class PrisonEscapeGame {
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);
+    }
+
+    public void policeOpenShop(String playerName) {
+        PrisonEscapePlayer player = getPlayerOnPoliceTeam(playerName);
+        if (player == null) {
+            return;
+        }
+
+        Shop shop = new Shop();
+        _playerOpenMenu.put(playerName, shop);
+        shop.open(player);
     }
 
     public void policeHandcuffedPrisioner(String policeName, String prisionerName) {

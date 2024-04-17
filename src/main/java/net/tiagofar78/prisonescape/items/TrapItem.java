@@ -4,17 +4,17 @@ import net.tiagofar78.prisonescape.items.util.Buyable;
 
 import org.bukkit.Material;
 
-public class CameraItem extends Item implements Buyable {
+public class TrapItem extends Item implements Buyable {
 
     @Override
     public int getPrice() {
-        // TODO: Use config manager to get these values
+        // TODO: Use config to get these values;
         return 10;
     }
 
     @Override
     public int getLimit() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -29,7 +29,8 @@ public class CameraItem extends Item implements Buyable {
 
     @Override
     public Material getMaterial() {
-        return Material.OBSERVER;
+        // TODO Pick Material
+        throw new UnsupportedOperationException("Unimplemented method 'getMaterial'");
     }
 
 }

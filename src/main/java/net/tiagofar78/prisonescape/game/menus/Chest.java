@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game.prisonbuilding;
+package net.tiagofar78.prisonescape.game.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
@@ -21,7 +21,7 @@ public class Chest implements Clickable {
     private List<ItemProbability> _itemsProbability;
     private boolean _isOpened;
 
-    protected Chest(String regionName) {
+    public Chest(String regionName) {
         ConfigManager config = ConfigManager.getInstance();
 
         this._contents = createContentsList();
