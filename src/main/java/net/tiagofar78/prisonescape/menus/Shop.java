@@ -1,10 +1,10 @@
-package net.tiagofar78.prisonescape.game.menus;
+package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
-import net.tiagofar78.prisonescape.items.util.Buyable;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import java.util.List;

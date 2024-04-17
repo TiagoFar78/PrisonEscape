@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.items.util;
+package net.tiagofar78.prisonescape.items;
 
 public interface Buyable {
 

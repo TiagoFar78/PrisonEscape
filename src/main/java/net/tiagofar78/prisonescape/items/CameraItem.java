@@ -1,7 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.items.util.Buyable;
-
 import org.bukkit.Material;
 
 public class CameraItem extends Item implements Buyable {

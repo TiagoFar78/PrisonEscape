@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game.menus;
+package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;

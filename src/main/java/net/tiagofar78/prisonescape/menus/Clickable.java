@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game.menus;
+package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
