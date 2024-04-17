@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +22,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -32,6 +34,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -71,6 +74,10 @@ public class Events implements Listener {
         }
 
         Block block = e.getClickedBlock();
+
+        if (e.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
 
         @SuppressWarnings("deprecation")
         Item itemInHand = ItemFactory.createItem(e.getPlayer().getItemInHand());
@@ -192,6 +199,10 @@ public class Events implements Listener {
         if (entity.getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             e.setCancelled(true);
         }
+
+        if (e.getEntityType() == EntityType.PRIMED_TNT) {
+            e.setCancelled(false);
+        }
     }
 
     @EventHandler
@@ -233,6 +244,20 @@ public class Events implements Listener {
 
         if (event.getPlayer().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onExplosion(EntityExplodeEvent e) {
+        if (!e.getEntity().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
+            return;
+        }
+
+        e.setCancelled(true);
+
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game != null) {
+            game.explosion(e.blockList());
         }
     }
 

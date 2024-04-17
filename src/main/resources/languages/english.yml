@@ -47,6 +47,8 @@ Items:
     Name: "Wire Cutter"
   Wrench:
     Name: "Pickaxe"
+  Bomb:
+    Name: "Bomb"
   Glass:
     Name: " "
   Missions:
@@ -94,6 +96,7 @@ Messages:
     NotWantedPlayer: "&cYou can only send to solitary wanted players."
     PrisionerInspected: "&aA police inspected your inventory, but no illegal items were found."
     PoliceInspected: "&a{PLAYER} don't have any illegal items."
+    CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
   Announcements:
     GameStarting:
     - "&6==================================="

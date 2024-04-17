@@ -15,6 +15,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
+import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -25,6 +26,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -259,6 +261,8 @@ public class PrisonEscapeGame {
     private void startWaitingPhase() {
         _phase = new Waiting();
 
+        _prison.raiseWall();
+
         ConfigManager config = ConfigManager.getInstance();
 
         runWaitingPhaseScheduler(config.getWaitingPhaseDuration(), true);
@@ -329,6 +333,7 @@ public class PrisonEscapeGame {
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
+        _prison.putRandomCracks();
 
         startDay();
     }
@@ -493,6 +498,14 @@ public class PrisonEscapeGame {
                 return 0;
             }
 
+            WallCrack crack = _prison.getWallCrack(blockLocation);
+            if (crack != null) {
+                int returnCode = playerFixWallCrack(player, crack);
+                if (returnCode == 0) {
+                    return 0;
+                }
+            }
+
             PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
                     blockLocation,
                     _prisionersTeam.isOnTeam(player)
@@ -553,6 +566,10 @@ public class PrisonEscapeGame {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getGeneralMessage(senderName, message));
         }
+    }
+
+    public void explosion(List<Block> explodedBlocks) {
+        _prison.removeExplodedBlocks(explodedBlocks);
     }
 
 //	########################################
@@ -762,6 +779,24 @@ public class PrisonEscapeGame {
             MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
             BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisionerName));
         }
+    }
+
+    public void placeBomb(PrisonEscapeLocation location) {
+        _prison.placeBomb(location);
+    }
+
+    public int playerFixWallCrack(PrisonEscapePlayer player, WallCrack crack) {
+        if (!_policeTeam.isOnTeam(player)) {
+            return -1;
+        }
+
+        int returnCode = crack.fixCrack();
+        if (returnCode == -1) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, messages.getCanOnlyFixHolesMessage());
+        }
+
+        return 0;
     }
 
 //	########################################

@@ -103,6 +103,7 @@ public class MessageLanguageManager {
     private String _notWantedPlayerMessage;
     private String _policeInspectedMessage;
     private String _prisionerInspectedMessage;
+    private String _canOnlyFixHolesMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -222,6 +223,7 @@ public class MessageLanguageManager {
         _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
         _prisionerInspectedMessage = createMessage(messages.getString(warningPath + "PrisionerInspected"));
+        _canOnlyFixHolesMessage = createMessage(messages.getString(warningPath + "CanOnlyFixHoles"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -436,6 +438,10 @@ public class MessageLanguageManager {
 
     public String getPrisionerInspectedMessage() {
         return _prisionerInspectedMessage;
+    }
+
+    public String getCanOnlyFixHolesMessage() {
+        return _canOnlyFixHolesMessage;
     }
 
 //	########################################

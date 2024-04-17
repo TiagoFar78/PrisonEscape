@@ -56,6 +56,8 @@ public class ConfigManager {
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
     private List<PrisonEscapeLocation> _chestsLocations;
+    private List<PrisonEscapeLocation> _wallCornersLocations;
+    private List<List<String>> _wallCrackFormats;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -102,6 +104,8 @@ public class ConfigManager {
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
         _chestsLocations = createLocationList(config, "ChestsLocations");
+        _wallCornersLocations = createLocationList(config, "WallCorners");
+        _wallCrackFormats = createStringListList(config, "WallCrackFormats");
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -129,6 +133,21 @@ public class ConfigManager {
 
         for (String key : filteredKeys) {
             list.add(createLocation(config, key));
+        }
+
+        return list;
+    }
+
+    private List<List<String>> createStringListList(YamlConfiguration config, String path) {
+        List<List<String>> list = new ArrayList<>();
+
+        List<String> filteredKeys = config.getKeys(true)
+                .stream()
+                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
+                .toList();
+
+        for (String key : filteredKeys) {
+            list.add(config.getStringList(key));
         }
 
         return list;
@@ -344,6 +363,14 @@ public class ConfigManager {
         return createLocationsListCopy(_chestsLocations);
     }
 
+    public List<PrisonEscapeLocation> getWallCornersLocations() {
+        return createLocationsListCopy(_wallCornersLocations);
+    }
+
+    public List<List<String>> getWallCrackFormats() {
+        return createStringListListCopy(_wallCrackFormats);
+    }
+
     public List<ItemProbability> getChestContents(String regionName) {
         if (!_regionsChestContents.containsKey(regionName)) {
             return null;
@@ -409,6 +436,16 @@ public class ConfigManager {
 
         for (ItemProbability itemProbability : itemsProbabilities) {
             list.add(new ItemProbability(itemProbability.getItem(), itemProbability.getProbability()));
+        }
+
+        return list;
+    }
+
+    private List<List<String>> createStringListListCopy(List<List<String>> strings) {
+        List<List<String>> list = new ArrayList<>();
+
+        for (List<String> s : strings) {
+            list.add(new ArrayList<String>(s));
         }
 
         return list;

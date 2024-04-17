@@ -6,6 +6,8 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
+import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -30,6 +32,7 @@ public class PrisonBuilding {
 
     private Hashtable<String, Chest> _chests;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
+    private Wall _wall;
 
 //  #########################################
 //  #              Constructor              #
@@ -65,6 +68,8 @@ public class PrisonBuilding {
         }
 
         _metalDetectorsLocations = new ArrayList<>();
+
+        _wall = new Wall();
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -185,6 +190,36 @@ public class PrisonBuilding {
 
     public Chest getChest(PrisonEscapeLocation location) {
         return _chests.get(location.createKey());
+    }
+
+//  #########################################
+//  #                 Walls                 #
+//  #########################################
+
+    public void raiseWall() {
+        _wall.raiseFixedWall();
+    }
+
+    public void putRandomCracks() {
+        _wall.putRandomCracks();
+    }
+
+    public void removeExplodedBlocks(List<Block> explodedBlocks) {
+        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream()
+                .filter(b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK)
+                .map(b -> b.getLocation())
+                .map(l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ()))
+                .toList();
+
+        _wall.crackedBlocksExploded(crackedBlocksLocations);
+    }
+
+    public void placeBomb(PrisonEscapeLocation location) {
+        BukkitWorldEditor.placeTNT(location);
+    }
+
+    public WallCrack getWallCrack(PrisonEscapeLocation location) {
+        return _wall.getAffectedCrack(location);
     }
 
 //	#########################################
