@@ -10,6 +10,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -147,6 +148,11 @@ public class Events implements Listener {
         if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
             Inventory topInv = e.getView().getTopInventory();
             if (topInv == null) {
+                e.setCancelled(true);
+                return;
+            }
+
+            if (e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE) {
                 e.setCancelled(true);
                 return;
             }
