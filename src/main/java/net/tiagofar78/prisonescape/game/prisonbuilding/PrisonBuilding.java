@@ -218,6 +218,10 @@ public class PrisonBuilding {
         BukkitWorldEditor.placeTNT(location);
     }
 
+    public WallCrack getWallCrack(PrisonEscapeLocation location) {
+        return _wall.getAffectedCrack(location);
+    }
+
 //	#########################################
 //	#               Locations               #
 //	#########################################

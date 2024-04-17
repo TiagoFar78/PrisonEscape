@@ -15,6 +15,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
+import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -495,6 +496,12 @@ public class PrisonEscapeGame {
                 return 0;
             }
 
+            WallCrack crack = _prison.getWallCrack(blockLocation);
+            if (crack != null) {
+                playerFixWallCrack(player, crack);
+                return 0;
+            }
+
             PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
                     blockLocation,
                     _prisionersTeam.isOnTeam(player)
@@ -772,6 +779,12 @@ public class PrisonEscapeGame {
 
     public void placeBomb(PrisonEscapeLocation location) {
         _prison.placeBomb(location);
+    }
+
+    public void playerFixWallCrack(PrisonEscapePlayer player, WallCrack crack) {
+        if (_policeTeam.isOnTeam(player)) {
+            crack.fixCrack();
+        }
     }
 
 //	########################################

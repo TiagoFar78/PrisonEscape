@@ -5,6 +5,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import org.joml.Math;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,12 +15,12 @@ public class Wall {
     private static final int MIN_CRACK_DISTANCE = 10;
     private static final int MAX_CRACK_DISTANCE = 30;
 
-    private static final char CRACK_CHAR = '#';
-
     private List<PrisonEscapeLocation> _cornersLocations;
+    private List<WallCrack> _cracks;
 
     public Wall() {
         _cornersLocations = ConfigManager.getInstance().getWallCornersLocations();
+        _cracks = new ArrayList<>();
     }
 
     public void raiseFixedWall() {
@@ -76,7 +77,10 @@ public class Wall {
                 }
 
                 PrisonEscapeLocation crackLoc = new PrisonEscapeLocation(corner1).add(nextX, 0, nextZ);
-                putCrack(crackLoc, crackFormat, xDirection, zDirection);
+                WallCrack crack = new WallCrack(crackLoc, crackFormat, xDirection, zDirection);
+                _cracks.add(crack);
+                crack.putCrackOnWall();
+
                 crackPos += crackLength;
             }
         }
@@ -95,21 +99,20 @@ public class Wall {
 
         Random random = new Random();
         return random.nextInt(minDistance, maxDistance + 1);
-
     }
 
     private List<String> getRandomCrackFormat(List<List<String>> formats) {
         int randomIndex = new Random().nextInt(formats.size());
         List<String> randomFormat = formats.get(randomIndex);
 
-        if (!isValidCrack(randomFormat)) {
+        if (!isValidFormat(randomFormat)) {
             throw new IllegalArgumentException("The specified format is not valid. All lines must have equal length");
         }
 
         return randomFormat;
     }
 
-    private boolean isValidCrack(List<String> format) {
+    private boolean isValidFormat(List<String> format) {
         int formatHeight = format.size();
         if (formatHeight == 0) {
             return false;
@@ -125,32 +128,26 @@ public class Wall {
         return true;
     }
 
-    private void putCrack(
-            PrisonEscapeLocation crackLocation,
-            List<String> crackFormat,
-            int xDirection,
-            int zDirection
-    ) {
-        int crackLength = crackFormat.get(0).length();
-        int crackHeight = crackFormat.size();
-
-        for (int l = 0; l < crackLength; l++) {
-            for (int h = 0; h < crackHeight; h++) {
-                if (crackFormat.get(crackHeight - 1 - h).charAt(l) == CRACK_CHAR) {
-                    int x = crackLocation.getX() + xDirection * l;
-                    int y = crackLocation.getY() + h;
-                    int z = crackLocation.getZ() + zDirection * l;
-
-                    BukkitWorldEditor.putCrackOnWall(x, y, z);
-                }
+    public void crackedBlocksExploded(List<PrisonEscapeLocation> explodedBlocksLocations) {
+        for (WallCrack crack : _cracks) {
+            if (crack.contains(explodedBlocksLocations)) {
+                crack.exploded();
             }
         }
-    }
 
-    public void crackedBlocksExploded(List<PrisonEscapeLocation> explodedBlocksLocations) {
         for (PrisonEscapeLocation location : explodedBlocksLocations) {
             BukkitWorldEditor.removeWallBlock(location);
         }
+    }
+
+    public WallCrack getAffectedCrack(PrisonEscapeLocation location) {
+        for (WallCrack crack : _cracks) {
+            if (crack.contains(location)) {
+                return crack;
+            }
+        }
+
+        return null;
     }
 
 }
