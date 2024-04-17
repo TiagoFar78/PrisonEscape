@@ -137,7 +137,7 @@ public class ConfigManager {
 
         return list;
     }
-    
+
     private List<List<String>> createStringListList(YamlConfiguration config, String path) {
         List<List<String>> list = new ArrayList<>();
 
@@ -366,7 +366,7 @@ public class ConfigManager {
     public List<PrisonEscapeLocation> getWallCornersLocations() {
         return createLocationsListCopy(_wallCornersLocations);
     }
-    
+
     public List<List<String>> getWallCrackFormats() {
         return createStringListListCopy(_wallCrackFormats);
     }
@@ -440,14 +440,14 @@ public class ConfigManager {
 
         return list;
     }
-    
+
     private List<List<String>> createStringListListCopy(List<List<String>> strings) {
         List<List<String>> list = new ArrayList<>();
-        
+
         for (List<String> s : strings) {
             list.add(new ArrayList<String>(s));
         }
-        
+
         return list;
     }
 

@@ -40,7 +40,7 @@ public class Wall {
         }
 
         List<List<String>> crackFormats = ConfigManager.getInstance().getWallCrackFormats();
-        
+
         int accumulatedDistance = MIN_CRACK_DISTANCE;
         for (int i = 0; i < _cornersLocations.size() - 1; i++) {
             PrisonEscapeLocation corner1 = _cornersLocations.get(i);
@@ -57,7 +57,7 @@ public class Wall {
             int crackPos = 0;
             while (true) {
                 List<String> crackFormat = getRandomCrackFormat(crackFormats);
-                
+
                 int prevCrackPos = crackPos;
                 crackPos += getRandomDistance(accumulatedDistance);
                 accumulatedDistance = 0;
@@ -97,35 +97,40 @@ public class Wall {
         return random.nextInt(minDistance, maxDistance + 1);
 
     }
-    
+
     private List<String> getRandomCrackFormat(List<List<String>> formats) {
         int randomIndex = new Random().nextInt(formats.size());
         List<String> randomFormat = formats.get(randomIndex);
-        
+
         if (!isValidCrack(randomFormat)) {
             throw new IllegalArgumentException("The specified format is not valid. All lines must have equal length");
         }
-        
+
         return randomFormat;
     }
-    
+
     private boolean isValidCrack(List<String> format) {
         int formatHeight = format.size();
         if (formatHeight == 0) {
             return false;
         }
-        
+
         int formatLength = format.get(0).length();
         for (int i = 1; i < format.size(); i++) {
             if (format.get(i).length() != formatLength) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
-    private void putCrack(PrisonEscapeLocation crackLocation, List<String> crackFormat, int xDirection, int zDirection) {
+    private void putCrack(
+            PrisonEscapeLocation crackLocation,
+            List<String> crackFormat,
+            int xDirection,
+            int zDirection
+    ) {
         int crackLength = crackFormat.get(0).length();
         int crackHeight = crackFormat.size();
 
