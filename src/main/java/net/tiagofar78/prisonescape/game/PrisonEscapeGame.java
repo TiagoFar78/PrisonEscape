@@ -25,7 +25,6 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.block.Block;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -511,17 +510,6 @@ public class PrisonEscapeGame {
         }
 
         return 0;
-    }
-
-    public void playerPlaceBlock(String playerName, Item item, BlockPlaceEvent e) {
-        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
-        }
     }
 
     public void playerCloseMenu(String playerName) {

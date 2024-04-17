@@ -47,6 +47,8 @@ Items:
     Name: "Wire Cutter"
   Wrench:
     Name: "Pickaxe"
+  Bomb:
+    Name: "Bomb"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
