@@ -48,10 +48,16 @@ public class WallCrack {
         }
     }
 
-    public void fixCrack() {
+    public int fixCrack() {
+        if (!isExploded()) {
+            return -1;
+        }
+
         for (PrisonEscapeLocation crackLocation : _locations) {
             BukkitWorldEditor.fixCrack(crackLocation);
         }
+
+        return 0;
     }
 
     public boolean contains(List<PrisonEscapeLocation> locations) {

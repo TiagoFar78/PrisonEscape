@@ -498,8 +498,10 @@ public class PrisonEscapeGame {
 
             WallCrack crack = _prison.getWallCrack(blockLocation);
             if (crack != null) {
-                playerFixWallCrack(player, crack);
-                return 0;
+                int returnCode = playerFixWallCrack(player, crack);
+                if (returnCode == 0) {
+                    return 0;
+                }
             }
 
             PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
@@ -781,10 +783,18 @@ public class PrisonEscapeGame {
         _prison.placeBomb(location);
     }
 
-    public void playerFixWallCrack(PrisonEscapePlayer player, WallCrack crack) {
-        if (_policeTeam.isOnTeam(player)) {
-            crack.fixCrack();
+    public int playerFixWallCrack(PrisonEscapePlayer player, WallCrack crack) {
+        if (!_policeTeam.isOnTeam(player)) {
+            return -1;
         }
+
+        int returnCode = crack.fixCrack();
+        if (returnCode == -1) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, messages.getCanOnlyFixHolesMessage());
+        }
+
+        return 0;
     }
 
 //	########################################

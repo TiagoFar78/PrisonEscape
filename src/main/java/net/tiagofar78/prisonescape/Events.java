@@ -33,6 +33,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -72,6 +73,10 @@ public class Events implements Listener {
         }
 
         Block block = e.getClickedBlock();
+
+        if (e.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
 
         @SuppressWarnings("deprecation")
         Item itemInHand = ItemFactory.createItem(e.getPlayer().getItemInHand());
