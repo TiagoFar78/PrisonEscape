@@ -135,7 +135,7 @@ public class BukkitWorldEditor {
 //  ########################################
 //  #                 Maze                 #
 //  ########################################
-    
+
     public static void fillMazeWithDirt(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
         for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {
             for (int y = lowerCorner.getY(); y <= upperCorner.getY(); y++) {

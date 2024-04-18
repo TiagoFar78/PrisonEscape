@@ -374,11 +374,11 @@ public class ConfigManager {
     public List<List<String>> getWallCrackFormats() {
         return createStringListListCopy(_wallCrackFormats);
     }
-    
+
     public List<String> getMazeFormat() {
         return new ArrayList<>(_mazeFormat);
     }
-    
+
     public PrisonEscapeLocation getMazeUpperCornerLocation() {
         return createLocationCopy(_mazeUpperCornerLocation);
     }

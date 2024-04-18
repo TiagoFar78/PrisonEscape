@@ -71,7 +71,7 @@ public class PrisonBuilding {
         _metalDetectorsLocations = new ArrayList<>();
 
         _wall = new Wall();
-        
+
         _maze = new Maze();
         _maze.buildMaze(config.getMazeUpperCornerLocation(), config.getMazeFormat());
     }

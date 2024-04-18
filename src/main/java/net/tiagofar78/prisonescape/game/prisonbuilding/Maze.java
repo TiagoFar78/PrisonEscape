@@ -1,12 +1,12 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.*;
-
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 
 public class Maze extends Canvas {
 
@@ -52,33 +52,37 @@ public class Maze extends Canvas {
         if (!isValidFormat(mazeFormat)) {
             throw new IllegalArgumentException("Illegal maze format. All rows must have same length.");
         }
-        
+
         int height = mazeFormat.size();
         int width = mazeFormat.get(0).length();
-        
-        PrisonEscapeLocation lowerCornerLocation = new PrisonEscapeLocation(upperCornerLocation).add(width * CELL_SIDE_SIZE - 1, 0, height * CELL_SIDE_SIZE - 1);
-        
+
+        PrisonEscapeLocation lowerCornerLocation = new PrisonEscapeLocation(upperCornerLocation).add(
+                width * CELL_SIDE_SIZE - 1,
+                0,
+                height * CELL_SIDE_SIZE - 1
+        );
+
         PrisonEscapeLocation dirtUpperCorner = new PrisonEscapeLocation(upperCornerLocation).add(-1, 0, -1);
         PrisonEscapeLocation dirtLowerCorner = new PrisonEscapeLocation(lowerCornerLocation).add(1, 0, 1);
         BukkitWorldEditor.fillMazeWithDirt(dirtUpperCorner, dirtLowerCorner);
-        
+
         // 3. Add horizontal and vertical walls
 
         // 4. Clear spawn points
     }
-    
+
     private boolean isValidFormat(List<String> format) {
         if (format.size() == 0) {
             return false;
         }
-        
+
         int width = format.get(0).length();
         for (String row : format) {
             if (row.length() != width) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -115,7 +119,7 @@ public class Maze extends Canvas {
     // Prim algorithm
     private List<Cell> generateMaze() {
         List<Cell> maze = new ArrayList<>();
-        
+
         List<Integer> visited = new ArrayList<>();
         List<Cell> toVisit = new ArrayList<>();
 
@@ -153,7 +157,7 @@ public class Maze extends Canvas {
             if (below < WIDTH * HEIGHT && !visited.contains(below))
                 toVisit.add(new Cell(nextPath.end, below));
         }
-        
+
         return maze;
     }
 
