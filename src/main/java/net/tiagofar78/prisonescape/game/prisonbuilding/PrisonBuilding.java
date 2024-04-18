@@ -73,7 +73,7 @@ public class PrisonBuilding {
         _wall = new Wall();
 
         _maze = new Maze();
-        _maze.buildMaze(config.getMazeUpperCornerLocation(), config.getMazeFormat());
+        _maze.buildMaze(config.getMazeUpperCornerLocation().add(reference), config.getMazeFormat());
     }
 
     private List<PrisonEscapeLocation> createLocationsList(

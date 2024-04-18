@@ -57,9 +57,9 @@ public class Maze extends Canvas {
         int width = mazeFormat.get(0).length();
 
         PrisonEscapeLocation lowerCornerLocation = new PrisonEscapeLocation(upperCornerLocation).add(
-                width * CELL_SIDE_SIZE - 1,
-                0,
-                height * CELL_SIDE_SIZE - 1
+                -width * CELL_SIDE_SIZE + 1,
+                -2,
+                -height * CELL_SIDE_SIZE + 1
         );
 
         PrisonEscapeLocation dirtUpperCorner = new PrisonEscapeLocation(upperCornerLocation).add(-1, 0, -1);
