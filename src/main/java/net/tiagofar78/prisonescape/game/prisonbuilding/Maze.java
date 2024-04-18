@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.*;
 
-public class MazeGenerator extends Canvas {
+import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+
+public class Maze extends Canvas {
 
     private static final Random rand = new Random();
     private static final int WIDTH = 10;
-    private static final int HEIGHT = 10;
-
-    private List<Cell> maze = new ArrayList<>();
+    private static final int HEIGHT = 9;
+    private static final int CELL_SIDE_SIZE = 5;
 
     // This can be removed after, only used to generate frame
     private static final int TILE_WIDTH = 20;
@@ -47,19 +48,38 @@ public class MazeGenerator extends Canvas {
         }
     }
 
-    public void buildMaze() {
-        // Use paint function as indication of what to do here
-
-        // 1. Fill with dirt
-
-        // 2. Add external walls
-
+    public void buildMaze(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
+        if (!isValidFormat(mazeFormat)) {
+            throw new IllegalArgumentException("Illegal maze format. All rows must have same length.");
+        }
+        
+        int height = mazeFormat.size();
+        int width = mazeFormat.get(0).length();
+        
+        PrisonEscapeLocation lowerCornerLocation = new PrisonEscapeLocation(upperCornerLocation).add(width * CELL_SIDE_SIZE - 1, 0, height * CELL_SIDE_SIZE - 1);
+        
+        PrisonEscapeLocation dirtUpperCorner = new PrisonEscapeLocation(upperCornerLocation).add(-1, 0, -1);
+        PrisonEscapeLocation dirtLowerCorner = new PrisonEscapeLocation(lowerCornerLocation).add(1, 0, 1);
+        BukkitWorldEditor.fillMazeWithDirt(dirtUpperCorner, dirtLowerCorner);
+        
         // 3. Add horizontal and vertical walls
 
         // 4. Clear spawn points
-
-        // 5. Add doors and set exits
-
+    }
+    
+    private boolean isValidFormat(List<String> format) {
+        if (format.size() == 0) {
+            return false;
+        }
+        
+        int width = format.get(0).length();
+        for (String row : format) {
+            if (row.length() != width) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     // Leaving this function here so it can serve as an example for buildMaze
@@ -78,7 +98,7 @@ public class MazeGenerator extends Canvas {
         g.drawLine(0, HEIGHT * TILE_HEIGHT, WIDTH * TILE_WIDTH, HEIGHT * TILE_HEIGHT);
 
         // Add horizontal and vertical walls
-        List<Cell> mazeSteped = maze;
+        List<Cell> mazeSteped = generateMaze();
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
                 int current = (y * WIDTH) + x;
@@ -93,7 +113,9 @@ public class MazeGenerator extends Canvas {
     }
 
     // Prim algorithm
-    public void generateMaze() {
+    private List<Cell> generateMaze() {
+        List<Cell> maze = new ArrayList<>();
+        
         List<Integer> visited = new ArrayList<>();
         List<Cell> toVisit = new ArrayList<>();
 
@@ -131,11 +153,13 @@ public class MazeGenerator extends Canvas {
             if (below < WIDTH * HEIGHT && !visited.contains(below))
                 toVisit.add(new Cell(nextPath.end, below));
         }
+        
+        return maze;
     }
 
     // So we can visualize the maze for now, to delete after completing buildMaze function
     public static void main(String[] args) {
-        MazeGenerator mazeGen = new MazeGenerator();
+        Maze mazeGen = new Maze();
         mazeGen.generateMaze();
         mazeGen.setSize(830, 650);
         JFrame frame = new JFrame("Maze Generator");

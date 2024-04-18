@@ -33,6 +33,7 @@ public class PrisonBuilding {
     private Hashtable<String, Chest> _chests;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
+    private Maze _maze;
 
 //  #########################################
 //  #              Constructor              #
@@ -70,6 +71,9 @@ public class PrisonBuilding {
         _metalDetectorsLocations = new ArrayList<>();
 
         _wall = new Wall();
+        
+        _maze = new Maze();
+        _maze.buildMaze(config.getMazeUpperCornerLocation(), config.getMazeFormat());
     }
 
     private List<PrisonEscapeLocation> createLocationsList(

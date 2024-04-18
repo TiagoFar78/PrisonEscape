@@ -132,4 +132,18 @@ public class BukkitWorldEditor {
         ((TNTPrimed) WORLD.spawn(bukkitLocation, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
     }
 
+//  ########################################
+//  #                 Maze                 #
+//  ########################################
+    
+    public static void fillMazeWithDirt(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+        for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {
+            for (int y = lowerCorner.getY(); y <= upperCorner.getY(); y++) {
+                for (int z = lowerCorner.getZ(); z <= upperCorner.getZ(); z++) {
+                    WORLD.getBlockAt(x, y, z).setType(Material.DIRT);
+                }
+            }
+        }
+    }
+
 }
