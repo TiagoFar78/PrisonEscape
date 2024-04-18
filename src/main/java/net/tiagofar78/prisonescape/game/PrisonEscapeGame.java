@@ -15,6 +15,8 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -515,6 +517,11 @@ public class PrisonEscapeGame {
                 BukkitTeleporter.teleport(player, destination);
                 return 0;
             }
+
+            GoldenDoor goldenDoor = _prison.getGoldenDoor(blockLocation);
+            if (goldenDoor != null) {
+                return playerInteractWithGoldenDoor(player, item, goldenDoor) ? 1 : 0;
+            }
         }
 
         if (item.isFunctional()) {
@@ -776,6 +783,30 @@ public class PrisonEscapeGame {
             MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
             BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisionerName));
         }
+    }
+
+    /**
+     *
+     * @param player
+     * @param itemHeld
+     * @param door
+     * @return true if door toggled
+     *         false if door not toggled
+     */
+    public boolean playerInteractWithGoldenDoor(PrisonEscapePlayer player, Item itemHeld, GoldenDoor door) {
+        ClickDoorReturnAction returnAction = door.click(player, itemHeld);
+
+        if (returnAction == ClickDoorReturnAction.CLOSE_DOOR) {
+            door.close();
+            return true;
+        }
+        if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
+            door.open(player);
+            return true;
+        }
+
+        return false;
+
     }
 
 //	########################################

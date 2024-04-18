@@ -56,6 +56,7 @@ public class ConfigManager {
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
     private List<PrisonEscapeLocation> _chestsLocations;
+    private List<PrisonEscapeLocation> _goldenDoorsLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -102,6 +103,7 @@ public class ConfigManager {
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
         _chestsLocations = createLocationList(config, "ChestsLocations");
+        _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -342,6 +344,10 @@ public class ConfigManager {
 
     public List<PrisonEscapeLocation> getChestsLocations() {
         return createLocationsListCopy(_chestsLocations);
+    }
+
+    public List<PrisonEscapeLocation> getGoldenDoorsLocations() {
+        return createLocationsListCopy(_goldenDoorsLocations);
     }
 
     public List<ItemProbability> getChestContents(String regionName) {

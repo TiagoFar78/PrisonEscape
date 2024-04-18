@@ -31,6 +31,10 @@ Items:
     Name: "Note Part {NUMBER}"
   GoldBar:
     Name: "Gold Bar"
+  GoldenKey:
+    Name: "Golden Key"
+    Lore:
+    - "&6Unlocks the golden door"
   EnergyDrink:
     Name: "Energy Drink"
   Handcuffs:
