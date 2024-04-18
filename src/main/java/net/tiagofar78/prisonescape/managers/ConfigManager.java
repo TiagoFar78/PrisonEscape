@@ -35,6 +35,17 @@ public class ConfigManager {
     private int _delayBetweenAnnouncements;
     private int _speedDuration;
     private int _speedLevel;
+    private int _startingBalance;
+    private int _trapLimit;
+    private int _sensorLimit;
+    private int _radarLimit;
+    private int _energyDrinkLimit;
+    private int _cameraLimit;
+    private int _trapPrice;
+    private int _sensorPrice;
+    private int _radarPrice;
+    private int _energyDrinkPrice;
+    private int _cameraPrice;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -83,6 +94,17 @@ public class ConfigManager {
         _nightDuration = config.getInt("NightDuration");
         _speedDuration = config.getInt("SpeedDuration");
         _speedLevel = config.getInt("SpeedLevel");
+        _startingBalance = config.getInt("StartingBalance");
+        _trapLimit = config.getInt("TrapLimit");
+        _sensorLimit = config.getInt("SensorLimit");
+        _radarLimit = config.getInt("RadarLimit");
+        _energyDrinkLimit = config.getInt("EnergyDrinkLimit");
+        _cameraLimit = config.getInt("CameraLimit");
+        _trapPrice = config.getInt("TrapPrice");
+        _sensorPrice = config.getInt("SensorPrice");
+        _radarPrice = config.getInt("RadarPrice");
+        _energyDrinkPrice = config.getInt("EnergyDrinkPrice");
+        _cameraPrice = config.getInt("CameraPrice");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -288,6 +310,50 @@ public class ConfigManager {
 
     public int getSpeedLevel() {
         return _speedLevel;
+    }
+
+    public int getStartingBalance() {
+        return _startingBalance;
+    }
+
+    public int getTrapLimit() {
+        return _trapLimit;
+    }
+
+    public int getSensorLimit() {
+        return _sensorLimit;
+    }
+
+    public int getRadarLimit() {
+        return _radarLimit;
+    }
+
+    public int getEnergyDrinkLimit() {
+        return _energyDrinkLimit;
+    }
+
+    public int getCameraLimit() {
+        return _cameraLimit;
+    }
+
+    public int getTrapPrice() {
+        return _trapPrice;
+    }
+
+    public int getSensorPrice() {
+        return _sensorPrice;
+    }
+
+    public int getRadarPrice() {
+        return _radarPrice;
+    }
+
+    public int getEnergyDrinkPrice() {
+        return _energyDrinkPrice;
+    }
+
+    public int getCameraPrice() {
+        return _cameraPrice;
     }
 
     public List<String> getAvailableLanguages() {

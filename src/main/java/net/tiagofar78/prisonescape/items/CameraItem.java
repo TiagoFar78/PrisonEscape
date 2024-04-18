@@ -1,18 +1,19 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+
 import org.bukkit.Material;
 
 public class CameraItem extends Item implements Buyable {
 
     @Override
     public int getPrice() {
-        // TODO: Use config manager to get these values
-        return 10;
+        return ConfigManager.getInstance().getCameraPrice();
     }
 
     @Override
     public int getLimit() {
-        return 1;
+        return ConfigManager.getInstance().getCameraLimit();
     }
 
     @Override
@@ -28,6 +29,11 @@ public class CameraItem extends Item implements Buyable {
     @Override
     public Material getMaterial() {
         return Material.OBSERVER;
+    }
+
+    @Override
+    public boolean isBuyable() {
+        return true;
     }
 
 }

@@ -1,18 +1,19 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+
 import org.bukkit.Material;
 
 public class SensorItem extends Item implements Buyable {
 
     @Override
     public int getPrice() {
-        // TODO: Use config to get these values;
-        return 10;
+        return ConfigManager.getInstance().getSensorPrice();
     }
 
     @Override
     public int getLimit() {
-        return 2;
+        return ConfigManager.getInstance().getSensorLimit();
     }
 
     @Override
@@ -27,8 +28,12 @@ public class SensorItem extends Item implements Buyable {
 
     @Override
     public Material getMaterial() {
-        // TODO Pick Material
-        throw new UnsupportedOperationException("Unimplemented method 'getMaterial'");
+        return Material.LIGHTNING_ROD;
+    }
+
+    @Override
+    public boolean isBuyable() {
+        return true;
     }
 
 }

@@ -16,7 +16,6 @@ import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
-import net.tiagofar78.prisonescape.kits.PrisionerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
@@ -324,7 +323,8 @@ public class PrisonEscapeGame {
         for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
-            PrisionerKit.giveKitToPlayer(player.getName());
+            //PrisionerKit.giveKitToPlayer(player.getName());
+            PoliceKit.giveKitToPlayer(player.getName()); // for debugging purposes
         }
 
         for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
@@ -734,7 +734,7 @@ public class PrisonEscapeGame {
     }
 
     public void policeOpenShop(String playerName) {
-        PrisonEscapePlayer player = getPlayerOnPoliceTeam(playerName);
+        PrisonEscapePlayer player = getPlayerOnPrisionersTeam(playerName); // for debugging purposes
         if (player == null) {
             return;
         }

@@ -23,6 +23,11 @@ public class ShopItem extends FunctionalItem {
     }
 
     @Override
+    public boolean isFunctional() {
+        return true;
+    }
+
+    @Override
     public void use(PlayerInteractEvent e) {
         GameManager.getGame().policeOpenShop(e.getPlayer().getName());
     }

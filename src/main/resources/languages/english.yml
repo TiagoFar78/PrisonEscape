@@ -53,12 +53,20 @@ Items:
     Name: " "
   Missions:
     Name: "Missions Book"
-  Camera:
-    Name: "Camera"
+  OpenCameras:
+    Name: "Cameras"
   Shop:
     Name: "Shop"
   Search:
     Name: "Search"
+  Radar:
+    Name: "Radar"
+  Sensor:
+    Name: "Sensor"
+  Camera:
+    Name: "Camera"
+  Trap:
+    Name: "Trap"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -97,6 +105,9 @@ Messages:
     PrisionerInspected: "&aA police inspected your inventory, but no illegal items were found."
     PoliceInspected: "&a{PLAYER} don't have any illegal items."
     CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
+    ReachedItemLimit: "&cSorry, you've already reached the maximum limit for this item."
+    NotEnoughMoney: "&cYou do not have enough money to buy this item."
+    SuccessfullyBoughtItem: "&aSuccessfully bought item. Your current balance is: {BALABNCE}."
   Announcements:
     GameStarting:
     - "&6==================================="

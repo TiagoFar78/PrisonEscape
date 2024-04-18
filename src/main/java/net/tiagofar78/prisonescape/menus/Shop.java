@@ -1,12 +1,19 @@
 package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Buyable;
+import net.tiagofar78.prisonescape.items.CameraItem;
+import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
+import net.tiagofar78.prisonescape.items.RadarItem;
+import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Shop implements Clickable {
@@ -18,6 +25,7 @@ public class Shop implements Clickable {
     public void open(PrisonEscapePlayer player) {
         BukkitMenu.openShop(player.getName());
         _isOpen = true;
+        _contents = createContentsList();
     }
 
     @Override
@@ -28,6 +36,16 @@ public class Shop implements Clickable {
     @Override
     public boolean isOpened() {
         return _isOpen;
+    }
+
+    private List<Item> createContentsList() {
+        List<Item> list = new ArrayList<>();
+        list.add(new EnergyDrinkItem());
+        list.add(new TrapItem());
+        list.add(new SensorItem());
+        list.add(new CameraItem());
+        list.add(new RadarItem());
+        return list;
     }
 
     @Override
@@ -45,25 +63,26 @@ public class Shop implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        if (!(item instanceof Buyable)) {
+        if (!(item.isBuyable())) {
             return ClickReturnAction.NOTHING;
         }
         Buyable buyableItem = (Buyable) item;
-        int returnCode = player.buyItem(buyableItem.getPrice());
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
+        int returnCode = player.buyItem(item, buyableItem.getPrice());
         if (returnCode == -1) {
-
-            // Send message of not enough money to buy
-
+            BukkitMessageSender.sendChatMessage(player, messages.getReachedItemLimitMessage());
             return ClickReturnAction.NOTHING;
         } else if (returnCode == -2) {
-            // Send message of not limit of object reached
+            BukkitMessageSender.sendChatMessage(player, messages.getNotEnoughMoneyMessage());
+            return ClickReturnAction.NOTHING;
+        } else if (returnCode == -3) {
+            BukkitMessageSender.sendChatMessage(player, messages.getFullInventoryMessage());
             return ClickReturnAction.NOTHING;
         }
 
-        // Send message successfully bought, current balance is x
-
-        return ClickReturnAction.CHANGE_HOLD_AND_SELECTED;
+        BukkitMessageSender.sendChatMessage(player, messages.getSuccessfullyBoughtItemMessage(player.getBalance()));
+        return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
     }
 
 }

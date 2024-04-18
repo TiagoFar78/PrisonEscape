@@ -15,14 +15,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class PoliceKit {
 
-    private static final int FIRST_GLASS_ITEM_INDEX = 5;
+    private static final int FIRST_GLASS_ITEM_INDEX = 9;
     private static final int LAST_GLASS_ITEM_INDEX = 35;
 
-    private static final int SEARCH_ITEM_INDEX = 0;
-    private static final int HANDCUFF_ITEM_INDEX = 1;
-    private static final int CAMERA_ITEM_INDEX = 2;
-    private static final int MISSIONS_ITEM_INDEX = 3;
-    private static final int SHOP_ITEM_INDEX = 4;
+    private static final int SEARCH_ITEM_INDEX = 4;
+    private static final int HANDCUFF_ITEM_INDEX = 5;
+    private static final int CAMERA_ITEM_INDEX = 6;
+    private static final int MISSIONS_ITEM_INDEX = 7;
+    private static final int SHOP_ITEM_INDEX = 8;
 
     public static void giveKitToPlayer(String playerName) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);

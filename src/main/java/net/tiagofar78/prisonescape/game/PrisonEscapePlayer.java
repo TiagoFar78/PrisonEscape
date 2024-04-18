@@ -1,7 +1,11 @@
 package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
+import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.TrapItem;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,10 @@ public class PrisonEscapePlayer {
     private List<Item> _inventory;
     private int _balance;
 
+    private int _numOfCamerasBought = 0;
+    private int _numOfSensorsBought = 0;
+    private int _numOfTrapsBought = 0;
+
     public PrisonEscapePlayer(String name) {
         _name = name;
         _preference = TeamPreference.RANDOM;
@@ -26,7 +34,7 @@ public class PrisonEscapePlayer {
         _inRestrictedArea = false;
         _isOnline = true;
         _inventory = createInventory();
-        _balance = 100; // Some value just to test
+        _balance = ConfigManager.getInstance().getStartingBalance();
     }
 
     private List<Item> createInventory() {
@@ -168,14 +176,28 @@ public class PrisonEscapePlayer {
         _balance -= amount;
     }
 
-    public int buyItem(int price) {
-        //TODO: Add check to see if limit of object reached
+    public int buyItem(Item item, int price) {
+        if (item instanceof TrapItem) {
+            if (_numOfTrapsBought >= ((TrapItem) item).getLimit())
+                return -1;
+        } else if (item instanceof CameraItem) {
+            if (_numOfCamerasBought >= ((CameraItem) item).getLimit())
+                return -1;
+        } else if (item instanceof SensorItem) {
+            if (_numOfSensorsBought >= ((SensorItem) item).getLimit())
+                return -1;
+        }
 
         if (price > _balance) {
-            return -1;
+            return -2;
         }
+
+        if (giveItem(item) == -1) {
+            return -3;
+        }
+
         decreaseBalance(price);
-        return _balance;
+        return 0;
     }
 
 //	########################################

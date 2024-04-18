@@ -1,6 +1,11 @@
 package net.tiagofar78.prisonescape.bukkit;
 
+import net.tiagofar78.prisonescape.items.CameraItem;
+import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.RadarItem;
+import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
@@ -178,12 +183,11 @@ public class BukkitMenu {
         Inventory shopMenu = Bukkit.createInventory(null, 9, "Buy Menu");
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
-        // Adicionar items para vender
-        ItemStack item = new ItemStack(Material.DIAMOND);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("Diamond");
-        item.setItemMeta(meta);
-        shopMenu.setItem(0, item);
+        shopMenu.setItem(0, new EnergyDrinkItem().toItemStack(messages));
+        shopMenu.setItem(1, new TrapItem().toItemStack(messages));
+        shopMenu.setItem(2, new SensorItem().toItemStack(messages));
+        shopMenu.setItem(3, new CameraItem().toItemStack(messages));
+        shopMenu.setItem(4, new RadarItem().toItemStack(messages));
 
         bukkitPlayer.openInventory(shopMenu);
     }

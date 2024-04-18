@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class EnergyDrinkItem extends FunctionalItem {
+public class EnergyDrinkItem extends FunctionalItem implements Buyable {
 
     private final static int TICKS_PER_SECOND = 20;
 
@@ -56,6 +56,16 @@ public class EnergyDrinkItem extends FunctionalItem {
         int heldItemSlot = player.getInventory().getHeldItemSlot();
         GameManager.getGame().playerDrankEnergyDrink(player.getName(), heldItemSlot);
 
+    }
+
+    @Override
+    public int getPrice() {
+        return ConfigManager.getInstance().getEnergyDrinkPrice();
+    }
+
+    @Override
+    public int getLimit() {
+        return ConfigManager.getInstance().getEnergyDrinkLimit();
     }
 
 }
