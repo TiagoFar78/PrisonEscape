@@ -144,6 +144,10 @@ public class BukkitWorldEditor {
         fill(upperCorner, lowerCorner, Material.AIR);
     }
 
+    public static void raiseMazeWall(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+        fill(upperCorner, lowerCorner, Material.COBBLESTONE);
+    }
+
 //  ########################################
 //  #                 Util                 #
 //  ########################################

@@ -76,16 +76,38 @@ public class Maze extends Canvas {
 
     private void raiseWalls(PrisonEscapeLocation upperCornerLocation, int width, int height) {
         List<Cell> mazeSteped = generateMaze(width, height);
-        for (int y = 0; y < height; y++) {
+        for (int z = 0; z < height; z++) {
             for (int x = 0; x < width; x++) {
-                int current = (y * width) + x;
-                int lower = ((y + 1) * width) + x;
-                if (!mazeSteped.contains(new Cell(current, lower)) && x != height - 1) {// Check if there should be a horizontal wall
-//                    g.drawLine(x * TILE_width, (y + 1) * TILE_height, (x + 1) * TILE_width, (y + 1) * TILE_height); // add horizontal wall
+                int current = (z * width) + x;
+                int lower = ((z + 1) * width) + x;
+                if (!mazeSteped.contains(new Cell(current, lower)) && z != height - 1) { // Check if there should be a horizontal wall
+                    PrisonEscapeLocation upperCorner = new PrisonEscapeLocation(upperCornerLocation).add(
+                            -x * CELL_SIDE_SIZE,
+                            0,
+                            (-z - 1) * CELL_SIDE_SIZE + 1
+                    );
+                    PrisonEscapeLocation lowerCorner = new PrisonEscapeLocation(upperCornerLocation).add(
+                            (-x - 1) * CELL_SIDE_SIZE + 1,
+                            -2,
+                            (-z - 1) * CELL_SIDE_SIZE
+                    );
+
+                    BukkitWorldEditor.raiseMazeWall(upperCorner, lowerCorner);
                 }
 
-                if (!mazeSteped.contains(new Cell(current, current + 1))) {// Check if there should be a veritcal wall
-//                    g.drawLine((x + 1) * TILE_width, y * TILE_height, (x + 1) * TILE_width, (y + 1) * TILE_height); // add vertical wall
+                if (!mazeSteped.contains(new Cell(current, current + 1)) && x != width - 1) {// Check if there should be a veritcal wall
+                    PrisonEscapeLocation upperCorner = new PrisonEscapeLocation(upperCornerLocation).add(
+                            (-x - 1) * CELL_SIDE_SIZE + 1,
+                            0,
+                            -z * CELL_SIDE_SIZE
+                    );
+                    PrisonEscapeLocation lowerCorner = new PrisonEscapeLocation(upperCornerLocation).add(
+                            (-x - 1) * CELL_SIDE_SIZE,
+                            -2,
+                            (-z - 1) * CELL_SIDE_SIZE + 1
+                    );
+
+                    BukkitWorldEditor.raiseMazeWall(upperCorner, lowerCorner);
                 }
             }
         }
