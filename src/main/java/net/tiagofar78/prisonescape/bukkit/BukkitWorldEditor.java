@@ -139,7 +139,7 @@ public class BukkitWorldEditor {
     public static void fillMazeWithDirt(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
         fill(upperCorner, lowerCorner, Material.DIRT);
     }
-    
+
     public static void clearMazePart(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
         fill(upperCorner, lowerCorner, Material.AIR);
     }
@@ -147,7 +147,7 @@ public class BukkitWorldEditor {
 //  ########################################
 //  #                 Util                 #
 //  ########################################
-    
+
     private static void fill(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner, Material type) {
         for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {
             for (int y = lowerCorner.getY(); y <= upperCorner.getY(); y++) {

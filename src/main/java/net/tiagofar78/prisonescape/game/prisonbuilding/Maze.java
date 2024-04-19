@@ -1,15 +1,14 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import javax.swing.JFrame;
-
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 
 public class Maze extends Canvas {
 
@@ -62,7 +61,7 @@ public class Maze extends Canvas {
         clearExits(upperCornerLocation, mazeFormat);
         clearSpawnPoints(upperCornerLocation, mazeFormat);
     }
-    
+
     private void fillWithDirt(PrisonEscapeLocation upperCornerLocation, int width, int height) {
         PrisonEscapeLocation lowerCornerLocation = new PrisonEscapeLocation(upperCornerLocation).add(
                 -width * CELL_SIDE_SIZE + 1,
@@ -74,7 +73,7 @@ public class Maze extends Canvas {
         PrisonEscapeLocation dirtLowerCorner = new PrisonEscapeLocation(lowerCornerLocation).add(1, 0, 1);
         BukkitWorldEditor.fillMazeWithDirt(dirtUpperCorner, dirtLowerCorner);
     }
-    
+
     private void raiseWalls(PrisonEscapeLocation upperCornerLocation, int width, int height) {
         List<Cell> mazeSteped = generateMaze(width, height);
         for (int y = 0; y < height; y++) {
@@ -84,22 +83,22 @@ public class Maze extends Canvas {
                 if (!mazeSteped.contains(new Cell(current, lower)) && x != height - 1) {// Check if there should be a horizontal wall
 //                    g.drawLine(x * TILE_width, (y + 1) * TILE_height, (x + 1) * TILE_width, (y + 1) * TILE_height); // add horizontal wall
                 }
-                
+
                 if (!mazeSteped.contains(new Cell(current, current + 1))) {// Check if there should be a veritcal wall
-//                    g.drawLine((x + 1) * TILE_width, y * TILE_height, (x + 1) * TILE_width, (y + 1) * TILE_height); // add vertical wall   
+//                    g.drawLine((x + 1) * TILE_width, y * TILE_height, (x + 1) * TILE_width, (y + 1) * TILE_height); // add vertical wall
                 }
             }
         }
     }
-    
+
     private void clearExits(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
-        
+
     }
-    
+
     private void clearSpawnPoints(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
         int height = mazeFormat.size();
         int width = mazeFormat.get(0).length();
-        
+
         for (int z = 0; z < height; z++) {
             String line = mazeFormat.get(z);
             for (int x = 0; x < width; x++) {
@@ -107,12 +106,20 @@ public class Maze extends Canvas {
                     System.out.println("encontrou S na linha " + z + " e na coluna " + x);
                     int upperX = x == 0 ? -x * CELL_SIDE_SIZE - 1 : -x * CELL_SIDE_SIZE;
                     int upperZ = z == 0 ? -z * CELL_SIDE_SIZE - 1 : -z * CELL_SIDE_SIZE;
-                    int lowerX = x == width - 1 ? upperX - CELL_SIDE_SIZE + 1 : upperX - CELL_SIDE_SIZE + 2;
-                    int lowerZ = z == height - 1 ? upperZ - CELL_SIDE_SIZE + 1 : upperZ - CELL_SIDE_SIZE + 2;
-                    
-                    PrisonEscapeLocation upperSpawnLoc = new PrisonEscapeLocation(upperCornerLocation).add(upperX, 0, upperZ);
-                    PrisonEscapeLocation lowerSpawnLoc = new PrisonEscapeLocation(upperCornerLocation).add(lowerX, 2, lowerZ);
-                    
+                    int lowerX = x == width - 1 ? (-x - 1) * CELL_SIDE_SIZE + 2 : (-x - 1) * CELL_SIDE_SIZE + 1;
+                    int lowerZ = z == height - 1 ? (-z - 1) * CELL_SIDE_SIZE + 2 : (-z - 1) * CELL_SIDE_SIZE + 1;
+
+                    PrisonEscapeLocation upperSpawnLoc = new PrisonEscapeLocation(upperCornerLocation).add(
+                            upperX,
+                            0,
+                            upperZ
+                    );
+                    PrisonEscapeLocation lowerSpawnLoc = new PrisonEscapeLocation(upperCornerLocation).add(
+                            lowerX,
+                            -2,
+                            lowerZ
+                    );
+
                     BukkitWorldEditor.clearMazePart(upperSpawnLoc, lowerSpawnLoc);
                 }
             }
@@ -134,7 +141,7 @@ public class Maze extends Canvas {
         return true;
     }
 
- // Leaving this function here so it can serve as an example for buildMaze
+    // Leaving this function here so it can serve as an example for buildMaze
     public void paint(Graphics g) {
         super.paint(g);
 
