@@ -9,8 +9,10 @@ import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
@@ -20,11 +22,9 @@ import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.Chest;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 import net.tiagofar78.prisonescape.menus.Shop;
-import net.tiagofar78.prisonescape.menus.Vault;
 
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -531,6 +531,7 @@ public class PrisonEscapeGame {
 
         if (_playerOpenMenu.containsKey(playerName)) {
             _playerOpenMenu.get(playerName).close();
+            System.out.println("Vai fechar"); // Wtf
             _playerOpenMenu.remove(playerName);
         }
     }
@@ -541,7 +542,10 @@ public class PrisonEscapeGame {
             return ClickReturnAction.IGNORE;
         }
 
+        System.out.println(playerName);
         if (!_playerOpenMenu.containsKey(playerName)) {
+            System.out.println("It's not saved D:");
+            System.out.println(playerName);
             return ClickReturnAction.IGNORE;
         }
 
@@ -740,7 +744,10 @@ public class PrisonEscapeGame {
         }
 
         Shop shop = new Shop();
-        _playerOpenMenu.put(playerName, shop);
+        System.out.println("open");
+        System.out.println(playerName);
+        _playerOpenMenu.put(player.getName(), shop);
+
         shop.open(player);
     }
 

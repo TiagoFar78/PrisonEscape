@@ -50,22 +50,26 @@ public class Shop implements Clickable {
 
     @Override
     public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+        System.out.println("clicou");
         if (clickedPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
-        int index = BukkitMenu.convertToIndexChest(slot);
+        System.out.println("1");
+        int index = BukkitMenu.convertToIndexShop(slot);
         if (index == -1) {
             return ClickReturnAction.NOTHING;
         }
-
+        System.out.println("2");
         Item item = _contents.get(index);
         if (item instanceof NullItem) {
             return ClickReturnAction.NOTHING;
         }
-
+        System.out.println("3");
+        System.out.println(item.isBuyable());
         if (!(item.isBuyable())) {
             return ClickReturnAction.NOTHING;
         }
+        System.out.println("4");
         Buyable buyableItem = (Buyable) item;
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 

@@ -172,7 +172,7 @@ public class BukkitMenu {
 //  #                 Shop                 #
 //  ########################################
 
-    private static final int NUM_OF_ITEMS_FOR_SALE = 1;
+    private static final int NUM_OF_ITEMS_FOR_SALE = 5;
 
     public static void openShop(String playerName) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
@@ -193,12 +193,10 @@ public class BukkitMenu {
     }
 
     public static int convertToIndexShop(int slot) {
-        for (int i = 0; i < NUM_OF_ITEMS_FOR_SALE; i++) {
-            if (NUM_OF_ITEMS_FOR_SALE <= slot) {
-                return i;
-            }
+        if (slot >= NUM_OF_ITEMS_FOR_SALE) {
+            return -1;
         }
 
-        return -1;
+        return slot;
     }
 }

@@ -107,7 +107,7 @@ Messages:
     CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
     ReachedItemLimit: "&cSorry, you've already reached the maximum limit for this item."
     NotEnoughMoney: "&cYou do not have enough money to buy this item."
-    SuccessfullyBoughtItem: "&aSuccessfully bought item. Your current balance is: {BALABNCE}."
+    SuccessfullyBoughtItem: "&aSuccessfully bought item. Your current balance is: {BALANCE}."
   Announcements:
     GameStarting:
     - "&6==================================="

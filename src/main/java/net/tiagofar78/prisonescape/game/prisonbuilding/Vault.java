@@ -1,9 +1,11 @@
-package net.tiagofar78.prisonescape.menus;
+package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
+import net.tiagofar78.prisonescape.menus.ClickReturnAction;
+import net.tiagofar78.prisonescape.menus.Clickable;
 
 import java.util.ArrayList;
 import java.util.List;

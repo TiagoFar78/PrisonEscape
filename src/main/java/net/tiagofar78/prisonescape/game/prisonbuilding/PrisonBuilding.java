@@ -5,8 +5,6 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.menus.Chest;
-import net.tiagofar78.prisonescape.menus.Vault;
 
 import org.bukkit.block.Block;
 
