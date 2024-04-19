@@ -114,7 +114,20 @@ public class Maze extends Canvas {
     }
 
     private void clearExits(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
+        int height = mazeFormat.size();
+        int width = mazeFormat.get(0).length();
 
+        for (int z = 0; z < height; z++) {
+            String line = mazeFormat.get(z);
+            for (int x = 0; x < width; x++) {
+                if (line.charAt(x) == 'E') {
+                    PrisonEscapeLocation upperSpawnLoc = getPartUpperLocation(upperCornerLocation, x, z);
+                    PrisonEscapeLocation lowerSpawnLoc = getPartLowerLocation(upperCornerLocation, x, z, width, height);
+
+                    BukkitWorldEditor.clearDirtFromMazePart(upperSpawnLoc, lowerSpawnLoc);
+                }
+            }
+        }
     }
 
     private void clearSpawnPoints(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
@@ -125,27 +138,33 @@ public class Maze extends Canvas {
             String line = mazeFormat.get(z);
             for (int x = 0; x < width; x++) {
                 if (line.charAt(x) == 'S') {
-                    System.out.println("encontrou S na linha " + z + " e na coluna " + x);
-                    int upperX = x == 0 ? -x * CELL_SIDE_SIZE - 1 : -x * CELL_SIDE_SIZE;
-                    int upperZ = z == 0 ? -z * CELL_SIDE_SIZE - 1 : -z * CELL_SIDE_SIZE;
-                    int lowerX = x == width - 1 ? (-x - 1) * CELL_SIDE_SIZE + 2 : (-x - 1) * CELL_SIDE_SIZE + 1;
-                    int lowerZ = z == height - 1 ? (-z - 1) * CELL_SIDE_SIZE + 2 : (-z - 1) * CELL_SIDE_SIZE + 1;
-
-                    PrisonEscapeLocation upperSpawnLoc = new PrisonEscapeLocation(upperCornerLocation).add(
-                            upperX,
-                            0,
-                            upperZ
-                    );
-                    PrisonEscapeLocation lowerSpawnLoc = new PrisonEscapeLocation(upperCornerLocation).add(
-                            lowerX,
-                            -2,
-                            lowerZ
-                    );
+                    PrisonEscapeLocation upperSpawnLoc = getPartUpperLocation(upperCornerLocation, x, z);
+                    PrisonEscapeLocation lowerSpawnLoc = getPartLowerLocation(upperCornerLocation, x, z, width, height);
 
                     BukkitWorldEditor.clearMazePart(upperSpawnLoc, lowerSpawnLoc);
                 }
             }
         }
+    }
+
+    private PrisonEscapeLocation getPartUpperLocation(PrisonEscapeLocation upperMazeLocation, int x, int z) {
+        int upperX = x == 0 ? -x * CELL_SIDE_SIZE - 1 : -x * CELL_SIDE_SIZE;
+        int upperZ = z == 0 ? -z * CELL_SIDE_SIZE - 1 : -z * CELL_SIDE_SIZE;
+
+        return new PrisonEscapeLocation(upperMazeLocation).add(upperX, 0, upperZ);
+    }
+
+    private PrisonEscapeLocation getPartLowerLocation(
+            PrisonEscapeLocation upperMazeLocation,
+            int x,
+            int z,
+            int width,
+            int height
+    ) {
+        int lowerX = x == width - 1 ? (-x - 1) * CELL_SIDE_SIZE + 2 : (-x - 1) * CELL_SIDE_SIZE + 1;
+        int lowerZ = z == height - 1 ? (-z - 1) * CELL_SIDE_SIZE + 2 : (-z - 1) * CELL_SIDE_SIZE + 1;
+
+        return new PrisonEscapeLocation(upperMazeLocation).add(lowerX, -2, lowerZ);
     }
 
     private boolean isValidFormat(List<String> format) {
