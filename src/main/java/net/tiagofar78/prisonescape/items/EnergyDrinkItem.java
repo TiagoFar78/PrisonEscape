@@ -68,4 +68,9 @@ public class EnergyDrinkItem extends FunctionalItem implements Buyable {
         return ConfigManager.getInstance().getEnergyDrinkLimit();
     }
 
+    @Override
+    public boolean isBuyable() {
+        return true;
+    }
+
 }

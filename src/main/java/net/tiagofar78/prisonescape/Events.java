@@ -98,7 +98,6 @@ public class Events implements Listener {
             return;
         }
 
-        System.out.println("Vai fechar aqui, player saiu");
         game.playerCloseMenu(e.getPlayer().getName());
     }
 
@@ -131,7 +130,11 @@ public class Events implements Listener {
             return;
         }
 
-        System.out.println("Vai fechar aqui");
+
+        if (e.getInventory().getType() == InventoryType.PLAYER) {
+            return;
+        }
+
         game.playerCloseMenu(e.getPlayer().getName());
     }
 
@@ -146,7 +149,6 @@ public class Events implements Listener {
             return;
         }
 
-        System.out.println("Entrou");
         boolean isPlayerInv = false;
         if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
             Inventory topInv = e.getView().getTopInventory();

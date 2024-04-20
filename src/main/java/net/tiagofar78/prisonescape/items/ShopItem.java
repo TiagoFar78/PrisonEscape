@@ -19,7 +19,7 @@ public class ShopItem extends FunctionalItem {
 
     @Override
     public Material getMaterial() {
-        return Material.MAP;
+        return Material.CHEST;
     }
 
     @Override

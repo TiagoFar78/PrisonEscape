@@ -531,7 +531,6 @@ public class PrisonEscapeGame {
 
         if (_playerOpenMenu.containsKey(playerName)) {
             _playerOpenMenu.get(playerName).close();
-            System.out.println("Vai fechar"); // Wtf
             _playerOpenMenu.remove(playerName);
         }
     }
@@ -542,10 +541,7 @@ public class PrisonEscapeGame {
             return ClickReturnAction.IGNORE;
         }
 
-        System.out.println(playerName);
         if (!_playerOpenMenu.containsKey(playerName)) {
-            System.out.println("It's not saved D:");
-            System.out.println(playerName);
             return ClickReturnAction.IGNORE;
         }
 
@@ -744,10 +740,7 @@ public class PrisonEscapeGame {
         }
 
         Shop shop = new Shop();
-        System.out.println("open");
-        System.out.println(playerName);
         _playerOpenMenu.put(player.getName(), shop);
-
         shop.open(player);
     }
 
