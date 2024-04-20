@@ -2,22 +2,13 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javax.swing.JFrame;
 
-public class Maze extends Canvas {
+public class Maze {
 
-    private static final Random rand = new Random();
     private static final int CELL_SIDE_SIZE = 5;
-
-    // This can be removed after, only used to generate frame
-    private static final int TILE_WIDTH = 20;
-    private static final int TILE_HEIGHT = 20;
 
     private class Cell {
         public int start;
@@ -182,36 +173,6 @@ public class Maze extends Canvas {
         return true;
     }
 
-    // Leaving this function here so it can serve as an example for buildMaze
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        // Fill with dirt
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, WIDTH * TILE_WIDTH, HEIGHT * TILE_HEIGHT);
-
-        // Add external walls
-        g.setColor(Color.BLACK);
-        g.drawLine(0, 0, 0, HEIGHT * TILE_HEIGHT);
-        g.drawLine(0, 0, WIDTH * TILE_WIDTH, 0);
-        g.drawLine(WIDTH * TILE_WIDTH, 0, WIDTH * TILE_WIDTH, HEIGHT * TILE_HEIGHT);
-        g.drawLine(0, HEIGHT * TILE_HEIGHT, WIDTH * TILE_WIDTH, HEIGHT * TILE_HEIGHT);
-
-        // Add horizontal and vertical walls
-        List<Cell> mazeSteped = generateMaze(WIDTH, HEIGHT);
-        for (int y = 0; y < HEIGHT; y++) {
-            for (int x = 0; x < WIDTH; x++) {
-                int current = (y * WIDTH) + x;
-                int lower = ((y + 1) * WIDTH) + x;
-                if (!mazeSteped.contains(new Cell(current, lower))) // Check if there should be a horizontal wall
-                    g.drawLine(x * TILE_WIDTH, (y + 1) * TILE_HEIGHT, (x + 1) * TILE_WIDTH, (y + 1) * TILE_HEIGHT); // add horizontal wall
-                if (!mazeSteped.contains(new Cell(current, current + 1))) // Check if there should be a veritcal wall
-                    g.drawLine((x + 1) * TILE_WIDTH, y * TILE_HEIGHT, (x + 1) * TILE_WIDTH, (y + 1) * TILE_HEIGHT); // add vertical wall
-            }
-        }
-
-    }
-
     // Prim algorithm
     private List<Cell> generateMaze(int width, int height) {
         List<Cell> maze = new ArrayList<>();
@@ -222,6 +183,8 @@ public class Maze extends Canvas {
         visited.add(0);
         toVisit.add(new Cell(0, 1));
         toVisit.add(new Cell(0, width));
+
+        Random rand = new Random();
 
         while (toVisit.size() > 0) {
             int randomIndex = rand.nextInt(toVisit.size());
@@ -255,17 +218,5 @@ public class Maze extends Canvas {
         }
 
         return maze;
-    }
-
-    // So we can visualize the maze for now, to delete after completing buildMaze function
-    public static void main(String[] args) {
-        Maze mazeGen = new Maze();
-        mazeGen.generateMaze(WIDTH, HEIGHT);
-        mazeGen.setSize(830, 650);
-        JFrame frame = new JFrame("Maze Generator");
-        frame.add(mazeGen);
-        frame.setSize(830, 650);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
