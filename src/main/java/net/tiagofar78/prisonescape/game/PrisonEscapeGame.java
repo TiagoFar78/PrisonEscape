@@ -18,6 +18,7 @@ import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
+import net.tiagofar78.prisonescape.kits.PrisionerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
@@ -323,8 +324,7 @@ public class PrisonEscapeGame {
         for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
-            //PrisionerKit.giveKitToPlayer(player.getName());
-            PoliceKit.giveKitToPlayer(player.getName()); // for debugging purposes
+            PrisionerKit.giveKitToPlayer(player.getName());
         }
 
         for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
@@ -681,6 +681,11 @@ public class PrisonEscapeGame {
         vault.open(player);
     }
 
+    public void playerDropItem(String playerName, int slot) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        player.removeItem(slot);
+    }
+
     private void policeSearchVault(PrisonEscapePlayer player, Vault vault, MessageLanguageManager messagesPolice) {
         PrisonEscapePlayer vaultOwner = vault.getOwner();
         MessageLanguageManager messagesPrisioner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
@@ -734,7 +739,7 @@ public class PrisonEscapeGame {
     }
 
     public void policeOpenShop(String playerName) {
-        PrisonEscapePlayer player = getPlayerOnPrisionersTeam(playerName); // for debugging purposes
+        PrisonEscapePlayer player = getPlayerOnPoliceTeam(playerName);
         if (player == null) {
             return;
         }

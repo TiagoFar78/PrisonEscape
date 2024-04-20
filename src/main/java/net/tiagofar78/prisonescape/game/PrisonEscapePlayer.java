@@ -113,7 +113,10 @@ public class PrisonEscapePlayer {
     }
 
     public void removeItem(int index) {
-        setItem(index, null);
+        if (index >= INVENTORY_SIZE) {
+            return;
+        }
+        _inventory.set(index, null);
     }
 
     public boolean hasIllegalItems() {
@@ -177,17 +180,9 @@ public class PrisonEscapePlayer {
     }
 
     public int buyItem(Item item, int price) {
-        if (item instanceof TrapItem) {
-            if (_numOfTrapsBought >= ((TrapItem) item).getLimit())
-                return -1;
-        } else if (item instanceof CameraItem) {
-            if (_numOfCamerasBought >= ((CameraItem) item).getLimit())
-                return -1;
-        } else if (item instanceof SensorItem) {
-            if (_numOfSensorsBought >= ((SensorItem) item).getLimit())
-                return -1;
+        if (!canBuyItem(item)) {
+            return -1;
         }
-
         if (price > _balance) {
             return -2;
         }
@@ -197,7 +192,29 @@ public class PrisonEscapePlayer {
         }
 
         decreaseBalance(price);
+        updateItemCount(item);
         return 0;
+    }
+
+    private boolean canBuyItem(Item item) {
+        if (item instanceof TrapItem && _numOfTrapsBought >= ((TrapItem) item).getLimit()) {
+            return false;
+        } else if (item instanceof CameraItem && _numOfCamerasBought >= ((CameraItem) item).getLimit()) {
+            return false;
+        } else if (item instanceof SensorItem && _numOfSensorsBought >= ((SensorItem) item).getLimit()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void updateItemCount(Item item) {
+        if (item instanceof TrapItem) {
+            _numOfTrapsBought++;
+        } else if (item instanceof CameraItem) {
+            _numOfCamerasBought++;
+        } else if (item instanceof SensorItem) {
+            _numOfSensorsBought++;
+        }
     }
 
 //	########################################
@@ -208,5 +225,6 @@ public class PrisonEscapePlayer {
     public boolean equals(Object o) {
         return o instanceof PrisonEscapePlayer && ((PrisonEscapePlayer) o).getName().equals(this.getName());
     }
+
 
 }

@@ -25,10 +25,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -149,6 +151,7 @@ public class Events implements Listener {
             return;
         }
 
+        Player player = (Player) e.getWhoClicked();
         boolean isPlayerInv = false;
         if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
             Inventory topInv = e.getView().getTopInventory();
@@ -162,13 +165,18 @@ public class Events implements Listener {
                 return;
             }
 
+            if (e.getAction() == InventoryAction.DROP_ALL_SLOT || e.getAction() == InventoryAction.DROP_ONE_SLOT) {
+                int slot = e.getSlot();
+                game.playerDropItem(player.getName(), slot);
+                return;
+            }
+
             isPlayerInv = true;
         }
 
         ItemStack cursor = e.getCursor();
         ItemStack current = e.getCurrentItem();
 
-        Player player = (Player) e.getWhoClicked();
         Item item = ItemFactory.createItem(e.getCursor());
         ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), item, isPlayerInv);
         if (returnAction == ClickReturnAction.IGNORE) {
@@ -299,6 +307,18 @@ public class Events implements Listener {
         if (item.isFunctional()) {
             ((FunctionalItem) item).use(e);
         }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent e) {
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game == null) {
+            return;
+        }
+        Player player = e.getPlayer();
+        int slot = player.getInventory().getHeldItemSlot();
+
+        game.playerDropItem(player.getName(), slot);
     }
 
 }
