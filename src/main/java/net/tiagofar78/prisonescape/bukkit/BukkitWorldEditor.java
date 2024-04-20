@@ -147,6 +147,10 @@ public class BukkitWorldEditor {
     public static void raiseMazeWall(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
         fill(upperCorner, lowerCorner, Material.COBBLESTONE);
     }
+    
+    public static boolean isDirtBlock(int x, int y, int z) {
+        return WORLD.getBlockAt(x, y, z).getType() == Material.DIRT;
+    }
 
     public static void clearDirtFromMazePart(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
         for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {
