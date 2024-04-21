@@ -681,9 +681,9 @@ public class PrisonEscapeGame {
         vault.open(player);
     }
 
-    public void playerDropItem(String playerName, int slot) {
+    public void playerDropItem(String playerName, int index) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
-        player.removeItem(slot);
+        player.removeItem(index);
     }
 
     private void policeSearchVault(PrisonEscapePlayer player, Vault vault, MessageLanguageManager messagesPolice) {
