@@ -18,13 +18,13 @@ public abstract class Obstacle {
      *         -1 if the tool can not be used to this block
      *
      */
-    public double takeDamage(double damage, ToolItem tool) {
+    public double takeDamage(ToolItem tool) {
         if (!isEffectiveTool(tool)) {
             return -1;
         }
 
         tool.decreaseDurability();
-        _durability -= damage;
+        _durability -= tool.damageToBlock();
 
         return _durability <= 0 ? 0 : _durability;
     }

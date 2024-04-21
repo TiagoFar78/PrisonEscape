@@ -33,7 +33,9 @@ public class PrisonBuilding {
     private Hashtable<String, Chest> _chests;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
+
     private Maze _maze;
+    private List<Obstacle> _obstacles;
 
 //  #########################################
 //  #              Constructor              #
@@ -72,8 +74,11 @@ public class PrisonBuilding {
 
         _wall = new Wall();
 
+        _obstacles = new ArrayList<>();
+
         _maze = new Maze();
-        _maze.buildMaze(config.getMazeUpperCornerLocation().add(reference), config.getMazeFormat());
+        List<Dirt> dirts = _maze.buildMaze(config.getMazeUpperCornerLocation().add(reference), config.getMazeFormat());
+        _obstacles.addAll(dirts);
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -224,6 +229,20 @@ public class PrisonBuilding {
 
     public WallCrack getWallCrack(PrisonEscapeLocation location) {
         return _wall.getAffectedCrack(location);
+    }
+
+//  #########################################
+//  #               Obstacles               #
+//  #########################################
+
+    public Obstacle getObstacle(PrisonEscapeLocation location) {
+        for (Obstacle obstacle : _obstacles) {
+            if (obstacle.contains(location)) {
+                return obstacle;
+            }
+        }
+
+        return null;
     }
 
 //	#########################################

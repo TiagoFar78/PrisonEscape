@@ -39,7 +39,7 @@ public class Maze {
         }
     }
 
-    public void buildMaze(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
+    public List<Dirt> buildMaze(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
         if (!isValidFormat(mazeFormat)) {
             throw new IllegalArgumentException("Illegal maze format. All rows must have same length.");
         }
@@ -51,6 +51,8 @@ public class Maze {
         raiseWalls(upperCornerLocation, width, height);
         clearExits(upperCornerLocation, mazeFormat);
         clearSpawnPoints(upperCornerLocation, mazeFormat);
+
+        return getDirts(upperCornerLocation, mazeFormat);
     }
 
     private void fillWithDirt(PrisonEscapeLocation upperCornerLocation, int width, int height) {
@@ -171,6 +173,27 @@ public class Maze {
         }
 
         return true;
+    }
+
+    private List<Dirt> getDirts(PrisonEscapeLocation upperCornerLocation, List<String> mazeFormat) {
+        List<Dirt> dirts = new ArrayList<>();
+
+        int height = mazeFormat.size();
+        int width = mazeFormat.get(0).length();
+
+        for (int z = 0; z < height; z++) {
+            String line = mazeFormat.get(z);
+            for (int x = 0; x < width; x++) {
+                if (line.charAt(x) == '#') {
+                    PrisonEscapeLocation upperDirtLoc = getPartUpperLocation(upperCornerLocation, x, z);
+                    PrisonEscapeLocation lowerDirtLoc = getPartLowerLocation(upperCornerLocation, x, z, width, height);
+
+                    dirts.add(new Dirt(upperDirtLoc, lowerDirtLoc));
+                }
+            }
+        }
+
+        return dirts;
     }
 
     // Prim algorithm
