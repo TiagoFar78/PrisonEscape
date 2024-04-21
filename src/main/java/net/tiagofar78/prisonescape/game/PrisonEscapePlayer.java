@@ -112,8 +112,9 @@ public class PrisonEscapePlayer {
         BukkitMenu.setItem(_name, index, item);
     }
 
-    public void removeItem(int index) {
-        if (index >= INVENTORY_SIZE) {
+    public void removeItem(int slot) {
+        int index = BukkitMenu.convertToIndexPlayerInventory(slot);
+        if (index == -1) {
             return;
         }
         _inventory.set(index, null);
