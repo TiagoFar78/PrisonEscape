@@ -107,11 +107,23 @@ public class PrisonEscapePlayer {
     }
 
     public boolean hasIllegalItems() {
-        return false; // TODO
+        for (Item item : _inventory) {
+            if (item.isIllegal()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean hasMetalItems() {
-        return false; // TODO
+        for (Item item : _inventory) {
+            if (item.isMetalic()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 //	########################################
