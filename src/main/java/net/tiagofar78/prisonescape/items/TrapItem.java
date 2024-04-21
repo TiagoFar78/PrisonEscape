@@ -4,16 +4,16 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import org.bukkit.Material;
 
-public class CameraItem extends Item implements Buyable {
+public class TrapItem extends Item implements Buyable {
 
     @Override
     public int getPrice() {
-        return ConfigManager.getInstance().getCameraPrice();
+        return ConfigManager.getInstance().getTrapPrice();
     }
 
     @Override
     public int getLimit() {
-        return ConfigManager.getInstance().getCameraLimit();
+        return ConfigManager.getInstance().getTrapLimit();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class CameraItem extends Item implements Buyable {
 
     @Override
     public Material getMaterial() {
-        return Material.OBSERVER;
+        return Material.COBWEB;
     }
 
     @Override
