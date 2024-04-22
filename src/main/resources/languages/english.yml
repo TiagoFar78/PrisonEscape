@@ -35,6 +35,10 @@ Items:
     Name: "Golden Key"
     Lore:
     - "&6Unlocks the golden door"
+  GrayKey:
+    Name: "Gray Key"
+    Lore:
+    - "&7Unlocks the gray doors"
   EnergyDrink:
     Name: "Energy Drink"
   Handcuffs:

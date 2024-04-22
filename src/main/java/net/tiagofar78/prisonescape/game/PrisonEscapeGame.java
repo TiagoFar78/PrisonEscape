@@ -16,7 +16,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
-import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -510,9 +510,9 @@ public class PrisonEscapeGame {
                 return 0;
             }
 
-            GoldenDoor goldenDoor = _prison.getGoldenDoor(blockLocation);
-            if (goldenDoor != null) {
-                return playerInteractWithGoldenDoor(player, item, goldenDoor) ? 1 : 0;
+            Door door = _prison.getDoor(blockLocation);
+            if (door != null) {
+                return playerInteractWithDoor(player, item, door) ? 1 : 0;
             }
         }
 
@@ -781,7 +781,7 @@ public class PrisonEscapeGame {
      * @return true if door toggled<br>
      *         false if door not toggled
      */
-    public boolean playerInteractWithGoldenDoor(PrisonEscapePlayer player, Item itemHeld, GoldenDoor door) {
+    public boolean playerInteractWithDoor(PrisonEscapePlayer player, Item itemHeld, Door door) {
         ClickDoorReturnAction returnAction = door.click(player, itemHeld);
 
         if (returnAction == ClickDoorReturnAction.CLOSE_DOOR) {
