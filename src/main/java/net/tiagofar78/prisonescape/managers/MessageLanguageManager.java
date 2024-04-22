@@ -104,6 +104,9 @@ public class MessageLanguageManager {
     private String _policeInspectedMessage;
     private String _prisionerInspectedMessage;
     private String _canOnlyFixHolesMessage;
+    private String _reachedItemLimitMessage;
+    private String _notEnoughMoneyMessage;
+    private String _successfullyBoughtItemMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -224,6 +227,9 @@ public class MessageLanguageManager {
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
         _prisionerInspectedMessage = createMessage(messages.getString(warningPath + "PrisionerInspected"));
         _canOnlyFixHolesMessage = createMessage(messages.getString(warningPath + "CanOnlyFixHoles"));
+        _reachedItemLimitMessage = createMessage(messages.getString(warningPath + "ReachedItemLimit"));
+        _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
+        _successfullyBoughtItemMessage = createMessage(messages.getString(warningPath + "SuccessfullyBoughtItem"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -442,6 +448,18 @@ public class MessageLanguageManager {
 
     public String getCanOnlyFixHolesMessage() {
         return _canOnlyFixHolesMessage;
+    }
+
+    public String getReachedItemLimitMessage() {
+        return _reachedItemLimitMessage;
+    }
+
+    public String getNotEnoughMoneyMessage() {
+        return _notEnoughMoneyMessage;
+    }
+
+    public String getSuccessfullyBoughtItemMessage(int balance) {
+        return _successfullyBoughtItemMessage.replace("{BALANCE}", Integer.toString(balance));
     }
 
 //	########################################
