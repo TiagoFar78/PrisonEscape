@@ -6,34 +6,21 @@ import net.tiagofar78.prisonescape.items.GoldenKeyItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
-public class GoldenDoor {
-
-    private boolean _isOpen;
+public class GoldenDoor extends Door {
 
     public GoldenDoor() {
-        _isOpen = false;
-    }
-
-    public boolean isOpened() {
-        return _isOpen;
-    }
-
-    public void open(PrisonEscapePlayer player) {
-        _isOpen = true;
-    }
-
-    public void close() {
-        _isOpen = false;
+        super();
     }
 
     public ClickDoorReturnAction click(PrisonEscapePlayer player, Item itemHeld) {
         PrisonEscapeGame game = GameManager.getGame();
+        boolean isOpen = isOpened();
 
         if (game.isPolice(player))
-            return _isOpen ? ClickDoorReturnAction.CLOSE_DOOR : ClickDoorReturnAction.NOTHING;
+            return isOpen ? ClickDoorReturnAction.CLOSE_DOOR : ClickDoorReturnAction.NOTHING;
 
         if (game.isPrisioner(player))
-            return !_isOpen && itemHeld instanceof GoldenKeyItem
+            return !isOpen && itemHeld instanceof GoldenKeyItem
                     ? ClickDoorReturnAction.OPEN_DOOR
                     : ClickDoorReturnAction.NOTHING;
 

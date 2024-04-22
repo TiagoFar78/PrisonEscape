@@ -790,7 +790,7 @@ public class PrisonEscapeGame {
         }
 
         if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
-            door.open(player);
+            door.open();
             return true;
         }
 
