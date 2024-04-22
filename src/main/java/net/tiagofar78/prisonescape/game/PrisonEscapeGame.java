@@ -10,6 +10,7 @@ import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
@@ -17,6 +18,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
+import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisionerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
@@ -515,6 +517,13 @@ public class PrisonEscapeGame {
                 BukkitTeleporter.teleport(player, destination);
                 return 0;
             }
+
+            Obstacle obstacle = _prison.getObstacle(blockLocation);
+            if (obstacle != null) {
+                if (obstacleTookDamage(player, obstacle, item) == 0) {
+                    return 0;
+                }
+            }
         }
 
         if (item.isFunctional()) {
@@ -811,6 +820,25 @@ public class PrisonEscapeGame {
         if (returnCode == -1) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getCanOnlyFixHolesMessage());
+        }
+
+        return 0;
+    }
+
+    public int obstacleTookDamage(PrisonEscapePlayer player, Obstacle obstacle, Item item) {
+        if (!_prisionersTeam.isOnTeam(player)) {
+            return -1;
+        }
+
+        if (!item.isTool()) {
+            return 0; // TODO maybe send a message to use right item
+        }
+
+        double returnCode = obstacle.takeDamage((ToolItem) item);
+        if (returnCode == -1) {
+            // TODO maybe send a message to use right item
+        } else if (returnCode == 0) {
+            obstacle.removeFromWorld();
         }
 
         return 0;

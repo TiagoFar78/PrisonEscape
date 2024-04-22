@@ -113,6 +113,21 @@ WallCrackFormats:
   - "#####"
   - "#####"
   - "0###0"
+Maze:
+  Format:
+  - "E########E"
+  - "##########"
+  - "##########"
+  - "##########"
+  - "###SSSS###"
+  - "##########"
+  - "##########"
+  - "##########"
+  - "E########E"
+  UpperCornerLocation:
+    X: 0
+    Y: 0
+    Z: 0
 CommonItemsProbability: 0.8
 RareItemsProbability: 0.25
 ChestSize: 5

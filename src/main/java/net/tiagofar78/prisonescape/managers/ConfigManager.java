@@ -69,6 +69,8 @@ public class ConfigManager {
     private List<PrisonEscapeLocation> _chestsLocations;
     private List<PrisonEscapeLocation> _wallCornersLocations;
     private List<List<String>> _wallCrackFormats;
+    private List<String> _mazeFormat;
+    private PrisonEscapeLocation _mazeUpperCornerLocation;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -128,6 +130,8 @@ public class ConfigManager {
         _chestsLocations = createLocationList(config, "ChestsLocations");
         _wallCornersLocations = createLocationList(config, "WallCorners");
         _wallCrackFormats = createStringListList(config, "WallCrackFormats");
+        _mazeFormat = config.getStringList("Maze.Format");
+        _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation");
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -435,6 +439,14 @@ public class ConfigManager {
 
     public List<List<String>> getWallCrackFormats() {
         return createStringListListCopy(_wallCrackFormats);
+    }
+
+    public List<String> getMazeFormat() {
+        return new ArrayList<>(_mazeFormat);
+    }
+
+    public PrisonEscapeLocation getMazeUpperCornerLocation() {
+        return createLocationCopy(_mazeUpperCornerLocation);
     }
 
     public List<ItemProbability> getChestContents(String regionName) {
