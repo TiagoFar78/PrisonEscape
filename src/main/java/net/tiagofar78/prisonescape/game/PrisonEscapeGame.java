@@ -218,18 +218,10 @@ public class PrisonEscapeGame {
         return null;
     }
 
-    /**
-     * @return 0 if player it's not a police
-     * @return 1 if player its a police
-     */
     public boolean isPolice(PrisonEscapePlayer player) {
         return _policeTeam.isOnTeam(player);
     }
 
-    /**
-     * @return 0 if player it's not a prisioner
-     * @return 1 if player its a prisioner
-     */
     public boolean isPrisioner(PrisonEscapePlayer player) {
         return _prisionersTeam.isOnTeam(player);
     }
@@ -786,11 +778,7 @@ public class PrisonEscapeGame {
     }
 
     /**
-     *
-     * @param player
-     * @param itemHeld
-     * @param door
-     * @return true if door toggled
+     * @return true if door toggled<br>
      *         false if door not toggled
      */
     public boolean playerInteractWithGoldenDoor(PrisonEscapePlayer player, Item itemHeld, GoldenDoor door) {
@@ -800,13 +788,13 @@ public class PrisonEscapeGame {
             door.close();
             return true;
         }
+
         if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
             door.open(player);
             return true;
         }
 
         return false;
-
     }
 
 //	########################################

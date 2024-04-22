@@ -74,7 +74,6 @@ public class PrisonBuilding {
             _goldenDoors.put(referenceLoc.add(0, 1, 0).createKey(), goldenDoor);
         }
 
-
         _metalDetectorsLocations = new ArrayList<>();
     }
 
