@@ -45,7 +45,7 @@ public abstract class ToolItem extends Item {
         ItemMeta meta = item.getItemMeta();
         if (meta instanceof Damageable) {
             Damageable damageable = (Damageable) meta;
-            damageable.setDamage(getItemStackDurability());
+            damageable.setDamage(getItemStackDamage());
             item.setItemMeta(damageable);
         }
 
@@ -54,6 +54,10 @@ public abstract class ToolItem extends Item {
         BukkitItems.setName(item, newName);
 
         return item;
+    }
+
+    private int getItemStackDamage() {
+        return getMaterial().getMaxDurability() - getItemStackDurability();
     }
 
     private int getItemStackDurability() {

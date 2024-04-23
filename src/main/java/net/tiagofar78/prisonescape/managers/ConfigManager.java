@@ -4,7 +4,6 @@ import net.tiagofar78.prisonescape.PrisonEscapeResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
-import net.tiagofar78.prisonescape.items.ItemFactory;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -254,7 +253,7 @@ public class ConfigManager {
 
             String itemName = path.substring(lastIndexOfDot + 1);
             double probability = config.getDouble(path);
-            itemsProbabilities.add(new ItemProbability(ItemFactory.createItem(itemName), probability));
+            itemsProbabilities.add(new ItemProbability(itemName, probability));
         }
 
         return map;
@@ -513,7 +512,7 @@ public class ConfigManager {
         List<ItemProbability> list = new ArrayList<>();
 
         for (ItemProbability itemProbability : itemsProbabilities) {
-            list.add(new ItemProbability(itemProbability.getItem(), itemProbability.getProbability()));
+            list.add(new ItemProbability(itemProbability.getItemName(), itemProbability.getProbability()));
         }
 
         return list;

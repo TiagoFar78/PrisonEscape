@@ -95,7 +95,7 @@ public class PrisonEscapePlayer {
 
     public Item getItemAt(int index) {
         if (index < 0 || index >= INVENTORY_SIZE) {
-            return null;
+            return new NullItem();
         }
 
         return _inventory.get(index);
