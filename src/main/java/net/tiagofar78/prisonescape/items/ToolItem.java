@@ -7,13 +7,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Random;
+
 public abstract class ToolItem extends Item {
 
     private static final int[] COLORS_MIN_DURABILITY = {80, 50, 20, 0};
     private static final String[] COLORS_CODES = {"§a", "§e", "§c", "§4"};
     private static final int MAX_DURABILITY = 100;
 
-    private double _durability = MAX_DURABILITY;
+    private double _durability = durabilityPerUse() * randomUsesAmount();
 
     @Override
     public boolean isTool() {
@@ -29,9 +31,17 @@ public abstract class ToolItem extends Item {
      *         false otherwise
      */
     public boolean decreaseDurability() {
-        _durability -= (double) MAX_DURABILITY / (double) usesAmount();
+        _durability -= durabilityPerUse();
 
         return _durability <= 0;
+    }
+
+    private double durabilityPerUse() {
+        return (double) MAX_DURABILITY / (double) usesAmount();
+    }
+
+    private int randomUsesAmount() {
+        return new Random().nextInt(0, usesAmount()) + 1;
     }
 
     protected abstract int usesAmount();
