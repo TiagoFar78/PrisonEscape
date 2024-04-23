@@ -1,4 +1,4 @@
-# Prison Life Minigame Plugin
+# Prisona Life Minigame Plugin
 
 ## Description
 This Minecraft plugin replicates "Prison Life" game on Steam. Players join a server with 3-11 other players, each receiving a random role. The objective is simple: prisoners must work together to escape the prison within 4 days, while guards must prevent them from doing so.
