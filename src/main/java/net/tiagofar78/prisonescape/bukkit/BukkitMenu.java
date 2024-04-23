@@ -147,7 +147,7 @@ public class BukkitMenu {
 
     private static final int[] UNCOVERED_INDEXES = {0, 1, 2, 3};
 
-    public static void setItem(String playerName, int slot, Item item) {
+    public static void setItem(String playerName, int index, Item item) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
@@ -155,7 +155,7 @@ public class BukkitMenu {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         ItemStack bukkitItem = item.toItemStack(messages);
-        bukkitPlayer.getInventory().setItem(slot, bukkitItem);
+        bukkitPlayer.getInventory().setItem(UNCOVERED_INDEXES[index], bukkitItem);
     }
 
     public static int convertToIndexPlayerInventory(int slot) {

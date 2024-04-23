@@ -5,6 +5,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -62,7 +63,7 @@ public class Chest implements Clickable {
         for (ItemProbability itemProbability : _itemsProbability) {
             cumulativeWeight += itemProbability.getProbability();
             if (randomValue < cumulativeWeight) {
-                return itemProbability.getItem();
+                return ItemFactory.createItem(itemProbability.getItemName());
             }
         }
 

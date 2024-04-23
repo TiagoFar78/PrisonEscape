@@ -3,7 +3,9 @@ package net.tiagofar78.prisonescape.game;
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
@@ -41,7 +43,7 @@ public class PrisonEscapePlayer {
         List<Item> list = new ArrayList<>();
 
         for (int i = 0; i < INVENTORY_SIZE; i++) {
-            list.add(null);
+            list.add(new NullItem());
         }
 
         return list;
@@ -91,13 +93,21 @@ public class PrisonEscapePlayer {
 //	#               Inventory               #
 //	#########################################
 
+    public Item getItemAt(int index) {
+        if (index < 0 || index >= INVENTORY_SIZE) {
+            return new NullItem();
+        }
+
+        return _inventory.get(index);
+    }
+
     /**
      * @return 0 if success<br>
      *         -1 if full inventory
      */
     public int giveItem(Item item) {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
-            if (_inventory.get(i) == null) {
+            if (_inventory.get(i) instanceof NullItem) {
                 setItem(i, item);
                 return 0;
             }
@@ -117,7 +127,8 @@ public class PrisonEscapePlayer {
         if (index == -1) {
             return;
         }
-        _inventory.set(index, null);
+
+        _inventory.set(index, new NullItem());
     }
 
     public boolean hasIllegalItems() {
@@ -138,6 +149,17 @@ public class PrisonEscapePlayer {
         }
 
         return false;
+    }
+
+    public void updateInventory() {
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            Item item = _inventory.get(i);
+            if (item.isTool() && ((ToolItem) item).isBroken()) {
+                setItem(i, new NullItem());
+            }
+
+            BukkitMenu.setItem(getName(), i, _inventory.get(i));
+        }
     }
 
 //	########################################

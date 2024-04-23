@@ -10,7 +10,7 @@ public class ItemFactory {
     public static Item createItem(ItemStack bukkitItem) {
         for (Item item : items) {
             if (item.matches(bukkitItem)) {
-                return item;
+                return instantiateItem(item.getClass());
             }
         }
 
@@ -20,11 +20,21 @@ public class ItemFactory {
     public static Item createItem(String name) {
         for (Item item : items) {
             if (item.getConfigName().equals(name)) {
-                return item;
+                return instantiateItem(item.getClass());
             }
         }
 
         return new NullItem();
+    }
+
+    private static Item instantiateItem(Class<? extends Item> itemClass) {
+        try {
+            System.out.println("Instanciou um novo " + itemClass.getSimpleName());
+            return itemClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new NullItem();
+        }
     }
 
 }
