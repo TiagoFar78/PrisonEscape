@@ -81,13 +81,12 @@ public class Events implements Listener {
             return;
         }
 
-        @SuppressWarnings("deprecation")
-        Item itemInHand = ItemFactory.createItem(e.getPlayer().getItemInHand());
+        int itemSlot = e.getPlayer().getInventory().getHeldItemSlot();
         PrisonEscapeLocation location = block == null
                 ? null
                 : new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
 
-        int returnCode = game.playerInteract(e.getPlayer().getName(), location, itemInHand, e);
+        int returnCode = game.playerInteract(e.getPlayer().getName(), location, itemSlot, e);
         if (returnCode == 0) {
             e.setCancelled(true);
         }

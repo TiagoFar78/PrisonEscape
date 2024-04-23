@@ -482,11 +482,19 @@ public class PrisonEscapeGame {
         }
     }
 
-    public int playerInteract(String playerName, PrisonEscapeLocation blockLocation, Item item, PlayerInteractEvent e) {
+    public int playerInteract(
+            String playerName,
+            PrisonEscapeLocation blockLocation,
+            int itemSlot,
+            PlayerInteractEvent e
+    ) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return -1;
         }
+
+        int inventoryIndex = BukkitMenu.convertToIndexPlayerInventory(itemSlot);
+        Item item = player.getItemAt(inventoryIndex);
 
         if (blockLocation != null) {
             int vaultIndex = _prison.getVaultIndex(blockLocation);
@@ -840,6 +848,8 @@ public class PrisonEscapeGame {
         } else if (returnCode == 0) {
             obstacle.removeFromWorld();
         }
+
+        player.updateInventory();
 
         return 0;
     }
