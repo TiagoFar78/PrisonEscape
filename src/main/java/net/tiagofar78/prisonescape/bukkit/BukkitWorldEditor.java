@@ -169,6 +169,10 @@ public class BukkitWorldEditor {
 //  #                 Util                 #
 //  ########################################
 
+    public static void clear(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+        fill(upperCorner, lowerCorner, Material.AIR);
+    }
+
     private static void fill(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner, Material type) {
         for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {
             for (int y = lowerCorner.getY(); y <= upperCorner.getY(); y++) {
