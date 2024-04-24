@@ -27,4 +27,8 @@ public class Vent extends Obstacle {
         BukkitWorldEditor.clear(_location, _location);
     }
 
+    public void generate() {
+        BukkitWorldEditor.putVent(_location);
+    }
+
 }

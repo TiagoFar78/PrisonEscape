@@ -81,11 +81,15 @@ public class PrisonBuilding {
         _obstacles.addAll(dirts);
 
         for (List<PrisonEscapeLocation> pair : createLocationsPairList(reference, config.getFencesLocations())) {
-            _obstacles.add(new Fence(pair.get(0), pair.get(1)));
+            Fence fence = new Fence(pair.get(0), pair.get(1));
+            fence.generate();
+            _obstacles.add(fence);
         }
 
         for (PrisonEscapeLocation location : createLocationsList(reference, config.getVentsLocations())) {
-            _obstacles.add(new Vent(location));
+            Vent vent = new Vent(location);
+            vent.generate();
+            _obstacles.add(vent);
         }
     }
 
