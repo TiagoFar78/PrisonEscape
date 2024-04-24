@@ -36,7 +36,7 @@ public class Fence extends Obstacle implements Regenerable {
     @Override
     public void removeFromWorld() {
         BukkitWorldEditor.clear(_upperCornerLocation, _lowerCornerLocation);
-        BukkitWorldEditor.fillWithBars(_lowerCornerLocation, _upperCornerLocation);
+        BukkitWorldEditor.fillWithBars(_upperCornerLocation, _upperCornerLocation);
         BukkitWorldEditor.fillWithBars(_lowerCornerLocation, _lowerCornerLocation);
         _isDestroyed = true;
     }
