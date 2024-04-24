@@ -107,6 +107,7 @@ public class MessageLanguageManager {
     private String _reachedItemLimitMessage;
     private String _notEnoughMoneyMessage;
     private String _successfullyBoughtItemMessage;
+    private String _cannotDropThatItemMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -230,6 +231,7 @@ public class MessageLanguageManager {
         _reachedItemLimitMessage = createMessage(messages.getString(warningPath + "ReachedItemLimit"));
         _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
         _successfullyBoughtItemMessage = createMessage(messages.getString(warningPath + "SuccessfullyBoughtItem"));
+        _cannotDropThatItemMessage = createMessage(messages.getString(warningPath + "CannotDropThatItem"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -460,6 +462,10 @@ public class MessageLanguageManager {
 
     public String getSuccessfullyBoughtItemMessage(int balance) {
         return _successfullyBoughtItemMessage.replace("{BALANCE}", Integer.toString(balance));
+    }
+
+    public String getCannotDropThatItemMessage() {
+        return _cannotDropThatItemMessage;
     }
 
 //	########################################
