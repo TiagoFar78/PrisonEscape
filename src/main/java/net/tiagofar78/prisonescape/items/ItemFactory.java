@@ -29,7 +29,6 @@ public class ItemFactory {
 
     private static Item instantiateItem(Class<? extends Item> itemClass) {
         try {
-            System.out.println("Instanciou um novo " + itemClass.getSimpleName());
             return itemClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();

@@ -70,6 +70,8 @@ public class ConfigManager {
     private List<List<String>> _wallCrackFormats;
     private List<String> _mazeFormat;
     private PrisonEscapeLocation _mazeUpperCornerLocation;
+    private List<List<PrisonEscapeLocation>> _fencesLocations;
+    private List<PrisonEscapeLocation> _ventsLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -131,6 +133,8 @@ public class ConfigManager {
         _wallCrackFormats = createStringListList(config, "WallCrackFormats");
         _mazeFormat = config.getStringList("Maze.Format");
         _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation");
+        _fencesLocations = createLocationPairList(config, "Fences");
+        _ventsLocations = createLocationList(config, "Vents");
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -158,6 +162,24 @@ public class ConfigManager {
 
         for (String key : filteredKeys) {
             list.add(createLocation(config, key));
+        }
+
+        return list;
+    }
+
+    private List<List<PrisonEscapeLocation>> createLocationPairList(YamlConfiguration config, String path) {
+        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+
+        List<String> filteredKeys = config.getKeys(true)
+                .stream()
+                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
+                .toList();
+
+        for (String key : filteredKeys) {
+            List<PrisonEscapeLocation> pair = new ArrayList<>();
+            pair.add(createLocation(config, key + ".UpperCornerLocation"));
+            pair.add(createLocation(config, key + ".LowerCornerLocation"));
+            list.add(pair);
         }
 
         return list;
@@ -448,6 +470,14 @@ public class ConfigManager {
         return createLocationCopy(_mazeUpperCornerLocation);
     }
 
+    public List<List<PrisonEscapeLocation>> getFencesLocations() {
+        return createLocationsPairListCopy(_fencesLocations);
+    }
+
+    public List<PrisonEscapeLocation> getVentsLocations() {
+        return createLocationsListCopy(_ventsLocations);
+    }
+
     public List<ItemProbability> getChestContents(String regionName) {
         if (!_regionsChestContents.containsKey(regionName)) {
             return null;
@@ -481,6 +511,18 @@ public class ConfigManager {
 
         for (PrisonEscapeLocation location : locations) {
             list.add(createLocationCopy(location));
+        }
+
+        return list;
+    }
+
+    private List<List<PrisonEscapeLocation>> createLocationsPairListCopy(
+            List<List<PrisonEscapeLocation>> locationPairs
+    ) {
+        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+
+        for (List<PrisonEscapeLocation> locationPair : locationPairs) {
+            list.add(createLocationsListCopy(locationPair));
         }
 
         return list;

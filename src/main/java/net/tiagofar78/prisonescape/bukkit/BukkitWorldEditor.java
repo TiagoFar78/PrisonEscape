@@ -166,8 +166,24 @@ public class BukkitWorldEditor {
     }
 
 //  ########################################
+//  #               Obstacle               #
+//  ########################################
+
+    public static void fillWithBars(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+        fill(upperCorner, lowerCorner, Material.IRON_BARS);
+    }
+
+    public static void putVent(PrisonEscapeLocation location) {
+        WORLD.getBlockAt(location.getX(), location.getY(), location.getZ()).setType(Material.IRON_TRAPDOOR);
+    }
+
+//  ########################################
 //  #                 Util                 #
 //  ########################################
+
+    public static void clear(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+        fill(upperCorner, lowerCorner, Material.AIR);
+    }
 
     private static void fill(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner, Material type) {
         for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {

@@ -79,6 +79,18 @@ public class PrisonBuilding {
         _maze = new Maze();
         List<Dirt> dirts = _maze.buildMaze(config.getMazeUpperCornerLocation().add(reference), config.getMazeFormat());
         _obstacles.addAll(dirts);
+
+        for (List<PrisonEscapeLocation> pair : createLocationsPairList(reference, config.getFencesLocations())) {
+            Fence fence = new Fence(pair.get(0), pair.get(1));
+            fence.generate();
+            _obstacles.add(fence);
+        }
+
+        for (PrisonEscapeLocation location : createLocationsList(reference, config.getVentsLocations())) {
+            Vent vent = new Vent(location);
+            vent.generate();
+            _obstacles.add(vent);
+        }
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -89,6 +101,19 @@ public class PrisonBuilding {
 
         for (PrisonEscapeLocation loc : locs) {
             list.add(loc.add(reference));
+        }
+
+        return list;
+    }
+
+    private List<List<PrisonEscapeLocation>> createLocationsPairList(
+            PrisonEscapeLocation reference,
+            List<List<PrisonEscapeLocation>> pairs
+    ) {
+        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+
+        for (List<PrisonEscapeLocation> pair : pairs) {
+            list.add(createLocationsList(reference, pair));
         }
 
         return list;

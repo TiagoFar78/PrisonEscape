@@ -13,6 +13,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
@@ -845,17 +846,20 @@ public class PrisonEscapeGame {
 
     public int obstacleTookDamage(PrisonEscapePlayer player, Obstacle obstacle, Item item) {
         if (!_prisionersTeam.isOnTeam(player)) {
+            if (obstacle instanceof Regenerable) {
+                ((Regenerable) obstacle).regenerate();
+                return 0;
+            }
+
             return -1;
         }
 
         if (!item.isTool()) {
-            return 0; // TODO maybe send a message to use right item
+            return 0;
         }
 
         double returnCode = obstacle.takeDamage((ToolItem) item);
-        if (returnCode == -1) {
-            // TODO maybe send a message to use right item
-        } else if (returnCode == 0) {
+        if (returnCode == 0) {
             obstacle.removeFromWorld();
         }
 
