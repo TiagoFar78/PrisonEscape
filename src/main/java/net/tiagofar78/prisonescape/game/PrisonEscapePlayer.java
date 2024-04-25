@@ -122,13 +122,19 @@ public class PrisonEscapePlayer {
         BukkitMenu.setItem(_name, index, item);
     }
 
-    public void removeItem(int slot) {
+
+    /**
+     * @return 0 if success<br>
+     *         -1 if cannot remove item
+     */
+    public int removeItem(int slot) {
         int index = BukkitMenu.convertToIndexPlayerInventory(slot);
         if (index == -1) {
-            return;
+            return -1;
         }
 
         _inventory.set(index, new NullItem());
+        return 0;
     }
 
     public boolean hasIllegalItems() {

@@ -154,7 +154,6 @@ public class PrisonEscapeGame {
             );
         }
 
-
         return 0;
     }
 
@@ -698,9 +697,20 @@ public class PrisonEscapeGame {
         vault.open(player);
     }
 
-    public void playerDropItem(String playerName, int slot) {
+    /**
+     * @return 0 if success<br>
+     *         -1 if cannot drop that item
+     */
+    public int playerDropItem(String playerName, int slot) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
-        player.removeItem(slot);
+
+        int return_code = player.removeItem(slot);
+        if (return_code == -1) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+            BukkitMessageSender.sendChatMessage(player, messages.getCannotDropThatItemMessage());
+        }
+
+        return return_code;
     }
 
     private void policeSearchVault(PrisonEscapePlayer player, Vault vault, MessageLanguageManager messagesPolice) {

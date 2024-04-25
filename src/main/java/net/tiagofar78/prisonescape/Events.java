@@ -166,7 +166,9 @@ public class Events implements Listener {
 
             if (e.getAction() == InventoryAction.DROP_ALL_SLOT || e.getAction() == InventoryAction.DROP_ONE_SLOT) {
                 int slot = e.getSlot();
-                game.playerDropItem(player.getName(), slot);
+                if (game.playerDropItem(player.getName(), slot) == -1) {
+                    e.setCancelled(true);
+                }
                 return;
             }
 
@@ -317,7 +319,10 @@ public class Events implements Listener {
         Player player = e.getPlayer();
         int slot = player.getInventory().getHeldItemSlot();
 
-        game.playerDropItem(player.getName(), slot);
+        int return_code = game.playerDropItem(player.getName(), slot);
+        if (return_code == -1) {
+            e.setCancelled(true);
+        }
     }
 
 }
