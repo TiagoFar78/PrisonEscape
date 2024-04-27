@@ -1,0 +1,283 @@
+PrisionersRatio: 0.73
+PoliceRatio: 0.27
+MinPlayers: 1
+MaxPlayers: 11
+SecondsInSolitary: 30
+DaysAmount: 4
+DayDuration: 120
+NightDuration: 60
+WaitingPhaseDuration: 300
+FullLobbyWaitDuration: 10
+FinishedPhaseDuration: 30
+DelayBetweenAnnouncements: 30
+AvailableLanguages:
+- "english"
+DefaultLanguage: "english"
+TeamChatPrefix: "t "
+WorldName: "PrisonEscapeWorld"
+ReferenceBlock:
+  X: 0
+  Y: 0
+  Z: 0
+LeavingLocation:
+  X: 4
+  Y: 133
+  Z: -20
+WaitingLocation:
+  X: 12
+  Y: 100
+  Z: 11
+PrisonTopLeftCornerLocation:
+  X: 43
+  Y: 150
+  Z: 60
+PrisonBottomRightCornerLocation:
+  X: -63
+  Y: 70
+  Z: -49
+PrisionersSpawnLocations:
+  "1":
+    X: 2
+    Y: 100
+    Z: 8
+  "2":
+    X: 4
+    Y: 100
+    Z: 8
+  "3":
+    X: 2
+    Y: 100
+    Z: 2
+  "4":
+    X: 4
+    Y: 100
+    Z: 2
+  "5":
+    X: 2
+    Y: 100
+    Z: -4
+  "6":
+    X: 4
+    Y: 100
+    Z: -4
+  "7":
+    X: 2
+    Y: 100
+    Z: -10
+  "8":
+    X: 4
+    Y: 100
+    Z: -10
+PoliceSpawnLocations:
+  "1":
+    X: -6
+    Y: 100
+    Z: -7
+  "2":
+    X: -6
+    Y: 100
+    Z: -1
+  "3":
+    X: -6
+    Y: 100
+    Z: 5
+SolitaryLocation:
+  X: -46
+  Y: 100
+  Z: 48
+SolitaryExitLocation:
+  X: -40
+  Y: 100
+  Z: 45
+PrisionersSecretPassagesLocation:
+  "1":
+    Key:
+      X: 5
+      Y: 105
+      Z: 8
+    Value:
+      X: 3
+      Y: 106
+      Z: 8
+PoliceSecretPassagesLocation:
+  "1":
+    Key:
+      X: -1
+      Y: 101
+      Z: 11
+    Value:
+      X: 3
+      Y: 100
+      Z: 8
+VaultsLocations:
+  "1":
+    X: 2
+    Y: 100
+    Z: 6
+  "2":
+    X: 4
+    Y: 100
+    Z: 6
+  "3":
+    X: 2
+    Y: 100
+    Z: 0
+  "4":
+    X: 4
+    Y: 100
+    Z: 0
+  "5":
+    X: 2
+    Y: 100
+    Z: -6
+  "6":
+    X: 4
+    Y: 100
+    Z: -6
+  "7":
+    X: 2
+    Y: 100
+    Z: -12
+  "8":
+    X: 4
+    Y: 100
+    Z: -12
+ChestsLocations:
+  "1":
+    X: -14
+    Y: 100
+    Z: 11
+  "2":
+    X: -21
+    Y: 100
+    Z: 4
+  "3":
+    X: -16
+    Y: 100
+    Z: -13
+Regions:
+  CellBlock:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: -1
+        Y: 110
+        Z: 11
+      LowerCorner:
+        X: -21
+        Y: 100
+        Z: -13
+  Office:
+    IsRestricted: true
+    "1":
+      UpperCorner:
+        X: 0
+        Y: 110
+        Z: 35
+      LowerCorner:
+        X: -10
+        Y: 100
+        Z: 23
+    "2":
+      UpperCorner:
+        X: 0
+        Y: 110
+        Z: 49
+      LowerCorner:
+        X: -10
+        Y: 100
+        Z: 35
+    "3":
+      UpperCorner:
+        X: 26
+        Y: 110
+        Z: -28
+      LowerCorner:
+        X: 12
+        Y: 100
+        Z: -41
+ChestsContents:
+  CellBlock:
+    Bolts: 0.25
+    Oil: 0.05
+    Stick: 0.10
+    Wrench: 0.25
+    WireCutter: 0.25
+WallCorners:
+  "1":
+    X: 43
+    Y: 100
+    Z: 1
+  "2":
+    X: 43
+    Y: 100
+    Z: 60
+  "3":
+    X: -65
+    Y: 100
+    Z: 60
+  "4":
+    X: -65
+    Y: 100
+    Z: -49
+  "5":
+    X: 43
+    Y: 100
+    Z: -49
+  "6":
+    X: 43
+    Y: 100
+    Z: -4
+WallCrackFormats:
+  "1":
+  - "0###0"
+  - "#####"
+  - "#####"
+  - "#####"
+  - "0###0"
+  "2":
+  - "##0##"
+  - "##0##"
+  - "00000"
+  - "0###0"
+  - "0#0#0"
+  "3":
+  - "##0##"
+  - "##0##"
+  - "00#00"
+  - "##0##"
+  - "##0##"
+Maze:
+  Format:
+  - "E#######E"
+  - "#########"
+  - "#########"
+  - "####S####"
+  - "####S####"
+  - "####S####"
+  - "####S####"
+  - "#########"
+  - "#########"
+  - "E#######E"
+  UpperCornerLocation:
+    X: 22
+    Y: 84
+    Z: 22
+Fences:
+  "1":
+    UpperCornerLocation:
+      X: -33
+      Y: 102
+      Z: 43
+    LowerCornerLocation:
+      X: -35
+      Y: 100
+      Z: 43
+Vents:
+  "1":
+    X: -5
+    Y: 106
+    Z: 27
+CommonItemsProbability: 0.8
+RareItemsProbability: 0.25
+ChestSize: 5

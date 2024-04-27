@@ -1,0 +1,177 @@
+Items:
+  SelectPrisionerTeam:
+    Name: "&6Select prisioner team"
+  SelectPoliceTeam:
+    Name: "&9Select police team"
+  SelectNoneTeam:
+    Name: "&8Remove preference"
+  Bolts:
+    Name: "Bolts"
+  DuctTape:
+    Name: "Duct Tape"
+  Matches:
+    Name: "Matches"
+  Oil:
+    Name: "Oil"
+  Stick:
+    Name: "Stick"
+  PlasticPlate:
+    Name: "Plastic Plate"
+  MetalPlate:
+    Name: "Metal Plate"
+  Copper:
+    Name: "Copper"
+  CircuitBoard:
+    Name: "Circuit Board"
+  Antena:
+    Name: "Antena"
+  Battery:
+    Name: "Battery"
+  NotePart:
+    Name: "Note Part {NUMBER}"
+  GoldBar:
+    Name: "Gold Bar"
+  EnergyDrink:
+    Name: "Energy Drink"
+  Handcuffs:
+    Name: "Handcuffs"
+  PlasticSpoon:
+    Name: "Wooden Shovel"
+  MetalSpoon:
+    Name: "Golden Shovel"
+  PlasticShovel:
+    Name: "Stone Shovel"
+  MetalShovel:
+    Name: "Diamond Shovel"
+  WireCutter:
+    Name: "Wire Cutter"
+  Wrench:
+    Name: "Pickaxe"
+  Bomb:
+    Name: "Bomb"
+  Glass:
+    Name: " "
+  Missions:
+    Name: "Missions Book"
+  OpenCameras:
+    Name: "Cameras"
+  Shop:
+    Name: "Shop"
+  Search:
+    Name: "Search"
+  Radar:
+    Name: "Radar"
+  Sensor:
+    Name: "Sensor"
+  Camera:
+    Name: "Camera"
+  Trap:
+    Name: "Trap"
+ItemsProperties:
+  Metalic: "&8Metalic"
+  Illegal: "&cIllegal"
+  LoreLine: "- {PROPERTY}"
+Inventory:
+  Vault:
+    Title: "Personal Storage"
+    HiddenGlass:
+      Name: "&cHidden"
+  Chest:
+    Title: "Container"
+Messages:
+  GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
+  PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
+  PrisionerTeamMessage: "&6[TEAM] <{PLAYER}> &f{MESSAGE}"
+  Warnings:
+    StartedGame: "&aSucessfully started game."
+    ForceStartedGame: "&aSucessfully skipped waiting phase."
+    StoppedGame: "&aSucessfully skipped finished phase."
+    ForceStoppedGame: "&aSucessfully cancelled the game."
+    SelectedPrisionersTeam: "&aYou set &6Prisioners &ateam as your prefered."
+    SelectedPoliceTeam: "&aYou set &9Police &ateam as your prefered."
+    SelectedRandomTeam: "&aYou removed your prefered team. You will be placed randomly."
+    PrisionerGameStart: "&6You are on prisioners team. Escape with everyone. Nobody stays behind."
+    PoliceGameStart: "&9You are on police team. Stop prisioners from escaping."
+    PoliceOpenVault: "&cYou can not open personal vaults. However, you can search them."
+    PrisionerOtherVault: "&cYou can only access your own vault."
+    PoliceFoundIllegalItems: "&eYou found illegal items and the player &4{PLAYER} &ehas become wanted."
+    PrisionerFoundIllegalItems: "&eIllegal items were found in your vault and now you are wanted."
+    PoliceNoIllegalItemsFound: "&eThere are no illegal items here."
+    PrisionerNoIllegalItemsFound: "&eSomeone search your vault, but no illegal items were found."
+    PoliceCanNotOpenChest: "&cOnly prisioners can open containers."
+    ChestAlreadyOpened: "&eSomeone is accessing that container already."
+    FullInventory: "&cYour inventory is full."
+    NotWantedPlayer: "&cYou can only send to solitary wanted players."
+    PrisionerInspected: "&aA police inspected your inventory, but no illegal items were found."
+    PoliceInspected: "&a{PLAYER} don't have any illegal items."
+    CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
+    ReachedItemLimit: "&cSorry, you've already reached the maximum limit for this item."
+    NotEnoughMoney: "&cYou do not have enough money to buy this item."
+    SuccessfullyBoughtItem: "&aSuccessfully bought item. Your current balance is: {BALANCE}."
+    CannotDropThatItem: "&cYou cannot drop that item."
+  Announcements:
+    GameStarting:
+    - "&6==================================="
+    - "&6The Game will start in &f{SECONDS} &6seconds"
+    - "&6To join use &f/PrisonEscape join"
+    - "&6There are already &f{PLAYERS} &6waiting"
+    - "&6==================================="
+    PrisionerArrested: "&4Prisioner &f{PLAYER} &4has been sent to solitary"
+    PrisionerFreedOfSolitary: "&aYou will leave solitary soon"
+    PrisionersWonTitle: "&l&6PRISIONERS WON"
+    PrisionersWonSubtitle: "&fEveryone was able to escape"
+    PoliceWonTitle: "&l&9POLICE WON"
+    PoliceWonSubtitle: "&f{PLAYERS} was still in prison"
+    VictoryWord: "Victory"
+    DefeatWord: "Defeat"
+    GameResult:
+    - "&6==================================="
+    - ""
+    - "                &f&l{RESULT}"
+    - ""
+    - "      Statistics:"
+    - "      - &4COMMING SOON"
+    - ""
+    - "&6==================================="
+    PlayerEscaped: "&ePlayer &f{PLAYER} &eescaped the prison."
+    GameCancelledFewPlayers: "&cThe game was cancelled because there were not enough players."
+    NewDayTitle: "&aDay &a{DAYNUMBER}"
+    NewDaySubtitle: "&fThe sun has risen"
+    NightTitle: "&4Nightfall approaches"
+    NightSubtitle: "&fPlan your escape"
+    JoinedGame: "&a{PLAYER} joined the game. {PLAYERNUMBER}/{MAXPLAYERS}"
+    LeftGame: "&a{PLAYER} left the game. {PLAYERNUMBER}/{MAXPLAYERS}"
+    RejoinedGame: "&a{PLAYER} rejoined game. {PLAYERNUMBER}/{MAXPLAYERS}"
+  Errors:
+    NotAllowed: "&cYou don't have permission to do that."
+    CommandForPlayers: "&cOnly players have permission to use this command."
+    GameAlreadyStarted: "&cThere is a game happening already."
+    GameNotStartedYet: "&cThere isn't any game happening right now."
+    GameAlreadyOngoing: "&cThe game is already in the ongoing phase."
+    GameIsStillWaiting: "&cThe game is in the waiting phase. You can join using &f/PrisonEscape Join"
+    GameIsNotFinished: "&cThe game is not in finishing phase. You can force stop it using &f/PrisonEscape ForceStop"
+    LobbyIsFull: "&cThe game lobby is already full."
+    AlreadyJoined: "&cYou are already in the game."
+    NotOnLobby: "&cYou aren't on the game lobby."
+    NeverInGame: "&cYou can only rejoin games you were in from the start"
+  Usages:
+    General:
+    - "Usage:"
+    - "/PrisonEscape Start - to start the game"
+    - "/PrisonEscape ForceStart - to skip waiting phase"
+    - "/PrisonEscape Stop - to skip finished phase"
+    - "/PrisonEscape ForceStop - to cancel game"
+    - "/PrisonEscape Join - to join the game"
+    - "/PrisonEscape Leave - to leave the game"
+    - "/PrisonEscape Rejoin - to rejoin the game"
+    - ""
+    - "Note: commands are case insensitive and /PrisonEscape can be replaced by /PE"
+    - ""
+    Start: "/PrisonEscape Start - to start the game"
+    ForceStart: "/PrisonEscape ForceStart - to skip waiting phase"
+    Stop: "/PrisonEscape Stop - to skip finished phase"
+    ForceStop: "/PrisonEscape ForceStop - to cancel game"
+    Join: "/PrisonEscape Join - to join the game"
+    Leave: "/PrisonEscape Leave - to leave the game"
+    Rejoin: "/PrisonEscape Rejoin - to rejoin the game"
+    Stop: "/PrisonEscape Stop - to stop the game"
