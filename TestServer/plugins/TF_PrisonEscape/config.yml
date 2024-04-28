@@ -287,6 +287,59 @@ Regions:
         X: 12
         Y: 100
         Z: -41
+  Yard:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: -16
+        Y: 103
+        Z: 43
+      LowerCorner:
+        X: -35
+        Y: 100
+        Z: 24
+    "2":
+      UpperCorner:
+        X: -11
+        Y: 103
+        Z: -27
+      LowerCorner:
+        X: -34
+        Y: 100
+        Z: -39
+  Gym:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: -41
+        Y: 103
+        Z: -31
+      LowerCorner:
+        X: -53
+        Y: 100
+        Z: -42
+  FoodHall:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: -42
+        Y: 103
+        Z: -5
+      LowerCorner:
+        X: -58
+        Y: 100
+        Z: -26
+  Toilets:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: -42
+        Y: 103
+        Z: 20
+      LowerCorner:
+        X: -53
+        Y: 100
+        Z: 5
 ChestsContents:
   CellBlock:
     Bolts: 0.25
