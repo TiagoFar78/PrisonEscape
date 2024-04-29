@@ -15,9 +15,9 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
+import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
-import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -860,7 +860,7 @@ public class PrisonEscapeGame {
 
         return false;
     }
-  
+
     public void placeBomb(PrisonEscapeLocation location) {
         _prison.placeBomb(location);
     }

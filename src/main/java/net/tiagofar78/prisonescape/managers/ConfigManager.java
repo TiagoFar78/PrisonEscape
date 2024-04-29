@@ -471,7 +471,7 @@ public class ConfigManager {
     public List<PrisonEscapeLocation> getCodeDoorsLocations() {
         return createLocationsListCopy(_codeDoorsLocations);
     }
-  
+
     public List<PrisonEscapeLocation> getWallCornersLocations() {
         return createLocationsListCopy(_wallCornersLocations);
     }
