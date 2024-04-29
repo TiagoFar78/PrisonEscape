@@ -542,7 +542,8 @@ public class PrisonEscapeGame {
 
             Door door = _prison.getDoor(blockLocation);
             if (door != null) {
-                return playerInteractWithDoor(player, item, door) ? 1 : 0;
+                playerInteractWithDoor(player, item, door, blockLocation);
+                return 0;
             }
 
             Obstacle obstacle = _prison.getObstacle(blockLocation);
@@ -845,20 +846,24 @@ public class PrisonEscapeGame {
         }
     }
 
-    public boolean playerInteractWithDoor(PrisonEscapePlayer player, Item itemHeld, Door door) {
+    public void playerInteractWithDoor(
+            PrisonEscapePlayer player,
+            Item itemHeld,
+            Door door,
+            PrisonEscapeLocation doorLocation
+    ) {
         ClickDoorReturnAction returnAction = door.click(player, itemHeld);
 
         if (returnAction == ClickDoorReturnAction.CLOSE_DOOR) {
             door.close();
-            return true;
+            BukkitWorldEditor.closeDoor(doorLocation);
+            return;
         }
 
         if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
             door.open();
-            return true;
+            BukkitWorldEditor.openDoor(doorLocation);
         }
-
-        return false;
     }
 
     public void placeBomb(PrisonEscapeLocation location) {
