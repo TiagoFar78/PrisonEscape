@@ -39,6 +39,10 @@ Items:
     Name: "Gray Key"
     Lore:
     - "&7Unlocks the gray doors"
+  DoorCode:
+    Name: "Door Code"
+    Lore:
+    - "&eUnlocks the code door"
   EnergyDrink:
     Name: "Energy Drink"
   Handcuffs:

@@ -53,6 +53,8 @@ public class PrisonEscapeGame {
 
     private Phase _phase;
 
+    private boolean _hasDoorCode;
+
     public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
         _settings = new Settings();
 
@@ -64,6 +66,8 @@ public class PrisonEscapeGame {
         _prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
 
         _playerOpenMenu = new Hashtable<>();
+
+        _hasDoorCode = false;
 
         startWaitingPhase();
     }
@@ -886,6 +890,18 @@ public class PrisonEscapeGame {
 
     private void teleportToLeavingLocation(PrisonEscapePlayer player) {
         BukkitTeleporter.teleport(player, ConfigManager.getInstance().getLeavingLocation());
+    }
+
+//	#########################################
+//	#                DoorCode               #
+//	#########################################
+
+    public boolean playersHaveDoorCode() {
+        return _hasDoorCode;
+    }
+
+    public void findDoorCode() {
+        _hasDoorCode = true;
     }
 
 }

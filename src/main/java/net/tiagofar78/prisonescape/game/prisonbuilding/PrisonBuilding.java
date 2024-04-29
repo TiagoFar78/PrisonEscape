@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GrayDoor;
@@ -80,6 +81,12 @@ public class PrisonBuilding {
             GrayDoor grayDoor = new GrayDoor();
             _doors.put(referenceLoc.createKey(), grayDoor);
             _doors.put(referenceLoc.add(0, 1, 0).createKey(), grayDoor);
+        }
+        for (PrisonEscapeLocation loc : config.getCodeDoorsLocations()) {
+            PrisonEscapeLocation referenceLoc = loc.add(reference);
+            CodeDoor codeDoor = new CodeDoor();
+            _doors.put(referenceLoc.createKey(), codeDoor);
+            _doors.put(referenceLoc.add(0, 1, 0).createKey(), codeDoor);
         }
 
         _metalDetectorsLocations = new ArrayList<>();
