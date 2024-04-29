@@ -116,6 +116,59 @@ ChestsContents:
   RegionName:
     Item1Name: 0.25
     Item2Name: 0.05
+WallCorners:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+WallCrackFormats:
+  "1":
+  - "0###0"
+  - "#####"
+  - "#####"
+  - "#####"
+  - "0###0"
+Maze:
+  Format:
+  - "E########E"
+  - "##########"
+  - "##########"
+  - "##########"
+  - "###SSSS###"
+  - "##########"
+  - "##########"
+  - "##########"
+  - "E########E"
+  UpperCornerLocation:
+    X: 0
+    Y: 0
+    Z: 0
+Fences:
+  "1":
+    UpperCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0
+    LowerCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0
+Vents:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
 CommonItemsProbability: 0.8
 RareItemsProbability: 0.25
 ChestSize: 5
+StartingBalance: 100
+TrapLimit: 2
+SensorLimit: 2
+RadarLimit: -1
+EnergyDrinkLimit: -1
+CameraLimit: 1
+TrapPrice: 10
+SensorPrice: 10
+RadarPrice: 10
+EnergyDrinkPrice: 10
+CameraPrice: 10

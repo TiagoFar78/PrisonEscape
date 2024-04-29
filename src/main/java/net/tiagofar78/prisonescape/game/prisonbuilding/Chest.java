@@ -5,9 +5,12 @@ import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.ClickReturnAction;
+import net.tiagofar78.prisonescape.menus.Clickable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +24,7 @@ public class Chest implements Clickable {
     private List<ItemProbability> _itemsProbability;
     private boolean _isOpened;
 
-    protected Chest(String regionName) {
+    public Chest(String regionName) {
         ConfigManager config = ConfigManager.getInstance();
 
         this._contents = createContentsList();
@@ -60,7 +63,7 @@ public class Chest implements Clickable {
         for (ItemProbability itemProbability : _itemsProbability) {
             cumulativeWeight += itemProbability.getProbability();
             if (randomValue < cumulativeWeight) {
-                return itemProbability.getItem();
+                return ItemFactory.createItem(itemProbability.getItemName());
             }
         }
 

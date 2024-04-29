@@ -1,18 +1,20 @@
 package net.tiagofar78.prisonescape;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
-import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,17 +22,21 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -71,13 +77,16 @@ public class Events implements Listener {
 
         Block block = e.getClickedBlock();
 
-        @SuppressWarnings("deprecation")
-        Item itemInHand = ItemFactory.createItem(e.getPlayer().getItemInHand());
+        if (e.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
+
+        int itemSlot = e.getPlayer().getInventory().getHeldItemSlot();
         PrisonEscapeLocation location = block == null
                 ? null
                 : new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
 
-        int returnCode = game.playerInteract(e.getPlayer().getName(), location, itemInHand, e);
+        int returnCode = game.playerInteract(e.getPlayer().getName(), location, itemSlot, e);
         if (returnCode == 0) {
             e.setCancelled(true);
         }
@@ -122,6 +131,11 @@ public class Events implements Listener {
             return;
         }
 
+
+        if (e.getInventory().getType() == InventoryType.PLAYER) {
+            return;
+        }
+
         game.playerCloseMenu(e.getPlayer().getName());
     }
 
@@ -136,11 +150,25 @@ public class Events implements Listener {
             return;
         }
 
+        Player player = (Player) e.getWhoClicked();
         boolean isPlayerInv = false;
         if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
             Inventory topInv = e.getView().getTopInventory();
             if (topInv == null) {
                 e.setCancelled(true);
+                return;
+            }
+
+            if (e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE) {
+                e.setCancelled(true);
+                return;
+            }
+
+            if (e.getAction() == InventoryAction.DROP_ALL_SLOT || e.getAction() == InventoryAction.DROP_ONE_SLOT) {
+                int slot = e.getSlot();
+                if (game.playerDropItem(player.getName(), slot) == -1) {
+                    e.setCancelled(true);
+                }
                 return;
             }
 
@@ -150,7 +178,6 @@ public class Events implements Listener {
         ItemStack cursor = e.getCursor();
         ItemStack current = e.getCurrentItem();
 
-        Player player = (Player) e.getWhoClicked();
         Item item = ItemFactory.createItem(e.getCursor());
         ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), item, isPlayerInv);
         if (returnAction == ClickReturnAction.IGNORE) {
@@ -185,6 +212,10 @@ public class Events implements Listener {
 
         if (entity.getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             e.setCancelled(true);
+        }
+
+        if (e.getEntityType() == EntityType.PRIMED_TNT) {
+            e.setCancelled(false);
         }
     }
 
@@ -231,6 +262,20 @@ public class Events implements Listener {
     }
 
     @EventHandler
+    public void onExplosion(EntityExplodeEvent e) {
+        if (!e.getEntity().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
+            return;
+        }
+
+        e.setCancelled(true);
+
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game != null) {
+            game.explosion(e.blockList());
+        }
+    }
+
+    @EventHandler
     public void onPlayerInteractWithPlayer(PlayerInteractEntityEvent e) {
         if (GameManager.getGame() == null) {
             return;
@@ -262,6 +307,21 @@ public class Events implements Listener {
 
         if (item.isFunctional()) {
             ((FunctionalItem) item).use(e);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent e) {
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game == null) {
+            return;
+        }
+        Player player = e.getPlayer();
+        int slot = player.getInventory().getHeldItemSlot();
+
+        int return_code = game.playerDropItem(player.getName(), slot);
+        if (return_code == -1) {
+            e.setCancelled(true);
         }
     }
 

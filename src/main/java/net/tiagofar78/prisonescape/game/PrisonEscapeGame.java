@@ -10,22 +10,29 @@ import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
-import net.tiagofar78.prisonescape.game.prisonbuilding.ClickReturnAction;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Clickable;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
+import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
+import net.tiagofar78.prisonescape.items.ToolItem;
+import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisionerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.ClickReturnAction;
+import net.tiagofar78.prisonescape.menus.Clickable;
+import net.tiagofar78.prisonescape.menus.Shop;
 
+import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -100,7 +107,7 @@ public class PrisonEscapeGame {
         _playersOnLobby.add(player);
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
-        TeamSelectorKit.giveToPlayer(playerName);
+        TeamSelectorKit.giveKitToPlayer(playerName);
 
         int maxPlayers = config.getMaxPlayers();
         int playerNumber = _playersOnLobby.size();
@@ -153,7 +160,6 @@ public class PrisonEscapeGame {
                     messages.getSuccessfullyRejoinedGameMessage(playerName, playerNumber, maxPlayers)
             );
         }
-
 
         return 0;
     }
@@ -272,6 +278,8 @@ public class PrisonEscapeGame {
     private void startWaitingPhase() {
         _phase = new Waiting();
 
+        _prison.raiseWall();
+
         ConfigManager config = ConfigManager.getInstance();
 
         runWaitingPhaseScheduler(config.getWaitingPhaseDuration(), true);
@@ -332,15 +340,17 @@ public class PrisonEscapeGame {
         for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
-            PrisionerKit.giveToPlayer(player.getName());
+            PrisionerKit.giveKitToPlayer(player.getName());
         }
 
         for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
+            PoliceKit.giveKitToPlayer(player.getName());
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
+        _prison.putRandomCracks();
 
         startDay();
     }
@@ -486,11 +496,19 @@ public class PrisonEscapeGame {
         }
     }
 
-    public int playerInteract(String playerName, PrisonEscapeLocation blockLocation, Item item, PlayerInteractEvent e) {
+    public int playerInteract(
+            String playerName,
+            PrisonEscapeLocation blockLocation,
+            int itemSlot,
+            PlayerInteractEvent e
+    ) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return -1;
         }
+
+        int inventoryIndex = BukkitMenu.convertToIndexPlayerInventory(itemSlot);
+        Item item = player.getItemAt(inventoryIndex);
 
         if (blockLocation != null) {
             int vaultIndex = _prison.getVaultIndex(blockLocation);
@@ -505,6 +523,14 @@ public class PrisonEscapeGame {
                 return 0;
             }
 
+            WallCrack crack = _prison.getWallCrack(blockLocation);
+            if (crack != null) {
+                int returnCode = playerFixWallCrack(player, crack);
+                if (returnCode == 0) {
+                    return 0;
+                }
+            }
+
             PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
                     blockLocation,
                     _prisionersTeam.isOnTeam(player)
@@ -517,6 +543,13 @@ public class PrisonEscapeGame {
             Door door = _prison.getDoor(blockLocation);
             if (door != null) {
                 return playerInteractWithDoor(player, item, door) ? 1 : 0;
+            }
+
+            Obstacle obstacle = _prison.getObstacle(blockLocation);
+            if (obstacle != null) {
+                if (obstacleTookDamage(player, obstacle, item) == 0) {
+                    return 0;
+                }
             }
         }
 
@@ -570,6 +603,10 @@ public class PrisonEscapeGame {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getGeneralMessage(senderName, message));
         }
+    }
+
+    public void explosion(List<Block> explodedBlocks) {
+        _prison.removeExplodedBlocks(explodedBlocks);
     }
 
 //	########################################
@@ -680,6 +717,22 @@ public class PrisonEscapeGame {
         vault.open(player);
     }
 
+    /**
+     * @return 0 if success<br>
+     *         -1 if cannot drop that item
+     */
+    public int playerDropItem(String playerName, int slot) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+
+        int return_code = player.removeItem(slot);
+        if (return_code == -1) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+            BukkitMessageSender.sendChatMessage(player, messages.getCannotDropThatItemMessage());
+        }
+
+        return return_code;
+    }
+
     private void policeSearchVault(PrisonEscapePlayer player, Vault vault, MessageLanguageManager messagesPolice) {
         PrisonEscapePlayer vaultOwner = vault.getOwner();
         MessageLanguageManager messagesPrisioner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
@@ -730,6 +783,17 @@ public class PrisonEscapeGame {
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);
+    }
+
+    public void policeOpenShop(String playerName) {
+        PrisonEscapePlayer player = getPlayerOnPoliceTeam(playerName);
+        if (player == null) {
+            return;
+        }
+
+        Shop shop = new Shop();
+        _playerOpenMenu.put(player.getName(), shop);
+        shop.open(player);
     }
 
     public void policeHandcuffedPrisioner(String policeName, String prisionerName) {
@@ -795,6 +859,48 @@ public class PrisonEscapeGame {
         }
 
         return false;
+    }
+  
+    public void placeBomb(PrisonEscapeLocation location) {
+        _prison.placeBomb(location);
+    }
+
+    public int playerFixWallCrack(PrisonEscapePlayer player, WallCrack crack) {
+        if (!_policeTeam.isOnTeam(player)) {
+            return -1;
+        }
+
+        int returnCode = crack.fixCrack();
+        if (returnCode == -1) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, messages.getCanOnlyFixHolesMessage());
+        }
+
+        return 0;
+    }
+
+    public int obstacleTookDamage(PrisonEscapePlayer player, Obstacle obstacle, Item item) {
+        if (!_prisionersTeam.isOnTeam(player)) {
+            if (obstacle instanceof Regenerable) {
+                ((Regenerable) obstacle).regenerate();
+                return 0;
+            }
+
+            return -1;
+        }
+
+        if (!item.isTool()) {
+            return 0;
+        }
+
+        double returnCode = obstacle.takeDamage((ToolItem) item);
+        if (returnCode == 0) {
+            obstacle.removeFromWorld();
+        }
+
+        player.updateInventory();
+
+        return 0;
     }
 
 //	########################################

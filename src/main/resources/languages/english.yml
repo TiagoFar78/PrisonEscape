@@ -47,6 +47,38 @@ Items:
     Name: "Energy Drink"
   Handcuffs:
     Name: "Handcuffs"
+  PlasticSpoon:
+    Name: "Wooden Shovel"
+  MetalSpoon:
+    Name: "Golden Shovel"
+  PlasticShovel:
+    Name: "Stone Shovel"
+  MetalShovel:
+    Name: "Diamond Shovel"
+  WireCutter:
+    Name: "Wire Cutter"
+  Wrench:
+    Name: "Pickaxe"
+  Bomb:
+    Name: "Bomb"
+  Glass:
+    Name: " "
+  Missions:
+    Name: "Missions Book"
+  OpenCameras:
+    Name: "Cameras"
+  Shop:
+    Name: "Shop"
+  Search:
+    Name: "Search"
+  Radar:
+    Name: "Radar"
+  Sensor:
+    Name: "Sensor"
+  Camera:
+    Name: "Camera"
+  Trap:
+    Name: "Trap"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -84,6 +116,11 @@ Messages:
     NotWantedPlayer: "&cYou can only send to solitary wanted players."
     PrisionerInspected: "&aA police inspected your inventory, but no illegal items were found."
     PoliceInspected: "&a{PLAYER} don't have any illegal items."
+    CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
+    ReachedItemLimit: "&cSorry, you've already reached the maximum limit for this item."
+    NotEnoughMoney: "&cYou do not have enough money to buy this item."
+    SuccessfullyBoughtItem: "&aSuccessfully bought item. Your current balance is: {BALANCE}."
+    CannotDropThatItem: "&cYou cannot drop that item."
   Announcements:
     GameStarting:
     - "&6==================================="

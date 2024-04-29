@@ -103,6 +103,11 @@ public class MessageLanguageManager {
     private String _notWantedPlayerMessage;
     private String _policeInspectedMessage;
     private String _prisionerInspectedMessage;
+    private String _canOnlyFixHolesMessage;
+    private String _reachedItemLimitMessage;
+    private String _notEnoughMoneyMessage;
+    private String _successfullyBoughtItemMessage;
+    private String _cannotDropThatItemMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -222,6 +227,11 @@ public class MessageLanguageManager {
         _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
         _prisionerInspectedMessage = createMessage(messages.getString(warningPath + "PrisionerInspected"));
+        _canOnlyFixHolesMessage = createMessage(messages.getString(warningPath + "CanOnlyFixHoles"));
+        _reachedItemLimitMessage = createMessage(messages.getString(warningPath + "ReachedItemLimit"));
+        _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
+        _successfullyBoughtItemMessage = createMessage(messages.getString(warningPath + "SuccessfullyBoughtItem"));
+        _cannotDropThatItemMessage = createMessage(messages.getString(warningPath + "CannotDropThatItem"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -436,6 +446,26 @@ public class MessageLanguageManager {
 
     public String getPrisionerInspectedMessage() {
         return _prisionerInspectedMessage;
+    }
+
+    public String getCanOnlyFixHolesMessage() {
+        return _canOnlyFixHolesMessage;
+    }
+
+    public String getReachedItemLimitMessage() {
+        return _reachedItemLimitMessage;
+    }
+
+    public String getNotEnoughMoneyMessage() {
+        return _notEnoughMoneyMessage;
+    }
+
+    public String getSuccessfullyBoughtItemMessage(int balance) {
+        return _successfullyBoughtItemMessage.replace("{BALANCE}", Integer.toString(balance));
+    }
+
+    public String getCannotDropThatItemMessage() {
+        return _cannotDropThatItemMessage;
     }
 
 //	########################################

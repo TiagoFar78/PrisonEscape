@@ -1,6 +1,11 @@
 package net.tiagofar78.prisonescape.bukkit;
 
+import net.tiagofar78.prisonescape.items.CameraItem;
+import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.RadarItem;
+import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
@@ -142,7 +147,7 @@ public class BukkitMenu {
 
     private static final int[] UNCOVERED_INDEXES = {0, 1, 2, 3};
 
-    public static void setItem(String playerName, int slot, Item item) {
+    public static void setItem(String playerName, int index, Item item) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
@@ -150,7 +155,7 @@ public class BukkitMenu {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         ItemStack bukkitItem = item.toItemStack(messages);
-        bukkitPlayer.getInventory().setItem(slot, bukkitItem);
+        bukkitPlayer.getInventory().setItem(UNCOVERED_INDEXES[index], bukkitItem);
     }
 
     public static int convertToIndexPlayerInventory(int slot) {
@@ -163,4 +168,35 @@ public class BukkitMenu {
         return -1;
     }
 
+//  ########################################
+//  #                 Shop                 #
+//  ########################################
+
+    private static final int NUM_OF_ITEMS_FOR_SALE = 5;
+
+    public static void openShop(String playerName) {
+        Player bukkitPlayer = Bukkit.getPlayer(playerName);
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        Inventory shopMenu = Bukkit.createInventory(null, 9, "Buy Menu");
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
+        shopMenu.setItem(0, new EnergyDrinkItem().toItemStack(messages));
+        shopMenu.setItem(1, new TrapItem().toItemStack(messages));
+        shopMenu.setItem(2, new SensorItem().toItemStack(messages));
+        shopMenu.setItem(3, new CameraItem().toItemStack(messages));
+        shopMenu.setItem(4, new RadarItem().toItemStack(messages));
+
+        bukkitPlayer.openInventory(shopMenu);
+    }
+
+    public static int convertToIndexShop(int slot) {
+        if (slot >= NUM_OF_ITEMS_FOR_SALE) {
+            return -1;
+        }
+
+        return slot;
+    }
 }

@@ -15,7 +15,15 @@ public abstract class Item {
 
     public abstract boolean isIllegal();
 
+    public boolean isBuyable() {
+        return false;
+    }
+
     public boolean isFunctional() {
+        return false;
+    }
+
+    public boolean isTool() {
         return false;
     }
 

@@ -4,7 +4,6 @@ import net.tiagofar78.prisonescape.PrisonEscapeResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
-import net.tiagofar78.prisonescape.items.ItemFactory;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -35,6 +34,17 @@ public class ConfigManager {
     private int _delayBetweenAnnouncements;
     private int _speedDuration;
     private int _speedLevel;
+    private int _startingBalance;
+    private int _trapLimit;
+    private int _sensorLimit;
+    private int _radarLimit;
+    private int _energyDrinkLimit;
+    private int _cameraLimit;
+    private int _trapPrice;
+    private int _sensorPrice;
+    private int _radarPrice;
+    private int _energyDrinkPrice;
+    private int _cameraPrice;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -59,6 +69,12 @@ public class ConfigManager {
     private List<PrisonEscapeLocation> _goldenDoorsLocations;
     private List<PrisonEscapeLocation> _grayDoorsLocations;
     private List<PrisonEscapeLocation> _codeDoorsLocations;
+    private List<PrisonEscapeLocation> _wallCornersLocations;
+    private List<List<String>> _wallCrackFormats;
+    private List<String> _mazeFormat;
+    private PrisonEscapeLocation _mazeUpperCornerLocation;
+    private List<List<PrisonEscapeLocation>> _fencesLocations;
+    private List<PrisonEscapeLocation> _ventsLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -84,6 +100,17 @@ public class ConfigManager {
         _nightDuration = config.getInt("NightDuration");
         _speedDuration = config.getInt("SpeedDuration");
         _speedLevel = config.getInt("SpeedLevel");
+        _startingBalance = config.getInt("StartingBalance");
+        _trapLimit = config.getInt("TrapLimit");
+        _sensorLimit = config.getInt("SensorLimit");
+        _radarLimit = config.getInt("RadarLimit");
+        _energyDrinkLimit = config.getInt("EnergyDrinkLimit");
+        _cameraLimit = config.getInt("CameraLimit");
+        _trapPrice = config.getInt("TrapPrice");
+        _sensorPrice = config.getInt("SensorPrice");
+        _radarPrice = config.getInt("RadarPrice");
+        _energyDrinkPrice = config.getInt("EnergyDrinkPrice");
+        _cameraPrice = config.getInt("CameraPrice");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -108,6 +135,12 @@ public class ConfigManager {
         _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
         _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations");
         _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations");
+        _wallCornersLocations = createLocationList(config, "WallCorners");
+        _wallCrackFormats = createStringListList(config, "WallCrackFormats");
+        _mazeFormat = config.getStringList("Maze.Format");
+        _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation");
+        _fencesLocations = createLocationPairList(config, "Fences");
+        _ventsLocations = createLocationList(config, "Vents");
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -135,6 +168,39 @@ public class ConfigManager {
 
         for (String key : filteredKeys) {
             list.add(createLocation(config, key));
+        }
+
+        return list;
+    }
+
+    private List<List<PrisonEscapeLocation>> createLocationPairList(YamlConfiguration config, String path) {
+        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+
+        List<String> filteredKeys = config.getKeys(true)
+                .stream()
+                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
+                .toList();
+
+        for (String key : filteredKeys) {
+            List<PrisonEscapeLocation> pair = new ArrayList<>();
+            pair.add(createLocation(config, key + ".UpperCornerLocation"));
+            pair.add(createLocation(config, key + ".LowerCornerLocation"));
+            list.add(pair);
+        }
+
+        return list;
+    }
+
+    private List<List<String>> createStringListList(YamlConfiguration config, String path) {
+        List<List<String>> list = new ArrayList<>();
+
+        List<String> filteredKeys = config.getKeys(true)
+                .stream()
+                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
+                .toList();
+
+        for (String key : filteredKeys) {
+            list.add(config.getStringList(key));
         }
 
         return list;
@@ -215,7 +281,7 @@ public class ConfigManager {
 
             String itemName = path.substring(lastIndexOfDot + 1);
             double probability = config.getDouble(path);
-            itemsProbabilities.add(new ItemProbability(ItemFactory.createItem(itemName), probability));
+            itemsProbabilities.add(new ItemProbability(itemName, probability));
         }
 
         return map;
@@ -275,6 +341,50 @@ public class ConfigManager {
 
     public int getSpeedLevel() {
         return _speedLevel;
+    }
+
+    public int getStartingBalance() {
+        return _startingBalance;
+    }
+
+    public int getTrapLimit() {
+        return _trapLimit;
+    }
+
+    public int getSensorLimit() {
+        return _sensorLimit;
+    }
+
+    public int getRadarLimit() {
+        return _radarLimit;
+    }
+
+    public int getEnergyDrinkLimit() {
+        return _energyDrinkLimit;
+    }
+
+    public int getCameraLimit() {
+        return _cameraLimit;
+    }
+
+    public int getTrapPrice() {
+        return _trapPrice;
+    }
+
+    public int getSensorPrice() {
+        return _sensorPrice;
+    }
+
+    public int getRadarPrice() {
+        return _radarPrice;
+    }
+
+    public int getEnergyDrinkPrice() {
+        return _energyDrinkPrice;
+    }
+
+    public int getCameraPrice() {
+        return _cameraPrice;
     }
 
     public List<String> getAvailableLanguages() {
@@ -361,6 +471,30 @@ public class ConfigManager {
     public List<PrisonEscapeLocation> getCodeDoorsLocations() {
         return createLocationsListCopy(_codeDoorsLocations);
     }
+  
+    public List<PrisonEscapeLocation> getWallCornersLocations() {
+        return createLocationsListCopy(_wallCornersLocations);
+    }
+
+    public List<List<String>> getWallCrackFormats() {
+        return createStringListListCopy(_wallCrackFormats);
+    }
+
+    public List<String> getMazeFormat() {
+        return new ArrayList<>(_mazeFormat);
+    }
+
+    public PrisonEscapeLocation getMazeUpperCornerLocation() {
+        return createLocationCopy(_mazeUpperCornerLocation);
+    }
+
+    public List<List<PrisonEscapeLocation>> getFencesLocations() {
+        return createLocationsPairListCopy(_fencesLocations);
+    }
+
+    public List<PrisonEscapeLocation> getVentsLocations() {
+        return createLocationsListCopy(_ventsLocations);
+    }
 
     public List<ItemProbability> getChestContents(String regionName) {
         if (!_regionsChestContents.containsKey(regionName)) {
@@ -400,6 +534,18 @@ public class ConfigManager {
         return list;
     }
 
+    private List<List<PrisonEscapeLocation>> createLocationsPairListCopy(
+            List<List<PrisonEscapeLocation>> locationPairs
+    ) {
+        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+
+        for (List<PrisonEscapeLocation> locationPair : locationPairs) {
+            list.add(createLocationsListCopy(locationPair));
+        }
+
+        return list;
+    }
+
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> createLocationsMapCopy(
             Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> locations
     ) {
@@ -426,7 +572,17 @@ public class ConfigManager {
         List<ItemProbability> list = new ArrayList<>();
 
         for (ItemProbability itemProbability : itemsProbabilities) {
-            list.add(new ItemProbability(itemProbability.getItem(), itemProbability.getProbability()));
+            list.add(new ItemProbability(itemProbability.getItemName(), itemProbability.getProbability()));
+        }
+
+        return list;
+    }
+
+    private List<List<String>> createStringListListCopy(List<List<String>> strings) {
+        List<List<String>> list = new ArrayList<>();
+
+        for (List<String> s : strings) {
+            list.add(new ArrayList<String>(s));
         }
 
         return list;

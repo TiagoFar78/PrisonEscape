@@ -10,6 +10,8 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
+import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -35,6 +37,10 @@ public class PrisonBuilding {
     private Hashtable<String, Chest> _chests;
     private Hashtable<String, Door> _doors;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
+    private Wall _wall;
+
+    private Maze _maze;
+    private List<Obstacle> _obstacles;
 
 //  #########################################
 //  #              Constructor              #
@@ -90,6 +96,26 @@ public class PrisonBuilding {
         }
 
         _metalDetectorsLocations = new ArrayList<>();
+
+        _wall = new Wall();
+
+        _obstacles = new ArrayList<>();
+
+        _maze = new Maze();
+        List<Dirt> dirts = _maze.buildMaze(config.getMazeUpperCornerLocation().add(reference), config.getMazeFormat());
+        _obstacles.addAll(dirts);
+
+        for (List<PrisonEscapeLocation> pair : createLocationsPairList(reference, config.getFencesLocations())) {
+            Fence fence = new Fence(pair.get(0), pair.get(1));
+            fence.generate();
+            _obstacles.add(fence);
+        }
+
+        for (PrisonEscapeLocation location : createLocationsList(reference, config.getVentsLocations())) {
+            Vent vent = new Vent(location);
+            vent.generate();
+            _obstacles.add(vent);
+        }
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -100,6 +126,19 @@ public class PrisonBuilding {
 
         for (PrisonEscapeLocation loc : locs) {
             list.add(loc.add(reference));
+        }
+
+        return list;
+    }
+
+    private List<List<PrisonEscapeLocation>> createLocationsPairList(
+            PrisonEscapeLocation reference,
+            List<List<PrisonEscapeLocation>> pairs
+    ) {
+        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+
+        for (List<PrisonEscapeLocation> pair : pairs) {
+            list.add(createLocationsList(reference, pair));
         }
 
         return list;
@@ -210,6 +249,50 @@ public class PrisonBuilding {
 
     public Chest getChest(PrisonEscapeLocation location) {
         return _chests.get(location.createKey());
+    }
+
+//  #########################################
+//  #                 Walls                 #
+//  #########################################
+
+    public void raiseWall() {
+        _wall.raiseFixedWall();
+    }
+
+    public void putRandomCracks() {
+        _wall.putRandomCracks();
+    }
+
+    public void removeExplodedBlocks(List<Block> explodedBlocks) {
+        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream()
+                .filter(b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK)
+                .map(b -> b.getLocation())
+                .map(l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ()))
+                .toList();
+
+        _wall.crackedBlocksExploded(crackedBlocksLocations);
+    }
+
+    public void placeBomb(PrisonEscapeLocation location) {
+        BukkitWorldEditor.placeTNT(location);
+    }
+
+    public WallCrack getWallCrack(PrisonEscapeLocation location) {
+        return _wall.getAffectedCrack(location);
+    }
+
+//  #########################################
+//  #               Obstacles               #
+//  #########################################
+
+    public Obstacle getObstacle(PrisonEscapeLocation location) {
+        for (Obstacle obstacle : _obstacles) {
+            if (obstacle.contains(location)) {
+                return obstacle;
+            }
+        }
+
+        return null;
     }
 
 //	#########################################
