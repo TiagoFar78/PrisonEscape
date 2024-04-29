@@ -42,7 +42,7 @@ Items:
   DoorCode:
     Name: "Door Code"
     Lore:
-    - "&eUnlocks the code door"
+    - "&eReveals the code for the main door"
   EnergyDrink:
     Name: "Energy Drink"
   Handcuffs:
