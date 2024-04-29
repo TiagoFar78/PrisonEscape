@@ -781,10 +781,6 @@ public class PrisonEscapeGame {
         }
     }
 
-    /**
-     * @return true if door toggled<br>
-     *         false if door not toggled
-     */
     public boolean playerInteractWithDoor(PrisonEscapePlayer player, Item itemHeld, Door door) {
         ClickDoorReturnAction returnAction = door.click(player, itemHeld);
 
