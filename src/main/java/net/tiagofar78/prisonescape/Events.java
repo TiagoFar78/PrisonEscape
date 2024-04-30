@@ -41,8 +41,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class Events implements Listener {
-    
-    private static final EntityType[] ALLOWED_MOBS = { EntityType.PRIMED_TNT, EntityType.PAINTING, EntityType.ARMOR_STAND }; 
+
+    private static final EntityType[] ALLOWED_MOBS =
+            {EntityType.PRIMED_TNT, EntityType.PAINTING, EntityType.ARMOR_STAND};
 
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
@@ -218,7 +219,7 @@ public class Events implements Listener {
                 return;
             }
         }
-        
+
         if (entity.getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             e.setCancelled(true);
         }
