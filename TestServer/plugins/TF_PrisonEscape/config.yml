@@ -146,7 +146,7 @@ VaultsLocations:
     Y: 100
     Z: -11
 ChestsLocations:
-  "1":
+  "1": # Cell Block
     X: -16
     Y: 100
     Z: -13
@@ -166,7 +166,7 @@ ChestsLocations:
     X: -11
     Y: 100
     Z: -8
-  "6":
+  "6": # Right office
     X: 13
     Y: 99
     Z: -30
@@ -198,7 +198,7 @@ ChestsLocations:
     X: 16
     Y: 101
     Z: -30
-  "14":
+  "14": # Right yard
     X: -25
     Y: 100
     Z: -28
@@ -218,7 +218,7 @@ ChestsLocations:
     X: -19
     Y: 100
     Z: -33
-  "19":
+  "19": # Left yard
     X: -18
     Y: 100
     Z: 31
@@ -246,7 +246,7 @@ ChestsLocations:
     X: -26
     Y: 100
     Z: 33
-  "26":
+  "26": # Toilets
     X: -54
     Y: 100
     Z: 9
@@ -259,13 +259,73 @@ ChestsLocations:
     Y: 99
     Z: 20
   "29":
-    X: -45
+    X: -53
     Y: 100
-    Z: 5
+    Z: 15
   "30":
     X: -43
     Y: 100
     Z: 5
+  "31": # Gym
+    X: -41
+    Y: 100
+    Z: -39
+  "32":
+    X: -45
+    Y: 100
+    Z: -40
+  "33":
+    X: -50
+    Y: 100
+    Z: -42
+  "34":
+    X: -52
+    Y: 100
+    Z: -40
+  "35":
+    X: -53
+    Y: 100
+    Z: -31
+  "36":
+    X: -47
+    Y: 100
+    Z: -32
+  "37":
+    X: -44
+    Y: 100
+    Z: -31
+  "38": # Kitchen
+    X: -42
+    Y: 100
+    Z: -18
+  "39":
+    X: -48
+    Y: 100
+    Z: -26
+  "40":
+    X: -49
+    Y: 100
+    Z: -14
+  "41":
+    X: -53
+    Y: 100
+    Z: -6
+  "42":
+    X: -42
+    Y: 100
+    Z: -9
+  "43":
+    X: -58
+    Y: 100
+    Z: -24
+  "44":
+    X: -58
+    Y: 100
+    Z: -13
+  "45":
+    X: -55
+    Y: 100
+    Z: -5
 Regions:
   CellBlock:
     IsRestricted: false
