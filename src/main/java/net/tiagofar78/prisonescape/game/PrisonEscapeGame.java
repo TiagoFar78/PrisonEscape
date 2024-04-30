@@ -542,7 +542,7 @@ public class PrisonEscapeGame {
 
             Door door = _prison.getDoor(blockLocation);
             if (door != null) {
-                playerInteractWithDoor(player, item, door, blockLocation);
+                playerInteractWithDoor(player, inventoryIndex, item, door, blockLocation);
                 return 0;
             }
 
@@ -848,6 +848,7 @@ public class PrisonEscapeGame {
 
     public void playerInteractWithDoor(
             PrisonEscapePlayer player,
+            int inventoryIndex,
             Item itemHeld,
             Door door,
             PrisonEscapeLocation doorLocation
@@ -863,6 +864,7 @@ public class PrisonEscapeGame {
         if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
             door.open();
             BukkitWorldEditor.openDoor(doorLocation);
+            player.removeItem(inventoryIndex);
         }
     }
 
