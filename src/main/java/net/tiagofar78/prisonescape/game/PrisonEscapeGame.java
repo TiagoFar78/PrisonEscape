@@ -865,6 +865,7 @@ public class PrisonEscapeGame {
             door.open();
             BukkitWorldEditor.openDoor(doorLocation);
             player.removeItem(inventoryIndex);
+            player.updateInventory();
         }
     }
 
