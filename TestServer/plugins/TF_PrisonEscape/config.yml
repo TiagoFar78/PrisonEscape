@@ -326,6 +326,34 @@ ChestsLocations:
     X: -55
     Y: 100
     Z: -5
+  "46": # left office 1
+    X: -1
+    Y: 100
+    Z: 25
+  "47":
+    X: -1
+    Y: 100
+    Z: 31
+  "48":
+    X: -9
+    Y: 100
+    Z: 33
+  "49":
+    X: -9
+    Y: 104
+    Z: 34
+  "50":
+    X: -10
+    Y: 100
+    Z: 27
+  "51":
+    X: -9
+    Y: 100
+    Z: 26
+  "52":
+    X: -9
+    Y: 104
+    Z: 25
 Regions:
   CellBlock:
     IsRestricted: false
@@ -509,7 +537,7 @@ Maze:
     Y: 84
     Z: 22
 Fences:
-  "1":
+  "1": # Left yard
     UpperCornerLocation:
       X: -33
       Y: 102
@@ -518,8 +546,224 @@ Fences:
       X: -35
       Y: 100
       Z: 43
+  "2":
+    UpperCornerLocation:
+      X: -29
+      Y: 102
+      Z: 43
+    LowerCornerLocation:
+      X: -31
+      Y: 100
+      Z: 43
+  "3":
+    UpperCornerLocation:
+      X: -25
+      Y: 102
+      Z: 43
+    LowerCornerLocation:
+      X: -27
+      Y: 100
+      Z: 43
+  "4":
+    UpperCornerLocation:
+      X: -21
+      Y: 102
+      Z: 43
+    LowerCornerLocation:
+      X: -23
+      Y: 100
+      Z: 43
+  "5":
+    UpperCornerLocation:
+      X: -17
+      Y: 102
+      Z: 43
+    LowerCornerLocation:
+      X: -19
+      Y: 100
+      Z: 43
+  "6":
+    UpperCornerLocation:
+      X: -16
+      Y: 102
+      Z: 42
+    LowerCornerLocation:
+      X: -16
+      Y: 100
+      Z: 40
+  "7":
+    UpperCornerLocation:
+      X: -16
+      Y: 102
+      Z: 38
+    LowerCornerLocation:
+      X: -16
+      Y: 100
+      Z: 36
+  "8":
+    UpperCornerLocation:
+      X: -16
+      Y: 102
+      Z: 34
+    LowerCornerLocation:
+      X: -16
+      Y: 100
+      Z: 32
+  "9":
+    UpperCornerLocation:
+      X: -16
+      Y: 102
+      Z: 30
+    LowerCornerLocation:
+      X: -16
+      Y: 100
+      Z: 28
+  "10":
+    UpperCornerLocation:
+      X: -16
+      Y: 102
+      Z: 26
+    LowerCornerLocation:
+      X: -16
+      Y: 100
+      Z: 24
+  "11": # right yard
+    UpperCornerLocation:
+      X: -11
+      Y: 102
+      Z: -28
+    LowerCornerLocation:
+      X: -11
+      Y: 100
+      Z: -30
+  "12":
+    UpperCornerLocation:
+      X: -11
+      Y: 102
+      Z: -32
+    LowerCornerLocation:
+      X: -11
+      Y: 100
+      Z: -34
+  "13":
+    UpperCornerLocation:
+      X: -11
+      Y: 102
+      Z: -36
+    LowerCornerLocation:
+      X: -11
+      Y: 100
+      Z: -38
+  "14":
+    UpperCornerLocation:
+      X: -12
+      Y: 102
+      Z: -39
+    LowerCornerLocation:
+      X: -14
+      Y: 100
+      Z: -39
+  "15":
+    UpperCornerLocation:
+      X: -16
+      Y: 102
+      Z: -39
+    LowerCornerLocation:
+      X: -18
+      Y: 100
+      Z: -39
+  "16":
+    UpperCornerLocation:
+      X: -20
+      Y: 102
+      Z: -39
+    LowerCornerLocation:
+      X: -22
+      Y: 100
+      Z: -39
+  "17":
+    UpperCornerLocation:
+      X: -24
+      Y: 102
+      Z: -39
+    LowerCornerLocation:
+      X: -26
+      Y: 100
+      Z: -39
+  "18":
+    UpperCornerLocation:
+      X: -28
+      Y: 102
+      Z: -39
+    LowerCornerLocation:
+      X: -30
+      Y: 100
+      Z: -39
+  "19":
+    UpperCornerLocation:
+      X: -32
+      Y: 102
+      Z: -39
+    LowerCornerLocation:
+      X: -34
+      Y: 100
+      Z: -39
+  "20": # Entrance vent
+    UpperCornerLocation:
+      X: 29
+      Y: 109
+      Z: -1
+    LowerCornerLocation:
+      X: 29
+      Y: 107
+      Z: -3
+  "21": # Roof vent
+    UpperCornerLocation:
+      X: -40
+      Y: 109
+      Z: 0
+    LowerCornerLocation:
+      X: -40
+      Y: 107
+      Z: -2
 Vents:
-  "1":
-    X: -5
+  "1": # Entrance
+    X: 34
     Y: 106
-    Z: 27
+    Z: 1
+  "2": # Hallway
+    X: 20
+    Y: 106
+    Z: -15
+  "3": # Right yard
+    X: -33
+    Y: 106
+    Z: -37
+  "4": # Gym
+    X: -43
+    Y: 106
+    Z: -41
+  "5": # Kitchen
+    X: -56
+    Y: 106
+    Z: -24
+  "6": # Roof
+    X: -42
+    Y: 110
+    Z: 3
+  "7":
+    X: -42
+    Y: 110
+    Z: -5
+  "8": # Left yard
+    X: -21
+    Y: 106
+    Z: 25
+  "9": # Office
+    X: -6
+    Y: 106
+    Z: 26
+  "10": # Visitations
+    X: 34
+    Y: 106
+    Z: 1
