@@ -354,6 +354,46 @@ ChestsLocations:
     X: -9
     Y: 104
     Z: 25
+  "53": #left office 2
+    X: -1
+    Y: 100
+    Z: 44
+  "54":
+    X: -3
+    Y: 100
+    Z: 37
+  "55":
+    X: -5
+    Y: 99
+    Z: 37
+  "56":
+    X: -7
+    Y: 99
+    Z: 37
+  "57":
+    X: -9
+    Y: 99
+    Z: 36
+  "58":
+    X: -10
+    Y: 103
+    Z: 40
+  "59":
+    X: -9
+    Y: 100
+    Z: 44
+  "60":
+    X: -5
+    Y: 100
+    Z: 48
+  "61":
+    X: -4
+    Y: 104
+    Z: 42
+  "62":
+    X: -9
+    Y: 100
+    Z: 26
 Regions:
   CellBlock:
     IsRestricted: false
@@ -726,6 +766,15 @@ Fences:
       X: -40
       Y: 107
       Z: -2
+  "22": # Solitary
+    UpperCornerLocation:
+      X: -41
+      Y: 102
+      Z: 49
+    LowerCornerLocation:
+      X: -41
+      Y: 100
+      Z: 47
 Vents:
   "1": # Entrance
     X: 34
