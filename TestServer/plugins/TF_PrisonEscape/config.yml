@@ -560,10 +560,26 @@ Regions:
         Y: 100
         Z: 40
 ChestsContents:
+  Default: # These are the chest contents by default - DON'T CHANGE THE NAME!
+    Bolts: 0.25
+    Oil: 0.05
+    Stick: 0.10
   CellBlock:
     Bolts: 0.25
     Oil: 0.05
     Stick: 0.10
+  Office:
+    Bolts: 0.01
+  Yard:
+    Bolts: 0.01
+  Gym:
+    Bolts: 0.01
+  FoodHall:
+    Bolts: 0.01
+  Toilets:
+    Bolts: 0.01
+  Solitary:
+    Bolts: 0.01
 WallCorners:
   "1":
     X: 43
