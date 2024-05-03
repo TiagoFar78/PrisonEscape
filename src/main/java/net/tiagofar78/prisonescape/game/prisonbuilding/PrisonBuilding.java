@@ -2,6 +2,10 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GrayDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -31,6 +35,7 @@ public class PrisonBuilding {
     private List<PrisonEscapeLocation> _vaultsLocations;
 
     private Hashtable<String, Chest> _chests;
+    private Hashtable<String, Door> _doors;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
 
@@ -68,6 +73,26 @@ public class PrisonBuilding {
         for (PrisonEscapeLocation loc : config.getChestsLocations()) {
             String regionName = getRegionName(loc);
             _chests.put(loc.add(reference).createKey(), new Chest(regionName));
+        }
+
+        _doors = new Hashtable<>();
+        for (PrisonEscapeLocation loc : config.getGoldenDoorsLocations()) {
+            PrisonEscapeLocation referenceLoc = loc.add(reference);
+            GoldenDoor goldenDoor = new GoldenDoor();
+            _doors.put(referenceLoc.createKey(), goldenDoor);
+            _doors.put(referenceLoc.add(0, 1, 0).createKey(), goldenDoor);
+        }
+        for (PrisonEscapeLocation loc : config.getGrayDoorsLocations()) {
+            PrisonEscapeLocation referenceLoc = loc.add(reference);
+            GrayDoor grayDoor = new GrayDoor();
+            _doors.put(referenceLoc.createKey(), grayDoor);
+            _doors.put(referenceLoc.add(0, 1, 0).createKey(), grayDoor);
+        }
+        for (PrisonEscapeLocation loc : config.getCodeDoorsLocations()) {
+            PrisonEscapeLocation referenceLoc = loc.add(reference);
+            CodeDoor codeDoor = new CodeDoor();
+            _doors.put(referenceLoc.createKey(), codeDoor);
+            _doors.put(referenceLoc.add(0, 1, 0).createKey(), codeDoor);
         }
 
         _metalDetectorsLocations = new ArrayList<>();
@@ -268,6 +293,14 @@ public class PrisonBuilding {
         }
 
         return null;
+    }
+
+//	#########################################
+//	#                 Doors            #
+//	#########################################
+
+    public Door getDoor(PrisonEscapeLocation location) {
+        return _doors.get(location.createKey());
     }
 
 //	#########################################

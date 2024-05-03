@@ -16,6 +16,8 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -58,6 +60,8 @@ public class PrisonEscapeGame {
 
     private Phase _phase;
 
+    private boolean _hasDoorCode;
+
     public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
         _settings = new Settings();
 
@@ -69,6 +73,8 @@ public class PrisonEscapeGame {
         _prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
 
         _playerOpenMenu = new Hashtable<>();
+
+        _hasDoorCode = false;
 
         startWaitingPhase();
     }
@@ -220,6 +226,14 @@ public class PrisonEscapeGame {
         }
 
         return null;
+    }
+
+    public boolean isPolice(PrisonEscapePlayer player) {
+        return _policeTeam.isOnTeam(player);
+    }
+
+    public boolean isPrisioner(PrisonEscapePlayer player) {
+        return _prisionersTeam.isOnTeam(player);
     }
 
 //	########################################
@@ -526,6 +540,12 @@ public class PrisonEscapeGame {
                 return 0;
             }
 
+            Door door = _prison.getDoor(blockLocation);
+            if (door != null) {
+                playerInteractWithDoor(player, inventoryIndex, item, door, blockLocation);
+                return 0;
+            }
+
             Obstacle obstacle = _prison.getObstacle(blockLocation);
             if (obstacle != null) {
                 if (obstacleTookDamage(player, obstacle, item) == 0) {
@@ -826,6 +846,29 @@ public class PrisonEscapeGame {
         }
     }
 
+    public void playerInteractWithDoor(
+            PrisonEscapePlayer player,
+            int inventoryIndex,
+            Item itemHeld,
+            Door door,
+            PrisonEscapeLocation doorLocation
+    ) {
+        ClickDoorReturnAction returnAction = door.click(player, itemHeld);
+
+        if (returnAction == ClickDoorReturnAction.CLOSE_DOOR) {
+            door.close();
+            BukkitWorldEditor.closeDoor(doorLocation);
+            return;
+        }
+
+        if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
+            door.open();
+            BukkitWorldEditor.openDoor(doorLocation);
+            player.removeItem(inventoryIndex);
+            player.updateInventory();
+        }
+    }
+
     public void placeBomb(PrisonEscapeLocation location) {
         _prison.placeBomb(location);
     }
@@ -957,6 +1000,18 @@ public class PrisonEscapeGame {
 
     private void teleportToLeavingLocation(PrisonEscapePlayer player) {
         BukkitTeleporter.teleport(player, ConfigManager.getInstance().getLeavingLocation());
+    }
+
+//	#########################################
+//	#                DoorCode               #
+//	#########################################
+
+    public boolean playersHaveDoorCode() {
+        return _hasDoorCode;
+    }
+
+    public void findDoorCode() {
+        _hasDoorCode = true;
     }
 
 }

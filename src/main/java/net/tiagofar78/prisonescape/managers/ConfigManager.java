@@ -66,6 +66,9 @@ public class ConfigManager {
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
     private List<PrisonEscapeLocation> _chestsLocations;
+    private List<PrisonEscapeLocation> _goldenDoorsLocations;
+    private List<PrisonEscapeLocation> _grayDoorsLocations;
+    private List<PrisonEscapeLocation> _codeDoorsLocations;
     private List<PrisonEscapeLocation> _wallCornersLocations;
     private List<List<String>> _wallCrackFormats;
     private List<String> _mazeFormat;
@@ -129,6 +132,9 @@ public class ConfigManager {
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
         _chestsLocations = createLocationList(config, "ChestsLocations");
+        _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
+        _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations");
+        _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations");
         _wallCornersLocations = createLocationList(config, "WallCorners");
         _wallCrackFormats = createStringListList(config, "WallCrackFormats");
         _mazeFormat = config.getStringList("Maze.Format");
@@ -452,6 +458,18 @@ public class ConfigManager {
 
     public List<PrisonEscapeLocation> getChestsLocations() {
         return createLocationsListCopy(_chestsLocations);
+    }
+
+    public List<PrisonEscapeLocation> getGoldenDoorsLocations() {
+        return createLocationsListCopy(_goldenDoorsLocations);
+    }
+
+    public List<PrisonEscapeLocation> getGrayDoorsLocations() {
+        return createLocationsListCopy(_grayDoorsLocations);
+    }
+
+    public List<PrisonEscapeLocation> getCodeDoorsLocations() {
+        return createLocationsListCopy(_codeDoorsLocations);
     }
 
     public List<PrisonEscapeLocation> getWallCornersLocations() {

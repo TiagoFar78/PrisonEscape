@@ -30,3 +30,4 @@ TestServer/PrisonEscapeWorld/
 TestServer/versions/
 TestServer/plugins/*
 !TestServer/plugins/TF_PrisonEscape/
+.vscode/*
