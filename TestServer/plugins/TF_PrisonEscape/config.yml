@@ -484,7 +484,7 @@ Regions:
         Z: 49
       LowerCorner:
         X: -10
-        Y: 100
+        Y: 99
         Z: 35
     "3":
       UpperCorner:
@@ -493,7 +493,7 @@ Regions:
         Z: -28
       LowerCorner:
         X: 12
-        Y: 100
+        Y: 99
         Z: -41
   Yard:
     IsRestricted: false
@@ -545,7 +545,7 @@ Regions:
         Y: 103
         Z: 20
       LowerCorner:
-        X: -53
+        X: -54
         Y: 99
         Z: 5
   Solitary:
