@@ -72,6 +72,9 @@ public class PrisonBuilding {
         _chests = new Hashtable<>();
         for (PrisonEscapeLocation loc : config.getChestsLocations()) {
             String regionName = getRegionName(loc);
+            if (regionName == null) {
+                regionName = "Default";
+            }
             _chests.put(loc.add(reference).createKey(), new Chest(regionName));
         }
 
