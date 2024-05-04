@@ -1,34 +1,27 @@
 package net.tiagofar78.prisonescape.kits;
 
+import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
 import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
 import net.tiagofar78.prisonescape.items.SelectPrisionerTeamItem;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
+import java.util.Hashtable;
 
-public class TeamSelectorKit implements Listener {
+public class TeamSelectorKit extends Kit {
 
     private static final int SELECT_PRISIONER_ITEM_INDEX = 1;
     private static final int SELECT_POLICE_ITEM_INDEX = 7;
     private static final int SELECT_NONE_ITEM_INDEX = 4;
 
-    public static void giveKitToPlayer(String playerName) {
-        Player bukkitPlayer = Bukkit.getPlayer(playerName);
-        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
-            return;
-        }
+    @Override
+    protected Hashtable<Integer, Item> getContents() {
+        Hashtable<Integer, Item> items = new Hashtable<>();
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+        items.put(SELECT_PRISIONER_ITEM_INDEX, new SelectPrisionerTeamItem());
+        items.put(SELECT_POLICE_ITEM_INDEX, new SelectPoliceTeamItem());
+        items.put(SELECT_NONE_ITEM_INDEX, new SelectNoneTeamItem());
 
-        Inventory inv = bukkitPlayer.getInventory();
-        inv.clear();
-        inv.setItem(SELECT_PRISIONER_ITEM_INDEX, new SelectPrisionerTeamItem().toItemStack(messages));
-        inv.setItem(SELECT_POLICE_ITEM_INDEX, new SelectPoliceTeamItem().toItemStack(messages));
-        inv.setItem(SELECT_NONE_ITEM_INDEX, new SelectNoneTeamItem().toItemStack(messages));
+        return items;
     }
 
 }

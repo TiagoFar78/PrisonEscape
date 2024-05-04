@@ -107,7 +107,7 @@ public class PrisonEscapeGame {
         _playersOnLobby.add(player);
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
-        TeamSelectorKit.giveKitToPlayer(playerName);
+        player.setKit(new TeamSelectorKit());
 
         int maxPlayers = config.getMaxPlayers();
         int playerNumber = _playersOnLobby.size();
@@ -340,13 +340,13 @@ public class PrisonEscapeGame {
         for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
-            PrisionerKit.giveKitToPlayer(player.getName());
+            player.setKit(new PrisionerKit());
         }
 
         for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
-            PoliceKit.giveKitToPlayer(player.getName());
+            player.setKit(new PoliceKit());
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
@@ -507,8 +507,7 @@ public class PrisonEscapeGame {
             return -1;
         }
 
-        int inventoryIndex = BukkitMenu.convertToIndexPlayerInventory(itemSlot);
-        Item item = player.getItemAt(inventoryIndex);
+        Item item = player.getItemAt(itemSlot);
 
         if (blockLocation != null) {
             int vaultIndex = _prison.getVaultIndex(blockLocation);
@@ -542,7 +541,8 @@ public class PrisonEscapeGame {
 
             Door door = _prison.getDoor(blockLocation);
             if (door != null) {
-                playerInteractWithDoor(player, inventoryIndex, item, door, blockLocation);
+                int index = BukkitMenu.convertToIndexPlayerInventory(itemSlot);
+                playerInteractWithDoor(player, index, item, door, blockLocation);
                 return 0;
             }
 
