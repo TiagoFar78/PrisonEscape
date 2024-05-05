@@ -10,6 +10,7 @@ import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Helicopter;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
@@ -531,6 +532,12 @@ public class PrisonEscapeGame {
                 }
             }
 
+            Helicopter helicopter = _prison.getHelicopter(blockLocation);
+            if (helicopter != null) {
+                helicopter.click(player, isPrisioner(player), _prison.getHelicopterExitLocation());
+                return 0;
+            }
+
             PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
                     blockLocation,
                     _prisionersTeam.isOnTeam(player)
@@ -614,7 +621,7 @@ public class PrisonEscapeGame {
 //	#            Events Results            #
 //	########################################
 
-    private void playerEscaped(PrisonEscapePlayer player) {
+    public void playerEscaped(PrisonEscapePlayer player) {
         player.escaped();
 
         for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {

@@ -57,10 +57,19 @@ SolitaryExitLocation:
   X: 0
   Y: 0
   Z: 0
-HelicopterExitLocation:
-  X: 0
-  Y: 0
-  Z: 0
+Helicopter:
+  ExitLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  UpperLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  LowerLocation:
+    X: 0
+    Y: 0
+    Z: 0
 PrisionersSecretPassagesLocation:
   "1":
     Key:

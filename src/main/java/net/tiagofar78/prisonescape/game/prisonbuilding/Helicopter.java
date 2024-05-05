@@ -1,45 +1,104 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
+import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
+import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Helicopter {
 
+    private static final int TICKS_PER_SECOND = 20;
+
+    private PrisonEscapeLocation _upperLocation;
+    private PrisonEscapeLocation _lowerLocation;
     private List<PrisonEscapePlayer> _players = new ArrayList<>();
     private boolean _isOnGround = false;
 
-    public void playerEntered(PrisonEscapePlayer player) {
-        _players.add(player);
+    protected Helicopter(PrisonEscapeLocation upperLocation, PrisonEscapeLocation lowerLocation) {
+        _upperLocation = upperLocation;
+        _lowerLocation = lowerLocation;
     }
 
-    public List<PrisonEscapePlayer> clear() {
-        List<PrisonEscapePlayer> copy = new ArrayList<>(_players);
-        _players.clear();
-        return copy;
+    public boolean contains(PrisonEscapeLocation location) {
+        int x = location.getX();
+        int y = location.getY();
+        int z = location.getZ();
+
+        return _lowerLocation.getX() <= x && x <= _upperLocation.getX() && _lowerLocation
+                .getY() <= y && y <= _upperLocation.getY() && _lowerLocation.getZ() <= z && z <= _upperLocation.getZ();
     }
 
     public boolean isOnGround() {
         return _isOnGround;
     }
 
-    public void departed() {
-        _isOnGround = false;
-        destroyHelicopter();
-    }
-
-    public void landed() {
-        _isOnGround = true;
-        buildHelicopter();
-    }
-
     private void buildHelicopter() {
+        _isOnGround = true;
         // TODO
     }
 
     private void destroyHelicopter() {
+        _isOnGround = false;
         // TODO
+    }
+
+    public void spawn() {
+        buildHelicopter();
+
+        int helicopterDepartureDelay = ConfigManager.getInstance().getHelicopterDepartureDelay();
+
+        BukkitScheduler.runSchedulerLater(new Runnable() {
+
+            @Override
+            public void run() {
+                if (isOnGround()) {
+                    departed();
+                }
+            }
+        }, helicopterDepartureDelay * TICKS_PER_SECOND);
+    }
+
+    public void departed() {
+        destroyHelicopter();
+
+        PrisonEscapeGame game = GameManager.getGame();
+        for (PrisonEscapePlayer player : _players) {
+            game.playerEscaped(player);
+        }
+
+        _players.clear();
+    }
+
+    public void click(PrisonEscapePlayer player, boolean isPrisioner, PrisonEscapeLocation exitLocation) {
+        if (!isOnGround()) {
+            return;
+        }
+
+        if (isPrisioner) {
+            prisionerClicked(player);
+            return;
+        }
+
+        policeClicked(exitLocation);
+    }
+
+    private void prisionerClicked(PrisonEscapePlayer player) {
+        _players.add(player);
+    }
+
+    private void policeClicked(PrisonEscapeLocation exitLocation) {
+        destroyHelicopter();
+
+        for (PrisonEscapePlayer player : _players) {
+            BukkitTeleporter.teleport(player, exitLocation);
+        }
+
+        _players.clear();
     }
 
 }

@@ -1,7 +1,5 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
-import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
@@ -21,7 +19,6 @@ import java.util.Map.Entry;
 
 public class PrisonBuilding {
 
-    private static final int TICKS_PER_SECOND = 20;
     private static final String PRISON_REGION_NAME = "PRISON";
 
     private PrisonEscapeLocation _waitingLobbyLocation;
@@ -128,7 +125,9 @@ public class PrisonBuilding {
             _obstacles.add(vent);
         }
 
-        _helicopter = new Helicopter();
+        PrisonEscapeLocation helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
+        PrisonEscapeLocation helicopterLowerLocation = config.getHelicopterLowerLocation().add(reference);
+        _helicopter = new Helicopter(helicopterUpperLocation, helicopterLowerLocation);
         _helicopter.departed();
     }
 
@@ -331,54 +330,12 @@ public class PrisonBuilding {
 //  #              Helicopter              #
 //  ########################################
 
+    public Helicopter getHelicopter(PrisonEscapeLocation location) {
+        return _helicopter.contains(location) ? _helicopter : null;
+    }
+
     public void spawnHelicopter() {
-        _helicopter.landed();
-
-        int helicopterDepartureDelay = ConfigManager.getInstance().getHelicopterDepartureDelay();
-
-        BukkitScheduler.runSchedulerLater(new Runnable() {
-
-            @Override
-            public void run() {
-                helicopterDeparted();
-            }
-        }, helicopterDepartureDelay * TICKS_PER_SECOND);
-    }
-
-    public void helicopterDeparted() {
-        _helicopter.departed();
-
-        List<PrisonEscapePlayer> players = _helicopter.clear();
-
-        for (PrisonEscapePlayer player : players) {
-            player.escaped();
-        }
-    }
-
-    public void clickHelicopter(PrisonEscapePlayer player, boolean isPrisioner) {
-        if (!_helicopter.isOnGround()) {
-            return;
-        }
-
-        if (isPrisioner) {
-            prisionerClickedHelicopter(player);
-            return;
-        }
-
-        policeClickedHelicopter();
-    }
-
-    private void prisionerClickedHelicopter(PrisonEscapePlayer player) {
-        _helicopter.playerEntered(player);
-    }
-
-    private void policeClickedHelicopter() {
-        _helicopter.departed();
-
-        List<PrisonEscapePlayer> players = _helicopter.clear();
-        for (PrisonEscapePlayer player : players) {
-            BukkitTeleporter.teleport(player, _helicopterExitLocation);
-        }
+        _helicopter.spawn();
     }
 
 //	#########################################

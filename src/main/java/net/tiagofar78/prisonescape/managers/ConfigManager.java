@@ -65,6 +65,8 @@ public class ConfigManager {
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
     private PrisonEscapeLocation _helicopterExitLocation;
+    private PrisonEscapeLocation _helicopterUpperLocation;
+    private PrisonEscapeLocation _helicopterLowerLocation;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
@@ -133,7 +135,9 @@ public class ConfigManager {
         _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations");
         _solitaryLocation = createLocation(config, "SolitaryLocation");
         _solitaryExitLocation = createLocation(config, "SolitaryExitLocation");
-        _helicopterExitLocation = createLocation(config, "HelicopterExitLocation");
+        _helicopterExitLocation = createLocation(config, "Helicopter.ExitLocation");
+        _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation");
+        _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation");
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
@@ -468,7 +472,15 @@ public class ConfigManager {
     }
 
     public PrisonEscapeLocation getHelicopterExitLocation() {
-        return _helicopterExitLocation;
+        return createLocationCopy(_helicopterExitLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterUpperLocation() {
+        return createLocationCopy(_helicopterUpperLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterLowerLocation() {
+        return createLocationCopy(_helicopterLowerLocation);
     }
 
     public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPrisionersSecretPassageLocations() {
