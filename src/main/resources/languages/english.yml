@@ -79,6 +79,10 @@ Items:
     Name: "Camera"
   Trap:
     Name: "Trap"
+  CellPhone:
+    Name: "Cell Phone"
+    Lore:
+    - "&eCalls an escape helicopter to the roof"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"

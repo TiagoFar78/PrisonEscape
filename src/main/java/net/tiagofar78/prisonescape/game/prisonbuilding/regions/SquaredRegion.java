@@ -11,18 +11,20 @@ public class SquaredRegion extends Region {
         this(
                 region.getName(),
                 region.isRestricted(),
+                region.canCallHelicopter(),
                 new PrisonEscapeLocation(region._upperCornerLocation),
                 new PrisonEscapeLocation(region._lowerCornerLocation)
         );
     }
-
+    
     public SquaredRegion(
             String name,
             boolean isRestricted,
+            boolean isHelicopterCallable,
             PrisonEscapeLocation upperCorner,
             PrisonEscapeLocation lowerCorner
     ) {
-        super(name, isRestricted);
+        super(name, isRestricted, isHelicopterCallable);
         _upperCornerLocation = upperCorner;
         _lowerCornerLocation = lowerCorner;
     }

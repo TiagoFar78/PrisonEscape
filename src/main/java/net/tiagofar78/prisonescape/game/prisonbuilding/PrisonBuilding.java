@@ -51,7 +51,7 @@ public class PrisonBuilding {
 
         PrisonEscapeLocation prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
         PrisonEscapeLocation prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
-        _prison = new SquaredRegion(PRISON_REGION_NAME, false, prisonUpperCorner, prisonLowerCorner);
+        _prison = new SquaredRegion(PRISON_REGION_NAME, false, true, prisonUpperCorner, prisonLowerCorner);
 
         _regions = createRegionsList(reference, config.getRegions());
 
@@ -194,7 +194,7 @@ public class PrisonBuilding {
             }
         }
 
-        return false;
+        return true;
     }
 
 //  #########################################

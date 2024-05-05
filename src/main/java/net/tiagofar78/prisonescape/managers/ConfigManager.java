@@ -239,12 +239,13 @@ public class ConfigManager {
         for (String regionNamePath : regionsNamesPaths) {
             String name = regionNamePath.substring(regionsPath.length() + 1);
             boolean isRestricted = config.getBoolean(regionNamePath + ".IsRestricted");
+            boolean cutCellPhoneCalls = config.getBoolean(regionNamePath + ".CutCellPhoneCalls");
 
             List<String> regionsPaths = config.getKeys(true)
                     .stream()
                     .filter(
                             key -> key.startsWith(regionNamePath + ".") && key.lastIndexOf(".") == regionNamePath
-                                    .length() && !key.contains("IsRestricted")
+                                    .length() && !key.contains("IsRestricted") && !key.contains("HasCellPhoneCoverage")
                     )
                     .toList();
 
@@ -252,7 +253,7 @@ public class ConfigManager {
                 PrisonEscapeLocation upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
                 PrisonEscapeLocation lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner");
 
-                list.add(new SquaredRegion(name, isRestricted, upperCornerLocation, lowerCornerLocation));
+                list.add(new SquaredRegion(name, isRestricted, !cutCellPhoneCalls, upperCornerLocation, lowerCornerLocation));
             }
         }
 
