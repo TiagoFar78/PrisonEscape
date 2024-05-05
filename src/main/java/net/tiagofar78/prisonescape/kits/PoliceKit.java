@@ -2,18 +2,15 @@ package net.tiagofar78.prisonescape.kits;
 
 import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.HandcuffsItem;
+import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.MissionsItem;
 import net.tiagofar78.prisonescape.items.OpenCamerasItem;
 import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.ShopItem;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import java.util.Hashtable;
 
-public class PoliceKit {
+public class PoliceKit extends Kit {
 
     private static final int FIRST_GLASS_ITEM_INDEX = 9;
     private static final int LAST_GLASS_ITEM_INDEX = 35;
@@ -24,27 +21,22 @@ public class PoliceKit {
     private static final int MISSIONS_ITEM_INDEX = 7;
     private static final int SHOP_ITEM_INDEX = 8;
 
-    public static void giveKitToPlayer(String playerName) {
-        Player bukkitPlayer = Bukkit.getPlayer(playerName);
-        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
-            return;
-        }
+    @Override
+    protected Hashtable<Integer, Item> getContents() {
+        Hashtable<Integer, Item> items = new Hashtable<>();
 
-        Inventory inv = bukkitPlayer.getInventory();
-        inv.clear();
-
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-
-        ItemStack glassItem = new GlassItem().toItemStack(messages);
+        Item glass = new GlassItem();
         for (int i = FIRST_GLASS_ITEM_INDEX; i <= LAST_GLASS_ITEM_INDEX; i++) {
-            inv.setItem(i, glassItem);
+            items.put(i, glass);
         }
 
-        inv.setItem(SEARCH_ITEM_INDEX, new SearchItem().toItemStack(messages));
-        inv.setItem(HANDCUFF_ITEM_INDEX, new HandcuffsItem().toItemStack(messages));
-        inv.setItem(CAMERA_ITEM_INDEX, new OpenCamerasItem().toItemStack(messages));
-        inv.setItem(MISSIONS_ITEM_INDEX, new MissionsItem().toItemStack(messages));
-        inv.setItem(SHOP_ITEM_INDEX, new ShopItem().toItemStack(messages));
+        items.put(SEARCH_ITEM_INDEX, new SearchItem());
+        items.put(HANDCUFF_ITEM_INDEX, new HandcuffsItem());
+        items.put(CAMERA_ITEM_INDEX, new OpenCamerasItem());
+        items.put(MISSIONS_ITEM_INDEX, new MissionsItem());
+        items.put(SHOP_ITEM_INDEX, new ShopItem());
+
+        return items;
     }
 
 }

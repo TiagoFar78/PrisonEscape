@@ -1,32 +1,24 @@
 package net.tiagofar78.prisonescape.kits;
 
 import net.tiagofar78.prisonescape.items.GlassItem;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.items.Item;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import java.util.Hashtable;
 
-public class PrisionerKit {
+public class PrisionerKit extends Kit {
 
     private static final int FIRST_GLASS_ITEM_INDEX = 4;
     private static final int LAST_GLASS_ITEM_INDEX = 35;
 
-    public static void giveKitToPlayer(String playerName) {
-        Player bukkitPlayer = Bukkit.getPlayer(playerName);
-        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
-            return;
-        }
+    @Override
+    public Hashtable<Integer, Item> getContents() {
+        Hashtable<Integer, Item> items = new Hashtable<>();
 
-        Inventory inv = bukkitPlayer.getInventory();
-        inv.clear();
-
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-
-        ItemStack glassItem = new GlassItem().toItemStack(messages);
+        Item glass = new GlassItem();
         for (int i = FIRST_GLASS_ITEM_INDEX; i <= LAST_GLASS_ITEM_INDEX; i++) {
-            inv.setItem(i, glassItem);
+            items.put(i, glass);
         }
+
+        return items;
     }
 }

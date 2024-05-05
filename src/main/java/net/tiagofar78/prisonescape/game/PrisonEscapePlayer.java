@@ -7,6 +7,7 @@ import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.SensorItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
+import net.tiagofar78.prisonescape.kits.Kit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class PrisonEscapePlayer {
     private boolean _isOnline;
     private boolean _hasEscaped;
     private List<Item> _inventory;
+    private Kit _currentKit;
     private int _balance;
 
     private int _numOfCamerasBought = 0;
@@ -61,6 +63,19 @@ public class PrisonEscapePlayer {
         this._preference = preference;
     }
 
+//  ########################################
+//  #                  Kit                 #
+//  ########################################
+
+    public Kit getKit() {
+        return _currentKit;
+    }
+
+    public void setKit(Kit kit) {
+        _currentKit = kit;
+        kit.give(getName());
+    }
+
 //	########################################
 //	#                Escape                #
 //	########################################
@@ -93,7 +108,13 @@ public class PrisonEscapePlayer {
 //	#               Inventory               #
 //	#########################################
 
-    public Item getItemAt(int index) {
+    public Item getItemAt(int slot) {
+        Item item = _currentKit.getItemAt(slot);
+        if (item != null) {
+            return item;
+        }
+
+        int index = BukkitMenu.convertToIndexPlayerInventory(slot);
         if (index < 0 || index >= INVENTORY_SIZE) {
             return new NullItem();
         }
