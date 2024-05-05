@@ -65,6 +65,7 @@ public class ConfigManager {
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
     private PrisonEscapeLocation _helicopterExitLocation;
+    private PrisonEscapeLocation _helicopterJoinLocation;
     private PrisonEscapeLocation _helicopterUpperLocation;
     private PrisonEscapeLocation _helicopterLowerLocation;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
@@ -136,6 +137,7 @@ public class ConfigManager {
         _solitaryLocation = createLocation(config, "SolitaryLocation");
         _solitaryExitLocation = createLocation(config, "SolitaryExitLocation");
         _helicopterExitLocation = createLocation(config, "Helicopter.ExitLocation");
+        _helicopterJoinLocation = createLocation(config, "Helicopter.JoinLocation");
         _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation");
         _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation");
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
@@ -473,6 +475,10 @@ public class ConfigManager {
 
     public PrisonEscapeLocation getHelicopterExitLocation() {
         return createLocationCopy(_helicopterExitLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterJoinLocation() {
+        return createLocationCopy(_helicopterJoinLocation);
     }
 
     public PrisonEscapeLocation getHelicopterUpperLocation() {

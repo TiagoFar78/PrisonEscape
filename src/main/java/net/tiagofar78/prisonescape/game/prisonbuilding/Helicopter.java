@@ -47,11 +47,21 @@ public class Helicopter {
         // TODO
     }
 
-    public void spawn() {
+    public void call() {
+        int helicopterLandDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
+        BukkitScheduler.runSchedulerLater(new Runnable() {
+
+            @Override
+            public void run() {
+                land();
+            }
+        }, helicopterLandDelay * TICKS_PER_SECOND);
+    }
+
+    private void land() {
         buildHelicopter();
 
         int helicopterDepartureDelay = ConfigManager.getInstance().getHelicopterDepartureDelay();
-
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
@@ -60,6 +70,7 @@ public class Helicopter {
                     departed();
                 }
             }
+
         }, helicopterDepartureDelay * TICKS_PER_SECOND);
     }
 
@@ -74,21 +85,31 @@ public class Helicopter {
         _players.clear();
     }
 
-    public void click(PrisonEscapePlayer player, boolean isPrisioner, PrisonEscapeLocation exitLocation) {
+    public void click(
+            PrisonEscapePlayer player,
+            boolean isPrisioner,
+            PrisonEscapeLocation exitLocation,
+            PrisonEscapeLocation joinLocation
+    ) {
         if (!isOnGround()) {
             return;
         }
 
         if (isPrisioner) {
-            prisionerClicked(player);
+            prisionerClicked(player, joinLocation);
             return;
         }
 
         policeClicked(exitLocation);
     }
 
-    private void prisionerClicked(PrisonEscapePlayer player) {
+    private void prisionerClicked(PrisonEscapePlayer player, PrisonEscapeLocation joinLocation) {
+        if (_players.contains(player)) {
+            return;
+        }
+
         _players.add(player);
+        BukkitTeleporter.teleport(player, joinLocation);
     }
 
     private void policeClicked(PrisonEscapeLocation exitLocation) {

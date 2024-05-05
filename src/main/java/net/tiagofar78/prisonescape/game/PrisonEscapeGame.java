@@ -534,7 +534,12 @@ public class PrisonEscapeGame {
 
             Helicopter helicopter = _prison.getHelicopter(blockLocation);
             if (helicopter != null) {
-                helicopter.click(player, isPrisioner(player), _prison.getHelicopterExitLocation());
+                helicopter.click(
+                        player,
+                        isPrisioner(player),
+                        _prison.getHelicopterExitLocation(),
+                        _prison.getHelicopterJoinLocation()
+                );
                 return 0;
             }
 
@@ -804,19 +809,11 @@ public class PrisonEscapeGame {
         }
 
         int helicopterSpawnDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
-
         BukkitMessageSender.sendChatMessage(player, messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
         player.removeItem(itemSlot);
         player.updateInventory();
 
-        BukkitScheduler.runSchedulerLater(new Runnable() {
-
-            @Override
-            public void run() {
-                _prison.spawnHelicopter();
-            }
-
-        }, helicopterSpawnDelay * TICKS_PER_SECOND);
+        _prison.callHelicopter();
     }
 
     public void policeOpenShop(String playerName) {
