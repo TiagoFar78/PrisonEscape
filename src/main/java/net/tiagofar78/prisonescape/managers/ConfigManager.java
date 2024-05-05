@@ -46,6 +46,7 @@ public class ConfigManager {
     private int _energyDrinkPrice;
     private int _cameraPrice;
     private int _helicopterSpawnDelay;
+    private int _helicopterDepartureDelay;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -63,6 +64,7 @@ public class ConfigManager {
     private List<PrisonEscapeLocation> _policeSpawnLocation;
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
+    private PrisonEscapeLocation _helicopterExitLocation;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
@@ -113,6 +115,7 @@ public class ConfigManager {
         _energyDrinkPrice = config.getInt("EnergyDrinkPrice");
         _cameraPrice = config.getInt("CameraPrice");
         _helicopterSpawnDelay = config.getInt("HelicopterSpawnDelay");
+        _helicopterDepartureDelay = config.getInt("HelicopterDepartureDelay");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -130,6 +133,7 @@ public class ConfigManager {
         _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations");
         _solitaryLocation = createLocation(config, "SolitaryLocation");
         _solitaryExitLocation = createLocation(config, "SolitaryExitLocation");
+        _helicopterExitLocation = createLocation(config, "HelicopterExitLocation");
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
@@ -402,6 +406,10 @@ public class ConfigManager {
         return _helicopterSpawnDelay;
     }
 
+    public int getHelicopterDepartureDelay() {
+        return _helicopterDepartureDelay;
+    }
+
     public List<String> getAvailableLanguages() {
         return new ArrayList<>(_availableLanguages);
     }
@@ -457,6 +465,10 @@ public class ConfigManager {
 
     public PrisonEscapeLocation getSolitaryExitLocation() {
         return createLocationCopy(_solitaryExitLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterExitLocation() {
+        return _helicopterExitLocation;
     }
 
     public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPrisionersSecretPassageLocations() {

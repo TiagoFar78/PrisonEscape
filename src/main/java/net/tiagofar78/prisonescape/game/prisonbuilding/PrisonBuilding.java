@@ -1,5 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
+import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
@@ -19,6 +21,7 @@ import java.util.Map.Entry;
 
 public class PrisonBuilding {
 
+    private static final int TICKS_PER_SECOND = 20;
     private static final String PRISON_REGION_NAME = "PRISON";
 
     private PrisonEscapeLocation _waitingLobbyLocation;
@@ -28,6 +31,7 @@ public class PrisonBuilding {
     private List<PrisonEscapeLocation> _policeSpawnLocations;
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
+    private PrisonEscapeLocation _helicopterExitLocation;
     private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
 
@@ -41,6 +45,8 @@ public class PrisonBuilding {
 
     private Maze _maze;
     private List<Obstacle> _obstacles;
+
+    private Helicopter _helicopter;
 
 //  #########################################
 //  #              Constructor              #
@@ -62,6 +68,8 @@ public class PrisonBuilding {
 
         _solitaryLocation = config.getSolitaryLocation().add(reference);
         _solitaryExitLocation = config.getSolitaryExitLocation().add(reference);
+
+        _helicopterExitLocation = config.getHelicopterExitLocation().add(reference);
 
         _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
@@ -119,6 +127,9 @@ public class PrisonBuilding {
             vent.generate();
             _obstacles.add(vent);
         }
+
+        _helicopter = new Helicopter();
+        _helicopter.departed();
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -321,7 +332,53 @@ public class PrisonBuilding {
 //  ########################################
 
     public void spawnHelicopter() {
+        _helicopter.landed();
 
+        int helicopterDepartureDelay = ConfigManager.getInstance().getHelicopterDepartureDelay();
+
+        BukkitScheduler.runSchedulerLater(new Runnable() {
+
+            @Override
+            public void run() {
+                helicopterDeparted();
+            }
+        }, helicopterDepartureDelay * TICKS_PER_SECOND);
+    }
+
+    public void helicopterDeparted() {
+        _helicopter.departed();
+
+        List<PrisonEscapePlayer> players = _helicopter.clear();
+
+        for (PrisonEscapePlayer player : players) {
+            player.escaped();
+        }
+    }
+
+    public void clickHelicopter(PrisonEscapePlayer player, boolean isPrisioner) {
+        if (!_helicopter.isOnGround()) {
+            return;
+        }
+
+        if (isPrisioner) {
+            prisionerClickedHelicopter(player);
+            return;
+        }
+
+        policeClickedHelicopter();
+    }
+
+    private void prisionerClickedHelicopter(PrisonEscapePlayer player) {
+        _helicopter.playerEntered(player);
+    }
+
+    private void policeClickedHelicopter() {
+        _helicopter.departed();
+
+        List<PrisonEscapePlayer> players = _helicopter.clear();
+        for (PrisonEscapePlayer player : players) {
+            BukkitTeleporter.teleport(player, _helicopterExitLocation);
+        }
     }
 
 //	#########################################
@@ -346,6 +403,10 @@ public class PrisonBuilding {
 
     public PrisonEscapeLocation getSolitaryExitLocation() {
         return _solitaryExitLocation;
+    }
+
+    public PrisonEscapeLocation getHelicopterExitLocation() {
+        return _helicopterExitLocation;
     }
 
     public PrisonEscapeLocation getSecretPassageDestinationLocation(

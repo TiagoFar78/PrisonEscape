@@ -13,6 +13,7 @@ DelayBetweenAnnouncements: 30
 SpeedDuration: 15
 SpeedLevel: 2
 HelicopterSpawnDelay: 10
+HelicopterDepartureDelay: 5
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
@@ -53,6 +54,10 @@ SolitaryLocation:
   Y: 0
   Z: 0
 SolitaryExitLocation:
+  X: 0
+  Y: 0
+  Z: 0
+HelicopterExitLocation:
   X: 0
   Y: 0
   Z: 0
