@@ -786,6 +786,32 @@ public class PrisonEscapeGame {
         player.removeItem(contentIndex);
     }
 
+    public void playerCalledHelicopter(String playerName, PrisonEscapeLocation location, int itemSlot) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
+        if (!_prison.hasCellPhoneCoverage(location)) {
+            BukkitMessageSender.sendChatMessage(player, messages.getNoCellPhoneCoverageMessage());
+            return;
+        }
+
+        int helicopterSpawnDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
+
+        BukkitMessageSender.sendChatMessage(player, messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
+        player.removeItem(itemSlot);
+        player.updateInventory();
+
+        BukkitScheduler.runSchedulerLater(new Runnable() {
+
+            @Override
+            public void run() {
+                _prison.spawnHelicopter();
+            }
+
+        }, helicopterSpawnDelay * TICKS_PER_SECOND);
+    }
+
     public void policeOpenShop(String playerName) {
         PrisonEscapePlayer player = getPlayerOnPoliceTeam(playerName);
         if (player == null) {

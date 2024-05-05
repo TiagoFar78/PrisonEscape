@@ -108,6 +108,8 @@ public class MessageLanguageManager {
     private String _notEnoughMoneyMessage;
     private String _successfullyBoughtItemMessage;
     private String _cannotDropThatItemMessage;
+    private String _helicopterOnTheWayMessage;
+    private String _noCellPhoneCoverageMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -232,6 +234,8 @@ public class MessageLanguageManager {
         _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
         _successfullyBoughtItemMessage = createMessage(messages.getString(warningPath + "SuccessfullyBoughtItem"));
         _cannotDropThatItemMessage = createMessage(messages.getString(warningPath + "CannotDropThatItem"));
+        _helicopterOnTheWayMessage = createMessage(messages.getString(warningPath + "HelicopterOnTheWay"));
+        _noCellPhoneCoverageMessage = createMessage(messages.getString(warningPath + "NoCellPhoneCoverage"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -466,6 +470,14 @@ public class MessageLanguageManager {
 
     public String getCannotDropThatItemMessage() {
         return _cannotDropThatItemMessage;
+    }
+
+    public String getHelicopterOnTheWayMessage(int delay) {
+        return _helicopterOnTheWayMessage.replace("{SECONDS}", Integer.toString(delay));
+    }
+
+    public String getNoCellPhoneCoverageMessage() {
+        return _noCellPhoneCoverageMessage;
     }
 
 //	########################################

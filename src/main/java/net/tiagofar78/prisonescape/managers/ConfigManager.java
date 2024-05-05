@@ -45,6 +45,7 @@ public class ConfigManager {
     private int _radarPrice;
     private int _energyDrinkPrice;
     private int _cameraPrice;
+    private int _helicopterSpawnDelay;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -111,6 +112,7 @@ public class ConfigManager {
         _radarPrice = config.getInt("RadarPrice");
         _energyDrinkPrice = config.getInt("EnergyDrinkPrice");
         _cameraPrice = config.getInt("CameraPrice");
+        _helicopterSpawnDelay = config.getInt("HelicopterSpawnDelay");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -385,6 +387,10 @@ public class ConfigManager {
 
     public int getCameraPrice() {
         return _cameraPrice;
+    }
+
+    public int getHelicopterSpawnDelay() {
+        return _helicopterSpawnDelay;
     }
 
     public List<String> getAvailableLanguages() {

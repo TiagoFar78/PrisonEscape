@@ -6,10 +6,17 @@ public abstract class Region implements Locatable {
 
     private String _name;
     private boolean _isRestricted;
+    private boolean _isHelicopterCallable;
 
     public Region(String name, boolean isRestricted) {
         _name = name;
         _isRestricted = isRestricted;
+        _isHelicopterCallable = true;
+    }
+
+    public Region(String name, boolean isRestricted, boolean isHelicopterCallable) {
+        this(name, isRestricted);
+        _isHelicopterCallable = isHelicopterCallable;
     }
 
     public String getName() {
@@ -18,6 +25,10 @@ public abstract class Region implements Locatable {
 
     public boolean isRestricted() {
         return _isRestricted;
+    }
+
+    public boolean canCallHelicopter() {
+        return _isHelicopterCallable;
     }
 
     public abstract void add(PrisonEscapeLocation location);

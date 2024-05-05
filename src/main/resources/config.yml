@@ -12,6 +12,7 @@ FinishedPhaseDuration: 30
 DelayBetweenAnnouncements: 30
 SpeedDuration: 15
 SpeedLevel: 2
+HelicopterSpawnDelay: 10
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"

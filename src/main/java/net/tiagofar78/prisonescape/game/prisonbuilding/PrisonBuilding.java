@@ -187,6 +187,16 @@ public class PrisonBuilding {
         return null;
     }
 
+    public boolean hasCellPhoneCoverage(PrisonEscapeLocation location) {
+        for (Region region : _regions) {
+            if (region.contains(location)) {
+                return region.canCallHelicopter();
+            }
+        }
+
+        return false;
+    }
+
 //  #########################################
 //  #            Metal Detectors            #
 //  #########################################
@@ -298,12 +308,20 @@ public class PrisonBuilding {
         return null;
     }
 
-//	#########################################
-//	#                 Doors            #
-//	#########################################
+//  #########################################
+//  #                 Doors                 #
+//  #########################################
 
     public Door getDoor(PrisonEscapeLocation location) {
         return _doors.get(location.createKey());
+    }
+
+//  ########################################
+//  #              Helicopter              #
+//  ########################################
+
+    public void spawnHelicopter() {
+
     }
 
 //	#########################################
@@ -343,4 +361,5 @@ public class PrisonBuilding {
     public boolean isOutsidePrison(PrisonEscapeLocation loc) {
         return !_prison.contains(loc);
     }
+
 }
