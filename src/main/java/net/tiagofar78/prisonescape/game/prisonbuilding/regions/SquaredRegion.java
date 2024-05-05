@@ -16,7 +16,7 @@ public class SquaredRegion extends Region {
                 new PrisonEscapeLocation(region._lowerCornerLocation)
         );
     }
-    
+
     public SquaredRegion(
             String name,
             boolean isRestricted,

@@ -253,7 +253,15 @@ public class ConfigManager {
                 PrisonEscapeLocation upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
                 PrisonEscapeLocation lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner");
 
-                list.add(new SquaredRegion(name, isRestricted, !cutCellPhoneCalls, upperCornerLocation, lowerCornerLocation));
+                list.add(
+                        new SquaredRegion(
+                                name,
+                                isRestricted,
+                                !cutCellPhoneCalls,
+                                upperCornerLocation,
+                                lowerCornerLocation
+                        )
+                );
             }
         }
 
