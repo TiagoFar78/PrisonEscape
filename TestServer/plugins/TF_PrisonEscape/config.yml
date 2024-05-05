@@ -165,7 +165,7 @@ ChestsLocations:
   "5":
     X: -11
     Y: 100
-    Z: -8
+    Z: 8
   "6": # Right office
     X: 13
     Y: 99
