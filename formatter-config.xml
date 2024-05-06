@@ -328,7 +328,7 @@
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_conditional_operator" value="true"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_assignment" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.wrap_before_assignment_operator" value="false"/>
-		<setting id="org.eclipse.jdt.core.formatter.alignment_for_expressions_in_array_initializer" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.alignment_for_expressions_in_array_initializer" value="56"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_expressions_in_for_loop_header" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_compact_if" value="16"/>
 		<setting id="org.eclipse.jdt.core.formatter.alignment_for_compact_loops" value="16"/>
