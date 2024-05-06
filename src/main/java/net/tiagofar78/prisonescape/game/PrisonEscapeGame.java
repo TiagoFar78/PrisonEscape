@@ -341,12 +341,14 @@ public class PrisonEscapeGame {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
             player.setKit(new PrisionerKit());
+            teleportPrisionerToSpawnPoint(player);
         }
 
         for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
             player.setKit(new PoliceKit());
+            teleportPoliceToSpawnPoint(player);
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
