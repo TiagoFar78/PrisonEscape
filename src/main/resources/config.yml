@@ -12,6 +12,8 @@ FinishedPhaseDuration: 30
 DelayBetweenAnnouncements: 30
 SpeedDuration: 15
 SpeedLevel: 2
+HelicopterSpawnDelay: 10
+HelicopterDepartureDelay: 5
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
@@ -55,6 +57,23 @@ SolitaryExitLocation:
   X: 0
   Y: 0
   Z: 0
+Helicopter:
+  ExitLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  JoinLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  UpperLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  LowerLocation:
+    X: 0
+    Y: 0
+    Z: 0
 PrisionersSecretPassagesLocation:
   "1":
     Key:

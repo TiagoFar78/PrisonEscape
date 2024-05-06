@@ -79,6 +79,10 @@ Items:
     Name: "Camera"
   Trap:
     Name: "Trap"
+  CellPhone:
+    Name: "Cell Phone"
+    Lore:
+    - "&eCalls an escape helicopter to the roof"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -121,6 +125,8 @@ Messages:
     NotEnoughMoney: "&cYou do not have enough money to buy this item."
     SuccessfullyBoughtItem: "&aSuccessfully bought item. Your current balance is: {BALANCE}."
     CannotDropThatItem: "&cYou cannot drop that item."
+    HelicopterOnTheWay: "&eYou called an helicopter and it will be here in &b{SECONDS} &eseconds."
+    NoCellPhoneCoverage: "&cYou cannot use your cell phone here because of lack of coverage."
   Announcements:
     GameStarting:
     - "&6==================================="

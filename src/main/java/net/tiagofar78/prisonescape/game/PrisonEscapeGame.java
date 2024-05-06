@@ -10,6 +10,7 @@ import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Helicopter;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
@@ -532,6 +533,17 @@ public class PrisonEscapeGame {
                 }
             }
 
+            Helicopter helicopter = _prison.getHelicopter(blockLocation);
+            if (helicopter != null) {
+                helicopter.click(
+                        player,
+                        isPrisioner(player),
+                        _prison.getHelicopterExitLocation(),
+                        _prison.getHelicopterJoinLocation()
+                );
+                return 0;
+            }
+
             PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
                     blockLocation,
                     _prisionersTeam.isOnTeam(player)
@@ -616,7 +628,7 @@ public class PrisonEscapeGame {
 //	#            Events Results            #
 //	########################################
 
-    private void playerEscaped(PrisonEscapePlayer player) {
+    public void playerEscaped(PrisonEscapePlayer player) {
         player.escaped();
 
         for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
@@ -786,6 +798,24 @@ public class PrisonEscapeGame {
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);
+    }
+
+    public void playerCalledHelicopter(String playerName, PrisonEscapeLocation location, int itemSlot) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
+        if (!_prison.hasCellPhoneCoverage(location)) {
+            BukkitMessageSender.sendChatMessage(player, messages.getNoCellPhoneCoverageMessage());
+            return;
+        }
+
+        int helicopterSpawnDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
+        BukkitMessageSender.sendChatMessage(player, messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
+        player.removeItem(itemSlot);
+        player.updateInventory();
+
+        _prison.callHelicopter();
     }
 
     public void policeOpenShop(String playerName) {

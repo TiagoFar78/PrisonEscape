@@ -17,6 +17,10 @@ public class BukkitWorldEditor {
 
     private static final World WORLD = Bukkit.getWorld(ConfigManager.getInstance().getWorldName());
 
+    public static World getWorld() {
+        return WORLD;
+    }
+
 //  #########################################
 //  #                 Vault                 #
 //  #########################################

@@ -45,6 +45,8 @@ public class ConfigManager {
     private int _radarPrice;
     private int _energyDrinkPrice;
     private int _cameraPrice;
+    private int _helicopterSpawnDelay;
+    private int _helicopterDepartureDelay;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -62,6 +64,10 @@ public class ConfigManager {
     private List<PrisonEscapeLocation> _policeSpawnLocation;
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
+    private PrisonEscapeLocation _helicopterExitLocation;
+    private PrisonEscapeLocation _helicopterJoinLocation;
+    private PrisonEscapeLocation _helicopterUpperLocation;
+    private PrisonEscapeLocation _helicopterLowerLocation;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
@@ -111,6 +117,8 @@ public class ConfigManager {
         _radarPrice = config.getInt("RadarPrice");
         _energyDrinkPrice = config.getInt("EnergyDrinkPrice");
         _cameraPrice = config.getInt("CameraPrice");
+        _helicopterSpawnDelay = config.getInt("HelicopterSpawnDelay");
+        _helicopterDepartureDelay = config.getInt("HelicopterDepartureDelay");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -128,6 +136,10 @@ public class ConfigManager {
         _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations");
         _solitaryLocation = createLocation(config, "SolitaryLocation");
         _solitaryExitLocation = createLocation(config, "SolitaryExitLocation");
+        _helicopterExitLocation = createLocation(config, "Helicopter.ExitLocation");
+        _helicopterJoinLocation = createLocation(config, "Helicopter.JoinLocation");
+        _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation");
+        _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation");
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
@@ -237,12 +249,13 @@ public class ConfigManager {
         for (String regionNamePath : regionsNamesPaths) {
             String name = regionNamePath.substring(regionsPath.length() + 1);
             boolean isRestricted = config.getBoolean(regionNamePath + ".IsRestricted");
+            boolean cutCellPhoneCalls = config.getBoolean(regionNamePath + ".CutCellPhoneCalls");
 
             List<String> regionsPaths = config.getKeys(true)
                     .stream()
                     .filter(
                             key -> key.startsWith(regionNamePath + ".") && key.lastIndexOf(".") == regionNamePath
-                                    .length() && !key.contains("IsRestricted")
+                                    .length() && !key.contains("IsRestricted") && !key.contains("HasCellPhoneCoverage")
                     )
                     .toList();
 
@@ -250,7 +263,15 @@ public class ConfigManager {
                 PrisonEscapeLocation upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
                 PrisonEscapeLocation lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner");
 
-                list.add(new SquaredRegion(name, isRestricted, upperCornerLocation, lowerCornerLocation));
+                list.add(
+                        new SquaredRegion(
+                                name,
+                                isRestricted,
+                                !cutCellPhoneCalls,
+                                upperCornerLocation,
+                                lowerCornerLocation
+                        )
+                );
             }
         }
 
@@ -387,6 +408,14 @@ public class ConfigManager {
         return _cameraPrice;
     }
 
+    public int getHelicopterSpawnDelay() {
+        return _helicopterSpawnDelay;
+    }
+
+    public int getHelicopterDepartureDelay() {
+        return _helicopterDepartureDelay;
+    }
+
     public List<String> getAvailableLanguages() {
         return new ArrayList<>(_availableLanguages);
     }
@@ -442,6 +471,22 @@ public class ConfigManager {
 
     public PrisonEscapeLocation getSolitaryExitLocation() {
         return createLocationCopy(_solitaryExitLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterExitLocation() {
+        return createLocationCopy(_helicopterExitLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterJoinLocation() {
+        return createLocationCopy(_helicopterJoinLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterUpperLocation() {
+        return createLocationCopy(_helicopterUpperLocation);
+    }
+
+    public PrisonEscapeLocation getHelicopterLowerLocation() {
+        return createLocationCopy(_helicopterLowerLocation);
     }
 
     public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPrisionersSecretPassageLocations() {

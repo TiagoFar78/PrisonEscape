@@ -28,6 +28,8 @@ public class PrisonBuilding {
     private List<PrisonEscapeLocation> _policeSpawnLocations;
     private PrisonEscapeLocation _solitaryLocation;
     private PrisonEscapeLocation _solitaryExitLocation;
+    private PrisonEscapeLocation _helicopterExitLocation;
+    private PrisonEscapeLocation _helicopterJoinLocation;
     private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
 
@@ -42,6 +44,8 @@ public class PrisonBuilding {
     private Maze _maze;
     private List<Obstacle> _obstacles;
 
+    private Helicopter _helicopter;
+
 //  #########################################
 //  #              Constructor              #
 //  #########################################
@@ -51,7 +55,7 @@ public class PrisonBuilding {
 
         PrisonEscapeLocation prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
         PrisonEscapeLocation prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
-        _prison = new SquaredRegion(PRISON_REGION_NAME, false, prisonUpperCorner, prisonLowerCorner);
+        _prison = new SquaredRegion(PRISON_REGION_NAME, false, true, prisonUpperCorner, prisonLowerCorner);
 
         _regions = createRegionsList(reference, config.getRegions());
 
@@ -62,6 +66,9 @@ public class PrisonBuilding {
 
         _solitaryLocation = config.getSolitaryLocation().add(reference);
         _solitaryExitLocation = config.getSolitaryExitLocation().add(reference);
+
+        _helicopterExitLocation = config.getHelicopterExitLocation().add(reference);
+        _helicopterJoinLocation = config.getHelicopterJoinLocation().add(reference);
 
         _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
@@ -119,6 +126,11 @@ public class PrisonBuilding {
             vent.generate();
             _obstacles.add(vent);
         }
+
+        PrisonEscapeLocation helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
+        PrisonEscapeLocation helicopterLowerLocation = config.getHelicopterLowerLocation().add(reference);
+        _helicopter = new Helicopter(helicopterUpperLocation, helicopterLowerLocation);
+        _helicopter.departed();
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -185,6 +197,16 @@ public class PrisonBuilding {
         }
 
         return null;
+    }
+
+    public boolean hasCellPhoneCoverage(PrisonEscapeLocation location) {
+        for (Region region : _regions) {
+            if (region.contains(location)) {
+                return region.canCallHelicopter();
+            }
+        }
+
+        return true;
     }
 
 //  #########################################
@@ -298,12 +320,24 @@ public class PrisonBuilding {
         return null;
     }
 
-//	#########################################
-//	#                 Doors            #
-//	#########################################
+//  #########################################
+//  #                 Doors                 #
+//  #########################################
 
     public Door getDoor(PrisonEscapeLocation location) {
         return _doors.get(location.createKey());
+    }
+
+//  ########################################
+//  #              Helicopter              #
+//  ########################################
+
+    public Helicopter getHelicopter(PrisonEscapeLocation location) {
+        return _helicopter.contains(location) ? _helicopter : null;
+    }
+
+    public void callHelicopter() {
+        _helicopter.call();
     }
 
 //	#########################################
@@ -330,6 +364,14 @@ public class PrisonBuilding {
         return _solitaryExitLocation;
     }
 
+    public PrisonEscapeLocation getHelicopterExitLocation() {
+        return _helicopterExitLocation;
+    }
+
+    public PrisonEscapeLocation getHelicopterJoinLocation() {
+        return _helicopterJoinLocation;
+    }
+
     public PrisonEscapeLocation getSecretPassageDestinationLocation(
             PrisonEscapeLocation location,
             boolean isPrisioner
@@ -343,4 +385,5 @@ public class PrisonBuilding {
     public boolean isOutsidePrison(PrisonEscapeLocation loc) {
         return !_prison.contains(loc);
     }
+
 }

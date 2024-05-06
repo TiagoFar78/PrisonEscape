@@ -13,6 +13,8 @@ DelayBetweenAnnouncements: 30
 CommonItemsProbability: 0.8
 RareItemsProbability: 0.25
 ChestSize: 5
+HelicopterSpawnDelay: 10
+HelicopterDepartureDelay: 5
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
@@ -92,6 +94,23 @@ SolitaryExitLocation:
   X: -39
   Y: 100
   Z: 45
+Helicopter:
+  ExitLocation:
+    X: -34
+    Y: 113
+    Z: -3
+  JoinLocation:
+    X: -35
+    Y: 115
+    Z: -3
+  UpperLocation:
+    X: -31
+    Y: 119
+    Z: -1
+  LowerLocation:
+    X: -43
+    Y: 113
+    Z: -5
 PrisionersSecretPassagesLocation:
   "1":
     Key:
@@ -165,7 +184,7 @@ ChestsLocations:
   "5":
     X: -11
     Y: 100
-    Z: -8
+    Z: 8
   "6": # Right office
     X: 13
     Y: 99
@@ -460,7 +479,7 @@ Regions:
     "1":
       UpperCorner:
         X: 5
-        Y: 110
+        Y: 104
         Z: 11
       LowerCorner:
         X: -21
@@ -471,7 +490,7 @@ Regions:
     "1":
       UpperCorner:
         X: 0
-        Y: 104
+        Y: 105
         Z: 35
       LowerCorner:
         X: -10
@@ -480,7 +499,7 @@ Regions:
     "2":
       UpperCorner:
         X: 0
-        Y: 110
+        Y: 105
         Z: 49
       LowerCorner:
         X: -10
@@ -489,7 +508,7 @@ Regions:
     "3":
       UpperCorner:
         X: 26
-        Y: 110
+        Y: 105
         Z: -28
       LowerCorner:
         X: 12
@@ -559,6 +578,18 @@ Regions:
         X: -51
         Y: 100
         Z: 40
+  Vents:
+    IsRestricted: true
+    CutCellPhoneCalls: true
+    "1":
+      UpperCorner:
+        X: 36
+        Y: 110
+        Z: 32
+      LowerCorner:
+        X: -59
+        Y: 105
+        Z: -43
 ChestsContents:
   Default: # These are the chest contents by default - DON'T CHANGE THE NAME!
     Bolts: 0.25
@@ -568,6 +599,7 @@ ChestsContents:
     Bolts: 0.25
     Oil: 0.05
     Stick: 0.10
+    CellPhone: 0.5
   Office:
     Bolts: 0.01
   Yard:
