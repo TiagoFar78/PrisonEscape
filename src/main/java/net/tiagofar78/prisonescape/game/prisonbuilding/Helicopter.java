@@ -163,6 +163,8 @@ public class Helicopter {
                     .ignoreAirBlocks(false)
                     .build();
             Operations.complete(operation);
+            editSession.commit();
+            editSession.close();
         } catch (IOException | WorldEditException e) {
             e.printStackTrace();
         }
@@ -178,6 +180,8 @@ public class Helicopter {
         EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
         try {
             editSession.setBlocks(selection, air);
+            editSession.commit();
+            editSession.close();
         } catch (MaxChangedBlocksException e) {
             e.printStackTrace();
         }
