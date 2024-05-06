@@ -1,17 +1,42 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.MaxChangedBlocksException;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.block.BlockState;
+
+import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
+import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
+import org.bukkit.Material;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Helicopter {
 
+    private static final String HELICOPTER_SCHEM_NAME = "helicopter.schem";
     private static final int TICKS_PER_SECOND = 20;
 
     private PrisonEscapeLocation _upperLocation;
@@ -39,12 +64,12 @@ public class Helicopter {
 
     private void buildHelicopter() {
         _isOnGround = true;
-        // TODO
+        placeOnWorld();
     }
 
     private void destroyHelicopter() {
         _isOnGround = false;
-        // TODO
+        removeFromWorld();
     }
 
     public void call() {
@@ -120,6 +145,42 @@ public class Helicopter {
         }
 
         _players.clear();
+    }
+
+    private void placeOnWorld() {
+        File file = new File(PrisonEscape.getPrisonEscape().getDataFolder(), HELICOPTER_SCHEM_NAME);
+        ClipboardFormat format = ClipboardFormats.findByFile(file);
+        try {
+
+            ClipboardReader reader = format.getReader(new FileInputStream(file));
+            Clipboard clipboard = reader.read();
+
+            World world = BukkitAdapter.adapt(BukkitWorldEditor.getWorld());
+            EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
+            Operation operation = new ClipboardHolder(clipboard)
+                    .createPaste(editSession)
+                    .to(BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ()))
+                    .ignoreAirBlocks(false)
+                    .build();
+            Operations.complete(operation);
+        } catch (IOException | WorldEditException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void removeFromWorld() {
+        World world = BukkitAdapter.adapt(BukkitWorldEditor.getWorld());
+        BlockVector3 min = BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ());
+        BlockVector3 max = BlockVector3.at(_upperLocation.getX(), _upperLocation.getY(), _upperLocation.getZ());
+        CuboidRegion selection = new CuboidRegion(world, min, max);
+
+        BlockState air = BukkitAdapter.adapt(Material.AIR.createBlockData());
+        EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
+        try {
+            editSession.setBlocks(selection, air);
+        } catch (MaxChangedBlocksException e) {
+            e.printStackTrace();
+        }
     }
 
 }
