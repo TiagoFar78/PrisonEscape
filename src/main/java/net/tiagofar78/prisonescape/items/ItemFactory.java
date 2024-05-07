@@ -4,8 +4,44 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemFactory {
 
-    private static Item[] items =
-            {new AntenaItem(), new BatteryItem(), new BoltsItem(), new BombItem(), new CellPhoneItem(), new CircuitBoardItem(), new CopperItem(), new DoorCodeItem(), new DuctTapeItem(), new EnergyDrinkItem(), new GoldBarItem(), new GoldenKeyItem(), new GrayKeyItem(), new HandcuffsItem(), new MatchesItem(), new MetalPlateItem(), new MetalShovelItem(), new MetalSpoonItem(), new NotePartItem(), new OilItem(), new PlasticPlateItem(), new PlasticShovelItem(), new PlasticSpoonItem(), new SearchItem(), new SelectNoneTeamItem(), new SelectPoliceTeamItem(), new SelectPrisionerTeamItem(), new StickItem(), new WireCutterItem(), new WrenchItem(), new ShopItem(), new TrapItem(), new CameraItem(), new SensorItem(), new RadarItem(), new OpenCamerasItem(), new MissionsItem()};
+    private static Item[] items = {
+            new AntenaItem(),
+            new BatteryItem(),
+            new BoltsItem(),
+            new BombItem(),
+            new CellPhoneItem(),
+            new CircuitBoardItem(),
+            new CopperItem(),
+            new DoorCodeItem(),
+            new DuctTapeItem(),
+            new EnergyDrinkItem(),
+            new GoldBarItem(),
+            new GoldenKeyItem(),
+            new GrayKeyItem(),
+            new HandcuffsItem(),
+            new MatchesItem(),
+            new MetalPlateItem(),
+            new MetalShovelItem(),
+            new MetalSpoonItem(),
+            new NotePartItem(),
+            new OilItem(),
+            new PlasticPlateItem(),
+            new PlasticShovelItem(),
+            new PlasticSpoonItem(),
+            new SearchItem(),
+            new SelectNoneTeamItem(),
+            new SelectPoliceTeamItem(),
+            new SelectPrisionerTeamItem(),
+            new StickItem(),
+            new WireCutterItem(),
+            new WrenchItem(),
+            new ShopItem(),
+            new TrapItem(),
+            new CameraItem(),
+            new SensorItem(),
+            new RadarItem(),
+            new OpenCamerasItem(),
+            new MissionsItem()};
 
     public static Item createItem(ItemStack bukkitItem) {
         for (Item item : items) {
