@@ -104,8 +104,12 @@ public class BukkitMenu {
 //  #                 Chest                 #
 //  #########################################
 
-    private static final int[] CHEST_CONTENT_INDEXES =
-            {SLOTS_PER_LINE * 1 + 2, SLOTS_PER_LINE * 1 + 3, SLOTS_PER_LINE * 1 + 4, SLOTS_PER_LINE * 1 + 5, SLOTS_PER_LINE * 1 + 6};
+    private static final int[] CHEST_CONTENT_INDEXES = {
+            SLOTS_PER_LINE * 1 + 2,
+            SLOTS_PER_LINE * 1 + 3,
+            SLOTS_PER_LINE * 1 + 4,
+            SLOTS_PER_LINE * 1 + 5,
+            SLOTS_PER_LINE * 1 + 6};
 
     public static void openChest(String playerName, List<Item> contents) {
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
