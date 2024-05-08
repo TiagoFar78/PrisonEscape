@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
+import net.tiagofar78.prisonescape.bukkit.BukkitSoundBoard;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.phases.Finished;
@@ -569,7 +570,7 @@ public class PrisonEscapeGame {
         }
 
         if (_prison.checkIfMetalDetectorTriggered(loc, player)) {
-            // TODO: Do beep
+            BukkitSoundBoard.playMetalDetectorSound(loc);
         }
     }
 

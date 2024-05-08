@@ -112,6 +112,7 @@ public class PrisonBuilding {
         }
 
         _metalDetectorsLocations = new ArrayList<>();
+        // TODO: adicionar localização de metal detectors aqui
 
         _wall = new Wall();
 
