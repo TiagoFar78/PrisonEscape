@@ -19,7 +19,8 @@ public class Dirt extends Obstacle {
 
     @Override
     public boolean isEffectiveTool(ToolItem tool) {
-        return tool instanceof PlasticSpoonItem || tool instanceof MetalSpoonItem || tool instanceof PlasticShovelItem || tool instanceof MetalShovelItem;
+        return tool instanceof PlasticSpoonItem || tool instanceof MetalSpoonItem ||
+            tool instanceof PlasticShovelItem || tool instanceof MetalShovelItem;
     }
 
     @Override
