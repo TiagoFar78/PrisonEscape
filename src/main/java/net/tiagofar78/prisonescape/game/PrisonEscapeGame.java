@@ -317,8 +317,10 @@ public class PrisonEscapeGame {
                     for (String playerName : playersNames) {
                         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
-                        List<String> announcement = messages
-                                .getGameStartingAnnouncementMessage(remainingSeconds, _playersOnLobby.size());
+                        List<String> announcement = messages.getGameStartingAnnouncementMessage(
+                                remainingSeconds,
+                                _playersOnLobby.size()
+                        );
                         BukkitMessageSender.sendChatMessage(playerName, announcement);
                     }
                 }
