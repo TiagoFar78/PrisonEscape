@@ -28,9 +28,9 @@ public class Fence extends Obstacle implements Regenerable {
     }
 
     private boolean isBetweenCorners(int x, int y, int z) {
-        return _lowerCornerLocation.getX() <= x && x <= _upperCornerLocation.getX() && _lowerCornerLocation
-                .getY() <= y && y <= _upperCornerLocation.getY() && _lowerCornerLocation
-                        .getZ() <= z && z <= _upperCornerLocation.getZ();
+        return _lowerCornerLocation.getX() <= x && x <= _upperCornerLocation.getX() &&
+                _lowerCornerLocation.getY() <= y && y <= _upperCornerLocation.getY() &&
+                _lowerCornerLocation.getZ() <= z && z <= _upperCornerLocation.getZ();
     }
 
     @Override

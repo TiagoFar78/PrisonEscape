@@ -289,11 +289,11 @@ public class PrisonBuilding {
     }
 
     public void removeExplodedBlocks(List<Block> explodedBlocks) {
-        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream()
-                .filter(b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK)
-                .map(b -> b.getLocation())
-                .map(l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ()))
-                .toList();
+        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream().filter(
+                b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK
+        ).map(b -> b.getLocation()).map(
+                l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ())
+        ).toList();
 
         _wall.crackedBlocksExploded(crackedBlocksLocations);
     }

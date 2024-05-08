@@ -303,11 +303,9 @@ public class MessageLanguageManager {
 //	#######################################
 
     private List<String> getItemsConfigNames(YamlConfiguration messages, String itemsPath) {
-        return messages.getConfigurationSection(itemsPath)
-                .getKeys(true)
-                .stream()
-                .filter(key -> !key.contains("."))
-                .toList();
+        return messages.getConfigurationSection(itemsPath).getKeys(true).stream().filter(
+                key -> !key.contains(".")
+        ).toList();
     }
 
     public String getItemName(String configName) {
@@ -490,9 +488,10 @@ public class MessageLanguageManager {
         for (int i = 0; i < message.size(); i++) {
             message.set(
                     i,
-                    message.get(i)
-                            .replace("{SECONDS}", Integer.toString(remainingTime))
-                            .replace("{PLAYERS}", Integer.toString(playersOnLobby))
+                    message.get(i).replace("{SECONDS}", Integer.toString(remainingTime)).replace(
+                            "{PLAYERS}",
+                            Integer.toString(playersOnLobby)
+                    )
             );
         }
 
@@ -559,21 +558,24 @@ public class MessageLanguageManager {
     }
 
     public String getSuccessfullyJoinedGameMessage(String playerName, int playerNumber, int maxPlayers) {
-        return _successfullyJoinedGameMessage.replace("{PLAYER}", playerName)
-                .replace("{PLAYERNUMBER}", Integer.toString(playerNumber))
-                .replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
+        return _successfullyJoinedGameMessage.replace("{PLAYER}", playerName).replace(
+                "{PLAYERNUMBER}",
+                Integer.toString(playerNumber)
+        ).replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
     }
 
     public String getSuccessfullyLeftGameMessage(String playerName, int playerNumber, int maxPlayers) {
-        return _successfullyLeftGameMessage.replace("{PLAYER}", playerName)
-                .replace("{PLAYERNUMBER}", Integer.toString(playerNumber))
-                .replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
+        return _successfullyLeftGameMessage.replace("{PLAYER}", playerName).replace(
+                "{PLAYERNUMBER}",
+                Integer.toString(playerNumber)
+        ).replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
     }
 
     public String getSuccessfullyRejoinedGameMessage(String playerName, int playerNumber, int maxPlayers) {
-        return _successfullyRejoinedGameMessage.replace("{PLAYER}", playerName)
-                .replace("{PLAYERNUMBER}", Integer.toString(playerNumber))
-                .replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
+        return _successfullyRejoinedGameMessage.replace("{PLAYER}", playerName).replace(
+                "{PLAYERNUMBER}",
+                Integer.toString(playerNumber)
+        ).replace("{MAXPLAYERS}", Integer.toString(maxPlayers));
     }
 
 //	########################################
