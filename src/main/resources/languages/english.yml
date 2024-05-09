@@ -1,3 +1,10 @@
+Scoreboard:
+  DisplayName: "&6&lPrison Escape"
+  GuardSideBar:
+  - "&1"
+  - "&fBalance: &a{BALANCE}"
+  - "&2"
+  - "&eTest server"
 Items:
   SelectPrisionerTeam:
     Name: "&6Select prisioner team"

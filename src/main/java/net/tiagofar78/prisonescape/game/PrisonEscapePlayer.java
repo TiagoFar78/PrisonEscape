@@ -6,6 +6,9 @@ import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.Kit;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,8 @@ public abstract class PrisonEscapePlayer {
         _name = name;
         _isOnline = true;
         _inventory = createInventory();
+
+        applyScoreboard();
     }
 
     public boolean isPrisioner() {
@@ -31,7 +36,7 @@ public abstract class PrisonEscapePlayer {
     public boolean isGuard() {
         return false;
     }
-    
+
     public boolean isWaiting() {
         return false;
     }
@@ -164,6 +169,25 @@ public abstract class PrisonEscapePlayer {
         }
     }
 
+//  ########################################
+//  #              Scoreboard              #
+//  ########################################
+
+    public void applyScoreboard() {
+        setDefaultScoreboard();
+    }
+
+    public void removeScoreboard() {
+        setDefaultScoreboard();
+    }
+
+    private void setDefaultScoreboard() {
+        Player player = Bukkit.getPlayer(getName());
+        if (player != null && player.isOnline()) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        }
+    }
+
 //	########################################
 //	#                 Util                 #
 //	########################################
@@ -172,6 +196,5 @@ public abstract class PrisonEscapePlayer {
     public boolean equals(Object o) {
         return o instanceof PrisonEscapePlayer && ((PrisonEscapePlayer) o).getName().equals(this.getName());
     }
-
 
 }

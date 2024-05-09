@@ -688,7 +688,7 @@ public class PrisonEscapeGame {
         if (player == null) {
             return;
         }
-        
+
         WaitingPlayer waitingPlayer = (WaitingPlayer) player;
 
         waitingPlayer.setPreference(TeamPreference.POLICE);
@@ -702,7 +702,7 @@ public class PrisonEscapeGame {
         if (player == null) {
             return;
         }
-        
+
         WaitingPlayer waitingPlayer = (WaitingPlayer) player;
 
         waitingPlayer.setPreference(TeamPreference.RANDOM);
@@ -990,12 +990,12 @@ public class PrisonEscapeGame {
 
         Collections.shuffle(_playersOnLobby);
         List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
-        
+
         List<PrisonEscapePlayer> newLobbyPlayers = new ArrayList<>();
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
-            WaitingPlayer waitingPlayer = (WaitingPlayer) player; 
-            
+            WaitingPlayer waitingPlayer = (WaitingPlayer) player;
+
             TeamPreference preference = waitingPlayer.getPreference();
 
             if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
@@ -1026,7 +1026,7 @@ public class PrisonEscapeGame {
                 requiredPrisioners--;
             }
         }
-        
+
         _playersOnLobby = newLobbyPlayers;
     }
 

@@ -52,6 +52,13 @@ public class MessageLanguageManager {
         return ConfigManager.getInstance().getDefaultLanguage();
     }
 
+//  ########################################
+//  #              Scoreboard              #
+//  ########################################
+
+    private String _sbDisplayName;
+    private List<String> _guardSideBar;
+
 //	#######################################
 //	#                Items                #
 //	#######################################
@@ -71,7 +78,7 @@ public class MessageLanguageManager {
     private String _vaultHiddenGlassName;
 
 //	########################################
-//	#                Chat                #
+//	#                 Chat                 #
 //	########################################
 
     private String _generalMessage;
@@ -168,6 +175,10 @@ public class MessageLanguageManager {
 
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
+
+        String scoreboardPath = "Scoreboard.";
+        _sbDisplayName = createMessage(messages.getString(scoreboardPath + "DisplayName"));
+        _guardSideBar = createMessage(messages.getStringList(scoreboardPath + "GuardSideBar"));
 
         _itemsNames = new Hashtable<>();
         _itemsLores = new Hashtable<>();
@@ -296,6 +307,18 @@ public class MessageLanguageManager {
         }
 
         return message;
+    }
+
+//  ########################################
+//  #              Scoreboard              #
+//  ########################################
+
+    public String getScoreboardDisplayName() {
+        return _sbDisplayName;
+    }
+
+    public List<String> getGuardSideBar() {
+        return _guardSideBar;
     }
 
 //	#######################################
