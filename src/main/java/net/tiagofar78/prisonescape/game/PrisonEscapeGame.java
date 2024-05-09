@@ -396,6 +396,7 @@ public class PrisonEscapeGame {
     private void disableGame() {
         for (PrisonEscapePlayer player : _playersOnLobby) {
             teleportToLeavingLocation(player);
+            player.removeScoreboard();
         }
 
         _prison.deleteVaults();

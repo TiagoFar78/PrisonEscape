@@ -114,7 +114,7 @@ public class Guard extends PrisonEscapePlayer {
 
         int emptyLines = 2;
         for (int i = 0; i < emptyLines; i++) {
-            baseSideBar.add("&" + i);
+            baseSideBar.add("§" + i);
         }
 
         baseSideBar.add(BALANCE_LINE_INDEX, balanceLine);
