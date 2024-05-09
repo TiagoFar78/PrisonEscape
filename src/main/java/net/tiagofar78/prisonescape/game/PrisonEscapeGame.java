@@ -476,7 +476,7 @@ public class PrisonEscapeGame {
             return;
         }
 
-        if (isPrisioner(player)) {
+        if (!isPrisioner(player)) {
             return;
         }
 
@@ -1015,15 +1015,15 @@ public class PrisonEscapeGame {
 
         for (PrisonEscapePlayer player : remainingPlayers) {
             if (requiredPrisioners != 0) {
-                Guard guard = new Guard(player.getName());
-                _policeTeam.addMember(guard);
-                newLobbyPlayers.add(guard);
-                requiredOfficers--;
-            } else {
                 Prisioner prisioner = new Prisioner(player.getName());
                 _prisionersTeam.addMember(prisioner);
                 newLobbyPlayers.add(prisioner);
                 requiredPrisioners--;
+            } else {
+                Guard guard = new Guard(player.getName());
+                _policeTeam.addMember(guard);
+                newLobbyPlayers.add(guard);
+                requiredOfficers--;
             }
         }
 
