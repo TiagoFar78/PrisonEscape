@@ -9,19 +9,17 @@ import net.tiagofar78.prisonescape.kits.Kit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrisonEscapePlayer {
+public abstract class PrisonEscapePlayer {
 
     private static final int INVENTORY_SIZE = 4;
 
     private String _name;
-    private TeamPreference _preference;
     private boolean _isOnline;
     private List<Item> _inventory;
     private Kit _currentKit;
 
     public PrisonEscapePlayer(String name) {
         _name = name;
-        _preference = TeamPreference.RANDOM;
         _isOnline = true;
         _inventory = createInventory();
     }
@@ -31,6 +29,10 @@ public class PrisonEscapePlayer {
     }
 
     public boolean isGuard() {
+        return false;
+    }
+    
+    public boolean isWaiting() {
         return false;
     }
 
@@ -46,14 +48,6 @@ public class PrisonEscapePlayer {
 
     public String getName() {
         return _name;
-    }
-
-    public TeamPreference getPreference() {
-        return _preference;
-    }
-
-    public void setPreference(TeamPreference preference) {
-        this._preference = preference;
     }
 
 //  ########################################

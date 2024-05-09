@@ -37,6 +37,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -103,7 +104,7 @@ public class PrisonEscapeGame {
             return -3;
         }
 
-        PrisonEscapePlayer player = new PrisonEscapePlayer(playerName);
+        PrisonEscapePlayer player = new WaitingPlayer(playerName);
         _playersOnLobby.add(player);
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
@@ -674,7 +675,9 @@ public class PrisonEscapeGame {
             return;
         }
 
-        player.setPreference(TeamPreference.PRISIONERS);
+        WaitingPlayer waitingPlayer = (WaitingPlayer) player;
+
+        waitingPlayer.setPreference(TeamPreference.PRISIONERS);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisionersTeamMessage());
@@ -685,8 +688,10 @@ public class PrisonEscapeGame {
         if (player == null) {
             return;
         }
+        
+        WaitingPlayer waitingPlayer = (WaitingPlayer) player;
 
-        player.setPreference(TeamPreference.POLICE);
+        waitingPlayer.setPreference(TeamPreference.POLICE);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
@@ -697,8 +702,10 @@ public class PrisonEscapeGame {
         if (player == null) {
             return;
         }
+        
+        WaitingPlayer waitingPlayer = (WaitingPlayer) player;
 
-        player.setPreference(TeamPreference.RANDOM);
+        waitingPlayer.setPreference(TeamPreference.RANDOM);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
@@ -973,40 +980,54 @@ public class PrisonEscapeGame {
     }
 
     private void distributePlayersPerTeam() {
-//        int numberOfPlayers = _playersOnLobby.size();
-//        int requiredPrisioners = (int) Math.round(
-//                numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
-//        );
-//        int requiredOfficers = (int) Math.round(
-//                numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
-//        );
-//
-//        Collections.shuffle(_playersOnLobby);
-//        List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
-//
-//        for (PrisonEscapePlayer player : _playersOnLobby) {
-//            TeamPreference preference = player.getPreference();
-//
-//            if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
-//                _policeTeam.addMember(player);
-//                requiredOfficers--;
-//            } else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
-//                _prisionersTeam.addMember(player);
-//                requiredPrisioners--;
-//            } else {
-//                remainingPlayers.add(player);
-//            }
-//        }
-//
-//        for (PrisonEscapePlayer player : remainingPlayers) {
-//            if (requiredPrisioners != 0) {
-//                _prisionersTeam.addMember(player);
-//                requiredPrisioners--;
-//            } else {
-//                _policeTeam.addMember(player);
-//                requiredOfficers--;
-//            }
-//        }
+        int numberOfPlayers = _playersOnLobby.size();
+        int requiredPrisioners = (int) Math.round(
+                numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
+        );
+        int requiredOfficers = (int) Math.round(
+                numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
+        );
+
+        Collections.shuffle(_playersOnLobby);
+        List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
+        
+        List<PrisonEscapePlayer> newLobbyPlayers = new ArrayList<>();
+
+        for (PrisonEscapePlayer player : _playersOnLobby) {
+            WaitingPlayer waitingPlayer = (WaitingPlayer) player; 
+            
+            TeamPreference preference = waitingPlayer.getPreference();
+
+            if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
+                Guard guard = new Guard(player.getName());
+                _policeTeam.addMember(guard);
+                newLobbyPlayers.add(guard);
+                requiredOfficers--;
+            } else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
+                Prisioner prisioner = new Prisioner(player.getName());
+                _prisionersTeam.addMember(prisioner);
+                newLobbyPlayers.add(prisioner);
+                requiredPrisioners--;
+            } else {
+                remainingPlayers.add(player);
+            }
+        }
+
+        for (PrisonEscapePlayer player : remainingPlayers) {
+            if (requiredPrisioners != 0) {
+                Guard guard = new Guard(player.getName());
+                _policeTeam.addMember(guard);
+                newLobbyPlayers.add(guard);
+                requiredOfficers--;
+            } else {
+                Prisioner prisioner = new Prisioner(player.getName());
+                _prisionersTeam.addMember(prisioner);
+                newLobbyPlayers.add(prisioner);
+                requiredPrisioners--;
+            }
+        }
+        
+        _playersOnLobby = newLobbyPlayers;
     }
 
 //	#########################################
