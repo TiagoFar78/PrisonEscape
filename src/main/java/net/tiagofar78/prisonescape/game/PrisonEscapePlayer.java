@@ -1,14 +1,10 @@
 package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
-import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
-import net.tiagofar78.prisonescape.items.SensorItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
-import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.kits.Kit;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,26 +15,23 @@ public class PrisonEscapePlayer {
 
     private String _name;
     private TeamPreference _preference;
-    private boolean _isWanted;
-    private boolean _inRestrictedArea;
     private boolean _isOnline;
-    private boolean _hasEscaped;
     private List<Item> _inventory;
     private Kit _currentKit;
-    private int _balance;
-
-    private int _numOfCamerasBought = 0;
-    private int _numOfSensorsBought = 0;
-    private int _numOfTrapsBought = 0;
 
     public PrisonEscapePlayer(String name) {
         _name = name;
         _preference = TeamPreference.RANDOM;
-        _isWanted = false;
-        _inRestrictedArea = false;
         _isOnline = true;
         _inventory = createInventory();
-        _balance = ConfigManager.getInstance().getStartingBalance();
+    }
+
+    public boolean isPrisioner() {
+        return false;
+    }
+
+    public boolean isGuard() {
+        return false;
     }
 
     private List<Item> createInventory() {
@@ -74,18 +67,6 @@ public class PrisonEscapePlayer {
     public void setKit(Kit kit) {
         _currentKit = kit;
         kit.give(getName());
-    }
-
-//	########################################
-//	#                Escape                #
-//	########################################
-
-    public boolean hasEscaped() {
-        return _hasEscaped;
-    }
-
-    public void escaped() {
-        _hasEscaped = true;
     }
 
 //	########################################
@@ -186,96 +167,6 @@ public class PrisonEscapePlayer {
             }
 
             BukkitMenu.setItem(getName(), i, _inventory.get(i));
-        }
-    }
-
-//	########################################
-//	#                Wanted                #
-//	########################################
-
-    public boolean isWanted() {
-        return _isWanted;
-    }
-
-    public void setWanted() {
-        _isWanted = true;
-    }
-
-    public void removeWanted() {
-        _isWanted = false;
-    }
-
-    public boolean isInRestrictedArea() {
-        return _inRestrictedArea;
-    }
-
-    public void enteredRestrictedArea() {
-        _inRestrictedArea = true;
-    }
-
-    public void leftRestrictedArea() {
-        _inRestrictedArea = false;
-    }
-
-    public boolean canBeArrested() {
-        return _isWanted || _inRestrictedArea;
-    }
-
-//	########################################
-//	#                Balance               #
-//	########################################
-
-    public int getBalance() {
-        return _balance;
-    }
-
-    public void setBalance(int balance) {
-        _balance = balance;
-    }
-
-    public void increaseBalance(int amount) {
-        _balance += amount;
-    }
-
-    public void decreaseBalance(int amount) {
-        _balance -= amount;
-    }
-
-    public int buyItem(Item item, int price) {
-        if (!canBuyItem(item)) {
-            return -1;
-        }
-        if (price > _balance) {
-            return -2;
-        }
-
-        if (giveItem(item) == -1) {
-            return -3;
-        }
-
-        decreaseBalance(price);
-        updateItemCount(item);
-        return 0;
-    }
-
-    private boolean canBuyItem(Item item) {
-        if (item instanceof TrapItem && _numOfTrapsBought >= ((TrapItem) item).getLimit()) {
-            return false;
-        } else if (item instanceof CameraItem && _numOfCamerasBought >= ((CameraItem) item).getLimit()) {
-            return false;
-        } else if (item instanceof SensorItem && _numOfSensorsBought >= ((SensorItem) item).getLimit()) {
-            return false;
-        }
-        return true;
-    }
-
-    private void updateItemCount(Item item) {
-        if (item instanceof TrapItem) {
-            _numOfTrapsBought++;
-        } else if (item instanceof CameraItem) {
-            _numOfCamerasBought++;
-        } else if (item instanceof SensorItem) {
-            _numOfSensorsBought++;
         }
     }
 

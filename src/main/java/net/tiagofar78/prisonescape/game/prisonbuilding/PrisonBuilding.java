@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
@@ -231,7 +232,7 @@ public class PrisonBuilding {
 //	#                 Vault                 #
 //	#########################################
 
-    public void addVaults(List<PrisonEscapePlayer> prisioners) {
+    public void addVaults(List<Prisioner> prisioners) {
         for (int i = 0; i < prisioners.size(); i++) {
             _vaults.add(new Vault(prisioners.get(i)));
 

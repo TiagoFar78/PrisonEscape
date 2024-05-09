@@ -12,7 +12,7 @@ public class GrayDoor extends Door {
         PrisonEscapeGame game = GameManager.getGame();
         boolean isOpened = isOpened();
 
-        if (game.isPolice(player))
+        if (game.isGuard(player))
             return isOpened ? ClickDoorReturnAction.CLOSE_DOOR : ClickDoorReturnAction.NOTHING;
 
         if (game.isPrisioner(player))

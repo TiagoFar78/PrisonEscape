@@ -16,7 +16,7 @@ public class GoldenDoor extends Door {
         PrisonEscapeGame game = GameManager.getGame();
         boolean isOpen = isOpened();
 
-        if (game.isPolice(player))
+        if (game.isGuard(player))
             return isOpen ? ClickDoorReturnAction.CLOSE_DOOR : ClickDoorReturnAction.NOTHING;
 
         if (game.isPrisioner(player))

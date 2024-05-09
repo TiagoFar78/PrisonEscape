@@ -37,7 +37,6 @@ import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -54,8 +53,8 @@ public class PrisonEscapeGame {
     private PrisonBuilding _prison;
 
     private List<PrisonEscapePlayer> _playersOnLobby;
-    private PrisonEscapeTeam _policeTeam;
-    private PrisonEscapeTeam _prisionersTeam;
+    private PrisonEscapeTeam<Guard> _policeTeam;
+    private PrisonEscapeTeam<Prisioner> _prisionersTeam;
 
     private Hashtable<String, Clickable> _playerOpenMenu;
 
@@ -70,8 +69,8 @@ public class PrisonEscapeGame {
         _prison = new PrisonBuilding(referenceBlock);
 
         _playersOnLobby = new ArrayList<>();
-        _policeTeam = new PrisonEscapeTeam(POLICE_TEAM_NAME);
-        _prisionersTeam = new PrisonEscapeTeam(PRISIONERS_TEAM_NAME);
+        _policeTeam = new PrisonEscapeTeam<Guard>(POLICE_TEAM_NAME);
+        _prisionersTeam = new PrisonEscapeTeam<Prisioner>(PRISIONERS_TEAM_NAME);
 
         _playerOpenMenu = new Hashtable<>();
 
@@ -229,12 +228,12 @@ public class PrisonEscapeGame {
         return null;
     }
 
-    public boolean isPolice(PrisonEscapePlayer player) {
-        return _policeTeam.isOnTeam(player);
+    public boolean isGuard(PrisonEscapePlayer player) {
+        return player.isGuard();
     }
 
     public boolean isPrisioner(PrisonEscapePlayer player) {
-        return _prisionersTeam.isOnTeam(player);
+        return player.isPrisioner();
     }
 
 //	########################################
@@ -358,11 +357,11 @@ public class PrisonEscapeGame {
         startDay();
     }
 
-    private void startFinishedPhase(PrisonEscapeTeam winnerTeam) {
+    private void startFinishedPhase(PrisonEscapeTeam<? extends PrisonEscapePlayer> winnerTeam) {
         _phase = _phase.next();
 
         boolean prisionersWon = winnerTeam.getName().equals(_prisionersTeam.getName());
-        int playersInPrison = _prisionersTeam.countArrestedPlayers();
+        int playersInPrison = (int) _prisionersTeam.getMembers().stream().filter(p -> p.isImprisioned()).count();
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -476,22 +475,24 @@ public class PrisonEscapeGame {
             return;
         }
 
-        if (!_prisionersTeam.isOnTeam(player)) {
+        if (isPrisioner(player)) {
             return;
         }
 
-        if (player.hasEscaped()) {
+        Prisioner prisioner = (Prisioner) player;
+
+        if (prisioner.hasEscaped()) {
             return;
         }
 
         if (_prison.isOutsidePrison(loc)) {
-            playerEscaped(player);
+            playerEscaped(prisioner);
         }
 
         if (_prison.isInRestrictedArea(loc)) {
-            player.enteredRestrictedArea();
-        } else if (player.isInRestrictedArea()) {
-            player.leftRestrictedArea();
+            prisioner.enteredRestrictedArea();
+        } else if (prisioner.isInRestrictedArea()) {
+            prisioner.leftRestrictedArea();
         }
 
         if (_prison.checkIfMetalDetectorTriggered(loc, player)) {
@@ -535,18 +536,13 @@ public class PrisonEscapeGame {
 
             Helicopter helicopter = _prison.getHelicopter(blockLocation);
             if (helicopter != null) {
-                helicopter.click(
-                        player,
-                        isPrisioner(player),
-                        _prison.getHelicopterExitLocation(),
-                        _prison.getHelicopterJoinLocation()
-                );
+                helicopter.click(player, _prison.getHelicopterExitLocation(), _prison.getHelicopterJoinLocation());
                 return 0;
             }
 
             PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
                     blockLocation,
-                    _prisionersTeam.isOnTeam(player)
+                    isPrisioner(player)
             );
             if (destination != null) {
                 BukkitTeleporter.teleport(player, destination);
@@ -606,9 +602,9 @@ public class PrisonEscapeGame {
             return;
         }
 
-        if (_prisionersTeam.isOnTeam(player)) {
+        if (isPrisioner(player)) {
             sendMessageToPrisionersTeam(senderName, message);
-        } else if (_policeTeam.isOnTeam(player)) {
+        } else if (isGuard(player)) {
             sendMessageToPoliceTeam(senderName, message);
         }
     }
@@ -628,7 +624,7 @@ public class PrisonEscapeGame {
 //	#            Events Results            #
 //	########################################
 
-    public void playerEscaped(PrisonEscapePlayer player) {
+    public void playerEscaped(Prisioner player) {
         player.escaped();
 
         for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
@@ -636,12 +632,12 @@ public class PrisonEscapeGame {
             BukkitMessageSender.sendChatMessage(playerOnLobby, messages.getPlayerEscapedMessage(player.getName()));
         }
 
-        if (_prisionersTeam.countArrestedPlayers() == 0) {
+        if (_prisionersTeam.getMembers().stream().filter(p -> p.isImprisioned()).count() == 0) {
             startFinishedPhase(_prisionersTeam);
         }
     }
 
-    private void arrestPlayer(PrisonEscapePlayer arrested, PrisonEscapePlayer arrester) {
+    private void arrestPlayer(Prisioner arrested, Guard arrester) {
         teleportToSolitary(arrested);
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
@@ -713,13 +709,13 @@ public class PrisonEscapeGame {
 
         Vault vault = _prison.getVault(vaultIndex);
 
-        if (_policeTeam.isOnTeam(player)) {
+        if (isGuard(player)) {
             if (!(item instanceof SearchItem)) {
                 BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
                 return;
             }
 
-            policeSearchVault(player, vault, messages);
+            policeSearchVault((Guard) player, vault, messages);
             return;
         }
 
@@ -748,21 +744,21 @@ public class PrisonEscapeGame {
         return return_code;
     }
 
-    private void policeSearchVault(PrisonEscapePlayer player, Vault vault, MessageLanguageManager messagesPolice) {
-        PrisonEscapePlayer vaultOwner = vault.getOwner();
+    private void policeSearchVault(Guard guard, Vault vault, MessageLanguageManager messagesPolice) {
+        Prisioner vaultOwner = vault.getOwner();
         MessageLanguageManager messagesPrisioner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
 
         int returnCode = vault.search();
         if (returnCode == 1) {
-            player.setWanted();
+            vaultOwner.setWanted();
 
             BukkitMessageSender.sendChatMessage(
-                    player,
+                    guard,
                     messagesPolice.getPoliceFoundIllegalItemsMessage(vaultOwner.getName())
             );
             BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisioner.getPrisionerFoundIllegalItemsMessage());
         } else if (returnCode == 0) {
-            BukkitMessageSender.sendChatMessage(player, messagesPolice.getPoliceNoIllegalItemsFoundMessage());
+            BukkitMessageSender.sendChatMessage(guard, messagesPolice.getPoliceNoIllegalItemsFoundMessage());
             BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisioner.getPrisionerNoIllegalItemsFoundMessage());
         }
 
@@ -772,7 +768,7 @@ public class PrisonEscapeGame {
     private void playerOpenChest(PrisonEscapePlayer player, Chest chest) {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
-        if (_policeTeam.isOnTeam(player)) {
+        if (isGuard(player)) {
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceCanNotOpenChestMessage());
             return;
         }
@@ -830,9 +826,9 @@ public class PrisonEscapeGame {
     }
 
     public void policeHandcuffedPrisioner(String policeName, String prisionerName) {
-        PrisonEscapePlayer police = getPrisonEscapePlayer(policeName);
-        PrisonEscapePlayer prisioner = getPrisonEscapePlayer(prisionerName);
-        if (police == null || prisioner == null) {
+        PrisonEscapePlayer playerGuard = getPrisonEscapePlayer(policeName);
+        PrisonEscapePlayer playerPrisioner = getPrisonEscapePlayer(prisionerName);
+        if (playerGuard == null || playerPrisioner == null) {
             return;
         }
 
@@ -840,12 +836,15 @@ public class PrisonEscapeGame {
             return;
         }
 
-        if (!_prisionersTeam.isOnTeam(prisioner) || !_policeTeam.isOnTeam(police)) {
+        if (!isPrisioner(playerPrisioner) || !isGuard(playerGuard)) {
             return;
         }
 
+        Prisioner prisioner = (Prisioner) playerPrisioner;
+        Guard guard = (Guard) playerGuard;
+
         if (prisioner.canBeArrested()) {
-            arrestPlayer(prisioner, police);
+            arrestPlayer(prisioner, guard);
         } else {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
             BukkitMessageSender.sendChatMessage(prisionerName, messages.getNotWantedPlayerMessage());
@@ -853,9 +852,9 @@ public class PrisonEscapeGame {
     }
 
     public void policeInspectedPrisioner(String policeName, String prisionerName) {
-        PrisonEscapePlayer police = getPrisonEscapePlayer(policeName);
-        PrisonEscapePlayer prisioner = getPrisonEscapePlayer(prisionerName);
-        if (police == null || prisioner == null) {
+        PrisonEscapePlayer playerGuard = getPrisonEscapePlayer(policeName);
+        PrisonEscapePlayer playerPrisioner = getPrisonEscapePlayer(prisionerName);
+        if (playerGuard == null || playerPrisioner == null) {
             return;
         }
 
@@ -863,9 +862,11 @@ public class PrisonEscapeGame {
             return;
         }
 
-        if (!_prisionersTeam.isOnTeam(prisioner) || !_policeTeam.isOnTeam(police)) {
+        if (!isPrisioner(playerPrisioner) || !isGuard(playerGuard)) {
             return;
         }
+
+        Prisioner prisioner = (Prisioner) playerPrisioner;
 
         if (prisioner.hasIllegalItems()) {
             prisioner.setWanted();
@@ -906,7 +907,7 @@ public class PrisonEscapeGame {
     }
 
     public int playerFixWallCrack(PrisonEscapePlayer player, WallCrack crack) {
-        if (!_policeTeam.isOnTeam(player)) {
+        if (!isGuard(player)) {
             return -1;
         }
 
@@ -920,7 +921,7 @@ public class PrisonEscapeGame {
     }
 
     public int obstacleTookDamage(PrisonEscapePlayer player, Obstacle obstacle, Item item) {
-        if (!_prisionersTeam.isOnTeam(player)) {
+        if (isGuard(player)) {
             if (obstacle instanceof Regenerable) {
                 ((Regenerable) obstacle).regenerate();
                 return 0;
@@ -972,40 +973,40 @@ public class PrisonEscapeGame {
     }
 
     private void distributePlayersPerTeam() {
-        int numberOfPlayers = _playersOnLobby.size();
-        int requiredPrisioners = (int) Math.round(
-                numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
-        );
-        int requiredOfficers = (int) Math.round(
-                numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
-        );
-
-        Collections.shuffle(_playersOnLobby);
-        List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
-
-        for (PrisonEscapePlayer player : _playersOnLobby) {
-            TeamPreference preference = player.getPreference();
-
-            if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
-                _policeTeam.addMember(player);
-                requiredOfficers--;
-            } else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
-                _prisionersTeam.addMember(player);
-                requiredPrisioners--;
-            } else {
-                remainingPlayers.add(player);
-            }
-        }
-
-        for (PrisonEscapePlayer player : remainingPlayers) {
-            if (requiredPrisioners != 0) {
-                _prisionersTeam.addMember(player);
-                requiredPrisioners--;
-            } else {
-                _policeTeam.addMember(player);
-                requiredOfficers--;
-            }
-        }
+//        int numberOfPlayers = _playersOnLobby.size();
+//        int requiredPrisioners = (int) Math.round(
+//                numberOfPlayers * ConfigManager.getInstance().getPrisionerRatio()
+//        );
+//        int requiredOfficers = (int) Math.round(
+//                numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
+//        );
+//
+//        Collections.shuffle(_playersOnLobby);
+//        List<PrisonEscapePlayer> remainingPlayers = new ArrayList<>();
+//
+//        for (PrisonEscapePlayer player : _playersOnLobby) {
+//            TeamPreference preference = player.getPreference();
+//
+//            if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
+//                _policeTeam.addMember(player);
+//                requiredOfficers--;
+//            } else if (preference == TeamPreference.PRISIONERS && requiredPrisioners != 0) {
+//                _prisionersTeam.addMember(player);
+//                requiredPrisioners--;
+//            } else {
+//                remainingPlayers.add(player);
+//            }
+//        }
+//
+//        for (PrisonEscapePlayer player : remainingPlayers) {
+//            if (requiredPrisioners != 0) {
+//                _prisionersTeam.addMember(player);
+//                requiredPrisioners--;
+//            } else {
+//                _policeTeam.addMember(player);
+//                requiredOfficers--;
+//            }
+//        }
     }
 
 //	#########################################

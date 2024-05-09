@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.CameraItem;
@@ -53,6 +54,8 @@ public class Shop implements Clickable {
 
     @Override
     public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+        Guard guard = (Guard) player;
+
         if (clickedPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
@@ -70,7 +73,7 @@ public class Shop implements Clickable {
         Buyable buyableItem = (Buyable) item;
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
-        int returnCode = player.buyItem(item, buyableItem.getPrice());
+        int returnCode = guard.buyItem(item, buyableItem.getPrice());
         if (returnCode == -1) {
             BukkitMessageSender.sendChatMessage(player, messages.getReachedItemLimitMessage());
             return ClickReturnAction.NOTHING;
@@ -82,7 +85,7 @@ public class Shop implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        BukkitMessageSender.sendChatMessage(player, messages.getSuccessfullyBoughtItemMessage(player.getBalance()));
+        BukkitMessageSender.sendChatMessage(player, messages.getSuccessfullyBoughtItemMessage(guard.getBalance()));
         return ClickReturnAction.NOTHING;
     }
 
