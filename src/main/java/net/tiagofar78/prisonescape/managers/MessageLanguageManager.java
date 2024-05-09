@@ -57,7 +57,8 @@ public class MessageLanguageManager {
 //  ########################################
 
     private String _sbDisplayName;
-    private List<String> _guardSideBar;
+    private String _sideBarLastLine;
+    private String _guardSideBarBalanceLine;
 
 //	#######################################
 //	#                Items                #
@@ -178,7 +179,8 @@ public class MessageLanguageManager {
 
         String scoreboardPath = "Scoreboard.";
         _sbDisplayName = createMessage(messages.getString(scoreboardPath + "DisplayName"));
-        _guardSideBar = createMessage(messages.getStringList(scoreboardPath + "GuardSideBar"));
+        _sideBarLastLine = createMessage(messages.getString(scoreboardPath + "LastLine"));
+        _guardSideBarBalanceLine = createMessage(messages.getString(scoreboardPath + "GuardSideBar.BalanceLine"));
 
         _itemsNames = new Hashtable<>();
         _itemsLores = new Hashtable<>();
@@ -317,8 +319,12 @@ public class MessageLanguageManager {
         return _sbDisplayName;
     }
 
-    public List<String> getGuardSideBar() {
-        return _guardSideBar;
+    public String getSideBarLastLine() {
+        return _sideBarLastLine;
+    }
+
+    public String getGuardSideBarBalanceLine(int balance) {
+        return _guardSideBarBalanceLine.replace("{BALANCE}", Integer.toString(balance));
     }
 
 //	#######################################

@@ -8,6 +8,7 @@ import net.tiagofar78.prisonescape.kits.Kit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,6 @@ public abstract class PrisonEscapePlayer {
         _name = name;
         _isOnline = true;
         _inventory = createInventory();
-
-        applyScoreboard();
     }
 
     public boolean isPrisioner() {
@@ -173,19 +172,15 @@ public abstract class PrisonEscapePlayer {
 //  #              Scoreboard              #
 //  ########################################
 
-    public void applyScoreboard() {
-        setDefaultScoreboard();
+    public void setScoreboard(Scoreboard scoreboard) {
+        Player player = Bukkit.getPlayer(getName());
+        if (player != null && player.isOnline()) {
+            player.setScoreboard(scoreboard);
+        }
     }
 
     public void removeScoreboard() {
-        setDefaultScoreboard();
-    }
-
-    private void setDefaultScoreboard() {
-        Player player = Bukkit.getPlayer(getName());
-        if (player != null && player.isOnline()) {
-            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-        }
+        setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
     }
 
 //	########################################
