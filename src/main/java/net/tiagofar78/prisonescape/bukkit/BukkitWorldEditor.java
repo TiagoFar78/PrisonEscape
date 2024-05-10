@@ -1,17 +1,19 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.block.sign.Side;
 import org.bukkit.entity.TNTPrimed;
+
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 public class BukkitWorldEditor {
 
@@ -29,8 +31,14 @@ public class BukkitWorldEditor {
 
     public static void addSignAboveVault(PrisonEscapeLocation location, String text) {
         Location bukkitLocation = new Location(WORLD, location.getX(), location.getY() + 1, location.getZ());
-        bukkitLocation.getBlock().setType(Material.OAK_WALL_SIGN);
-        Sign sign = (Sign) bukkitLocation.getBlock().getState();
+        Block block = bukkitLocation.getBlock();
+        block.setType(Material.OAK_WALL_SIGN);
+        
+        Directional rotatable = (Directional) block.getBlockData();
+        rotatable.setFacing(BlockFace.WEST);
+        block.setBlockData(rotatable);
+        
+        Sign sign = (Sign) block.getState();
         sign.getSide(Side.FRONT).setLine(SIGN_INDEX, text);
         sign.update();
     }
@@ -40,6 +48,10 @@ public class BukkitWorldEditor {
 
         Block block = bukkitLocation.getBlock();
         block.setType(Material.CHEST);
+        
+        Directional rotatable = (Directional) block.getBlockData();
+        rotatable.setFacing(BlockFace.WEST);
+        block.setBlockData(rotatable);
     }
 
     public static void deleteVaultAndRespectiveSign(PrisonEscapeLocation location) {
