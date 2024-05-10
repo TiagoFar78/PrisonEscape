@@ -5,6 +5,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 
@@ -165,8 +166,10 @@ public class Vault implements Clickable {
     }
 
     private void rotate(Block block) {
+        ConfigManager config = ConfigManager.getInstance();
+
         Directional rotatable = (Directional) block.getBlockData();
-        rotatable.setFacing(BlockFace.WEST);
+        rotatable.setFacing(BlockFace.valueOf(config.getVaultsDirection()));
         block.setBlockData(rotatable);
     }
 

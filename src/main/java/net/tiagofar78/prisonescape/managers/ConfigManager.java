@@ -71,6 +71,7 @@ public class ConfigManager {
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
+    private String _vaultsDirection;
     private List<PrisonEscapeLocation> _chestsLocations;
     private List<PrisonEscapeLocation> _goldenDoorsLocations;
     private List<PrisonEscapeLocation> _grayDoorsLocations;
@@ -143,6 +144,7 @@ public class ConfigManager {
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
+        _vaultsDirection = config.getString("VaultsDirection");
         _chestsLocations = createLocationList(config, "ChestsLocations");
         _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
         _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations");
@@ -487,6 +489,10 @@ public class ConfigManager {
 
     public List<PrisonEscapeLocation> getVaultsLocations() {
         return createLocationsListCopy(_vaultsLocations);
+    }
+
+    public String getVaultsDirection() {
+        return _vaultsDirection;
     }
 
     public List<PrisonEscapeLocation> getChestsLocations() {

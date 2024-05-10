@@ -131,6 +131,7 @@ PoliceSecretPassagesLocation:
       X: 3
       Y: 100
       Z: 8
+VaultsDirection: "WEST"
 VaultsLocations:
   "1":
     X: 5
