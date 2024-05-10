@@ -288,7 +288,7 @@ ChestsLocations:
   "31": # Gym
     X: -41
     Y: 100
-    Z: -39
+    Z: -40
   "32":
     X: -45
     Y: 100
@@ -359,7 +359,7 @@ ChestsLocations:
     Z: 33
   "49":
     X: -9
-    Y: 104
+    Y: 103
     Z: 34
   "50":
     X: -10
@@ -592,26 +592,103 @@ Regions:
         Z: -43
 ChestsContents:
   Default: # These are the chest contents by default - DON'T CHANGE THE NAME!
-    Bolts: 0.25
-    Oil: 0.05
-    Stick: 0.10
+    Bolts: 0.05
+    DuctTape: 0.025
+    Matches: 0.05
+    Oil: 0.01
+    Stick: 0.005
+    PlasticPlate: 0.01
+    Copper: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.025
   CellBlock:
-    Bolts: 0.25
-    Oil: 0.05
-    Stick: 0.10
-    CellPhone: 0.5
+    Bolts: 0.05
+    DuctTape: 0.025
+    Matches: 0.05
+    Oil: 0.01
+    Stick: 0.005
+    PlasticPlate: 0.01
+    Copper: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.025
   Office:
-    Bolts: 0.01
+    Bolts: 0.05
+    DuctTape: 0.025
+    Matches: 0.05
+    Oil: 0.01
+    Stick: 0.005
+    PlasticPlate: 0.01
+    Copper: 0.05
+    Antena: 0.025
+    Battery: 0.025
+    NotePart: 0.05
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.075
+    PlasticShovel: 0.025
+    WireCutter: 0.01
+    Wrench: 0.01
   Yard:
-    Bolts: 0.01
+    Bolts: 0.05
+    DuctTape: 0.025
+    Matches: 0.075
+    Oil: 0.01
+    Stick: 0.025
+    PlasticPlate: 0.01
+    Copper: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.025
   Gym:
-    Bolts: 0.01
+    Bolts: 0.05
+    DuctTape: 0.05
+    Matches: 0.05
+    Oil: 0.01
+    Stick: 0.05
+    PlasticPlate: 0.05
+    MetalPlate: 0.01
+    Copper: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.025
+    PlasticShovel: 0.01
   FoodHall:
-    Bolts: 0.01
+    Bolts: 0.05
+    DuctTape: 0.025
+    Matches: 0.05
+    Oil: 0.075
+    Stick: 0.005
+    PlasticPlate: 0.1
+    MetalPlate: 0.01
+    Copper: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.1
+    MetalSpoon: 0.05
   Toilets:
-    Bolts: 0.01
-  Solitary:
-    Bolts: 0.01
+    Bolts: 0.05
+    DuctTape: 0.075
+    Matches: 0.075
+    Oil: 0.01
+    Stick: 0.005
+    PlasticPlate: 0.01
+    Copper: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.025
 WallCorners:
   "1":
     X: 43
