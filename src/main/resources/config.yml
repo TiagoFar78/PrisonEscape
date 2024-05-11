@@ -6,10 +6,24 @@ SecondsInSolitary: 30
 DaysAmount: 4
 DayDuration: 120
 NightDuration: 60
+StartingBalance: 100
+TrapLimit: 2
+SensorLimit: 2
+RadarLimit: -1
+EnergyDrinkLimit: -1
+CameraLimit: 1
+TrapPrice: 10
+SensorPrice: 10
+RadarPrice: 10
+EnergyDrinkPrice: 10
+CameraPrice: 10
 WaitingPhaseDuration: 300
 FullLobbyWaitDuration: 10
 FinishedPhaseDuration: 30
 DelayBetweenAnnouncements: 30
+CommonItemsProbability: 0.8
+RareItemsProbability: 0.25
+ChestSize: 5
 SpeedDuration: 15
 SpeedLevel: 2
 HelicopterSpawnDelay: 10
@@ -94,6 +108,7 @@ PoliceSecretPassagesLocation:
       X: 0
       Y: 0
       Z: 0
+VaultsDirection: "NORTH"
 VaultsLocations:
   "1":
     X: 0
@@ -177,17 +192,3 @@ Vents:
     X: 0
     Y: 0
     Z: 0
-CommonItemsProbability: 0.8
-RareItemsProbability: 0.25
-ChestSize: 5
-StartingBalance: 100
-TrapLimit: 2
-SensorLimit: 2
-RadarLimit: -1
-EnergyDrinkLimit: -1
-CameraLimit: 1
-TrapPrice: 10
-SensorPrice: 10
-RadarPrice: 10
-EnergyDrinkPrice: 10
-CameraPrice: 10
