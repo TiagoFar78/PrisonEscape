@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.Guard;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,7 +23,7 @@ public class Camera {
         _armorStand.setInvulnerable(true);
     }
 
-    public void addWatcher(PrisonEscapePlayer player) {
+    public void addWatcher(Guard player) {
         Player bukkitPlayer = Bukkit.getPlayer(player.getName());
         bukkitPlayer.setSpectatorTarget(_armorStand);
     }

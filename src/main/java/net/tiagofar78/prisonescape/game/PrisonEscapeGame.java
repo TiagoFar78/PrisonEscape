@@ -80,6 +80,10 @@ public class PrisonEscapeGame {
         startWaitingPhase();
     }
 
+    public PrisonBuilding getPrison() {
+        return _prison;
+    }
+
 //	#########################################
 //	#                 Lobby                 #
 //	#########################################
