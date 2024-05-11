@@ -4,6 +4,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Guard;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
@@ -25,6 +26,7 @@ public class Camera {
 
     public void addWatcher(Guard player) {
         Player bukkitPlayer = Bukkit.getPlayer(player.getName());
+        bukkitPlayer.setGameMode(GameMode.SPECTATOR);
         bukkitPlayer.setSpectatorTarget(_armorStand);
     }
 
