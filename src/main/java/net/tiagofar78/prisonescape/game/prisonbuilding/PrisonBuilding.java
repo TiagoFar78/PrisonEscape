@@ -22,6 +22,8 @@ public class PrisonBuilding {
 
     private static final String PRISON_REGION_NAME = "PRISON";
 
+    private PrisonEscapeLocation _reference;
+
     private PrisonEscapeLocation _waitingLobbyLocation;
     private Region _prison;
     private List<Region> _regions;
@@ -35,7 +37,6 @@ public class PrisonBuilding {
     private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
 
     private List<Vault> _vaults;
-    private List<PrisonEscapeLocation> _vaultsLocations;
 
     private Hashtable<String, Chest> _chests;
     private Hashtable<String, Door> _doors;
@@ -53,6 +54,8 @@ public class PrisonBuilding {
 
     public PrisonBuilding(PrisonEscapeLocation reference) {
         ConfigManager config = ConfigManager.getInstance();
+
+        _reference = reference;
 
         PrisonEscapeLocation prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
         PrisonEscapeLocation prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
@@ -75,7 +78,6 @@ public class PrisonBuilding {
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
 
         _vaults = new ArrayList<>();
-        _vaultsLocations = createLocationsList(reference, config.getVaultsLocations());
 
         _chests = new Hashtable<>();
         for (PrisonEscapeLocation loc : config.getChestsLocations()) {
@@ -233,13 +235,11 @@ public class PrisonBuilding {
 //	#########################################
 
     public void addVaults(List<Prisioner> prisioners) {
-        for (int i = 0; i < prisioners.size(); i++) {
-            _vaults.add(new Vault(prisioners.get(i)));
+        ConfigManager config = ConfigManager.getInstance();
+        List<PrisonEscapeLocation> vaultsLocations = createLocationsList(_reference, config.getVaultsLocations());
 
-            String signText = prisioners.get(i).getName();
-            PrisonEscapeLocation vaultLocation = _vaultsLocations.get(i);
-            BukkitWorldEditor.addSignAboveVault(vaultLocation, signText);
-            BukkitWorldEditor.addVault(vaultLocation);
+        for (int i = 0; i < prisioners.size(); i++) {
+            _vaults.add(new Vault(prisioners.get(i), vaultsLocations.get(i)));
         }
     }
 
@@ -248,8 +248,8 @@ public class PrisonBuilding {
     }
 
     public int getVaultIndex(PrisonEscapeLocation location) {
-        for (int i = 0; i < _vaultsLocations.size(); i++) {
-            if (_vaultsLocations.get(i).equals(location)) {
+        for (int i = 0; i < _vaults.size(); i++) {
+            if (_vaults.get(i).isIn(location)) {
                 return i;
             }
         }
@@ -258,8 +258,8 @@ public class PrisonBuilding {
     }
 
     public void deleteVaults() {
-        for (PrisonEscapeLocation location : _vaultsLocations) {
-            BukkitWorldEditor.deleteVaultAndRespectiveSign(location);
+        for (Vault vault : _vaults) {
+            vault.deleteVaultAndRespectiveSignFromWorld();
         }
     }
 
@@ -290,11 +290,11 @@ public class PrisonBuilding {
     }
 
     public void removeExplodedBlocks(List<Block> explodedBlocks) {
-        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream()
-                .filter(b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK)
-                .map(b -> b.getLocation())
-                .map(l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ()))
-                .toList();
+        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream().filter(
+                b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK
+        ).map(b -> b.getLocation()).map(
+                l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ())
+        ).toList();
 
         _wall.crackedBlocksExploded(crackedBlocksLocations);
     }

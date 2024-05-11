@@ -19,7 +19,8 @@ public class Dirt extends Obstacle {
 
     @Override
     public boolean isEffectiveTool(ToolItem tool) {
-        return tool instanceof PlasticSpoonItem || tool instanceof MetalSpoonItem || tool instanceof PlasticShovelItem || tool instanceof MetalShovelItem;
+        return tool instanceof PlasticSpoonItem || tool instanceof MetalSpoonItem ||
+                tool instanceof PlasticShovelItem || tool instanceof MetalShovelItem;
     }
 
     @Override
@@ -32,9 +33,9 @@ public class Dirt extends Obstacle {
     }
 
     private boolean isBetweenCorners(int x, int y, int z) {
-        return _lowerCornerLocation.getX() <= x && x <= _upperCornerLocation.getX() && _lowerCornerLocation
-                .getY() <= y && y <= _upperCornerLocation.getY() && _lowerCornerLocation
-                        .getZ() <= z && z <= _upperCornerLocation.getZ();
+        return _lowerCornerLocation.getX() <= x && x <= _upperCornerLocation.getX() &&
+                _lowerCornerLocation.getY() <= y && y <= _upperCornerLocation.getY() &&
+                _lowerCornerLocation.getZ() <= z && z <= _upperCornerLocation.getZ();
     }
 
     @Override

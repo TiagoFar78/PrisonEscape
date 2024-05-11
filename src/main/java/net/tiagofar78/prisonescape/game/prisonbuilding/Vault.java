@@ -2,11 +2,22 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.sign.Side;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +26,7 @@ public class Vault implements Clickable {
 
     private static final int NON_HIDDEN_SIZE = 4;
     private static final int HIDDEN_SIZE = 1;
+    private static final int SIGN_OWNER_NAME_LINE__INDEX = 1;
 
     private List<Item> _nonHiddenContents;
     private List<Item> _hiddenContents;
@@ -22,12 +34,22 @@ public class Vault implements Clickable {
 
     private Prisioner _owner;
 
-    public Vault(Prisioner owner) {
+    private PrisonEscapeLocation _location;
+  
+    public Vault(Prisioner owner, PrisonEscapeLocation location) {
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
         _isOpen = false;
 
-        this._owner = owner;
+        _owner = owner;
+
+        _location = location;
+        createWorldVault(location);
+        createWorldSignAboveVault(location, _owner.getName());
+    }
+
+    public boolean isIn(PrisonEscapeLocation location) {
+        return _location.equals(location);
     }
 
     private List<Item> createContentsList(int size) {
@@ -115,6 +137,50 @@ public class Vault implements Clickable {
 
         setItem(isHidden, itemIndex, itemHeld);
         return ClickReturnAction.CHANGE_HOLD_AND_SELECTED;
+    }
+
+//  #########################################
+//  #                 World                 #
+//  #########################################
+
+    private void createWorldVault(PrisonEscapeLocation location) {
+        World world = BukkitWorldEditor.getWorld();
+        Location bukkitLocation = new Location(world, location.getX(), location.getY(), location.getZ());
+
+        Block block = bukkitLocation.getBlock();
+        block.setType(Material.CHEST);
+
+        rotate(block);
+    }
+
+    private void createWorldSignAboveVault(PrisonEscapeLocation location, String text) {
+        World world = BukkitWorldEditor.getWorld();
+        Location bukkitLocation = new Location(world, location.getX(), location.getY() + 1, location.getZ());
+        Block block = bukkitLocation.getBlock();
+        block.setType(Material.OAK_WALL_SIGN);
+
+        rotate(block);
+
+        Sign sign = (Sign) block.getState();
+        sign.getSide(Side.FRONT).setLine(SIGN_OWNER_NAME_LINE__INDEX, text);
+        sign.update();
+    }
+
+    private void rotate(Block block) {
+        ConfigManager config = ConfigManager.getInstance();
+
+        Directional rotatable = (Directional) block.getBlockData();
+        rotatable.setFacing(BlockFace.valueOf(config.getVaultsDirection()));
+        block.setBlockData(rotatable);
+    }
+
+    public void deleteVaultAndRespectiveSignFromWorld() {
+        World world = BukkitWorldEditor.getWorld();
+        Location vaultLocation = new Location(world, _location.getX(), _location.getY(), _location.getZ());
+        Location signLocation = new Location(world, _location.getX(), _location.getY() + 1, _location.getZ());
+
+        vaultLocation.getBlock().setType(Material.AIR);
+        signLocation.getBlock().setType(Material.AIR);
     }
 
 }

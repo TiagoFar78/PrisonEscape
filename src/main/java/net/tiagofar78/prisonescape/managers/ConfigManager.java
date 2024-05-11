@@ -71,6 +71,7 @@ public class ConfigManager {
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
+    private String _vaultsDirection;
     private List<PrisonEscapeLocation> _chestsLocations;
     private List<PrisonEscapeLocation> _goldenDoorsLocations;
     private List<PrisonEscapeLocation> _grayDoorsLocations;
@@ -143,6 +144,7 @@ public class ConfigManager {
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
+        _vaultsDirection = config.getString("VaultsDirection");
         _chestsLocations = createLocationList(config, "ChestsLocations");
         _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
         _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations");
@@ -173,10 +175,9 @@ public class ConfigManager {
     private List<PrisonEscapeLocation> createLocationList(YamlConfiguration config, String path) {
         List<PrisonEscapeLocation> list = new ArrayList<>();
 
-        List<String> filteredKeys = config.getKeys(true)
-                .stream()
-                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
-                .toList();
+        List<String> filteredKeys = config.getKeys(true).stream().filter(
+                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
+        ).toList();
 
         for (String key : filteredKeys) {
             list.add(createLocation(config, key));
@@ -188,10 +189,9 @@ public class ConfigManager {
     private List<List<PrisonEscapeLocation>> createLocationPairList(YamlConfiguration config, String path) {
         List<List<PrisonEscapeLocation>> list = new ArrayList<>();
 
-        List<String> filteredKeys = config.getKeys(true)
-                .stream()
-                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
-                .toList();
+        List<String> filteredKeys = config.getKeys(true).stream().filter(
+                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
+        ).toList();
 
         for (String key : filteredKeys) {
             List<PrisonEscapeLocation> pair = new ArrayList<>();
@@ -206,10 +206,9 @@ public class ConfigManager {
     private List<List<String>> createStringListList(YamlConfiguration config, String path) {
         List<List<String>> list = new ArrayList<>();
 
-        List<String> filteredKeys = config.getKeys(true)
-                .stream()
-                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
-                .toList();
+        List<String> filteredKeys = config.getKeys(true).stream().filter(
+                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
+        ).toList();
 
         for (String key : filteredKeys) {
             list.add(config.getStringList(key));
@@ -224,10 +223,9 @@ public class ConfigManager {
     ) {
         Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> map = new Hashtable<>();
 
-        List<String> filteredKeys = config.getKeys(true)
-                .stream()
-                .filter(key -> key.startsWith(path) && key.lastIndexOf(".") == path.length())
-                .toList();
+        List<String> filteredKeys = config.getKeys(true).stream().filter(
+                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
+        ).toList();
 
         for (String key : filteredKeys) {
             map.put(createLocation(config, key + ".Key"), createLocation(config, key + ".Value"));
@@ -241,23 +239,19 @@ public class ConfigManager {
 
         String regionsPath = "Regions";
 
-        List<String> regionsNamesPaths = config.getKeys(true)
-                .stream()
-                .filter(key -> key.startsWith(regionsPath) && key.lastIndexOf(".") == regionsPath.length())
-                .toList();
+        List<String> regionsNamesPaths = config.getKeys(true).stream().filter(
+                key -> key.startsWith(regionsPath) && key.lastIndexOf(".") == regionsPath.length()
+        ).toList();
 
         for (String regionNamePath : regionsNamesPaths) {
             String name = regionNamePath.substring(regionsPath.length() + 1);
             boolean isRestricted = config.getBoolean(regionNamePath + ".IsRestricted");
             boolean cutCellPhoneCalls = config.getBoolean(regionNamePath + ".CutCellPhoneCalls");
 
-            List<String> regionsPaths = config.getKeys(true)
-                    .stream()
-                    .filter(
-                            key -> key.startsWith(regionNamePath + ".") && key.lastIndexOf(".") == regionNamePath
-                                    .length() && !key.contains("IsRestricted") && !key.contains("HasCellPhoneCoverage")
-                    )
-                    .toList();
+            List<String> regionsPaths = config.getKeys(true).stream().filter(
+                    key -> key.startsWith(regionNamePath + ".") && key.lastIndexOf(".") == regionNamePath.length() &&
+                            !key.contains("IsRestricted") && !key.contains("HasCellPhoneCoverage")
+            ).toList();
 
             for (String regionPath : regionsPaths) {
                 PrisonEscapeLocation upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
@@ -283,13 +277,9 @@ public class ConfigManager {
 
         String chestsContentsPath = "ChestsContents";
 
-        List<String> paths = config.getKeys(true)
-                .stream()
-                .filter(
-                        key -> key.startsWith(chestsContentsPath + ".") && key.lastIndexOf(".") != chestsContentsPath
-                                .length()
-                )
-                .toList();
+        List<String> paths = config.getKeys(true).stream().filter(
+                key -> key.startsWith(chestsContentsPath + ".") && key.lastIndexOf(".") != chestsContentsPath.length()
+        ).toList();
         for (String path : paths) {
             int lastIndexOfDot = path.lastIndexOf(".");
             String regionName = path.substring(chestsContentsPath.length() + 1, lastIndexOfDot);
@@ -499,6 +489,10 @@ public class ConfigManager {
 
     public List<PrisonEscapeLocation> getVaultsLocations() {
         return createLocationsListCopy(_vaultsLocations);
+    }
+
+    public String getVaultsDirection() {
+        return _vaultsDirection;
     }
 
     public List<PrisonEscapeLocation> getChestsLocations() {

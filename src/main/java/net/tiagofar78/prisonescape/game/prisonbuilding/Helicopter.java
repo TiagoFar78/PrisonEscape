@@ -55,8 +55,8 @@ public class Helicopter {
         int y = location.getY();
         int z = location.getZ();
 
-        return _lowerLocation.getX() <= x && x <= _upperLocation.getX() && _lowerLocation
-                .getY() <= y && y <= _upperLocation.getY() && _lowerLocation.getZ() <= z && z <= _upperLocation.getZ();
+        return _lowerLocation.getX() <= x && x <= _upperLocation.getX() && _lowerLocation.getY() <= y &&
+                y <= _upperLocation.getY() && _lowerLocation.getZ() <= z && z <= _upperLocation.getZ();
     }
 
     public boolean isOnGround() {
@@ -153,11 +153,9 @@ public class Helicopter {
 
             World world = BukkitAdapter.adapt(BukkitWorldEditor.getWorld());
             EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
-            Operation operation = new ClipboardHolder(clipboard)
-                    .createPaste(editSession)
-                    .to(BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ()))
-                    .ignoreAirBlocks(false)
-                    .build();
+            Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(
+                    BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ())
+            ).ignoreAirBlocks(false).build();
             Operations.complete(operation);
             editSession.commit();
             editSession.close();
