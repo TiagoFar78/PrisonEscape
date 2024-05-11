@@ -349,6 +349,10 @@ public class PrisonBuilding {
 //  #                Cameras                #
 //  #########################################
 
+    public List<Camera> getCameras() {
+        return _cameras;
+    }
+
     public void addCamera(PrisonEscapeLocation location) {
         _cameras.add(new Camera(location));
     }

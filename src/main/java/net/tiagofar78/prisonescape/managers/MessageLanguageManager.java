@@ -119,6 +119,7 @@ public class MessageLanguageManager {
     private String _helicopterOnTheWayMessage;
     private String _noCellPhoneCoverageMessage;
     private String _cameraPlacedMessage;
+    private String _noCamerasPlacedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -251,6 +252,7 @@ public class MessageLanguageManager {
         _helicopterOnTheWayMessage = createMessage(messages.getString(warningPath + "HelicopterOnTheWay"));
         _noCellPhoneCoverageMessage = createMessage(messages.getString(warningPath + "NoCellPhoneCoverage"));
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
+        _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -511,6 +513,10 @@ public class MessageLanguageManager {
 
     public String getCameraPlacedMessage() {
         return _cameraPlacedMessage;
+    }
+
+    public String getNoCamerasPlacedMessage() {
+        return _noCamerasPlacedMessage;
     }
 
 //	########################################

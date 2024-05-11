@@ -962,7 +962,7 @@ public class PrisonEscapeGame {
 //	#                 Util                 #
 //	########################################
 
-    private PrisonEscapePlayer getPrisonEscapePlayer(String playerName) {
+    public PrisonEscapePlayer getPrisonEscapePlayer(String playerName) {
         for (PrisonEscapePlayer player : _playersOnLobby) {
             if (player.getName().equals(playerName)) {
                 return player;
