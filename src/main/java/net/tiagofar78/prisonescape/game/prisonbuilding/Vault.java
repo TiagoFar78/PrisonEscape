@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
@@ -31,11 +32,11 @@ public class Vault implements Clickable {
     private List<Item> _hiddenContents;
     private boolean _isOpen;
 
-    private PrisonEscapePlayer _owner;
+    private Prisioner _owner;
 
     private PrisonEscapeLocation _location;
 
-    public Vault(PrisonEscapePlayer owner, PrisonEscapeLocation location) {
+    public Vault(Prisioner owner, PrisonEscapeLocation location) {
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
         _isOpen = false;
@@ -61,7 +62,7 @@ public class Vault implements Clickable {
         return list;
     }
 
-    public PrisonEscapePlayer getOwner() {
+    public Prisioner getOwner() {
         return _owner;
     }
 

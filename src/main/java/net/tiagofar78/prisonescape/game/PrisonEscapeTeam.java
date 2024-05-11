@@ -3,10 +3,10 @@ package net.tiagofar78.prisonescape.game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrisonEscapeTeam {
+public class PrisonEscapeTeam<T extends PrisonEscapePlayer> {
 
     private String _name;
-    private List<PrisonEscapePlayer> _players;
+    private List<T> _players;
 
     public PrisonEscapeTeam(String name) {
         this._name = name;
@@ -17,7 +17,7 @@ public class PrisonEscapeTeam {
         return _name;
     }
 
-    public void addMember(PrisonEscapePlayer player) {
+    public void addMember(T player) {
         _players.add(player);
     }
 
@@ -27,10 +27,11 @@ public class PrisonEscapeTeam {
                 return i;
             }
         }
+
         return -1;
     }
 
-    public List<PrisonEscapePlayer> getMembers() {
+    public List<T> getMembers() {
         return _players;
     }
 
@@ -38,15 +39,15 @@ public class PrisonEscapeTeam {
         return _players.contains(player);
     }
 
-    public int countArrestedPlayers() {
-        return (int) _players.stream().filter(player -> !player.hasEscaped() && player.isOnline()).count();
-    }
+//    public int countArrestedPlayers() {
+//        return (int) _players.stream().filter(player -> ).count();
+//    }
 
     public int getSize() {
         return _players.size();
     }
 
-    public PrisonEscapePlayer getMember(int index) {
+    public T getMember(int index) {
         return _players.get(index);
     }
 

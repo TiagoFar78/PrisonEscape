@@ -21,6 +21,7 @@ import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -41,7 +42,7 @@ public class Helicopter {
 
     private PrisonEscapeLocation _upperLocation;
     private PrisonEscapeLocation _lowerLocation;
-    private List<PrisonEscapePlayer> _players = new ArrayList<>();
+    private List<Prisioner> _players = new ArrayList<>();
     private boolean _isOnGround = false;
 
     protected Helicopter(PrisonEscapeLocation upperLocation, PrisonEscapeLocation lowerLocation) {
@@ -103,32 +104,27 @@ public class Helicopter {
         destroyHelicopter();
 
         PrisonEscapeGame game = GameManager.getGame();
-        for (PrisonEscapePlayer player : _players) {
+        for (Prisioner player : _players) {
             game.playerEscaped(player);
         }
 
         _players.clear();
     }
 
-    public void click(
-            PrisonEscapePlayer player,
-            boolean isPrisioner,
-            PrisonEscapeLocation exitLocation,
-            PrisonEscapeLocation joinLocation
-    ) {
+    public void click(PrisonEscapePlayer player, PrisonEscapeLocation exitLocation, PrisonEscapeLocation joinLocation) {
         if (!isOnGround()) {
             return;
         }
 
-        if (isPrisioner) {
-            prisionerClicked(player, joinLocation);
+        if (player.isPrisioner()) {
+            prisionerClicked((Prisioner) player, joinLocation);
             return;
         }
 
         policeClicked(exitLocation);
     }
 
-    private void prisionerClicked(PrisonEscapePlayer player, PrisonEscapeLocation joinLocation) {
+    private void prisionerClicked(Prisioner player, PrisonEscapeLocation joinLocation) {
         if (_players.contains(player)) {
             return;
         }

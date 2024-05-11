@@ -52,6 +52,14 @@ public class MessageLanguageManager {
         return ConfigManager.getInstance().getDefaultLanguage();
     }
 
+//  ########################################
+//  #              Scoreboard              #
+//  ########################################
+
+    private String _sbDisplayName;
+    private String _sideBarLastLine;
+    private String _guardSideBarBalanceLine;
+
 //	#######################################
 //	#                Items                #
 //	#######################################
@@ -71,7 +79,7 @@ public class MessageLanguageManager {
     private String _vaultHiddenGlassName;
 
 //	########################################
-//	#                Chat                #
+//	#                 Chat                 #
 //	########################################
 
     private String _generalMessage;
@@ -168,6 +176,11 @@ public class MessageLanguageManager {
 
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
+
+        String scoreboardPath = "Scoreboard.";
+        _sbDisplayName = createMessage(messages.getString(scoreboardPath + "DisplayName"));
+        _sideBarLastLine = createMessage(messages.getString(scoreboardPath + "LastLine"));
+        _guardSideBarBalanceLine = createMessage(messages.getString(scoreboardPath + "GuardSideBar.BalanceLine"));
 
         _itemsNames = new Hashtable<>();
         _itemsLores = new Hashtable<>();
@@ -296,6 +309,22 @@ public class MessageLanguageManager {
         }
 
         return message;
+    }
+
+//  ########################################
+//  #              Scoreboard              #
+//  ########################################
+
+    public String getScoreboardDisplayName() {
+        return _sbDisplayName;
+    }
+
+    public String getSideBarLastLine() {
+        return _sideBarLastLine;
+    }
+
+    public String getGuardSideBarBalanceLine(int balance) {
+        return _guardSideBarBalanceLine.replace("{BALANCE}", Integer.toString(balance));
     }
 
 //	#######################################
