@@ -35,6 +35,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
@@ -314,6 +315,15 @@ public class Events implements Listener {
         if (item.isFunctional()) {
             ((FunctionalItem) item).use(e);
         }
+    }
+
+    @EventHandler
+    public void onPlayerSneak(PlayerToggleSneakEvent e) {
+        if (GameManager.getGame() == null) {
+            return;
+        }
+
+
     }
 
     @EventHandler

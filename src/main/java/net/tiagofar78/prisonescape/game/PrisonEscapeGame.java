@@ -604,6 +604,22 @@ public class PrisonEscapeGame {
         return clicakble.click(player, slot, itemHeld, clickedPlayerInv);
     }
 
+    public void playerSneak(String playerName) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+
+        if (!player.isGuard()) {
+            return;
+        }
+
+        Guard guard = (Guard) player;
+        if (guard.isWatchingCamera()) {
+            guard.stoppedWatchingCamera();
+        }
+    }
+
     public void sendTeamOnlyMessage(String senderName, String message) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(senderName);
         if (player == null) {

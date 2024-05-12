@@ -7,6 +7,7 @@ import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.Kit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -186,6 +187,13 @@ public abstract class PrisonEscapePlayer {
 //	########################################
 //	#                 Util                 #
 //	########################################
+
+    public void setGameMode(GameMode gameMode) {
+        Player player = Bukkit.getPlayer(getName());
+        if (player != null && player.isOnline()) {
+            player.setGameMode(gameMode);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

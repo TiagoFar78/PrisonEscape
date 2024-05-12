@@ -1,11 +1,15 @@
 package net.tiagofar78.prisonescape.game;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SensorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.GameMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,8 @@ public class Guard extends PrisonEscapePlayer {
     private int _numOfCamerasBought = 0;
     private int _numOfSensorsBought = 0;
     private int _numOfTrapsBought = 0;
+
+    private PrisonEscapeLocation _locationBeforeWatchingCameras = null;
 
     private ScoreboardData _scoreboardData;
 
@@ -90,6 +96,24 @@ public class Guard extends PrisonEscapePlayer {
         } else if (item instanceof SensorItem) {
             _numOfSensorsBought++;
         }
+    }
+
+//  ########################################
+//  #                Camera                #
+//  ########################################
+
+    public boolean isWatchingCamera() {
+        return _locationBeforeWatchingCameras != null;
+    }
+
+    public void startedWatchingCamera(PrisonEscapeLocation location) {
+        _locationBeforeWatchingCameras = location;
+    }
+
+    public void stoppedWatchingCamera() {
+        BukkitTeleporter.teleport(this, _locationBeforeWatchingCameras);
+        setGameMode(GameMode.SURVIVAL);
+        _locationBeforeWatchingCameras = null;
     }
 
 //  ########################################
