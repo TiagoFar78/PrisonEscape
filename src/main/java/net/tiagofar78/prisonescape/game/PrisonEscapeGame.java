@@ -406,6 +406,7 @@ public class PrisonEscapeGame {
         }
 
         _prison.deleteVaults();
+        _prison.deleteCameras();
 
         GameManager.removeGame();
     }

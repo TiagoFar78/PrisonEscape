@@ -357,6 +357,12 @@ public class PrisonBuilding {
         _cameras.add(new Camera(location));
     }
 
+    public void deleteCameras() {
+        for (Camera camera : _cameras) {
+            camera.delete();
+        }
+    }
+
 //	#########################################
 //	#               Locations               #
 //	#########################################
