@@ -72,6 +72,9 @@ Items:
     Name: "Missions Book"
   OpenCameras:
     Name: "Cameras"
+    Lore:
+    - "&eLeft click to go to next camera"
+    - "&eRight click to go to selected camera view"
   Shop:
     Name: "Shop"
   Search:

@@ -20,8 +20,8 @@ public class Camera {
 
         Location bukkitLoc = new Location(world, location.getX() + 0.5, location.getY(), location.getZ() + 0.5);
         _armorStand = (ArmorStand) world.spawnEntity(bukkitLoc, EntityType.ARMOR_STAND);
-        _armorStand.setVisible(false);
-        _armorStand.setInvulnerable(true);
+        _armorStand.setVisible(true); // TODO change later
+        _armorStand.setInvulnerable(false); // TODO change later
     }
 
     public void addWatcher(Guard player) {
