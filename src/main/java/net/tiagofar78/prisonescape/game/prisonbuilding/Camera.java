@@ -16,12 +16,7 @@ public class Camera {
     private ArmorStand _armorStand;
 
     public Camera(PrisonEscapeLocation location) {
-        World world = BukkitWorldEditor.getWorld();
-
-        Location bukkitLoc = new Location(world, location.getX() + 0.5, location.getY(), location.getZ() + 0.5);
-        _armorStand = (ArmorStand) world.spawnEntity(bukkitLoc, EntityType.ARMOR_STAND);
-        _armorStand.setVisible(false);
-        _armorStand.setInvulnerable(true);
+        _armorStand = createCameraRepresentation(location);
     }
 
     public void addWatcher(Guard player) {
@@ -32,6 +27,17 @@ public class Camera {
 
     public void delete() {
         _armorStand.remove();
+    }
+
+    private ArmorStand createCameraRepresentation(PrisonEscapeLocation location) {
+        World world = BukkitWorldEditor.getWorld();
+
+        Location bukkitLoc = new Location(world, location.getX() + 0.5, location.getY(), location.getZ() + 0.5);
+        ArmorStand armorStand = (ArmorStand) world.spawnEntity(bukkitLoc, EntityType.ARMOR_STAND);
+        armorStand.setVisible(false);
+        armorStand.setInvulnerable(true);
+
+        return armorStand;
     }
 
 }

@@ -135,6 +135,7 @@ public abstract class PrisonEscapePlayer {
         }
 
         _inventory.set(index, new NullItem());
+        BukkitMenu.setItem(_name, index, new NullItem());
         return 0;
     }
 
