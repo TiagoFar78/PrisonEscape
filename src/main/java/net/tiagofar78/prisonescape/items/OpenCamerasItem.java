@@ -47,9 +47,10 @@ public class OpenCamerasItem extends FunctionalItem {
         String playerName = e.getPlayer().getName();
         PrisonEscapeGame game = GameManager.getGame();
 
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
         List<Camera> cameras = game.getPrison().getCameras();
         if (cameras.size() == 0) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
             BukkitMessageSender.sendChatMessage(playerName, messages.getNoCamerasPlacedMessage());
             return;
         }
@@ -70,6 +71,8 @@ public class OpenCamerasItem extends FunctionalItem {
 
             cameras.get(_currentCameraIndex).addWatcher(guard);
             guard.startedWatchingCamera(peLocation);
+
+            BukkitMessageSender.sendTitleMessage(playerName, "", messages.getSneakToLeaveCameraMessage());
         }
     }
 
