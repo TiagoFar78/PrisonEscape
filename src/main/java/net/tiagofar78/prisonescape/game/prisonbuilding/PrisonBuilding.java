@@ -48,6 +48,8 @@ public class PrisonBuilding {
 
     private Helicopter _helicopter;
 
+    private List<Camera> _cameras;
+
 //  #########################################
 //  #              Constructor              #
 //  #########################################
@@ -134,6 +136,8 @@ public class PrisonBuilding {
         PrisonEscapeLocation helicopterLowerLocation = config.getHelicopterLowerLocation().add(reference);
         _helicopter = new Helicopter(helicopterUpperLocation, helicopterLowerLocation);
         _helicopter.departed();
+
+        _cameras = new ArrayList<>();
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -339,6 +343,24 @@ public class PrisonBuilding {
 
     public void callHelicopter() {
         _helicopter.call();
+    }
+
+//  #########################################
+//  #                Cameras                #
+//  #########################################
+
+    public List<Camera> getCameras() {
+        return _cameras;
+    }
+
+    public void addCamera(PrisonEscapeLocation location) {
+        _cameras.add(new Camera(location));
+    }
+
+    public void deleteCameras() {
+        for (Camera camera : _cameras) {
+            camera.delete();
+        }
     }
 
 //	#########################################

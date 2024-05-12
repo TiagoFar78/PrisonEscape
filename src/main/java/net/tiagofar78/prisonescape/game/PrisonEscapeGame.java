@@ -80,6 +80,10 @@ public class PrisonEscapeGame {
         startWaitingPhase();
     }
 
+    public PrisonBuilding getPrison() {
+        return _prison;
+    }
+
 //	#########################################
 //	#                 Lobby                 #
 //	#########################################
@@ -402,6 +406,7 @@ public class PrisonEscapeGame {
         }
 
         _prison.deleteVaults();
+        _prison.deleteCameras();
 
         GameManager.removeGame();
     }
@@ -598,6 +603,22 @@ public class PrisonEscapeGame {
 
         Clickable clicakble = _playerOpenMenu.get(player.getName());
         return clicakble.click(player, slot, itemHeld, clickedPlayerInv);
+    }
+
+    public void playerSneak(String playerName) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+
+        if (!player.isGuard()) {
+            return;
+        }
+
+        Guard guard = (Guard) player;
+        if (guard.isWatchingCamera()) {
+            guard.stoppedWatchingCamera();
+        }
     }
 
     public void sendTeamOnlyMessage(String senderName, String message) {
@@ -958,7 +979,7 @@ public class PrisonEscapeGame {
 //	#                 Util                 #
 //	########################################
 
-    private PrisonEscapePlayer getPrisonEscapePlayer(String playerName) {
+    public PrisonEscapePlayer getPrisonEscapePlayer(String playerName) {
         for (PrisonEscapePlayer player : _playersOnLobby) {
             if (player.getName().equals(playerName)) {
                 return player;
