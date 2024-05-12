@@ -57,7 +57,7 @@ public class OpenCamerasItem extends FunctionalItem {
         Action action = e.getAction();
         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
             _currentCameraIndex = _currentCameraIndex + 1 == cameras.size() ? 0 : _currentCameraIndex + 1;
-            guard.updateInventory();
+            guard.getKit().give(playerName);
         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
             cameras.get(_currentCameraIndex).addWatcher(guard);
         }
