@@ -323,7 +323,7 @@ public class Events implements Listener {
             return;
         }
 
-
+        GameManager.getGame().playerSneak(e.getPlayer().getName());
     }
 
     @EventHandler

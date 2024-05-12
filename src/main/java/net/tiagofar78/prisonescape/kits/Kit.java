@@ -32,6 +32,10 @@ public abstract class Kit {
         }
     }
 
+    public void update(String playerName) {
+        // Nothing
+    }
+
     public Item getItemAt(int slot) {
         return _items.get(slot);
     }

@@ -7,6 +7,11 @@ import net.tiagofar78.prisonescape.items.MissionsItem;
 import net.tiagofar78.prisonescape.items.OpenCamerasItem;
 import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.ShopItem;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.Hashtable;
 
@@ -37,6 +42,19 @@ public class PoliceKit extends Kit {
         items.put(SHOP_ITEM_INDEX, new ShopItem());
 
         return items;
+    }
+
+    @Override
+    public void update(String playerName) {
+        Player bukkitPlayer = Bukkit.getPlayer(playerName);
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
+        Inventory inv = bukkitPlayer.getInventory();
+        inv.setItem(CAMERA_ITEM_INDEX, getItemAt(CAMERA_ITEM_INDEX).toItemStack(messages));
     }
 
 }
