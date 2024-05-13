@@ -123,6 +123,7 @@ public class MessageLanguageManager {
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
     private String _soundDetectorPlacedMessage;
+    private String _invalidSoundDetectorLocMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -261,6 +262,7 @@ public class MessageLanguageManager {
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
+        _invalidSoundDetectorLocMessage = createMessage(messages.getString(warningPath + "InvalidSoundDetectorLoc"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -537,6 +539,10 @@ public class MessageLanguageManager {
 
     public String getSoundDetectorPlacedMessage() {
         return _soundDetectorPlacedMessage;
+    }
+
+    public String getInvalidSoundDetectorLocMessage() {
+        return _invalidSoundDetectorLocMessage;
     }
 
 //	########################################

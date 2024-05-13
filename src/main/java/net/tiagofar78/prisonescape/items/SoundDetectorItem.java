@@ -45,17 +45,22 @@ public class SoundDetectorItem extends FunctionalItem implements Buyable {
 
     @Override
     public void use(PlayerInteractEvent e) {
+        String playerName = e.getPlayer().getName();
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
         Location loc = e.getPlayer().getLocation();
-        PrisonEscapeLocation peLocation = new PrisonEscapeLocation(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        if (loc.getBlock().getType() != Material.AIR) {
+            BukkitMessageSender.sendChatMessage(playerName, messages.getInvalidSoundDetectorLocMessage());
+            return;
+        }
 
         PrisonEscapeGame game = GameManager.getGame();
-        game.getPrison().addSoundDetector(peLocation);
 
-        String playerName = e.getPlayer().getName();
+        PrisonEscapeLocation peLocation = new PrisonEscapeLocation(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        game.getPrison().addSoundDetector(peLocation);
 
         game.getPrisonEscapePlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         BukkitMessageSender.sendChatMessage(playerName, messages.getSoundDetectorPlacedMessage());
     }
 
