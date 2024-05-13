@@ -53,7 +53,7 @@ public class SoundDetectorItem extends FunctionalItem implements Buyable {
 
         String playerName = e.getPlayer().getName();
 
-        // TODO consume item
+        game.getPrisonEscapePlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         BukkitMessageSender.sendChatMessage(playerName, messages.getSoundDetectorPlacedMessage());
