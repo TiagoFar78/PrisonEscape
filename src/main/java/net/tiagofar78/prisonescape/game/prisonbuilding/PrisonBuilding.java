@@ -381,6 +381,12 @@ public class PrisonBuilding {
         return _soundDetectors;
     }
 
+    public void deleteSoundDetectors() {
+        for (SoundDetector soundDetector : _soundDetectors) {
+            soundDetector.delete();
+        }
+    }
+
 //	#########################################
 //	#               Locations               #
 //	#########################################

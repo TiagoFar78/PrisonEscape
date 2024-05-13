@@ -28,7 +28,7 @@ public class SoundDetector {
         _location = location;
         _playersInRange = new ArrayList<>();
 
-        createSoundDetectorOnWorld();
+        createOnWorld();
 
         PrisonEscapeGame game = GameManager.getGame();
         List<Guard> guards = game.getGuardsTeam().getMembers();
@@ -64,11 +64,21 @@ public class SoundDetector {
         return Math.sqrt(xComponent + yComponent + zComponent);
     }
 
-    private void createSoundDetectorOnWorld() {
+    public void delete() {
+        deleteFromWorld();
+    }
+
+    private void createOnWorld() {
         World world = BukkitWorldEditor.getWorld();
         Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
 
         location.getBlock().setType(Material.LIGHTNING_ROD);
+    }
+
+    private void deleteFromWorld() {
+        World world = BukkitWorldEditor.getWorld();
+        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
+        location.getBlock().setType(Material.AIR);
     }
 
     private void updateValue() {

@@ -412,6 +412,7 @@ public class PrisonEscapeGame {
 
         _prison.deleteVaults();
         _prison.deleteCameras();
+        _prison.deleteSoundDetectors();
 
         GameManager.removeGame();
     }
