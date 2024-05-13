@@ -15,6 +15,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
+import net.tiagofar78.prisonescape.game.prisonbuilding.SoundDetector;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
@@ -486,6 +487,10 @@ public class PrisonEscapeGame {
 
         if (!_phase.hasGameStarted() || _phase.hasGameEnded()) {
             return;
+        }
+
+        for (SoundDetector soundDetector : _prison.getSoundDetectors()) {
+            soundDetector.playerMoved(player, loc);
         }
 
         if (!isPrisioner(player)) {

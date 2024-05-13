@@ -3,6 +3,7 @@ Scoreboard:
   LastLine: "&eTest Server"
   GuardSideBar:
     BalanceLine: "&fBalance: &a{BALANCE}"
+    SoundDectorLine: "&fSound Detectors:   "
 Items:
   SelectPrisionerTeam:
     Name: "&6Select prisioner team"
@@ -81,7 +82,7 @@ Items:
     Name: "Search"
   Radar:
     Name: "Radar"
-  Sensor:
+  SoundDetector:
     Name: "Sensor"
   Camera:
     Name: "Camera"
@@ -138,6 +139,7 @@ Messages:
     CameraPlaced: "&aCamera placed successfully. Use your camera viewer to watch what is going on."
     NoCamerasPlaced: "&cThere aren't cameras placed. Buy some from the shop."
     SneakToLeaveCamera: "&eSneak to leave the camera"
+    SoundDetectorPlaced: "&aSound detector placed sucessfully. Check if there are players walking by in the sidebar."
   Announcements:
     GameStarting:
     - "&6==================================="

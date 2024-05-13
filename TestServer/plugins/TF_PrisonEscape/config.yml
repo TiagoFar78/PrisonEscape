@@ -26,6 +26,7 @@ RareItemsProbability: 0.25
 ChestSize: 5
 HelicopterSpawnDelay: 10
 HelicopterDepartureDelay: 5
+SoundDetectorRange: 2.5
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"

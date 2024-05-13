@@ -159,6 +159,9 @@ public class Guard extends PrisonEscapePlayer {
     public void addSoundDetectorLine(int value) {
         int soundDetectorsAmount = GameManager.getGame().getPrison().countSoundDetectors();
         if (soundDetectorsAmount == 0) {
+            String emptyLine = "§a";
+            _scoreboardData.addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, emptyLine);
+
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
             String line = messages.getGuardSideBarSoundDetectorLine();
             _scoreboardData.addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, line);
@@ -175,8 +178,8 @@ public class Guard extends PrisonEscapePlayer {
 
     private String createSoundDetectorValueLine(int index, int value) {
         // TODO improve how this looks
-        String valueBars = value == 10 ? "§c|||§e||||&a|||" : "§8||||||||||";
-        return "§f" + index + ": §a||§8||||||||";
+        String valueBars = value == 10 ? "§c|||§e||||§a|||" : "§8||||||||||";
+        return "§f" + index + ": " + valueBars;
     }
 
 }
