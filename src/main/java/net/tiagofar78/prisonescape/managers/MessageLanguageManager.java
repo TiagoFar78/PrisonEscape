@@ -121,6 +121,7 @@ public class MessageLanguageManager {
     private String _cameraPlacedMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
+    private String _soundDetectorPlacedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -255,6 +256,7 @@ public class MessageLanguageManager {
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
+        _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -523,6 +525,10 @@ public class MessageLanguageManager {
 
     public String getSneakToLeaveCameraMessage() {
         return _sneakToLeaveCameraMessage;
+    }
+
+    public String getSoundDetectorPlacedMessage() {
+        return _soundDetectorPlacedMessage;
     }
 
 //	########################################

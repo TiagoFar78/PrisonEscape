@@ -1,7 +1,12 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +19,8 @@ public class SoundDetector {
     public SoundDetector(PrisonEscapeLocation location) {
         _location = location;
         _playersInRange = new ArrayList<>();
+
+        createSoundDetectorOnWorld();
     }
 
     public boolean isDetectingSound() {
@@ -39,6 +46,13 @@ public class SoundDetector {
         double zComponent = Math.pow(loc1.getZ() - loc2.getZ(), 2);
 
         return Math.sqrt(xComponent + yComponent + zComponent);
+    }
+
+    private void createSoundDetectorOnWorld() {
+        World world = BukkitWorldEditor.getWorld();
+        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
+
+        location.getBlock().setType(Material.LIGHTNING_ROD);
     }
 
 }

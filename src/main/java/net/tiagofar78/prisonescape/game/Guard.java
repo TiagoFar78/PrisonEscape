@@ -4,7 +4,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.SoundDetectorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -82,7 +82,7 @@ public class Guard extends PrisonEscapePlayer {
             return false;
         } else if (item instanceof CameraItem && _numOfCamerasBought >= ((CameraItem) item).getLimit()) {
             return false;
-        } else if (item instanceof SensorItem && _numOfSensorsBought >= ((SensorItem) item).getLimit()) {
+        } else if (item instanceof SoundDetectorItem && _numOfSensorsBought >= ((SoundDetectorItem) item).getLimit()) {
             return false;
         }
         return true;
@@ -93,7 +93,7 @@ public class Guard extends PrisonEscapePlayer {
             _numOfTrapsBought++;
         } else if (item instanceof CameraItem) {
             _numOfCamerasBought++;
-        } else if (item instanceof SensorItem) {
+        } else if (item instanceof SoundDetectorItem) {
             _numOfSensorsBought++;
         }
     }
