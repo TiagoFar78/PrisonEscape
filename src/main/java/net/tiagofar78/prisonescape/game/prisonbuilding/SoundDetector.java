@@ -1,8 +1,11 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,14 +16,25 @@ import java.util.List;
 
 public class SoundDetector {
 
+    private static final int MAX_VALUE = 10;
+    private static final int MIN_VALUE = 1;
+
+    private int _index;
     private PrisonEscapeLocation _location;
     private List<PrisonEscapePlayer> _playersInRange;
 
-    public SoundDetector(PrisonEscapeLocation location) {
+    public SoundDetector(int index, PrisonEscapeLocation location) {
+        _index = index;
         _location = location;
         _playersInRange = new ArrayList<>();
 
         createSoundDetectorOnWorld();
+
+        PrisonEscapeGame game = GameManager.getGame();
+        List<Guard> guards = game.getGuardsTeam().getMembers();
+        for (Guard guard : guards) {
+            guard.addSoundDetectorLine(MIN_VALUE);
+        }
     }
 
     public boolean isDetectingSound() {
@@ -30,8 +44,10 @@ public class SoundDetector {
     public void playerMoved(PrisonEscapePlayer player, PrisonEscapeLocation playerLocation) {
         if (isInRange(playerLocation) && !_playersInRange.contains(player)) {
             _playersInRange.add(player);
+            updateValue();
         } else if (!isInRange(playerLocation) && _playersInRange.contains(player)) {
             _playersInRange.remove(player);
+            updateValue();
         }
     }
 
@@ -53,6 +69,15 @@ public class SoundDetector {
         Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
 
         location.getBlock().setType(Material.LIGHTNING_ROD);
+    }
+
+    private void updateValue() {
+        int value = isDetectingSound() ? MAX_VALUE : MIN_VALUE;
+
+        List<Guard> guards = GameManager.getGame().getGuardsTeam().getMembers();
+        for (Guard guard : guards) {
+            guard.updateSoundDetectorValue(_index, value);
+        }
     }
 
 }

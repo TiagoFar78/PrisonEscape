@@ -7,6 +7,7 @@ import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SoundDetectorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.GameMode;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Guard extends PrisonEscapePlayer {
 
     private static final int BALANCE_LINE_INDEX = 1;
+    private static final int SOUND_DETECTORS_FIRST_LINE_INDEX = 3;
 
     private int _balance;
 
@@ -152,6 +154,29 @@ public class Guard extends PrisonEscapePlayer {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
         String balanceLine = messages.getGuardSideBarBalanceLine(getBalance());
         _scoreboardData.updateLine(BALANCE_LINE_INDEX, balanceLine);
+    }
+
+    public void addSoundDetectorLine(int value) {
+        int soundDetectorsAmount = GameManager.getGame().getPrison().countSoundDetectors();
+        if (soundDetectorsAmount == 0) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+            String line = messages.getGuardSideBarSoundDetectorLine();
+            _scoreboardData.addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, line);
+        }
+
+        String soundDetectorValueLine = createSoundDetectorValueLine(soundDetectorsAmount + 1, value);
+        _scoreboardData.addLine(SOUND_DETECTORS_FIRST_LINE_INDEX + 1 + soundDetectorsAmount, soundDetectorValueLine);
+    }
+
+    public void updateSoundDetectorValue(int index, int value) {
+        String soundDetectorValueLine = createSoundDetectorValueLine(index + 1, value);
+        _scoreboardData.updateLine(SOUND_DETECTORS_FIRST_LINE_INDEX + 1 + index, soundDetectorValueLine);
+    }
+
+    private String createSoundDetectorValueLine(int index, int value) {
+        // TODO improve how this looks
+        String valueBars = value == 10 ? "§c|||§e||||&a|||" : "§8||||||||||";
+        return "§f" + index + ": §a||§8||||||||";
     }
 
 }

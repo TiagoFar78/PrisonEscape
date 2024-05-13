@@ -369,8 +369,12 @@ public class PrisonBuilding {
 //  #            Sound Detector            #
 //  ########################################
 
+    public int countSoundDetectors() {
+        return _soundDetectors.size();
+    }
+
     public void addSoundDetector(PrisonEscapeLocation location) {
-        _soundDetectors.add(new SoundDetector(location));
+        _soundDetectors.add(new SoundDetector(_soundDetectors.size(), location));
     }
 
 //	#########################################

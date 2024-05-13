@@ -3,6 +3,7 @@ Scoreboard:
   LastLine: "&eTest Server"
   GuardSideBar:
     BalanceLine: "&fBalance: &a{BALANCE}"
+    SoundDectorLine: "&fSound Detectors:"
 Items:
   SelectPrisionerTeam:
     Name: "&6Select prisioner team"

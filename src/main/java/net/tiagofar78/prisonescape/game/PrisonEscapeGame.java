@@ -241,6 +241,10 @@ public class PrisonEscapeGame {
         return player.isPrisioner();
     }
 
+    public PrisonEscapeTeam<Guard> getGuardsTeam() {
+        return _policeTeam;
+    }
+
 //	########################################
 //	#              Admin zone              #
 //	########################################
