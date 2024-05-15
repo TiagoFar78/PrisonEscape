@@ -4,7 +4,7 @@ import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.RadarItem;
-import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.SoundDetectorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
@@ -189,7 +189,7 @@ public class BukkitMenu {
 
         shopMenu.setItem(0, new EnergyDrinkItem().toItemStack(messages));
         shopMenu.setItem(1, new TrapItem().toItemStack(messages));
-        shopMenu.setItem(2, new SensorItem().toItemStack(messages));
+        shopMenu.setItem(2, new SoundDetectorItem().toItemStack(messages));
         shopMenu.setItem(3, new CameraItem().toItemStack(messages));
         shopMenu.setItem(4, new RadarItem().toItemStack(messages));
 

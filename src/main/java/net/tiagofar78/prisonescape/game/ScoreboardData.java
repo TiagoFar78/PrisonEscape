@@ -36,21 +36,18 @@ public class ScoreboardData {
         int size = _sideBarLines.size();
         for (int i = 0; i < size; i++) {
             obj.getScore(_sideBarLines.get(i)).setScore(size - i);
-            setLine(obj, i, size);
+            setLine(obj, i);
         }
     }
 
     public void addLine(int index, String line) {
         _sideBarLines.add(index, line);
 
-        int size = _sideBarLines.size();
-
         Objective obj = _sb.getObjective(SIDE_BAR_NAME);
-        setLine(obj, index, size);
 
-        for (int i = index + 1; i < size; i++) {
+        for (int i = 0; i < _sideBarLines.size(); i++) {
             _sb.resetScores(_sideBarLines.get(i));
-            setLine(obj, i, size);
+            setLine(obj, i);
         }
 
     }
@@ -61,11 +58,11 @@ public class ScoreboardData {
         _sb.resetScores(previousLine);
 
         _sideBarLines.set(index, newLine);
-        setLine(_sb.getObjective(SIDE_BAR_NAME), index, _sideBarLines.size());
+        setLine(_sb.getObjective(SIDE_BAR_NAME), index);
     }
 
-    private void setLine(Objective obj, int i, int size) {
-        obj.getScore(_sideBarLines.get(i)).setScore(size - i);
+    private void setLine(Objective obj, int i) {
+        obj.getScore(_sideBarLines.get(i)).setScore(_sideBarLines.size() - i);
     }
 
 }

@@ -59,6 +59,7 @@ public class MessageLanguageManager {
     private String _sbDisplayName;
     private String _sideBarLastLine;
     private String _guardSideBarBalanceLine;
+    private String _guardSideBarSoundDetectorLine;
 
 //	#######################################
 //	#                Items                #
@@ -121,6 +122,8 @@ public class MessageLanguageManager {
     private String _cameraPlacedMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
+    private String _soundDetectorPlacedMessage;
+    private String _invalidSoundDetectorLocMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -184,6 +187,9 @@ public class MessageLanguageManager {
         _sbDisplayName = createMessage(messages.getString(scoreboardPath + "DisplayName"));
         _sideBarLastLine = createMessage(messages.getString(scoreboardPath + "LastLine"));
         _guardSideBarBalanceLine = createMessage(messages.getString(scoreboardPath + "GuardSideBar.BalanceLine"));
+        _guardSideBarSoundDetectorLine = createMessage(
+                messages.getString(scoreboardPath + "GuardSideBar.SoundDectorLine")
+        );
 
         _itemsNames = new Hashtable<>();
         _itemsLores = new Hashtable<>();
@@ -255,6 +261,8 @@ public class MessageLanguageManager {
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
+        _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
+        _invalidSoundDetectorLocMessage = createMessage(messages.getString(warningPath + "InvalidSoundDetectorLoc"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -331,6 +339,10 @@ public class MessageLanguageManager {
 
     public String getGuardSideBarBalanceLine(int balance) {
         return _guardSideBarBalanceLine.replace("{BALANCE}", Integer.toString(balance));
+    }
+
+    public String getGuardSideBarSoundDetectorLine() {
+        return _guardSideBarSoundDetectorLine;
     }
 
 //	#######################################
@@ -523,6 +535,14 @@ public class MessageLanguageManager {
 
     public String getSneakToLeaveCameraMessage() {
         return _sneakToLeaveCameraMessage;
+    }
+
+    public String getSoundDetectorPlacedMessage() {
+        return _soundDetectorPlacedMessage;
+    }
+
+    public String getInvalidSoundDetectorLocMessage() {
+        return _invalidSoundDetectorLocMessage;
     }
 
 //	########################################

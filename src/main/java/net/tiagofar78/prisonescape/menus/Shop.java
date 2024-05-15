@@ -10,7 +10,7 @@ import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.RadarItem;
-import net.tiagofar78.prisonescape.items.SensorItem;
+import net.tiagofar78.prisonescape.items.SoundDetectorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
@@ -46,7 +46,7 @@ public class Shop implements Clickable {
         List<Item> list = new ArrayList<>();
         list.add(new EnergyDrinkItem());
         list.add(new TrapItem());
-        list.add(new SensorItem());
+        list.add(new SoundDetectorItem());
         list.add(new CameraItem());
         list.add(new RadarItem());
         return list;
