@@ -49,6 +49,7 @@ public class PrisonBuilding {
     private Helicopter _helicopter;
 
     private List<Camera> _cameras;
+    private List<SoundDetector> _soundDetectors;
 
 //  #########################################
 //  #              Constructor              #
@@ -138,6 +139,7 @@ public class PrisonBuilding {
         _helicopter.departed();
 
         _cameras = new ArrayList<>();
+        _soundDetectors = new ArrayList<>();
     }
 
     private List<PrisonEscapeLocation> createLocationsList(
@@ -360,6 +362,28 @@ public class PrisonBuilding {
     public void deleteCameras() {
         for (Camera camera : _cameras) {
             camera.delete();
+        }
+    }
+
+//  ########################################
+//  #            Sound Detector            #
+//  ########################################
+
+    public int countSoundDetectors() {
+        return _soundDetectors.size();
+    }
+
+    public void addSoundDetector(PrisonEscapeLocation location) {
+        _soundDetectors.add(new SoundDetector(_soundDetectors.size(), location));
+    }
+
+    public List<SoundDetector> getSoundDetectors() {
+        return _soundDetectors;
+    }
+
+    public void deleteSoundDetectors() {
+        for (SoundDetector soundDetector : _soundDetectors) {
+            soundDetector.delete();
         }
     }
 

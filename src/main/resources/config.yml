@@ -28,6 +28,7 @@ SpeedDuration: 15
 SpeedLevel: 2
 HelicopterSpawnDelay: 10
 HelicopterDepartureDelay: 5
+SoundDetectorRange: 2.5
 RadarDuration: 10
 AvailableLanguages:
 - "english"

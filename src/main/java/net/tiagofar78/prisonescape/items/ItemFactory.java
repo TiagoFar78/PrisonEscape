@@ -38,7 +38,7 @@ public class ItemFactory {
             new ShopItem(),
             new TrapItem(),
             new CameraItem(),
-            new SensorItem(),
+            new SoundDetectorItem(),
             new RadarItem(),
             new OpenCamerasItem(),
             new MissionsItem()};
