@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitEffectGiver;
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
@@ -35,6 +34,7 @@ import net.tiagofar78.prisonescape.menus.Shop;
 
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -239,6 +239,10 @@ public class PrisonEscapeGame {
 
     public boolean isPrisioner(PrisonEscapePlayer player) {
         return player.isPrisioner();
+    }
+
+    public PrisonEscapeTeam<Prisioner> getPrisionerTeam() {
+        return _prisionersTeam;
     }
 
 //	########################################
@@ -821,7 +825,7 @@ public class PrisonEscapeGame {
 
         ConfigManager config = ConfigManager.getInstance();
 
-        BukkitEffectGiver.giveSpeedEffect(playerName, config.getSpeedDuration(), config.getSpeedLevel());
+        player.setEffect(PotionEffectType.SPEED, config.getSpeedDuration(), config.getSpeedLevel());
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);

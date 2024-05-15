@@ -9,12 +9,16 @@ import net.tiagofar78.prisonescape.kits.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PrisonEscapePlayer {
+
+    private static final int TICKS_PER_SECOND = 20;
 
     private static final int INVENTORY_SIZE = 4;
 
@@ -194,6 +198,17 @@ public abstract class PrisonEscapePlayer {
         if (player != null && player.isOnline()) {
             player.setGameMode(gameMode);
         }
+    }
+
+    public void setEffect(PotionEffectType effect, int seconds, int level) {
+        Player player = Bukkit.getPlayer(getName());
+        if (player == null || !player.isOnline()) {
+            return;
+        }
+
+        int ticksDuration = seconds * TICKS_PER_SECOND;
+
+        player.addPotionEffect(new PotionEffect(effect, ticksDuration, level));
     }
 
     @Override
