@@ -5,13 +5,16 @@ import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.Kit;
+import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,15 @@ public abstract class PrisonEscapePlayer {
     private List<Item> _inventory;
     private Kit _currentKit;
 
+    private ScoreboardData _scoreboardData;
+
     public PrisonEscapePlayer(String name) {
         _name = name;
         _isOnline = true;
         _inventory = createInventory();
+
+        _scoreboardData = createScoreboardData();
+        setScoreboard(_scoreboardData.getScoreboard());
     }
 
     public boolean isPrisioner() {
@@ -178,6 +186,22 @@ public abstract class PrisonEscapePlayer {
 //  #              Scoreboard              #
 //  ########################################
 
+    public ScoreboardData getScoreboardData() {
+        return _scoreboardData;
+    }
+
+    public ScoreboardData createScoreboardData() {
+        ScoreboardData sbData = new ScoreboardData();
+
+        String guardsTeamName = GameManager.getGame().getGuardsTeam().getName();
+        registerTeam(sbData, guardsTeamName, ChatColor.BLUE);
+
+        String prisionersTeamName = GameManager.getGame().getPrisionerTeam().getName();
+        registerTeam(sbData, prisionersTeamName, ChatColor.GOLD);
+
+        return sbData;
+    }
+
     public void setScoreboard(Scoreboard scoreboard) {
         Player player = Bukkit.getPlayer(getName());
         if (player != null && player.isOnline()) {
@@ -187,6 +211,26 @@ public abstract class PrisonEscapePlayer {
 
     public void removeScoreboard() {
         setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+    }
+
+    private void registerTeam(ScoreboardData sbData, String teamName, ChatColor color) {
+        Team sbTeam = sbData.registerTeam(teamName);
+        sbTeam.setColor(color);
+    }
+
+    public void updateScoreaboardTeams() {
+        PrisonEscapeTeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
+        addScoreboardTeamMembers(guardsTeam);
+
+        PrisonEscapeTeam<Prisioner> prisionersTeam = GameManager.getGame().getPrisionerTeam();
+        addScoreboardTeamMembers(prisionersTeam);
+    }
+
+    private void addScoreboardTeamMembers(PrisonEscapeTeam<? extends PrisonEscapePlayer> team) {
+        Team sbTeam = getScoreboardData().getScoreboard().getTeam(team.getName());
+        for (PrisonEscapePlayer player : team.getMembers()) {
+            sbTeam.addEntry(player.getName());
+        }
     }
 
 //	########################################

@@ -358,6 +358,7 @@ public class PrisonEscapeGame {
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
             player.setKit(new PrisionerKit());
             teleportPrisionerToSpawnPoint(player);
+            player.updateScoreaboardTeams();
         }
 
         for (Guard player : _policeTeam.getMembers()) {
