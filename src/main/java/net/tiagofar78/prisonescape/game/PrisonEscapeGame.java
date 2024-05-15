@@ -244,6 +244,7 @@ public class PrisonEscapeGame {
 
     public PrisonEscapeTeam<Prisioner> getPrisionerTeam() {
         return _prisionersTeam;
+    }
 
     public PrisonEscapeTeam<Guard> getGuardsTeam() {
         return _policeTeam;

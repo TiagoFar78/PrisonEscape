@@ -55,7 +55,9 @@ public class RadarItem extends FunctionalItem implements Buyable {
 
         List<Prisioner> prisioners = game.getPrisionerTeam().getMembers();
         for (Prisioner prisioner : prisioners) {
-            prisioner.setEffect(PotionEffectType.GLOWING, effectDuration, 1);
+            if (!prisioner.hasEscaped()) {
+                prisioner.setEffect(PotionEffectType.GLOWING, effectDuration, 1);
+            }
         }
     }
 
