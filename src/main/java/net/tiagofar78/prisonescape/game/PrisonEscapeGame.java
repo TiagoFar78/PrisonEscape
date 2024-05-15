@@ -353,18 +353,19 @@ public class PrisonEscapeGame {
 
         _phase = _phase.next();
 
-        for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
+        for (Prisioner player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
             player.setKit(new PrisionerKit());
             teleportPrisionerToSpawnPoint(player);
         }
 
-        for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
+        for (Guard player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
             player.setKit(new PoliceKit());
             teleportPoliceToSpawnPoint(player);
+            player.updateScoreaboardTeams();
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());

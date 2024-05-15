@@ -5,6 +5,7 @@ import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.List;
 
@@ -63,6 +64,10 @@ public class ScoreboardData {
 
     private void setLine(Objective obj, int i) {
         obj.getScore(_sideBarLines.get(i)).setScore(_sideBarLines.size() - i);
+    }
+
+    public Team registerTeam(String teamName) {
+        return _sb.registerNewTeam(teamName);
     }
 
 }

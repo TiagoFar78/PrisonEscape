@@ -10,7 +10,9 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +134,33 @@ public class Guard extends PrisonEscapePlayer {
         List<String> baseSideBar = buildBaseSideBar(balanceLine, lastLine);
         sbData.createSideBar(messages.getScoreboardDisplayName(), baseSideBar);
 
+        String guardsTeamName = GameManager.getGame().getGuardsTeam().getName();
+        registerTeam(sbData, guardsTeamName, ChatColor.BLUE);
+
+        String prisionersTeamName = GameManager.getGame().getPrisionerTeam().getName();
+        registerTeam(sbData, prisionersTeamName, ChatColor.GOLD);
+
         return sbData;
+    }
+
+    private void registerTeam(ScoreboardData sbData, String teamName, ChatColor color) {
+        Team sbTeam = sbData.registerTeam(teamName);
+        sbTeam.setColor(color);
+    }
+
+    public void updateScoreaboardTeams() {
+        PrisonEscapeTeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
+        addScoreboardTeamMembers(guardsTeam);
+
+        PrisonEscapeTeam<Prisioner> prisionersTeam = GameManager.getGame().getPrisionerTeam();
+        addScoreboardTeamMembers(prisionersTeam);
+    }
+
+    private void addScoreboardTeamMembers(PrisonEscapeTeam<? extends PrisonEscapePlayer> team) {
+        Team sbTeam = _scoreboardData.getScoreboard().getTeam(team.getName());
+        for (PrisonEscapePlayer player : team.getMembers()) {
+            sbTeam.addEntry(player.getName());
+        }
     }
 
     private List<String> buildBaseSideBar(String balanceLine, String lastLine) {
