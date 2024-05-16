@@ -1,6 +1,6 @@
 BossBar:
-  DayTitle: "§eDay {DAY}"
-  NightTitle: "§9Night {DAY}"
+  DayTitle: "&eDay {DAY}"
+  NightTitle: "&9Night {DAY}"
 Scoreboard:
   DisplayName: "&6&lPrison Escape"
   LastLine: "&eTest Server"

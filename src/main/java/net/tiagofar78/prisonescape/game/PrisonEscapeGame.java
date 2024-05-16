@@ -426,7 +426,7 @@ public class PrisonEscapeGame {
 
         GameManager.removeGame();
     }
-    
+
     private void updateBossBarClock(int totalSeconds, int secondsLeft) {
         _bossBar.setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
     }
@@ -456,18 +456,17 @@ public class PrisonEscapeGame {
 
         runDayTimer(_settings.getDayDuration(), _settings.getDayDuration());
     }
-    
+
     private void runDayTimer(int totalSeconds, int secondsLeft) {
         updateBossBarClock(totalSeconds, secondsLeft);
-        
+
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
             public void run() {
                 if (secondsLeft == 0) {
                     startNight();
-                }
-                else {
+                } else {
                     runDayTimer(totalSeconds, secondsLeft - 1);
                 }
             }
@@ -496,13 +495,13 @@ public class PrisonEscapeGame {
             String subtitle = messages.getNightSubtitleMessage();
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
         }
-        
+
         runNightTimer(_settings.getNightDuration(), _settings.getNightDuration());
     }
-    
+
     private void runNightTimer(int totalSeconds, int secondsLeft) {
         updateBossBarClock(totalSeconds, secondsLeft);
-        
+
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
@@ -513,8 +512,7 @@ public class PrisonEscapeGame {
                     } else {
                         startDay();
                     }
-                }
-                else {
+                } else {
                     runNightTimer(totalSeconds, secondsLeft - 1);
                 }
             }
