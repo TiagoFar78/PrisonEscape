@@ -426,6 +426,10 @@ public class PrisonEscapeGame {
 
         GameManager.removeGame();
     }
+    
+    private void updateBossBarClock(int totalSeconds, int secondsLeft) {
+        _bossBar.setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
+    }
 
 //	########################################
 //	#                 Time                 #
@@ -450,13 +454,24 @@ public class PrisonEscapeGame {
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
         }
 
+        runDayTimer(_settings.getDayDuration(), _settings.getDayDuration());
+    }
+    
+    private void runDayTimer(int totalSeconds, int secondsLeft) {
+        updateBossBarClock(totalSeconds, secondsLeft);
+        
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
             public void run() {
-                startNight();
+                if (secondsLeft == 0) {
+                    startNight();
+                }
+                else {
+                    runDayTimer(totalSeconds, secondsLeft - 1);
+                }
             }
-        }, _settings.getDayDuration() * TICKS_PER_SECOND);
+        }, TICKS_PER_SECOND);
     }
 
     private void setDayTimeBossBar() {
@@ -481,18 +496,29 @@ public class PrisonEscapeGame {
             String subtitle = messages.getNightSubtitleMessage();
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
         }
-
+        
+        runNightTimer(_settings.getNightDuration(), _settings.getNightDuration());
+    }
+    
+    private void runNightTimer(int totalSeconds, int secondsLeft) {
+        updateBossBarClock(totalSeconds, secondsLeft);
+        
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
             public void run() {
-                if (_currentDay == _settings.getDays()) {
-                    startFinishedPhase(_policeTeam);
-                } else {
-                    startDay();
+                if (secondsLeft == 0) {
+                    if (_currentDay == _settings.getDays()) {
+                        startFinishedPhase(_policeTeam);
+                    } else {
+                        startDay();
+                    }
+                }
+                else {
+                    runNightTimer(totalSeconds, secondsLeft - 1);
                 }
             }
-        }, _settings.getNightDuration() * TICKS_PER_SECOND);
+        }, TICKS_PER_SECOND);
     }
 
     private void setNightTimeBossBar() {
