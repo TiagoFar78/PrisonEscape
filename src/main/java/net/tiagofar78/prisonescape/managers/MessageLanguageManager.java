@@ -52,6 +52,13 @@ public class MessageLanguageManager {
         return ConfigManager.getInstance().getDefaultLanguage();
     }
 
+//  #######################################
+//  #               BossBar               #
+//  #######################################
+
+    private String _bossBarDayTitle;
+    private String _bossBarNightTitle;
+
 //  ########################################
 //  #              Scoreboard              #
 //  ########################################
@@ -182,6 +189,10 @@ public class MessageLanguageManager {
 
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
+
+        String bossBarPath = "BossBar.";
+        _bossBarDayTitle = createMessage(messages.getString(bossBarPath + "DayTitle"));
+        _bossBarNightTitle = createMessage(messages.getString(bossBarPath + "NightTitle"));
 
         String scoreboardPath = "Scoreboard.";
         _sbDisplayName = createMessage(messages.getString(scoreboardPath + "DisplayName"));
@@ -323,6 +334,18 @@ public class MessageLanguageManager {
         }
 
         return message;
+    }
+
+//  #######################################
+//  #               BossBar               #
+//  #######################################
+
+    public String getBossBarDayTitle(int day) {
+        return _bossBarDayTitle.replace("{DAY}", Integer.toString(day));
+    }
+
+    public String getBossBarNightTitle(int day) {
+        return _bossBarNightTitle.replace("{DAY}", Integer.toString(day));
     }
 
 //  ########################################

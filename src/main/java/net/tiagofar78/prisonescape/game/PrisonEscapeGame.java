@@ -34,7 +34,11 @@ import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 import net.tiagofar78.prisonescape.menus.Shop;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -64,6 +68,8 @@ public class PrisonEscapeGame {
 
     private boolean _hasDoorCode;
 
+    private BossBar _bossBar;
+
     public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
         _settings = new Settings();
 
@@ -77,6 +83,8 @@ public class PrisonEscapeGame {
         _playerOpenMenu = new Hashtable<>();
 
         _hasDoorCode = false;
+
+        _bossBar = Bukkit.createBossBar(mapName, BarColor.YELLOW, BarStyle.SOLID);
 
         startWaitingPhase();
     }
@@ -354,6 +362,7 @@ public class PrisonEscapeGame {
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
             player.setKit(new PrisionerKit());
             teleportPrisionerToSpawnPoint(player);
+            player.setBossBar(_bossBar);
         }
 
         for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
@@ -361,6 +370,7 @@ public class PrisonEscapeGame {
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
             player.setKit(new PoliceKit());
             teleportPoliceToSpawnPoint(player);
+            player.setBossBar(_bossBar);
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
@@ -429,6 +439,7 @@ public class PrisonEscapeGame {
         _dayPeriod = DayPeriod.DAY;
         _currentDay++;
         BukkitWorldEditor.changeTimeToDay();
+        setDayTimeBossBar();
 
         _prison.reloadChests();
 
@@ -448,6 +459,13 @@ public class PrisonEscapeGame {
         }, _settings.getDayDuration() * TICKS_PER_SECOND);
     }
 
+    private void setDayTimeBossBar() {
+        _bossBar.setColor(BarColor.YELLOW);
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
+        _bossBar.setTitle(messages.getBossBarDayTitle(_currentDay));
+    }
+
     private void startNight() {
         if (_phase.isClockStopped()) {
             return;
@@ -455,6 +473,7 @@ public class PrisonEscapeGame {
 
         _dayPeriod = DayPeriod.NIGHT;
         BukkitWorldEditor.changeTimeToNight();
+        setNightTimeBossBar();
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -474,6 +493,13 @@ public class PrisonEscapeGame {
                 }
             }
         }, _settings.getNightDuration() * TICKS_PER_SECOND);
+    }
+
+    private void setNightTimeBossBar() {
+        _bossBar.setColor(BarColor.BLUE);
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
+        _bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
     }
 
 //	########################################
