@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitEffectGiver;
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
@@ -34,8 +33,13 @@ import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 import net.tiagofar78.prisonescape.menus.Shop;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,6 +68,8 @@ public class PrisonEscapeGame {
 
     private boolean _hasDoorCode;
 
+    private BossBar _bossBar;
+
     public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
         _settings = new Settings();
 
@@ -77,6 +83,8 @@ public class PrisonEscapeGame {
         _playerOpenMenu = new Hashtable<>();
 
         _hasDoorCode = false;
+
+        _bossBar = Bukkit.createBossBar(mapName, BarColor.YELLOW, BarStyle.SOLID);
 
         startWaitingPhase();
     }
@@ -242,6 +250,10 @@ public class PrisonEscapeGame {
         return player.isPrisioner();
     }
 
+    public PrisonEscapeTeam<Prisioner> getPrisionerTeam() {
+        return _prisionersTeam;
+    }
+
     public PrisonEscapeTeam<Guard> getGuardsTeam() {
         return _policeTeam;
     }
@@ -349,18 +361,22 @@ public class PrisonEscapeGame {
 
         _phase = _phase.next();
 
-        for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
+        for (Prisioner player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
             player.setKit(new PrisionerKit());
             teleportPrisionerToSpawnPoint(player);
+            player.setBossBar(_bossBar);
+            player.updateScoreaboardTeams();
         }
 
-        for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
+        for (Guard player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
             player.setKit(new PoliceKit());
             teleportPoliceToSpawnPoint(player);
+            player.setBossBar(_bossBar);
+            player.updateScoreaboardTeams();
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
@@ -414,7 +430,13 @@ public class PrisonEscapeGame {
         _prison.deleteCameras();
         _prison.deleteSoundDetectors();
 
+        _bossBar.removeAll();
+
         GameManager.removeGame();
+    }
+
+    private void updateBossBarClock(int totalSeconds, int secondsLeft) {
+        _bossBar.setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
     }
 
 //	########################################
@@ -429,6 +451,7 @@ public class PrisonEscapeGame {
         _dayPeriod = DayPeriod.DAY;
         _currentDay++;
         BukkitWorldEditor.changeTimeToDay();
+        setDayTimeBossBar();
 
         _prison.reloadChests();
 
@@ -439,13 +462,30 @@ public class PrisonEscapeGame {
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
         }
 
+        runDayTimer(_settings.getDayDuration(), _settings.getDayDuration());
+    }
+
+    private void runDayTimer(int totalSeconds, int secondsLeft) {
+        updateBossBarClock(totalSeconds, secondsLeft);
+
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
             public void run() {
-                startNight();
+                if (secondsLeft == 0) {
+                    startNight();
+                } else {
+                    runDayTimer(totalSeconds, secondsLeft - 1);
+                }
             }
-        }, _settings.getDayDuration() * TICKS_PER_SECOND);
+        }, TICKS_PER_SECOND);
+    }
+
+    private void setDayTimeBossBar() {
+        _bossBar.setColor(BarColor.YELLOW);
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
+        _bossBar.setTitle(messages.getBossBarDayTitle(_currentDay));
     }
 
     private void startNight() {
@@ -455,6 +495,7 @@ public class PrisonEscapeGame {
 
         _dayPeriod = DayPeriod.NIGHT;
         BukkitWorldEditor.changeTimeToNight();
+        setNightTimeBossBar();
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -463,17 +504,34 @@ public class PrisonEscapeGame {
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
         }
 
+        runNightTimer(_settings.getNightDuration(), _settings.getNightDuration());
+    }
+
+    private void runNightTimer(int totalSeconds, int secondsLeft) {
+        updateBossBarClock(totalSeconds, secondsLeft);
+
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
             public void run() {
-                if (_currentDay == _settings.getDays()) {
-                    startFinishedPhase(_policeTeam);
+                if (secondsLeft == 0) {
+                    if (_currentDay == _settings.getDays()) {
+                        startFinishedPhase(_policeTeam);
+                    } else {
+                        startDay();
+                    }
                 } else {
-                    startDay();
+                    runNightTimer(totalSeconds, secondsLeft - 1);
                 }
             }
-        }, _settings.getNightDuration() * TICKS_PER_SECOND);
+        }, TICKS_PER_SECOND);
+    }
+
+    private void setNightTimeBossBar() {
+        _bossBar.setColor(BarColor.BLUE);
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
+        _bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
     }
 
 //	########################################
@@ -831,7 +889,7 @@ public class PrisonEscapeGame {
 
         ConfigManager config = ConfigManager.getInstance();
 
-        BukkitEffectGiver.giveSpeedEffect(playerName, config.getSpeedLevel(), config.getSpeedDuration());
+        player.setEffect(PotionEffectType.SPEED, config.getSpeedLevel(), config.getSpeedDuration());
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);

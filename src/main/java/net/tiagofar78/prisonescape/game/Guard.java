@@ -28,15 +28,10 @@ public class Guard extends PrisonEscapePlayer {
 
     private PrisonEscapeLocation _locationBeforeWatchingCameras = null;
 
-    private ScoreboardData _scoreboardData;
-
     public Guard(String name) {
         super(name);
 
         _balance = ConfigManager.getInstance().getStartingBalance();
-
-        _scoreboardData = createScoreboardData();
-        setScoreboard(_scoreboardData.getScoreboard());
     }
 
     @Override
@@ -122,10 +117,11 @@ public class Guard extends PrisonEscapePlayer {
 //  #              Scoreboard              #
 //  ########################################
 
+    @Override
     public ScoreboardData createScoreboardData() {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
 
-        ScoreboardData sbData = new ScoreboardData();
+        ScoreboardData sbData = super.createScoreboardData();
 
         String balanceLine = messages.getGuardSideBarBalanceLine(getBalance());
         String lastLine = messages.getSideBarLastLine();
@@ -153,27 +149,30 @@ public class Guard extends PrisonEscapePlayer {
     private void updateBalanceLine() {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
         String balanceLine = messages.getGuardSideBarBalanceLine(getBalance());
-        _scoreboardData.updateLine(BALANCE_LINE_INDEX, balanceLine);
+        getScoreboardData().updateLine(BALANCE_LINE_INDEX, balanceLine);
     }
 
     public void addSoundDetectorLine(int value) {
         int soundDetectorsAmount = GameManager.getGame().getPrison().countSoundDetectors();
         if (soundDetectorsAmount == 0) {
             String emptyLine = "§a";
-            _scoreboardData.addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, emptyLine);
+            getScoreboardData().addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, emptyLine);
 
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
             String line = messages.getGuardSideBarSoundDetectorLine();
-            _scoreboardData.addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, line);
+            getScoreboardData().addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, line);
         }
 
         String soundDetectorValueLine = createSoundDetectorValueLine(soundDetectorsAmount + 1, value);
-        _scoreboardData.addLine(SOUND_DETECTORS_FIRST_LINE_INDEX + 1 + soundDetectorsAmount, soundDetectorValueLine);
+        getScoreboardData().addLine(
+                SOUND_DETECTORS_FIRST_LINE_INDEX + 1 + soundDetectorsAmount,
+                soundDetectorValueLine
+        );
     }
 
     public void updateSoundDetectorValue(int index, int value) {
         String soundDetectorValueLine = createSoundDetectorValueLine(index + 1, value);
-        _scoreboardData.updateLine(SOUND_DETECTORS_FIRST_LINE_INDEX + 1 + index, soundDetectorValueLine);
+        getScoreboardData().updateLine(SOUND_DETECTORS_FIRST_LINE_INDEX + 1 + index, soundDetectorValueLine);
     }
 
     private String createSoundDetectorValueLine(int index, int value) {
