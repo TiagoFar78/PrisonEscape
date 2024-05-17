@@ -6,6 +6,8 @@ SecondsInSolitary: 30
 DaysAmount: 4
 DayDuration: 120
 NightDuration: 60
+SpeedDuration: 15
+SpeedLevel: 2
 StartingBalance: 100
 TrapLimit: 2
 SensorLimit: 2
