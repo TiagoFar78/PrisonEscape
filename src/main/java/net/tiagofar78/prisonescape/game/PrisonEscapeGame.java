@@ -889,7 +889,7 @@ public class PrisonEscapeGame {
 
         ConfigManager config = ConfigManager.getInstance();
 
-        player.setEffect(PotionEffectType.SPEED, config.getSpeedDuration(), config.getSpeedLevel());
+        player.setEffect(PotionEffectType.SPEED, config.getSpeedLevel(), config.getSpeedDuration());
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);
