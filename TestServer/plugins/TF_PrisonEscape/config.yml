@@ -595,13 +595,76 @@ PrisionersSecretPassagesLocation:
 PoliceSecretPassagesLocation:
   "1":
     Key:
-      X: -1
-      Y: 101
-      Z: 11
+      X: -3
+      Y: 99
+      Z: 48
     Value:
-      X: 3
+      X: -25
+      Y: 82
+      Z: 25
+  "2":
+    Key:
+      X: -25
+      Y: 85
+      Z: 25
+    Value:
+      X: -3
       Y: 100
-      Z: 8
+      Z: 48
+  "3":
+    Key:
+      X: 19
+      Y: 99
+      Z: -41
+    Value:
+      X: 25
+      Y: 82
+      Z: -30
+  "4":
+    Key:
+      X: 25
+      Y: 85
+      Z: -30
+    Value:
+      X: 19
+      Y: 100
+      Z: -41
+  "5":
+    Key:
+      X: 19
+      Y: 104
+      Z: -41
+    Value:
+      X: -35
+      Y: 113
+      Z: -13
+  "6":
+    Key:
+      X: -35
+      Y: 112
+      Z: -13
+    Value:
+      X: 19
+      Y: 100
+      Z: -41
+  "7":
+    Key:
+      X: -3
+      Y: 104
+      Z: 48
+    Value:
+      X: -40
+      Y: 113
+      Z: -11
+  "8":
+    Key:
+      X: -40
+      Y: 112
+      Z: -11
+    Value:
+      X: -3
+      Y: 100
+      Z: 48
 VaultsDirection: "WEST"
 VaultsLocations:
   "1":
