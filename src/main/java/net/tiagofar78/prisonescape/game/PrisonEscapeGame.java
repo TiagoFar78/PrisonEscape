@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitEffectGiver;
 import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
@@ -40,6 +39,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -250,6 +250,10 @@ public class PrisonEscapeGame {
         return player.isPrisioner();
     }
 
+    public PrisonEscapeTeam<Prisioner> getPrisionerTeam() {
+        return _prisionersTeam;
+    }
+
     public PrisonEscapeTeam<Guard> getGuardsTeam() {
         return _policeTeam;
     }
@@ -357,20 +361,22 @@ public class PrisonEscapeGame {
 
         _phase = _phase.next();
 
-        for (PrisonEscapePlayer player : _prisionersTeam.getMembers()) {
+        for (Prisioner player : _prisionersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisionerGameStartedMessage());
             player.setKit(new PrisionerKit());
             teleportPrisionerToSpawnPoint(player);
             player.setBossBar(_bossBar);
+            player.updateScoreaboardTeams();
         }
 
-        for (PrisonEscapePlayer player : _policeTeam.getMembers()) {
+        for (Guard player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
             player.setKit(new PoliceKit());
             teleportPoliceToSpawnPoint(player);
             player.setBossBar(_bossBar);
+            player.updateScoreaboardTeams();
         }
 
         _prison.addVaults(_prisionersTeam.getMembers());
@@ -883,7 +889,7 @@ public class PrisonEscapeGame {
 
         ConfigManager config = ConfigManager.getInstance();
 
-        BukkitEffectGiver.giveSpeedEffect(playerName, config.getSpeedDuration(), config.getSpeedLevel());
+        player.setEffect(PotionEffectType.SPEED, config.getSpeedDuration(), config.getSpeedLevel());
 
         int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
         player.removeItem(contentIndex);
