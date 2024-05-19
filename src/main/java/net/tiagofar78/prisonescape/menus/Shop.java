@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.menus;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
@@ -14,34 +13,20 @@ import net.tiagofar78.prisonescape.items.SoundDetectorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shop extends Menu {
+public class Shop implements Clickable {
 
-    private boolean _isOpen = false;
+    private static final int NUM_OF_ITEMS_FOR_SALE = 5;
+
     private List<Item> _contents;
 
     public Shop() {
         _contents = createContentsList();
-    }
-
-    @Override
-    public void open(PrisonEscapePlayer player) {
-        BukkitMenu.openShop(player.getName());
-        _isOpen = true;
-    }
-
-    @Override
-    public void close() {
-        _isOpen = false;
-    }
-
-    @Override
-    public boolean isOpened() {
-        return _isOpen;
     }
 
     private List<Item> createContentsList() {
@@ -61,7 +46,7 @@ public class Shop extends Menu {
         if (clickedPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
-        int index = BukkitMenu.convertToIndexShop(slot);
+        int index = convertToIndex(slot);
         if (index == -1) {
             return ClickReturnAction.NOTHING;
         }
@@ -93,8 +78,23 @@ public class Shop extends Menu {
 
     @Override
     public Inventory toInventory(MessageLanguageManager messages) {
-        // TODO Auto-generated method stub
-        return null;
+        Inventory shopMenu = Bukkit.createInventory(null, 9, "Buy Menu");
+
+        shopMenu.setItem(0, new EnergyDrinkItem().toItemStack(messages));
+        shopMenu.setItem(1, new TrapItem().toItemStack(messages));
+        shopMenu.setItem(2, new SoundDetectorItem().toItemStack(messages));
+        shopMenu.setItem(3, new CameraItem().toItemStack(messages));
+        shopMenu.setItem(4, new RadarItem().toItemStack(messages));
+
+        return shopMenu;
+    }
+
+    private int convertToIndex(int slot) {
+        if (slot >= NUM_OF_ITEMS_FOR_SALE) {
+            return -1;
+        }
+
+        return slot;
     }
 
 }

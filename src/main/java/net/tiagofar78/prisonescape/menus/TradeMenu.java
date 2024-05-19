@@ -12,9 +12,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class TradeMenu extends Menu {
+public class TradeMenu implements Clickable {
 
-    private boolean _isOpened;
     private Prisioner _player1;
     private Prisioner _player2;
 
@@ -22,22 +21,37 @@ public class TradeMenu extends Menu {
         _player1 = player1;
         _player2 = player2;
 
-        _isOpened = true;
-
-        open(_player1);
-        open(_player2);
+        _player1.openMenu(this);
+        _player2.openMenu(this);
     }
 
     @Override
-    public void open(PrisonEscapePlayer player) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+    public void close() {
+        _player1.closeMenu();
+        _player2.closeMenu();
+    }
 
+    @Override
+    public ClickReturnAction click(
+            PrisonEscapePlayer player,
+            int slot,
+            Item itemHeld,
+            boolean clickedPlayerInv
+    ) {
+        // TODO make click interactions
+        return null;
+    }
+
+    @Override
+    public Inventory toInventory(MessageLanguageManager messages) {
         int lines = 5;
         String title = messages.getTradeTitle();
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
 
         placeGlasses(inv, lines, messages);
         placeStatusWool(inv, messages, Material.RED_WOOL);
+
+        return inv;
     }
 
     private void placeGlasses(Inventory inv, int lines, MessageLanguageManager messages) {
@@ -83,35 +97,6 @@ public class TradeMenu extends Menu {
 
         inv.setItem(player1WoolIndex, wool);
         inv.setItem(player2WoolIndex, wool);
-    }
-
-    @Override
-    public void close() {
-        _isOpened = false;
-        _player1.closeMenu();
-        _player2.closeMenu();
-    }
-
-    @Override
-    public boolean isOpened() {
-        return _isOpened;
-    }
-
-    @Override
-    public ClickReturnAction click(
-            PrisonEscapePlayer player,
-            int slot,
-            Item itemHeld,
-            boolean clickedPlayerInv
-    ) {
-        // TODO make click interactions
-        return null;
-    }
-
-    @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

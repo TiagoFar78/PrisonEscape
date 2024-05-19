@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
@@ -30,7 +29,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
-import net.tiagofar78.prisonescape.menus.Menu;
+import net.tiagofar78.prisonescape.menus.Clickable;
 import net.tiagofar78.prisonescape.menus.Shop;
 
 import org.bukkit.Bukkit;
@@ -623,7 +622,7 @@ public class PrisonEscapeGame {
 
             Door door = _prison.getDoor(blockLocation);
             if (door != null) {
-                int index = BukkitMenu.convertToIndexPlayerInventory(itemSlot);
+                int index = player.convertToInventoryIndex(itemSlot);
                 playerInteractWithDoor(player, index, item, door, blockLocation);
                 return 0;
             }
@@ -658,7 +657,7 @@ public class PrisonEscapeGame {
             return ClickReturnAction.IGNORE;
         }
 
-        Menu menu = player.getOpenedMenu();
+        Clickable menu = player.getOpenedMenu();
         if (menu == null) {
             return ClickReturnAction.IGNORE;
         }
@@ -882,7 +881,7 @@ public class PrisonEscapeGame {
 
         player.setEffect(PotionEffectType.SPEED, config.getSpeedLevel(), config.getSpeedDuration());
 
-        int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
+        int contentIndex = player.convertToInventoryIndex(eneryDrinkIndex);
         player.removeItem(contentIndex);
     }
 

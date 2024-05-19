@@ -6,15 +6,13 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.inventory.Inventory;
 
-public abstract class Menu {
+public interface Clickable {
+
+    public default void close() {
+        // Nothing
+    }
 
     public abstract Inventory toInventory(MessageLanguageManager messages);
-
-    public abstract void open(PrisonEscapePlayer player);
-
-    public abstract void close();
-
-    public abstract boolean isOpened();
 
     public abstract ClickReturnAction click(
             PrisonEscapePlayer player,

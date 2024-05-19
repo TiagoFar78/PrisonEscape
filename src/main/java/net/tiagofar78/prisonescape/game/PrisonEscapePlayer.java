@@ -1,13 +1,12 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.Kit;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.Menu;
+import net.tiagofar78.prisonescape.menus.Clickable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +14,7 @@ import org.bukkit.GameMode;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -28,6 +28,7 @@ public abstract class PrisonEscapePlayer {
     private static final int TICKS_PER_SECOND = 20;
 
     private static final int INVENTORY_SIZE = 4;
+    private static final int[] UNCOVERED_INDEXES = {0, 1, 2, 3};
 
     private String _name;
     private boolean _isOnline;
@@ -35,7 +36,7 @@ public abstract class PrisonEscapePlayer {
     private Kit _currentKit;
 
     private ScoreboardData _scoreboardData;
-    private Menu _openedMenu;
+    private Clickable _openedMenu;
 
     public PrisonEscapePlayer(String name) {
         _name = name;
@@ -111,7 +112,7 @@ public abstract class PrisonEscapePlayer {
             return item;
         }
 
-        int index = BukkitMenu.convertToIndexPlayerInventory(slot);
+        int index = convertToInventoryIndex(slot);
         if (index < 0 || index >= INVENTORY_SIZE) {
             return new NullItem();
         }
@@ -137,23 +138,32 @@ public abstract class PrisonEscapePlayer {
     public void setItem(int index, Item item) {
         _inventory.set(index, item);
 
-        BukkitMenu.setItem(_name, index, item);
+        setItemBukkit(index, item);
     }
-
 
     /**
      * @return 0 if success<br>
      *         -1 if cannot remove item
      */
     public int removeItem(int slot) {
-        int index = BukkitMenu.convertToIndexPlayerInventory(slot);
+        int index = convertToInventoryIndex(slot);
         if (index == -1) {
             return -1;
         }
 
         _inventory.set(index, new NullItem());
-        BukkitMenu.setItem(_name, index, new NullItem());
+        setItemBukkit(index, new NullItem());
         return 0;
+    }
+
+    public int convertToInventoryIndex(int slot) {
+        for (int i = 0; i < UNCOVERED_INDEXES.length; i++) {
+            if (slot == UNCOVERED_INDEXES[i]) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public boolean hasIllegalItems() {
@@ -183,7 +193,7 @@ public abstract class PrisonEscapePlayer {
                 setItem(i, new NullItem());
             }
 
-            BukkitMenu.setItem(getName(), i, _inventory.get(i));
+            setItemBukkit(i, _inventory.get(i));
         }
     }
 
@@ -191,17 +201,21 @@ public abstract class PrisonEscapePlayer {
 //  #                 Menu                 #
 //  ########################################
 
-    public Menu getOpenedMenu() {
+    public Clickable getOpenedMenu() {
         return _openedMenu;
     }
 
-    public void openMenu(Menu menu) {
+    public void openMenu(Clickable menu) {
         _openedMenu = menu;
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
         openInventoryView(menu.toInventory(messages));
     }
 
     public void closeMenu() {
+        if (_openedMenu != null) {
+            _openedMenu.close();
+        }
+
         _openedMenu = null;
         closeInventoryView();
     }
@@ -294,6 +308,17 @@ public abstract class PrisonEscapePlayer {
         int ticksDuration = seconds * TICKS_PER_SECOND;
 
         player.addPotionEffect(new PotionEffect(effect, ticksDuration, level));
+    }
+
+    private void setItemBukkit(int index, Item item) {
+        Player bukkitPlayer = Bukkit.getPlayer(getName());
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+        ItemStack bukkitItem = item.toItemStack(messages);
+        bukkitPlayer.getInventory().setItem(UNCOVERED_INDEXES[index], bukkitItem);
     }
 
     private void openInventoryView(Inventory inv) {
