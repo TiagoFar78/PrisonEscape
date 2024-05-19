@@ -106,6 +106,10 @@ Inventory:
       Name: "&cHidden"
   Chest:
     Title: "Container"
+  Trade:
+    Title: "Trade your items with your partner"
+    InvalidWool:
+      Name: "&cINVALID TRADE"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"

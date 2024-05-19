@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -271,6 +272,24 @@ public abstract class PrisonEscapePlayer {
         int ticksDuration = seconds * TICKS_PER_SECOND;
 
         player.addPotionEffect(new PotionEffect(effect, ticksDuration, level));
+    }
+
+    public void openMenu(Inventory inv) {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.openInventory(inv);
+    }
+
+    public void closeMenu() {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.closeInventory();
     }
 
     @Override

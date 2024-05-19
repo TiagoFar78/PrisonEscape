@@ -85,6 +85,8 @@ public class MessageLanguageManager {
     private String _containerName;
     private String _vaultTitle;
     private String _vaultHiddenGlassName;
+    private String _tradeTitle;
+    private String _tradeInvalidWoolName;
 
 //	########################################
 //	#                 Chat                 #
@@ -228,6 +230,8 @@ public class MessageLanguageManager {
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));
         _vaultHiddenGlassName = createMessage(messages.getString("Inventory.Vault.HiddenGlass.Name"));
+        _tradeTitle = createMessage(messages.getString("Inventory.Trade.Title"));
+        _tradeInvalidWoolName = createMessage(messages.getString("Inventory.Trade.InvalidWool.Name"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -414,6 +418,14 @@ public class MessageLanguageManager {
 
     public String getVaultHiddenGlassName() {
         return _vaultHiddenGlassName;
+    }
+
+    public String getTradeTitle() {
+        return _tradeTitle;
+    }
+
+    public String getTradeInvalidWoolName() {
+        return _tradeInvalidWoolName;
     }
 
 //	########################################
