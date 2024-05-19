@@ -14,10 +14,12 @@ import net.tiagofar78.prisonescape.items.SoundDetectorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import org.bukkit.inventory.Inventory;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shop implements Clickable {
+public class Shop extends Menu {
 
     private boolean _isOpen = false;
     private List<Item> _contents;
@@ -87,6 +89,12 @@ public class Shop implements Clickable {
 
         BukkitMessageSender.sendChatMessage(player, messages.getSuccessfullyBoughtItemMessage(guard.getBalance()));
         return ClickReturnAction.NOTHING;
+    }
+
+    @Override
+    public Inventory toInventory(MessageLanguageManager messages) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

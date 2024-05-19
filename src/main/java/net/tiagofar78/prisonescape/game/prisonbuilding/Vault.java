@@ -7,8 +7,9 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
-import net.tiagofar78.prisonescape.menus.Clickable;
+import net.tiagofar78.prisonescape.menus.Menu;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,11 +19,12 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.sign.Side;
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vault implements Clickable {
+public class Vault extends Menu {
 
     private static final int NON_HIDDEN_SIZE = 4;
     private static final int HIDDEN_SIZE = 1;
@@ -181,6 +183,12 @@ public class Vault implements Clickable {
 
         vaultLocation.getBlock().setType(Material.AIR);
         signLocation.getBlock().setType(Material.AIR);
+    }
+
+    @Override
+    public Inventory toInventory(MessageLanguageManager messages) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

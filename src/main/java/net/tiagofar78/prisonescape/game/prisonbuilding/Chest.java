@@ -10,13 +10,15 @@ import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
-import net.tiagofar78.prisonescape.menus.Clickable;
+import net.tiagofar78.prisonescape.menus.Menu;
+
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Chest implements Clickable {
+public class Chest extends Menu {
 
     private static final int CONTENTS_SIZE = 5;
 
@@ -102,6 +104,12 @@ public class Chest implements Clickable {
 
         _contents.set(index, new NullItem());
         return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
+    }
+
+    @Override
+    public Inventory toInventory(MessageLanguageManager messages) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

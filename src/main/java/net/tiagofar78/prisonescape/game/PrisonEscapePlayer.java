@@ -6,6 +6,8 @@ import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.Kit;
 import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.Menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,6 +35,7 @@ public abstract class PrisonEscapePlayer {
     private Kit _currentKit;
 
     private ScoreboardData _scoreboardData;
+    private Menu _openedMenu;
 
     public PrisonEscapePlayer(String name) {
         _name = name;
@@ -185,6 +188,25 @@ public abstract class PrisonEscapePlayer {
     }
 
 //  ########################################
+//  #                 Menu                 #
+//  ########################################
+
+    public Menu getOpenedMenu() {
+        return _openedMenu;
+    }
+
+    public void openMenu(Menu menu) {
+        _openedMenu = menu;
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+        openInventoryView(menu.toInventory(messages));
+    }
+
+    public void closeMenu() {
+        _openedMenu = null;
+        closeInventoryView();
+    }
+
+//  ########################################
 //  #              Scoreboard              #
 //  ########################################
 
@@ -235,9 +257,9 @@ public abstract class PrisonEscapePlayer {
         }
     }
 
-//	########################################
-//	#                 Util                 #
-//	########################################
+//  ########################################
+//  #                Bukkit                #
+//  ########################################
 
     private Player getBukkitPlayer() {
         Player player = Bukkit.getPlayer(getName());
@@ -274,7 +296,7 @@ public abstract class PrisonEscapePlayer {
         player.addPotionEffect(new PotionEffect(effect, ticksDuration, level));
     }
 
-    public void openMenu(Inventory inv) {
+    private void openInventoryView(Inventory inv) {
         Player player = getBukkitPlayer();
         if (player == null) {
             return;
@@ -283,7 +305,7 @@ public abstract class PrisonEscapePlayer {
         player.openInventory(inv);
     }
 
-    public void closeMenu() {
+    private void closeInventoryView() {
         Player player = getBukkitPlayer();
         if (player == null) {
             return;
@@ -291,6 +313,10 @@ public abstract class PrisonEscapePlayer {
 
         player.closeInventory();
     }
+
+//  ########################################
+//  #                 Util                 #
+//  ########################################
 
     @Override
     public boolean equals(Object o) {

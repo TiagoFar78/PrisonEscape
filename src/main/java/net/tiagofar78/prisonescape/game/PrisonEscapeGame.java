@@ -30,7 +30,7 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
-import net.tiagofar78.prisonescape.menus.Clickable;
+import net.tiagofar78.prisonescape.menus.Menu;
 import net.tiagofar78.prisonescape.menus.Shop;
 
 import org.bukkit.Bukkit;
@@ -43,7 +43,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 
 public class PrisonEscapeGame {
@@ -62,8 +61,6 @@ public class PrisonEscapeGame {
     private PrisonEscapeTeam<Guard> _policeTeam;
     private PrisonEscapeTeam<Prisioner> _prisionersTeam;
 
-    private Hashtable<String, Clickable> _playerOpenMenu;
-
     private Phase _phase;
 
     private boolean _hasDoorCode;
@@ -79,8 +76,6 @@ public class PrisonEscapeGame {
         _playersOnLobby = new ArrayList<>();
         _policeTeam = new PrisonEscapeTeam<Guard>(POLICE_TEAM_NAME);
         _prisionersTeam = new PrisonEscapeTeam<Prisioner>(PRISIONERS_TEAM_NAME);
-
-        _playerOpenMenu = new Hashtable<>();
 
         _hasDoorCode = false;
 
@@ -649,14 +644,12 @@ public class PrisonEscapeGame {
     }
 
     public void playerCloseMenu(String playerName) {
-        if (getPrisonEscapePlayer(playerName) == null) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
             return;
         }
 
-        if (_playerOpenMenu.containsKey(playerName)) {
-            _playerOpenMenu.get(playerName).close();
-            _playerOpenMenu.remove(playerName);
-        }
+        player.closeMenu();
     }
 
     public ClickReturnAction playerClickMenu(String playerName, int slot, Item itemHeld, boolean clickedPlayerInv) {
@@ -665,12 +658,12 @@ public class PrisonEscapeGame {
             return ClickReturnAction.IGNORE;
         }
 
-        if (!_playerOpenMenu.containsKey(playerName)) {
+        Menu menu = player.getOpenedMenu();
+        if (menu == null) {
             return ClickReturnAction.IGNORE;
         }
 
-        Clickable clicakble = _playerOpenMenu.get(player.getName());
-        return clicakble.click(player, slot, itemHeld, clickedPlayerInv);
+        return menu.click(player, slot, itemHeld, clickedPlayerInv);
     }
 
     public void playerSneak(String playerName) {
@@ -823,8 +816,7 @@ public class PrisonEscapeGame {
             return;
         }
 
-        _playerOpenMenu.put(player.getName(), vault);
-        vault.open(player);
+        player.openMenu(vault);
     }
 
     /**
@@ -877,8 +869,7 @@ public class PrisonEscapeGame {
             return;
         }
 
-        chest.open(player);
-        _playerOpenMenu.put(player.getName(), chest);
+        player.openMenu(chest);
     }
 
     public void playerDrankEnergyDrink(String playerName, int eneryDrinkIndex) {
@@ -920,8 +911,7 @@ public class PrisonEscapeGame {
         }
 
         Shop shop = new Shop();
-        _playerOpenMenu.put(player.getName(), shop);
-        shop.open(player);
+        player.openMenu(shop);
     }
 
     public void policeHandcuffedPrisioner(String policeName, String prisionerName) {

@@ -12,7 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class TradeMenu implements Clickable {
+public class TradeMenu extends Menu {
 
     private boolean _isOpened;
     private Prisioner _player1;
@@ -38,9 +38,6 @@ public class TradeMenu implements Clickable {
 
         placeGlasses(inv, lines, messages);
         placeStatusWool(inv, messages, Material.RED_WOOL);
-
-        _player1.openMenu(inv);
-        _player2.openMenu(inv);
     }
 
     private void placeGlasses(Inventory inv, int lines, MessageLanguageManager messages) {
@@ -108,6 +105,12 @@ public class TradeMenu implements Clickable {
             boolean clickedPlayerInv
     ) {
         // TODO make click interactions
+        return null;
+    }
+
+    @Override
+    public Inventory toInventory(MessageLanguageManager messages) {
+        // TODO Auto-generated method stub
         return null;
     }
 
