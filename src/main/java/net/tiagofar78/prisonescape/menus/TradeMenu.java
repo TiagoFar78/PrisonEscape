@@ -4,6 +4,7 @@ import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
@@ -12,10 +13,30 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TradeMenu implements Clickable {
+
+    private static final int[] OFFERED_ITEMS_SLOTS = {1 * 9 + 1, 1 * 9 + 2, 2 * 9 + 1, 2 * 9 + 2};
+    private static final int PLAYER_2_OFFERED_ITEMS_SLOTS_DISTANCE = 5;
+    private static final int STATUS_WOOL_SLOT = 4 * 9 + 1;
 
     private Prisioner _player1;
     private Prisioner _player2;
+
+    private List<Item> _offeredItemsPlayer1 = createEmptyItemList();
+    private List<Item> _offeredItemsPlayer2 = createEmptyItemList();
+
+    private List<Item> createEmptyItemList() {
+        List<Item> list = new ArrayList<>();
+
+        for (int i = 0; i < OFFERED_ITEMS_SLOTS.length; i++) {
+            list.add(new NullItem());
+        }
+
+        return list;
+    }
 
     public TradeMenu(Prisioner player1, Prisioner player2) {
         _player1 = player1;
@@ -25,10 +46,29 @@ public class TradeMenu implements Clickable {
         _player2.openMenu(this);
     }
 
+    private void addItem(List<Item> offeredItems, Item item) {
+        for (int i = 0; i < OFFERED_ITEMS_SLOTS.length; i++) {
+            if (offeredItems.get(i) instanceof NullItem) {
+                offeredItems.set(i, item);
+                return;
+            }
+        }
+
+        throw new IndexOutOfBoundsException(); // Should never reach here
+    }
+
     @Override
     public void close() {
         _player1.closeMenu();
         _player2.closeMenu();
+
+        for (Item item : _offeredItemsPlayer1) {
+            _player1.giveItem(item);
+        }
+
+        for (Item item : _offeredItemsPlayer2) {
+            _player2.giveItem(item);
+        }
     }
 
     @Override
@@ -38,8 +78,54 @@ public class TradeMenu implements Clickable {
             Item itemHeld,
             boolean clickedPlayerInv
     ) {
-        // TODO make click interactions
+        return clickedPlayerInv ? clickPlayerInv(player, slot) : clickViewInv(player, slot);
+    }
+
+    private ClickReturnAction clickPlayerInv(PrisonEscapePlayer player, int slot) {
+        int index = player.convertToInventoryIndex(slot);
+        if (index == -1) {
+            return ClickReturnAction.IGNORE;
+        }
+
+        Item offeredItem = player.getItemAt(slot);
+        if (offeredItem instanceof NullItem) {
+            return ClickReturnAction.IGNORE;
+        }
+
+        List<Item> offeredItems = player.equals(_player1) ? _offeredItemsPlayer1 : _offeredItemsPlayer2;
+        addItem(offeredItems, offeredItem);
+
+        player.setItem(index, new NullItem());
+
+        _player1.updateView();
+        _player2.updateView();
+
+        return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
+    }
+
+    private ClickReturnAction clickViewInv(PrisonEscapePlayer player, int slot) {
+        int index = convertSlotToIndex(slot);
+        if (index == -1) {
+            if (slot == STATUS_WOOL_SLOT) {
+                clickStatusWool();
+            }
+
+            return ClickReturnAction.IGNORE;
+        }
+
+        List<Item> offeredItems = player.equals(_player1) ? _offeredItemsPlayer1 : _offeredItemsPlayer2;
+        player.giveItem(offeredItems.get(index));
+
+        offeredItems.set(index, new NullItem());
+
+        _player1.updateView();
+        _player2.updateView();
+
         return null;
+    }
+
+    private void clickStatusWool() {
+        // TODO error message / accept
     }
 
     @Override
@@ -71,12 +157,9 @@ public class TradeMenu implements Clickable {
             inv.setItem(line * 9 + 4, redGlass);
         }
 
-        int[] clearIndexes = {1 * 9 + 1, 1 * 9 + 2, 2 * 9 + 1, 2 * 9 + 2};
-        int player2ClearIndexesDiff = 5;
-
-        for (int i : clearIndexes) {
+        for (int i : OFFERED_ITEMS_SLOTS) {
             inv.setItem(i, null);
-            inv.setItem(i + player2ClearIndexesDiff, null);
+            inv.setItem(i + PLAYER_2_OFFERED_ITEMS_SLOTS_DISTANCE, null);
         }
     }
 
@@ -92,11 +175,45 @@ public class TradeMenu implements Clickable {
         meta.setDisplayName(messages.getTradeInvalidWoolName());
         wool.setItemMeta(meta);
 
-        int player1WoolIndex = 4 * 9 + 1;
-        int player2WoolIndex = 4 * 9 + 6;
+        inv.setItem(STATUS_WOOL_SLOT, wool);
+        inv.setItem(STATUS_WOOL_SLOT + 6, wool);
+    }
 
-        inv.setItem(player1WoolIndex, wool);
-        inv.setItem(player2WoolIndex, wool);
+    @Override
+    public void updateInventory(Inventory inv, PrisonEscapePlayer player) {
+        List<Item> leftOfferedItems;
+        List<Item> rightOfferedItems;
+
+        if (player.equals(_player1)) {
+            leftOfferedItems = _offeredItemsPlayer1;
+            rightOfferedItems = _offeredItemsPlayer2;
+        } else {
+            leftOfferedItems = _offeredItemsPlayer2;
+            rightOfferedItems = _offeredItemsPlayer1;
+        }
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
+        for (int i = 0; i < leftOfferedItems.size(); i++) {
+            inv.setItem(OFFERED_ITEMS_SLOTS[i], leftOfferedItems.get(i).toItemStack(messages));
+        }
+
+        for (int i = 0; i < rightOfferedItems.size(); i++) {
+            int slot = OFFERED_ITEMS_SLOTS[i] + PLAYER_2_OFFERED_ITEMS_SLOTS_DISTANCE;
+            inv.setItem(slot, rightOfferedItems.get(i).toItemStack(messages));
+        }
+
+        // TODO update status wool and glass
+    }
+
+    private int convertSlotToIndex(int slot) {
+        for (int i = 0; i < OFFERED_ITEMS_SLOTS.length; i++) {
+            if (OFFERED_ITEMS_SLOTS[i] == slot) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 }

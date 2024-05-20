@@ -28,7 +28,7 @@ public abstract class PrisonEscapePlayer {
     private static final int TICKS_PER_SECOND = 20;
 
     private static final int INVENTORY_SIZE = 4;
-    private static final int[] UNCOVERED_INDEXES = {0, 1, 2, 3};
+    private static final int[] INVENTORY_INDEXES = {0, 1, 2, 3};
 
     private String _name;
     private boolean _isOnline;
@@ -157,8 +157,8 @@ public abstract class PrisonEscapePlayer {
     }
 
     public int convertToInventoryIndex(int slot) {
-        for (int i = 0; i < UNCOVERED_INDEXES.length; i++) {
-            if (slot == UNCOVERED_INDEXES[i]) {
+        for (int i = 0; i < INVENTORY_INDEXES.length; i++) {
+            if (slot == INVENTORY_INDEXES[i]) {
                 return i;
             }
         }
@@ -194,6 +194,12 @@ public abstract class PrisonEscapePlayer {
             }
 
             setItemBukkit(i, _inventory.get(i));
+        }
+    }
+
+    public void updateView() {
+        if (_openedMenu != null) {
+            _openedMenu.updateInventory(getBukkitPlayer().getOpenInventory().getTopInventory(), this);
         }
     }
 
@@ -318,7 +324,7 @@ public abstract class PrisonEscapePlayer {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
         ItemStack bukkitItem = item.toItemStack(messages);
-        bukkitPlayer.getInventory().setItem(UNCOVERED_INDEXES[index], bukkitItem);
+        bukkitPlayer.getInventory().setItem(INVENTORY_INDEXES[index], bukkitItem);
     }
 
     private void openInventoryView(Inventory inv) {

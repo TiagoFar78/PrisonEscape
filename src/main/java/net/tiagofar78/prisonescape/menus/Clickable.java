@@ -14,6 +14,10 @@ public interface Clickable {
 
     public abstract Inventory toInventory(MessageLanguageManager messages);
 
+    public default void updateInventory(Inventory inv, PrisonEscapePlayer player) {
+        // Nothing
+    }
+
     public abstract ClickReturnAction click(
             PrisonEscapePlayer player,
             int slot,
