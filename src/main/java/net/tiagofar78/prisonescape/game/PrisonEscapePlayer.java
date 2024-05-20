@@ -11,6 +11,7 @@ import net.tiagofar78.prisonescape.menus.Clickable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -118,6 +119,18 @@ public abstract class PrisonEscapePlayer {
         }
 
         return _inventory.get(index);
+    }
+
+    public int inventoryEmptySlots() {
+        int count = 0;
+
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            if (_inventory.get(i) instanceof NullItem) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     /**
@@ -343,6 +356,15 @@ public abstract class PrisonEscapePlayer {
         }
 
         player.closeInventory();
+    }
+
+    public void playSound(Sound sound) {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.playSound(player, sound, 1, 0.5f);
     }
 
 //  ########################################

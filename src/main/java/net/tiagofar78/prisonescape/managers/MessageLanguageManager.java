@@ -133,6 +133,7 @@ public class MessageLanguageManager {
     private String _sneakToLeaveCameraMessage;
     private String _soundDetectorPlacedMessage;
     private String _invalidSoundDetectorLocMessage;
+    private String _tradeAlreadyAcceptedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -278,6 +279,7 @@ public class MessageLanguageManager {
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
         _invalidSoundDetectorLocMessage = createMessage(messages.getString(warningPath + "InvalidSoundDetectorLoc"));
+        _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -578,6 +580,10 @@ public class MessageLanguageManager {
 
     public String getInvalidSoundDetectorLocMessage() {
         return _invalidSoundDetectorLocMessage;
+    }
+
+    public String getTradeAlreadyAcceptedMessage() {
+        return _tradeAlreadyAcceptedMessage;
     }
 
 //	########################################

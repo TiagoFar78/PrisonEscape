@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.menus;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.GlassItem;
@@ -9,6 +10,7 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,6 +26,9 @@ public class TradeMenu implements Clickable {
 
     private Prisioner _player1;
     private Prisioner _player2;
+
+    private boolean _hasPlayer1Accepted = false;
+    private boolean _hasPlayer2Accepted = false;
 
     private List<Item> _offeredItemsPlayer1 = createEmptyItemList();
     private List<Item> _offeredItemsPlayer2 = createEmptyItemList();
@@ -44,6 +49,19 @@ public class TradeMenu implements Clickable {
 
         _player1.openMenu(this);
         _player2.openMenu(this);
+    }
+
+    private void commitTrade() {
+        _player1.closeMenu();
+        _player2.closeMenu();
+
+        for (Item item : _offeredItemsPlayer1) {
+            _player2.giveItem(item);
+        }
+
+        for (Item item : _offeredItemsPlayer2) {
+            _player1.giveItem(item);
+        }
     }
 
     private void addItem(List<Item> offeredItems, Item item) {
@@ -107,7 +125,7 @@ public class TradeMenu implements Clickable {
         int index = convertSlotToIndex(slot);
         if (index == -1) {
             if (slot == STATUS_WOOL_SLOT) {
-                clickStatusWool();
+                clickStatusWool(player);
             }
 
             return ClickReturnAction.IGNORE;
@@ -124,8 +142,37 @@ public class TradeMenu implements Clickable {
         return null;
     }
 
-    private void clickStatusWool() {
-        // TODO error message / accept
+    private void clickStatusWool(PrisonEscapePlayer player) {
+        if (!isValidTrade()) {
+            player.playSound(Sound.ENTITY_VILLAGER_NO);
+        }
+
+        boolean isPlayer1 = player.equals(_player2);
+
+        boolean hasOtherPlayerAccepted = isPlayer1 ? _hasPlayer2Accepted : _hasPlayer1Accepted;
+        if (hasOtherPlayerAccepted) {
+            commitTrade();
+            return;
+        }
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
+        if (isPlayer1) {
+            if (_hasPlayer1Accepted) {
+                BukkitMessageSender.sendChatMessage(player, messages.getTradeAlreadyAcceptedMessage());
+            }
+
+            _hasPlayer1Accepted = true;
+        } else {
+            if (_hasPlayer2Accepted) {
+                BukkitMessageSender.sendChatMessage(player, messages.getTradeAlreadyAcceptedMessage());
+            }
+
+            _hasPlayer2Accepted = true;
+        }
+
+        _player1.updateView();
+        _player2.updateView();
     }
 
     @Override
@@ -184,7 +231,8 @@ public class TradeMenu implements Clickable {
         List<Item> leftOfferedItems;
         List<Item> rightOfferedItems;
 
-        if (player.equals(_player1)) {
+        boolean isPlayer1 = player.equals(_player1);
+        if (isPlayer1) {
             leftOfferedItems = _offeredItemsPlayer1;
             rightOfferedItems = _offeredItemsPlayer2;
         } else {
@@ -203,7 +251,60 @@ public class TradeMenu implements Clickable {
             inv.setItem(slot, rightOfferedItems.get(i).toItemStack(messages));
         }
 
-        // TODO update status wool and glass
+        if (!isValidTrade()) {
+            _hasPlayer1Accepted = false;
+            _hasPlayer2Accepted = false;
+            placeRedWool();
+            placeRedGlass();
+
+            return;
+        }
+
+        if (isPlayer1) {
+            if (_hasPlayer1Accepted) {
+                placeGreenWool();
+            } else {
+                placeYellowWool();
+            }
+
+            if (_hasPlayer2Accepted) {
+                placeGreenGlass();
+            } else {
+                placeRedGlass();
+            }
+        } else {
+            if (_hasPlayer1Accepted) {
+                placeGreenGlass();
+            } else {
+                placeRedGlass();
+            }
+
+            if (_hasPlayer2Accepted) {
+                placeGreenWool();
+            } else {
+                placeYellowWool();
+            }
+        }
+    }
+
+    private void placeRedGlass() {
+
+    }
+
+    private void placeRedWool() {
+
+    }
+
+    private void placeYellowWool() {
+
+    }
+
+    private void placeGreenGlass() {
+
+    }
+
+    private void placeGreenWool() {
+
     }
 
     private int convertSlotToIndex(int slot) {
@@ -214,6 +315,29 @@ public class TradeMenu implements Clickable {
         }
 
         return -1;
+    }
+
+    private int size(List<Item> items) {
+        int count = 0;
+
+        for (Item item : items) {
+            if (!(item instanceof NullItem)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private boolean isValidTrade() {
+        int offeredItems1Size = size(_offeredItemsPlayer1);
+        int offeredItems2Size = size(_offeredItemsPlayer2);
+
+        boolean condition1 = offeredItems1Size != 0 || offeredItems2Size != 0;
+        boolean condition2 = _player1.inventoryEmptySlots() >= offeredItems2Size;
+        boolean condition3 = _player2.inventoryEmptySlots() >= offeredItems1Size;
+
+        return condition1 && condition2 && condition3;
     }
 
 }

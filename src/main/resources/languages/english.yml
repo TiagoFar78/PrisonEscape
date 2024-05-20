@@ -148,6 +148,7 @@ Messages:
     SneakToLeaveCamera: "&eSneak to leave the camera"
     SoundDetectorPlaced: "&aSound detector placed sucessfully. Check if there are players walking by in the sidebar."
     InvalidSoundDetectorLoc: "&cSound detector can not be placed here. &eTry placing it on directly on the ground."
+    TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
   Announcements:
     GameStarting:
     - "&6==================================="
