@@ -110,6 +110,14 @@ Inventory:
     Title: "Trade your items with your partner"
     InvalidWool:
       Name: "&cINVALID TRADE"
+    AcceptWool:
+      Name: "&eClick to accept trade"
+    AcceptedWool:
+      Name: "&aTrade accepted, wait your partner"
+    NotAcceptedGlass:
+      Name: "&cYour partner didn't accept yet"
+    AcceptedGlass:
+      Name: "&aYour partner already accepted the trade"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"

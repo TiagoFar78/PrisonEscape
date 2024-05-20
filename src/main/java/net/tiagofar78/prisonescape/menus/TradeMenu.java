@@ -23,6 +23,7 @@ public class TradeMenu implements Clickable {
     private static final int[] OFFERED_ITEMS_SLOTS = {1 * 9 + 1, 1 * 9 + 2, 2 * 9 + 1, 2 * 9 + 2};
     private static final int PLAYER_2_OFFERED_ITEMS_SLOTS_DISTANCE = 5;
     private static final int STATUS_WOOL_SLOT = 4 * 9 + 1;
+    private static final int STATUS_GLASS_SLOT = 4 * 9 + 6;
 
     private Prisioner _player1;
     private Prisioner _player2;
@@ -223,7 +224,6 @@ public class TradeMenu implements Clickable {
         wool.setItemMeta(meta);
 
         inv.setItem(STATUS_WOOL_SLOT, wool);
-        inv.setItem(STATUS_WOOL_SLOT + 6, wool);
     }
 
     @Override
@@ -254,57 +254,72 @@ public class TradeMenu implements Clickable {
         if (!isValidTrade()) {
             _hasPlayer1Accepted = false;
             _hasPlayer2Accepted = false;
-            placeRedWool();
-            placeRedGlass();
+            placeRedWool(inv, messages);
+            placeRedGlass(inv, messages);
 
             return;
         }
 
         if (isPlayer1) {
             if (_hasPlayer1Accepted) {
-                placeGreenWool();
+                placeGreenWool(inv, messages);
             } else {
-                placeYellowWool();
+                placeYellowWool(inv, messages);
             }
 
             if (_hasPlayer2Accepted) {
-                placeGreenGlass();
+                placeGreenGlass(inv, messages);
             } else {
-                placeRedGlass();
+                placeRedGlass(inv, messages);
             }
         } else {
             if (_hasPlayer1Accepted) {
-                placeGreenGlass();
+                placeGreenGlass(inv, messages);
             } else {
-                placeRedGlass();
+                placeRedGlass(inv, messages);
             }
 
             if (_hasPlayer2Accepted) {
-                placeGreenWool();
+                placeGreenWool(inv, messages);
             } else {
-                placeYellowWool();
+                placeYellowWool(inv, messages);
             }
         }
     }
 
-    private void placeRedGlass() {
-
+    private void placeRedGlass(Inventory inv, MessageLanguageManager messages) {
+        ItemStack glass = createStatusItem(Material.RED_STAINED_GLASS_PANE, messages.getTradeNotAcceptedGlassName());
+        inv.setItem(STATUS_GLASS_SLOT, glass);
     }
 
-    private void placeRedWool() {
-
+    private void placeRedWool(Inventory inv, MessageLanguageManager messages) {
+        ItemStack wool = createStatusItem(Material.RED_WOOL, messages.getTradeInvalidWoolName());
+        inv.setItem(STATUS_WOOL_SLOT, wool);
     }
 
-    private void placeYellowWool() {
-
+    private void placeYellowWool(Inventory inv, MessageLanguageManager messages) {
+        ItemStack wool = createStatusItem(Material.YELLOW_WOOL, messages.getTradeAcceptWoolName());
+        inv.setItem(STATUS_WOOL_SLOT, wool);
     }
 
-    private void placeGreenGlass() {
-
+    private void placeGreenGlass(Inventory inv, MessageLanguageManager messages) {
+        ItemStack glass = createStatusItem(Material.GREEN_STAINED_GLASS_PANE, messages.getTradeAcceptedGlassName());
+        inv.setItem(STATUS_GLASS_SLOT, glass);
     }
 
-    private void placeGreenWool() {
+    private void placeGreenWool(Inventory inv, MessageLanguageManager messages) {
+        ItemStack wool = createStatusItem(Material.GREEN_WOOL, messages.getTradeAcceptedWoolName());
+        inv.setItem(STATUS_WOOL_SLOT, wool);
+    }
 
+    private ItemStack createStatusItem(Material material, String name) {
+        ItemStack wool = new ItemStack(material);
+
+        ItemMeta meta = wool.getItemMeta();
+        meta.setDisplayName(name);
+        wool.setItemMeta(meta);
+
+        return wool;
     }
 
     private int convertSlotToIndex(int slot) {

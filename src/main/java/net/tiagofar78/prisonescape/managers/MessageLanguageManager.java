@@ -87,6 +87,10 @@ public class MessageLanguageManager {
     private String _vaultHiddenGlassName;
     private String _tradeTitle;
     private String _tradeInvalidWoolName;
+    private String _tradeAcceptWoolName;
+    private String _tradeAcceptedWoolName;
+    private String _tradeNotAcceptedGlassName;
+    private String _tradeAcceptedGlassName;
 
 //	########################################
 //	#                 Chat                 #
@@ -233,6 +237,10 @@ public class MessageLanguageManager {
         _vaultHiddenGlassName = createMessage(messages.getString("Inventory.Vault.HiddenGlass.Name"));
         _tradeTitle = createMessage(messages.getString("Inventory.Trade.Title"));
         _tradeInvalidWoolName = createMessage(messages.getString("Inventory.Trade.InvalidWool.Name"));
+        _tradeAcceptWoolName = createMessage(messages.getString("Inventory.Trade.AcceptWool.Name"));
+        _tradeAcceptedWoolName = createMessage(messages.getString("Inventory.Trade.AcceptedWool.Name"));
+        _tradeNotAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.NotAcceptedGlass.Name"));
+        _tradeAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.AcceptedGlass.Name"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -428,6 +436,22 @@ public class MessageLanguageManager {
 
     public String getTradeInvalidWoolName() {
         return _tradeInvalidWoolName;
+    }
+
+    public String getTradeAcceptWoolName() {
+        return _tradeAcceptWoolName;
+    }
+
+    public String getTradeAcceptedWoolName() {
+        return _tradeAcceptedWoolName;
+    }
+
+    public String getTradeNotAcceptedGlassName() {
+        return _tradeNotAcceptedGlassName;
+    }
+
+    public String getTradeAcceptedGlassName() {
+        return _tradeAcceptedGlassName;
     }
 
 //	########################################
