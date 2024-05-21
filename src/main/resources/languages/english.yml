@@ -157,6 +157,8 @@ Messages:
     SoundDetectorPlaced: "&aSound detector placed sucessfully. Check if there are players walking by in the sidebar."
     InvalidSoundDetectorLoc: "&cSound detector can not be placed here. &eTry placing it on directly on the ground."
     TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
+    TradeRequestSent: "&eTrade request sent to &b{PLAYER}&e."
+    TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
   Announcements:
     GameStarting:
     - "&6==================================="

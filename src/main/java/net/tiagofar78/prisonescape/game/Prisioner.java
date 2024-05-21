@@ -53,7 +53,7 @@ public class Prisioner extends PrisonEscapePlayer {
         return _tradeRequestTime != -1 && secondsPast <= timeout;
     }
 
-    public void sentRequest(PrisonEscapePlayer target) {
+    public void sendRequest(PrisonEscapePlayer target) {
         _tradeRequestTarget = target;
         _tradeRequestTime = System.currentTimeMillis();
     }

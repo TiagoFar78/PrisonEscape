@@ -138,6 +138,8 @@ public class MessageLanguageManager {
     private String _soundDetectorPlacedMessage;
     private String _invalidSoundDetectorLocMessage;
     private String _tradeAlreadyAcceptedMessage;
+    private String _tradeRequestSentMessage;
+    private String _tradeRequestReceivedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -288,6 +290,8 @@ public class MessageLanguageManager {
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
         _invalidSoundDetectorLocMessage = createMessage(messages.getString(warningPath + "InvalidSoundDetectorLoc"));
         _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
+        _tradeRequestSentMessage = createMessage(messages.getString(warningPath + "TradeRequestSent"));
+        _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -608,6 +612,14 @@ public class MessageLanguageManager {
 
     public String getTradeAlreadyAcceptedMessage() {
         return _tradeAlreadyAcceptedMessage;
+    }
+
+    public String getTradeRequestSentMessage(String playerName) {
+        return _tradeRequestSentMessage.replace("{PLAYER}", playerName);
+    }
+
+    public String getTradeRequestReceivedMessage(String playerName, int time) {
+        return _tradeRequestReceivedMessage.replace("{PLAYER}", playerName).replace("{TIME}", Integer.toString(time));
     }
 
 //	########################################

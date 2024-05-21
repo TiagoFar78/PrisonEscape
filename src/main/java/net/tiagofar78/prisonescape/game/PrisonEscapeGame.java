@@ -31,6 +31,7 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 import net.tiagofar78.prisonescape.menus.Shop;
+import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -652,7 +653,31 @@ public class PrisonEscapeGame {
         PrisonEscapePlayer clickedPlayer = getPrisonEscapePlayer(e.getRightClicked().getName());
         if (clickedPlayer != null) {
             if (player.isPrisioner() && clickedPlayer.isPrisioner() && player.isSneaking()) {
-                // TODO
+                Prisioner sender = (Prisioner) player;
+                Prisioner target = (Prisioner) clickedPlayer;
+
+                if (sender.hasBeenRequestedBy(target) && sender.isStillValidRequest()) {
+                    sender.clearRequest();
+                    target.clearRequest();
+                    new TradeMenu(target, sender);
+                    return;
+                }
+
+                sender.sendRequest(target);
+
+                String senderName = sender.getName();
+                String targetName = target.getName();
+
+                MessageLanguageManager senderMessages = MessageLanguageManager.getInstanceByPlayer(senderName);
+                BukkitMessageSender.sendChatMessage(sender, senderMessages.getTradeRequestSentMessage(targetName));
+
+                int time = ConfigManager.getInstance().getTradeRequestTimeout();
+                MessageLanguageManager targetMessages = MessageLanguageManager.getInstanceByPlayer(targetName);
+                BukkitMessageSender.sendChatMessage(
+                        target,
+                        targetMessages.getTradeRequestReceivedMessage(senderName, time)
+                );
+
             }
         }
 
