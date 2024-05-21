@@ -37,6 +37,7 @@ import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffectType;
 
@@ -640,6 +641,25 @@ public class PrisonEscapeGame {
         }
 
         return 0;
+    }
+
+    public void playerInteractWithPlayer(String playerName, int itemSlot, PlayerInteractEntityEvent e) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+
+        PrisonEscapePlayer clickedPlayer = getPrisonEscapePlayer(e.getRightClicked().getName());
+        if (clickedPlayer != null) {
+            if (player.isPrisioner() && clickedPlayer.isPrisioner() && player.isSneaking()) {
+                // TODO
+            }
+        }
+
+        Item item = player.getItemAt(itemSlot);
+        if (item.isFunctional()) {
+            ((FunctionalItem) item).use(e);
+        }
     }
 
     public void playerCloseMenu(String playerName) {

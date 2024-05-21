@@ -367,6 +367,15 @@ public abstract class PrisonEscapePlayer {
         player.playSound(player, sound, 1, 0.5f);
     }
 
+    public boolean isSneaking() {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return false;
+        }
+
+        return player.isSneaking();
+    }
+
 //  ########################################
 //  #                 Util                 #
 //  ########################################

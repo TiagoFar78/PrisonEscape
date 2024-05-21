@@ -284,16 +284,12 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerInteractWithPlayer(PlayerInteractEntityEvent e) {
-        if (GameManager.getGame() == null) {
+        PrisonEscapeGame game = GameManager.getGame();
+        if (game == null) {
             return;
         }
 
-        @SuppressWarnings("deprecation")
-        Item item = ItemFactory.createItem(e.getPlayer().getItemInHand());
-
-        if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
-        }
+        game.playerInteractWithPlayer(e.getPlayer().getName(), e.getPlayer().getInventory().getHeldItemSlot(), e);
     }
 
     @EventHandler
