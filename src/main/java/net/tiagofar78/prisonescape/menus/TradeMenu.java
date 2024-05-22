@@ -34,6 +34,8 @@ public class TradeMenu implements Clickable {
     private List<Item> _offeredItemsPlayer1 = createEmptyItemList();
     private List<Item> _offeredItemsPlayer2 = createEmptyItemList();
 
+    private boolean _isClosed = false;
+
     private List<Item> createEmptyItemList() {
         List<Item> list = new ArrayList<>();
 
@@ -53,6 +55,8 @@ public class TradeMenu implements Clickable {
     }
 
     private void commitTrade() {
+        _isClosed = true;
+
         _player1.closeMenu(true);
         _player2.closeMenu(true);
 
@@ -78,9 +82,17 @@ public class TradeMenu implements Clickable {
 
     @Override
     public void close(PrisonEscapePlayer firstCloser) {
-        boolean isPlayer1FirstCloser = firstCloser.equals(_player1);
-        _player1.closeMenu(!isPlayer1FirstCloser);
-        _player2.closeMenu(isPlayer1FirstCloser);
+        if (_isClosed) {
+            return;
+        }
+
+        _isClosed = true;
+
+        if (firstCloser.equals(_player1)) {
+            _player2.closeMenu(true);
+        } else {
+            _player1.closeMenu(true);
+        }
 
         for (Item item : _offeredItemsPlayer1) {
             _player1.giveItem(item);
@@ -104,12 +116,12 @@ public class TradeMenu implements Clickable {
     private ClickReturnAction clickPlayerInv(PrisonEscapePlayer player, int slot) {
         int index = player.convertToInventoryIndex(slot);
         if (index == -1) {
-            return ClickReturnAction.IGNORE;
+            return ClickReturnAction.NOTHING;
         }
 
         Item offeredItem = player.getItemAt(slot);
         if (offeredItem instanceof NullItem) {
-            return ClickReturnAction.IGNORE;
+            return ClickReturnAction.NOTHING;
         }
 
         List<Item> offeredItems = player.equals(_player1) ? _offeredItemsPlayer1 : _offeredItemsPlayer2;
@@ -130,7 +142,7 @@ public class TradeMenu implements Clickable {
                 clickStatusWool(player);
             }
 
-            return ClickReturnAction.IGNORE;
+            return ClickReturnAction.NOTHING;
         }
 
         List<Item> offeredItems = player.equals(_player1) ? _offeredItemsPlayer1 : _offeredItemsPlayer2;
