@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 
 public interface Clickable {
 
-    public default void close() {
+    public default void close(PrisonEscapePlayer player) {
         // Nothing
     }
 

@@ -53,8 +53,8 @@ public class TradeMenu implements Clickable {
     }
 
     private void commitTrade() {
-        _player1.closeMenu();
-        _player2.closeMenu();
+        _player1.closeMenu(true);
+        _player2.closeMenu(true);
 
         for (Item item : _offeredItemsPlayer1) {
             _player2.giveItem(item);
@@ -77,9 +77,10 @@ public class TradeMenu implements Clickable {
     }
 
     @Override
-    public void close() {
-        _player1.closeMenu();
-        _player2.closeMenu();
+    public void close(PrisonEscapePlayer firstCloser) {
+        boolean isPlayer1FirstCloser = firstCloser.equals(_player1);
+        _player1.closeMenu(!isPlayer1FirstCloser);
+        _player2.closeMenu(isPlayer1FirstCloser);
 
         for (Item item : _offeredItemsPlayer1) {
             _player1.giveItem(item);

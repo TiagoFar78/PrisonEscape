@@ -231,12 +231,19 @@ public abstract class PrisonEscapePlayer {
     }
 
     public void closeMenu() {
+        closeMenu(false);
+    }
+
+    public void closeMenu(boolean closeView) {
         if (_openedMenu != null) {
-            _openedMenu.close();
+            _openedMenu.close(this);
         }
 
         _openedMenu = null;
-        closeInventoryView();
+
+        if (closeView) {
+            closeInventoryView();
+        }
     }
 
 //  ########################################

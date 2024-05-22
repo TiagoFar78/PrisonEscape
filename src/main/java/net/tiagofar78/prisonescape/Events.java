@@ -135,8 +135,8 @@ public class Events implements Listener {
             return;
         }
 
-
-        if (e.getInventory().getType() == InventoryType.PLAYER) {
+        InventoryType invType = e.getInventory().getType();
+        if (invType == InventoryType.CRAFTING || invType == InventoryType.CREATIVE) {
             return;
         }
 
