@@ -161,7 +161,7 @@ public class TradeMenu implements Clickable {
             player.playSound(Sound.ENTITY_VILLAGER_NO);
         }
 
-        boolean isPlayer1 = player.equals(_player2);
+        boolean isPlayer1 = player.equals(_player1);
 
         boolean hasOtherPlayerAccepted = isPlayer1 ? _hasPlayer2Accepted : _hasPlayer1Accepted;
         if (hasOtherPlayerAccepted) {

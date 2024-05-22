@@ -663,7 +663,7 @@ public class PrisonEscapeGame {
                     return;
                 }
 
-                sender.sendRequest(target);
+                target.sendRequest(sender);
 
                 String senderName = sender.getName();
                 String targetName = target.getName();
@@ -678,6 +678,7 @@ public class PrisonEscapeGame {
                         targetMessages.getTradeRequestReceivedMessage(senderName, time)
                 );
 
+                return;
             }
         }
 

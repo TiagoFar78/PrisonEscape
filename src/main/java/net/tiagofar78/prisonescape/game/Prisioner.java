@@ -49,7 +49,7 @@ public class Prisioner extends PrisonEscapePlayer {
 
     public boolean isStillValidRequest() {
         int timeout = ConfigManager.getInstance().getTradeRequestTimeout();
-        long secondsPast = (System.currentTimeMillis() - _tradeRequestTime) * 1000;
+        long secondsPast = (System.currentTimeMillis() - _tradeRequestTime) / 1000;
         return _tradeRequestTime != -1 && secondsPast <= timeout;
     }
 
