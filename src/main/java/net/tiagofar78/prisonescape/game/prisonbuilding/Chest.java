@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
@@ -12,6 +11,12 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +24,12 @@ import java.util.Random;
 public class Chest implements Clickable {
 
     private static final int CONTENTS_SIZE = 5;
+    private static final int[] CHEST_CONTENT_INDEXES = {
+            1 * 9 + 2,
+            1 * 9 + 3,
+            1 * 9 + 4,
+            1 * 9 + 5,
+            1 * 9 + 6};
 
     private List<Item> _contents;
     private List<ItemProbability> _itemsProbability;
@@ -71,18 +82,12 @@ public class Chest implements Clickable {
     }
 
     @Override
-    public void open(PrisonEscapePlayer player) {
-        BukkitMenu.openChest(player.getName(), _contents);
-        _isOpened = true;
-    }
-
-    @Override
     public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
         if (clickedPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
 
-        int index = BukkitMenu.convertToIndexChest(slot);
+        int index = convertToIndex(slot);
         if (index == -1) {
             return ClickReturnAction.NOTHING;
         }
@@ -102,6 +107,45 @@ public class Chest implements Clickable {
 
         _contents.set(index, new NullItem());
         return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
+    }
+
+    @Override
+    public Inventory toInventory(MessageLanguageManager messages) {
+        int lines = 3;
+        String title = messages.getContainerName();
+        Inventory inv = Bukkit.createInventory(null, lines * 9, title);
+
+        ItemStack glassItem = createGlassItem();
+
+        for (int i = 0; i < lines * 9; i++) {
+            inv.setItem(i, glassItem);
+        }
+
+        for (int i = 0; i < _contents.size(); i++) {
+            ItemStack item = _contents.get(i).toItemStack(messages);
+            inv.setItem(CHEST_CONTENT_INDEXES[i], item);
+        }
+
+        return inv;
+    }
+
+    private static ItemStack createGlassItem() {
+        ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(" ");
+        item.setItemMeta(itemMeta);
+
+        return item;
+    }
+
+    private int convertToIndex(int slot) {
+        for (int i = 0; i < CHEST_CONTENT_INDEXES.length; i++) {
+            if (CHEST_CONTENT_INDEXES[i] == slot) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 }

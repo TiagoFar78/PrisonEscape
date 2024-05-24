@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
@@ -32,18 +31,19 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 import net.tiagofar78.prisonescape.menus.Shop;
+import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 
 public class PrisonEscapeGame {
@@ -62,8 +62,6 @@ public class PrisonEscapeGame {
     private PrisonEscapeTeam<Guard> _policeTeam;
     private PrisonEscapeTeam<Prisioner> _prisionersTeam;
 
-    private Hashtable<String, Clickable> _playerOpenMenu;
-
     private Phase _phase;
 
     private boolean _hasDoorCode;
@@ -79,8 +77,6 @@ public class PrisonEscapeGame {
         _playersOnLobby = new ArrayList<>();
         _policeTeam = new PrisonEscapeTeam<Guard>(POLICE_TEAM_NAME);
         _prisionersTeam = new PrisonEscapeTeam<Prisioner>(PRISIONERS_TEAM_NAME);
-
-        _playerOpenMenu = new Hashtable<>();
 
         _hasDoorCode = false;
 
@@ -628,7 +624,7 @@ public class PrisonEscapeGame {
 
             Door door = _prison.getDoor(blockLocation);
             if (door != null) {
-                int index = BukkitMenu.convertToIndexPlayerInventory(itemSlot);
+                int index = player.convertToInventoryIndex(itemSlot);
                 playerInteractWithDoor(player, index, item, door, blockLocation);
                 return 0;
             }
@@ -648,15 +644,57 @@ public class PrisonEscapeGame {
         return 0;
     }
 
-    public void playerCloseMenu(String playerName) {
-        if (getPrisonEscapePlayer(playerName) == null) {
+    public void playerInteractWithPlayer(String playerName, int itemSlot, PlayerInteractEntityEvent e) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
             return;
         }
 
-        if (_playerOpenMenu.containsKey(playerName)) {
-            _playerOpenMenu.get(playerName).close();
-            _playerOpenMenu.remove(playerName);
+        PrisonEscapePlayer clickedPlayer = getPrisonEscapePlayer(e.getRightClicked().getName());
+        if (clickedPlayer != null) {
+            if (player.isPrisioner() && clickedPlayer.isPrisioner() && player.isSneaking()) {
+                Prisioner sender = (Prisioner) player;
+                Prisioner target = (Prisioner) clickedPlayer;
+
+                if (sender.hasBeenRequestedBy(target) && sender.isStillValidRequest()) {
+                    sender.clearRequest();
+                    target.clearRequest();
+                    new TradeMenu(target, sender);
+                    return;
+                }
+
+                target.sendRequest(sender);
+
+                String senderName = sender.getName();
+                String targetName = target.getName();
+
+                MessageLanguageManager senderMessages = MessageLanguageManager.getInstanceByPlayer(senderName);
+                BukkitMessageSender.sendChatMessage(sender, senderMessages.getTradeRequestSentMessage(targetName));
+
+                int time = ConfigManager.getInstance().getTradeRequestTimeout();
+                MessageLanguageManager targetMessages = MessageLanguageManager.getInstanceByPlayer(targetName);
+                BukkitMessageSender.sendChatMessage(
+                        target,
+                        targetMessages.getTradeRequestReceivedMessage(senderName, time)
+                );
+
+                return;
+            }
         }
+
+        Item item = player.getItemAt(itemSlot);
+        if (item.isFunctional()) {
+            ((FunctionalItem) item).use(e);
+        }
+    }
+
+    public void playerCloseMenu(String playerName) {
+        PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
+        if (player == null) {
+            return;
+        }
+
+        player.closeMenu();
     }
 
     public ClickReturnAction playerClickMenu(String playerName, int slot, Item itemHeld, boolean clickedPlayerInv) {
@@ -665,12 +703,12 @@ public class PrisonEscapeGame {
             return ClickReturnAction.IGNORE;
         }
 
-        if (!_playerOpenMenu.containsKey(playerName)) {
+        Clickable menu = player.getOpenedMenu();
+        if (menu == null) {
             return ClickReturnAction.IGNORE;
         }
 
-        Clickable clicakble = _playerOpenMenu.get(player.getName());
-        return clicakble.click(player, slot, itemHeld, clickedPlayerInv);
+        return menu.click(player, slot, itemHeld, clickedPlayerInv);
     }
 
     public void playerSneak(String playerName) {
@@ -823,8 +861,7 @@ public class PrisonEscapeGame {
             return;
         }
 
-        _playerOpenMenu.put(player.getName(), vault);
-        vault.open(player);
+        player.openMenu(vault);
     }
 
     /**
@@ -877,8 +914,7 @@ public class PrisonEscapeGame {
             return;
         }
 
-        chest.open(player);
-        _playerOpenMenu.put(player.getName(), chest);
+        player.openMenu(chest);
     }
 
     public void playerDrankEnergyDrink(String playerName, int eneryDrinkIndex) {
@@ -891,7 +927,7 @@ public class PrisonEscapeGame {
 
         player.setEffect(PotionEffectType.SPEED, config.getSpeedLevel(), config.getSpeedDuration());
 
-        int contentIndex = BukkitMenu.convertToIndexPlayerInventory(eneryDrinkIndex);
+        int contentIndex = player.convertToInventoryIndex(eneryDrinkIndex);
         player.removeItem(contentIndex);
     }
 
@@ -920,8 +956,7 @@ public class PrisonEscapeGame {
         }
 
         Shop shop = new Shop();
-        _playerOpenMenu.put(player.getName(), shop);
-        shop.open(player);
+        player.openMenu(shop);
     }
 
     public void policeHandcuffedPrisioner(String policeName, String prisionerName) {

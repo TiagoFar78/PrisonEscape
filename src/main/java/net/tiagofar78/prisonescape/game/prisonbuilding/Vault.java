@@ -1,15 +1,16 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,6 +19,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.sign.Side;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +32,11 @@ public class Vault implements Clickable {
     private static final int HIDDEN_SIZE = 1;
     private static final int SIGN_OWNER_NAME_LINE__INDEX = 1;
 
+    private static final int[] NON_HIDDEN_ITEMS_INDEXES = {9 + 2, 9 + 3, 9 + 5, 9 + 6};
+    private static final int HIDDEN_ITEM_INDEX = 9 * 4 + 4;
+
     private List<Item> _nonHiddenContents;
     private List<Item> _hiddenContents;
-    private boolean _isOpen;
 
     private Prisioner _owner;
 
@@ -39,7 +45,6 @@ public class Vault implements Clickable {
     public Vault(Prisioner owner, PrisonEscapeLocation location) {
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
-        _isOpen = false;
 
         _owner = owner;
 
@@ -101,25 +106,9 @@ public class Vault implements Clickable {
     }
 
     @Override
-    public void open(PrisonEscapePlayer player) {
-        BukkitMenu.openVault(player.getName(), _nonHiddenContents, _hiddenContents);
-        _isOpen = true;
-    }
-
-    @Override
-    public void close() {
-        _isOpen = false;
-    }
-
-    @Override
-    public boolean isOpened() {
-        return _isOpen;
-    }
-
-    @Override
     public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
         if (clickedPlayerInv) {
-            int index = BukkitMenu.convertToIndexPlayerInventory(slot);
+            int index = player.convertToInventoryIndex(slot);
             if (index == -1) {
                 return ClickReturnAction.NOTHING;
             }
@@ -128,15 +117,33 @@ public class Vault implements Clickable {
             return ClickReturnAction.CHANGE_HOLD_AND_SELECTED;
         }
 
-        int itemIndex = BukkitMenu.convertToIndexVault(slot);
+        int itemIndex = convertToIndex(slot);
         if (itemIndex == -1) {
             return ClickReturnAction.NOTHING;
         }
 
-        boolean isHidden = BukkitMenu.isHiddenIndexVault(slot);
+        boolean isHidden = isHiddenIndex(slot);
 
         setItem(isHidden, itemIndex, itemHeld);
         return ClickReturnAction.CHANGE_HOLD_AND_SELECTED;
+    }
+
+    private int convertToIndex(int slot) {
+        for (int i = 0; i < NON_HIDDEN_ITEMS_INDEXES.length; i++) {
+            if (NON_HIDDEN_ITEMS_INDEXES[i] == slot) {
+                return i;
+            }
+        }
+
+        if (HIDDEN_ITEM_INDEX == slot) {
+            return 0;
+        }
+
+        return -1;
+    }
+
+    private boolean isHiddenIndex(int slot) {
+        return HIDDEN_ITEM_INDEX == slot;
     }
 
 //  #########################################
@@ -181,6 +188,54 @@ public class Vault implements Clickable {
 
         vaultLocation.getBlock().setType(Material.AIR);
         signLocation.getBlock().setType(Material.AIR);
+    }
+
+    @Override
+    public Inventory toInventory(MessageLanguageManager messages) {
+        String title = messages.getVaultTitle();
+        int lines = 6;
+        Inventory inv = Bukkit.createInventory(null, lines * 9, title);
+
+        ItemStack glassItem = createGlassItem();
+        for (int i = 0; i < lines * 9; i++) {
+            inv.setItem(i, glassItem);
+        }
+
+        for (int i = 0; i < _nonHiddenContents.size(); i++) {
+            ItemStack item = _nonHiddenContents.get(i).toItemStack(messages);
+            inv.setItem(NON_HIDDEN_ITEMS_INDEXES[i], item);
+        }
+
+        ItemStack hiddenIndicatorItem = createHiddenIndicatorItem(messages);
+        for (int line = 4; line < 7; line++) {
+            for (int column = 4; column < 7; column++) {
+                int index = (line - 1) * 9 + (column - 1);
+                inv.setItem(index, hiddenIndicatorItem);
+            }
+        }
+
+        ItemStack hiddenItem = _hiddenContents.get(0).toItemStack(messages);
+        inv.setItem(HIDDEN_ITEM_INDEX, hiddenItem);
+
+        return inv;
+    }
+
+    private static ItemStack createGlassItem() {
+        ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(" ");
+        item.setItemMeta(itemMeta);
+
+        return item;
+    }
+
+    private static ItemStack createHiddenIndicatorItem(MessageLanguageManager messages) {
+        ItemStack item = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(messages.getVaultHiddenGlassName());
+        item.setItemMeta(itemMeta);
+
+        return item;
     }
 
 }

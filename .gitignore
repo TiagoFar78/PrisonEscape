@@ -31,3 +31,4 @@ TestServer/versions/
 TestServer/plugins/*
 !TestServer/plugins/TF_PrisonEscape/
 .vscode/*
+TestServer/crash-reports/

@@ -1,17 +1,21 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMenu;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.Kit;
 import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.Clickable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -25,6 +29,7 @@ public abstract class PrisonEscapePlayer {
     private static final int TICKS_PER_SECOND = 20;
 
     private static final int INVENTORY_SIZE = 4;
+    private static final int[] INVENTORY_INDEXES = {0, 1, 2, 3};
 
     private String _name;
     private boolean _isOnline;
@@ -32,6 +37,7 @@ public abstract class PrisonEscapePlayer {
     private Kit _currentKit;
 
     private ScoreboardData _scoreboardData;
+    private Clickable _openedMenu;
 
     public PrisonEscapePlayer(String name) {
         _name = name;
@@ -107,12 +113,24 @@ public abstract class PrisonEscapePlayer {
             return item;
         }
 
-        int index = BukkitMenu.convertToIndexPlayerInventory(slot);
+        int index = convertToInventoryIndex(slot);
         if (index < 0 || index >= INVENTORY_SIZE) {
             return new NullItem();
         }
 
         return _inventory.get(index);
+    }
+
+    public int inventoryEmptySlots() {
+        int count = 0;
+
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            if (_inventory.get(i) instanceof NullItem) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     /**
@@ -133,23 +151,32 @@ public abstract class PrisonEscapePlayer {
     public void setItem(int index, Item item) {
         _inventory.set(index, item);
 
-        BukkitMenu.setItem(_name, index, item);
+        setItemBukkit(index, item);
     }
-
 
     /**
      * @return 0 if success<br>
      *         -1 if cannot remove item
      */
     public int removeItem(int slot) {
-        int index = BukkitMenu.convertToIndexPlayerInventory(slot);
+        int index = convertToInventoryIndex(slot);
         if (index == -1) {
             return -1;
         }
 
         _inventory.set(index, new NullItem());
-        BukkitMenu.setItem(_name, index, new NullItem());
+        setItemBukkit(index, new NullItem());
         return 0;
+    }
+
+    public int convertToInventoryIndex(int slot) {
+        for (int i = 0; i < INVENTORY_INDEXES.length; i++) {
+            if (slot == INVENTORY_INDEXES[i]) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public boolean hasIllegalItems() {
@@ -179,7 +206,43 @@ public abstract class PrisonEscapePlayer {
                 setItem(i, new NullItem());
             }
 
-            BukkitMenu.setItem(getName(), i, _inventory.get(i));
+            setItemBukkit(i, _inventory.get(i));
+        }
+    }
+
+    public void updateView() {
+        if (_openedMenu != null) {
+            _openedMenu.updateInventory(getBukkitPlayer().getOpenInventory().getTopInventory(), this);
+        }
+    }
+
+//  ########################################
+//  #                 Menu                 #
+//  ########################################
+
+    public Clickable getOpenedMenu() {
+        return _openedMenu;
+    }
+
+    public void openMenu(Clickable menu) {
+        _openedMenu = menu;
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+        openInventoryView(menu.toInventory(messages));
+    }
+
+    public void closeMenu() {
+        closeMenu(false);
+    }
+
+    public void closeMenu(boolean closeView) {
+        if (_openedMenu != null) {
+            _openedMenu.close(this);
+        }
+
+        _openedMenu = null;
+
+        if (closeView) {
+            closeInventoryView();
         }
     }
 
@@ -234,9 +297,9 @@ public abstract class PrisonEscapePlayer {
         }
     }
 
-//	########################################
-//	#                 Util                 #
-//	########################################
+//  ########################################
+//  #                Bukkit                #
+//  ########################################
 
     private Player getBukkitPlayer() {
         Player player = Bukkit.getPlayer(getName());
@@ -272,6 +335,57 @@ public abstract class PrisonEscapePlayer {
 
         player.addPotionEffect(new PotionEffect(effect, ticksDuration, level));
     }
+
+    private void setItemBukkit(int index, Item item) {
+        Player bukkitPlayer = Bukkit.getPlayer(getName());
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+        ItemStack bukkitItem = item.toItemStack(messages);
+        bukkitPlayer.getInventory().setItem(INVENTORY_INDEXES[index], bukkitItem);
+    }
+
+    private void openInventoryView(Inventory inv) {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.openInventory(inv);
+    }
+
+    private void closeInventoryView() {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.closeInventory();
+    }
+
+    public void playSound(Sound sound) {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.playSound(player, sound, 1, 0.5f);
+    }
+
+    public boolean isSneaking() {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return false;
+        }
+
+        return player.isSneaking();
+    }
+
+//  ########################################
+//  #                 Util                 #
+//  ########################################
 
     @Override
     public boolean equals(Object o) {

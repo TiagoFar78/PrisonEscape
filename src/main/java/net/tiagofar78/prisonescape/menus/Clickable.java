@@ -2,15 +2,27 @@ package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.inventory.Inventory;
 
 public interface Clickable {
 
-    public void open(PrisonEscapePlayer player);
+    public default void close(PrisonEscapePlayer player) {
+        // Nothing
+    }
 
-    public void close();
+    public abstract Inventory toInventory(MessageLanguageManager messages);
 
-    public boolean isOpened();
+    public default void updateInventory(Inventory inv, PrisonEscapePlayer player) {
+        // Nothing
+    }
 
-    public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv);
+    public abstract ClickReturnAction click(
+            PrisonEscapePlayer player,
+            int slot,
+            Item itemHeld,
+            boolean clickedPlayerInv
+    );
 
 }

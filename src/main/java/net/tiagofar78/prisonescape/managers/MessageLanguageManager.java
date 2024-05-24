@@ -85,6 +85,12 @@ public class MessageLanguageManager {
     private String _containerName;
     private String _vaultTitle;
     private String _vaultHiddenGlassName;
+    private String _tradeTitle;
+    private String _tradeInvalidWoolName;
+    private String _tradeAcceptWoolName;
+    private String _tradeAcceptedWoolName;
+    private String _tradeNotAcceptedGlassName;
+    private String _tradeAcceptedGlassName;
 
 //	########################################
 //	#                 Chat                 #
@@ -131,6 +137,9 @@ public class MessageLanguageManager {
     private String _sneakToLeaveCameraMessage;
     private String _soundDetectorPlacedMessage;
     private String _invalidSoundDetectorLocMessage;
+    private String _tradeAlreadyAcceptedMessage;
+    private String _tradeRequestSentMessage;
+    private String _tradeRequestReceivedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -228,6 +237,12 @@ public class MessageLanguageManager {
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));
         _vaultHiddenGlassName = createMessage(messages.getString("Inventory.Vault.HiddenGlass.Name"));
+        _tradeTitle = createMessage(messages.getString("Inventory.Trade.Title"));
+        _tradeInvalidWoolName = createMessage(messages.getString("Inventory.Trade.InvalidWool.Name"));
+        _tradeAcceptWoolName = createMessage(messages.getString("Inventory.Trade.AcceptWool.Name"));
+        _tradeAcceptedWoolName = createMessage(messages.getString("Inventory.Trade.AcceptedWool.Name"));
+        _tradeNotAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.NotAcceptedGlass.Name"));
+        _tradeAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.AcceptedGlass.Name"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -274,6 +289,9 @@ public class MessageLanguageManager {
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
         _invalidSoundDetectorLocMessage = createMessage(messages.getString(warningPath + "InvalidSoundDetectorLoc"));
+        _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
+        _tradeRequestSentMessage = createMessage(messages.getString(warningPath + "TradeRequestSent"));
+        _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -414,6 +432,30 @@ public class MessageLanguageManager {
 
     public String getVaultHiddenGlassName() {
         return _vaultHiddenGlassName;
+    }
+
+    public String getTradeTitle() {
+        return _tradeTitle;
+    }
+
+    public String getTradeInvalidWoolName() {
+        return _tradeInvalidWoolName;
+    }
+
+    public String getTradeAcceptWoolName() {
+        return _tradeAcceptWoolName;
+    }
+
+    public String getTradeAcceptedWoolName() {
+        return _tradeAcceptedWoolName;
+    }
+
+    public String getTradeNotAcceptedGlassName() {
+        return _tradeNotAcceptedGlassName;
+    }
+
+    public String getTradeAcceptedGlassName() {
+        return _tradeAcceptedGlassName;
     }
 
 //	########################################
@@ -566,6 +608,18 @@ public class MessageLanguageManager {
 
     public String getInvalidSoundDetectorLocMessage() {
         return _invalidSoundDetectorLocMessage;
+    }
+
+    public String getTradeAlreadyAcceptedMessage() {
+        return _tradeAlreadyAcceptedMessage;
+    }
+
+    public String getTradeRequestSentMessage(String playerName) {
+        return _tradeRequestSentMessage.replace("{PLAYER}", playerName);
+    }
+
+    public String getTradeRequestReceivedMessage(String playerName, int time) {
+        return _tradeRequestReceivedMessage.replace("{PLAYER}", playerName).replace("{TIME}", Integer.toString(time));
     }
 
 //	########################################

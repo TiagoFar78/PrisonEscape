@@ -32,6 +32,7 @@ HelicopterSpawnDelay: 10
 HelicopterDepartureDelay: 5
 SoundDetectorRange: 2.5
 RadarDuration: 10
+TradeRequestTimeout: 15
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"

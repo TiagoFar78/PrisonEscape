@@ -49,6 +49,7 @@ public class ConfigManager {
     private int _helicopterDepartureDelay;
     private int _radarDuration;
     private double _soundDetectorRange;
+    private int _tradeRequestTimeout;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -124,6 +125,7 @@ public class ConfigManager {
         _helicopterDepartureDelay = config.getInt("HelicopterDepartureDelay");
         _radarDuration = config.getInt("RadarDuration");
         _soundDetectorRange = config.getDouble("SoundDetectorRange");
+        _tradeRequestTimeout = config.getInt("TradeRequestTimeout");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -416,6 +418,10 @@ public class ConfigManager {
 
     public int getRadarDuration() {
         return _radarDuration;
+    }
+
+    public int getTradeRequestTimeout() {
+        return _tradeRequestTimeout;
     }
 
     public List<String> getAvailableLanguages() {

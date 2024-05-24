@@ -1,10 +1,15 @@
 package net.tiagofar78.prisonescape.game;
 
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+
 public class Prisioner extends PrisonEscapePlayer {
 
     private boolean _hasEscaped;
     private boolean _isWanted;
     private boolean _inRestrictedArea;
+
+    private PrisonEscapePlayer _tradeRequestTarget;
+    private long _tradeRequestTime;
 
     public Prisioner(String name) {
         super(name);
@@ -32,6 +37,30 @@ public class Prisioner extends PrisonEscapePlayer {
 
     public void escaped() {
         _hasEscaped = true;
+    }
+
+//  ########################################
+//  #              Item Trade              #
+//  ########################################
+
+    public boolean hasBeenRequestedBy(PrisonEscapePlayer player) {
+        return _tradeRequestTarget != null && player.equals(_tradeRequestTarget);
+    }
+
+    public boolean isStillValidRequest() {
+        int timeout = ConfigManager.getInstance().getTradeRequestTimeout();
+        long secondsPast = (System.currentTimeMillis() - _tradeRequestTime) / 1000;
+        return _tradeRequestTime != -1 && secondsPast <= timeout;
+    }
+
+    public void sendRequest(PrisonEscapePlayer target) {
+        _tradeRequestTarget = target;
+        _tradeRequestTime = System.currentTimeMillis();
+    }
+
+    public void clearRequest() {
+        _tradeRequestTarget = null;
+        _tradeRequestTime = -1;
     }
 
 //  ########################################
