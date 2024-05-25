@@ -9,6 +9,7 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class SoundDetector {
 
     private static final int MAX_VALUE = 10;
     private static final int MIN_VALUE = 1;
+    private static final int CIRCLE_SEGMENTS = 32;
 
     private int _index;
     private PrisonEscapeLocation _location;
@@ -29,6 +31,7 @@ public class SoundDetector {
         _playersInRange = new ArrayList<>();
 
         createOnWorld();
+        createPerimeterParticles();
 
         PrisonEscapeGame game = GameManager.getGame();
         List<Guard> guards = game.getGuardsTeam().getMembers();
@@ -73,6 +76,21 @@ public class SoundDetector {
         Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
 
         location.getBlock().setType(Material.LIGHTNING_ROD);
+    }
+    
+    private void createPerimeterParticles() {
+        World world = BukkitWorldEditor.getWorld();
+        
+        double centerX = _location.getX() + 0.5;
+        double centerY = _location.getY();
+        double centerZ = _location.getZ() + 0.5;
+        double radius = ConfigManager.getInstance().getSoundDetectorRange();
+        
+        for (int i = 0; i < 2 * Math.PI; i += 2 * Math.PI / CIRCLE_SEGMENTS) {
+            double x = centerX + Math.sin(i) * radius;
+            double z = centerZ + Math.cos(i) * radius;
+            world.spawnParticle(Particle.BLOCK_DUST, x, centerY, z, 1);
+        }
     }
 
     private void deleteFromWorld() {
