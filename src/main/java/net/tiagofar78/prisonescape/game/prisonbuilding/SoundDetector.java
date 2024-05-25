@@ -77,15 +77,15 @@ public class SoundDetector {
 
         location.getBlock().setType(Material.LIGHTNING_ROD);
     }
-    
+
     private void createPerimeterParticles() {
         World world = BukkitWorldEditor.getWorld();
-        
+
         double centerX = _location.getX() + 0.5;
         double centerY = _location.getY();
         double centerZ = _location.getZ() + 0.5;
         double radius = ConfigManager.getInstance().getSoundDetectorRange();
-        
+
         for (int i = 0; i < 2 * Math.PI; i += 2 * Math.PI / CIRCLE_SEGMENTS) {
             double x = centerX + Math.sin(i) * radius;
             double z = centerZ + Math.cos(i) * radius;
