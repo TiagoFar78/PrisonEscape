@@ -91,15 +91,15 @@ public class SoundDetector {
         double centerY = _location.getY();
         double centerZ = _location.getZ() + 0.5;
         double radius = ConfigManager.getInstance().getSoundDetectorRange();
-        
+
         loopCreateParticles(world, centerX, centerY, centerZ, radius);
     }
-    
+
     private void loopCreateParticles(World world, double centerX, double centerY, double centerZ, double radius) {
         if (!_isWorking) {
             return;
         }
-        
+
         for (int i = 0; i < CIRCLE_SEGMENTS; i++) {
             double angle = i * Math.PI * 2 / CIRCLE_SEGMENTS;
 
@@ -107,14 +107,14 @@ public class SoundDetector {
             double z = centerZ + Math.cos(angle) * radius;
             world.spawnParticle(Particle.REDSTONE, x, centerY, z, 1, new Particle.DustOptions(Color.YELLOW, 1));
         }
-        
+
         Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
-            
+
             @Override
             public void run() {
                 loopCreateParticles(world, centerX, centerY, centerZ, radius);
             }
-            
+
         }, 10);
     }
 
