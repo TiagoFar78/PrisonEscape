@@ -7,6 +7,7 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -86,10 +87,12 @@ public class SoundDetector {
         double centerZ = _location.getZ() + 0.5;
         double radius = ConfigManager.getInstance().getSoundDetectorRange();
 
-        for (int i = 0; i < 2 * Math.PI; i += 2 * Math.PI / CIRCLE_SEGMENTS) {
-            double x = centerX + Math.sin(i) * radius;
-            double z = centerZ + Math.cos(i) * radius;
-            world.spawnParticle(Particle.BLOCK_DUST, x, centerY, z, 1);
+        for (int i = 0; i < CIRCLE_SEGMENTS; i++) {
+            double angle = i * Math.PI * 2 / CIRCLE_SEGMENTS;
+
+            double x = centerX + Math.sin(angle) * radius;
+            double z = centerZ + Math.cos(angle) * radius;
+            world.spawnParticle(Particle.REDSTONE, x, centerY, z, 1, new Particle.DustOptions(Color.YELLOW, 1));
         }
     }
 
