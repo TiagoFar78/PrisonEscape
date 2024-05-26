@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
@@ -7,6 +8,7 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,11 +25,13 @@ public class SoundDetector {
     private static final int CIRCLE_SEGMENTS = 32;
 
     private int _index;
+    private boolean _isWorking;
     private PrisonEscapeLocation _location;
     private List<PrisonEscapePlayer> _playersInRange;
 
     public SoundDetector(int index, PrisonEscapeLocation location) {
         _index = index;
+        _isWorking = true;
         _location = location;
         _playersInRange = new ArrayList<>();
 
@@ -69,6 +73,7 @@ public class SoundDetector {
     }
 
     public void delete() {
+        _isWorking = false;
         deleteFromWorld();
     }
 
@@ -86,7 +91,15 @@ public class SoundDetector {
         double centerY = _location.getY();
         double centerZ = _location.getZ() + 0.5;
         double radius = ConfigManager.getInstance().getSoundDetectorRange();
-
+        
+        loopCreateParticles(world, centerX, centerY, centerZ, radius);
+    }
+    
+    private void loopCreateParticles(World world, double centerX, double centerY, double centerZ, double radius) {
+        if (!_isWorking) {
+            return;
+        }
+        
         for (int i = 0; i < CIRCLE_SEGMENTS; i++) {
             double angle = i * Math.PI * 2 / CIRCLE_SEGMENTS;
 
@@ -94,6 +107,15 @@ public class SoundDetector {
             double z = centerZ + Math.cos(angle) * radius;
             world.spawnParticle(Particle.REDSTONE, x, centerY, z, 1, new Particle.DustOptions(Color.YELLOW, 1));
         }
+        
+        Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
+            
+            @Override
+            public void run() {
+                loopCreateParticles(world, centerX, centerY, centerZ, radius);
+            }
+            
+        }, 10);
     }
 
     private void deleteFromWorld() {
