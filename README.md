@@ -45,7 +45,7 @@ mvn spotless:apply
 
 To ensure consistency and maintainability, please make sure that your code is properly formatted and compiles successfully before submitting a pull request.
 
-For a more in detail explanation on how to run your local copy please go to the [TestServer folder](https://github.com/TiagoFar78/PrisonEscape/tree/master/TestServer).
+For a more in detail explanation on how to run your local copy please go to the [TestServer folder](/TestServer/).
 
 **Thank you for your contributions!** 😊
 
