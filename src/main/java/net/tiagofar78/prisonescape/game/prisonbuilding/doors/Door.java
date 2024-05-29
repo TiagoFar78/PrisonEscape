@@ -37,7 +37,7 @@ public abstract class Door {
         int z = blockLocation.getZ();
         Block block = BukkitWorldEditor.getWorld().getBlockAt(x, y, z);
 
-        if (block == null || !(block.getBlockData() instanceof Door)) {
+        if (block == null || !(block.getBlockData() instanceof org.bukkit.block.data.type.Door)) {
             throw new IllegalArgumentException("This location should contain a door");
         }
 

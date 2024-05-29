@@ -1012,6 +1012,23 @@ ChestsLocations:
     X: 7
     Y: 100
     Z: -26
+CellDoorsLocations:
+  "1":
+    X: 0
+    Y: 100
+    Z: -8
+  "2":
+    X: 0
+    Y: 100
+    Z: -2
+  "3":
+    X: 0
+    Y: 100
+    Z: 4
+  "4":
+    X: 0
+    Y: 100
+    Z: 10
 Regions:
   CellBlock:
     IsRestricted: false
