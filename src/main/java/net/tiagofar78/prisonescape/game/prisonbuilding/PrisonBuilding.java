@@ -3,6 +3,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
@@ -40,6 +41,7 @@ public class PrisonBuilding {
 
     private Hashtable<String, Chest> _chests;
     private Hashtable<String, Door> _doors;
+    private List<CellDoor> _cellDoors;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
 
@@ -109,6 +111,13 @@ public class PrisonBuilding {
             CodeDoor codeDoor = new CodeDoor();
             _doors.put(referenceLoc.createKey(), codeDoor);
             _doors.put(referenceLoc.add(0, 1, 0).createKey(), codeDoor);
+        }
+
+        _cellDoors = new ArrayList<CellDoor>();
+        for (PrisonEscapeLocation loc : config.getCellDoorsLocations()) {
+            PrisonEscapeLocation referenceLoc = loc.add(reference);
+            CellDoor door = new CellDoor(referenceLoc);
+            _cellDoors.add(door);
         }
 
         _metalDetectorsLocations = new ArrayList<>();
@@ -333,6 +342,18 @@ public class PrisonBuilding {
 
     public Door getDoor(PrisonEscapeLocation location) {
         return _doors.get(location.createKey());
+    }
+
+    public void openCellDoors() {
+        for (CellDoor door : _cellDoors) {
+            door.open();
+        }
+    }
+
+    public void closeCellDoors() {
+        for (CellDoor door : _cellDoors) {
+            door.close();
+        }
     }
 
 //  ########################################
