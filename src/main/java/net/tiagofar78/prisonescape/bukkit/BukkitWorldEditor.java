@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.TNTPrimed;
 
 public class BukkitWorldEditor {
@@ -138,36 +137,6 @@ public class BukkitWorldEditor {
             }
         }
     }
-
-//  ########################################
-//  #                 Doors                #
-//  ########################################
-
-    private static boolean updateDoor(PrisonEscapeLocation blockLocation, boolean open) {
-        int x = blockLocation.getX();
-        int y = blockLocation.getY();
-        int z = blockLocation.getZ();
-        Block block = WORLD.getBlockAt(x, y, z);
-
-        if (block == null || !(block.getBlockData() instanceof Door)) {
-            return false;
-        }
-
-        Door door = (Door) block.getBlockData();
-        door.setOpen(open);
-        block.setBlockData(door);
-
-        return true;
-    }
-
-    public static boolean closeDoor(PrisonEscapeLocation blockLocation) {
-        return updateDoor(blockLocation, false);
-    }
-
-    public static boolean openDoor(PrisonEscapeLocation blockLocation) {
-        return updateDoor(blockLocation, true);
-    }
-
 
 //  ########################################
 //  #               Obstacle               #

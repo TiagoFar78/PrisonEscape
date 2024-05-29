@@ -79,6 +79,7 @@ public class ConfigManager {
     private List<PrisonEscapeLocation> _goldenDoorsLocations;
     private List<PrisonEscapeLocation> _grayDoorsLocations;
     private List<PrisonEscapeLocation> _codeDoorsLocations;
+    private List<PrisonEscapeLocation> _cellDoorsLocations;
     private List<PrisonEscapeLocation> _wallCornersLocations;
     private List<List<String>> _wallCrackFormats;
     private List<String> _mazeFormat;
@@ -155,6 +156,7 @@ public class ConfigManager {
         _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
         _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations");
         _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations");
+        _cellDoorsLocations = createLocationList(config, "CellDoorsLocations");
         _wallCornersLocations = createLocationList(config, "WallCorners");
         _wallCrackFormats = createStringListList(config, "WallCrackFormats");
         _mazeFormat = config.getStringList("Maze.Format");
@@ -527,6 +529,10 @@ public class ConfigManager {
 
     public List<PrisonEscapeLocation> getCodeDoorsLocations() {
         return createLocationsListCopy(_codeDoorsLocations);
+    }
+
+    public List<PrisonEscapeLocation> getCellDoorsLocations() {
+        return createLocationsListCopy(_cellDoorsLocations);
     }
 
     public List<PrisonEscapeLocation> getWallCornersLocations() {

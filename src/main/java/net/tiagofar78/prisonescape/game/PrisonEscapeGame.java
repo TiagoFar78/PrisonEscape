@@ -450,6 +450,7 @@ public class PrisonEscapeGame {
         setDayTimeBossBar();
 
         _prison.reloadChests();
+        _prison.openCellDoors();
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -492,6 +493,8 @@ public class PrisonEscapeGame {
         _dayPeriod = DayPeriod.NIGHT;
         BukkitWorldEditor.changeTimeToNight();
         setNightTimeBossBar();
+
+        _prison.closeCellDoors();
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -1023,14 +1026,12 @@ public class PrisonEscapeGame {
         ClickDoorReturnAction returnAction = door.click(player, itemHeld);
 
         if (returnAction == ClickDoorReturnAction.CLOSE_DOOR) {
-            door.close();
-            BukkitWorldEditor.closeDoor(doorLocation);
+            door.close(doorLocation);
             return;
         }
 
         if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
-            door.open();
-            BukkitWorldEditor.openDoor(doorLocation);
+            door.open(doorLocation);
             player.removeItem(inventoryIndex);
             player.updateInventory();
         }
