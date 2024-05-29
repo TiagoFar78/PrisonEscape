@@ -31,7 +31,7 @@ public class Guard extends PrisonEscapePlayer {
     public Guard(String name) {
         super(name);
 
-        _balance = ConfigManager.getInstance().getStartingBalance();
+        increaseBalance(ConfigManager.getInstance().getStartingBalance());
     }
 
     @Override
