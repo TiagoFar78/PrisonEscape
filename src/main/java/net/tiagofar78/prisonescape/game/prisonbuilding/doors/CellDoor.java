@@ -22,7 +22,6 @@ public class CellDoor extends Door {
 
     @Override
     public ClickDoorReturnAction click(PrisonEscapePlayer player, Item itemHeld) {
-        // Nothing
         return ClickDoorReturnAction.NOTHING;
     }
 
