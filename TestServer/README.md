@@ -15,7 +15,7 @@ To set up the Minecraft server, make sure you have the following:
 
 1. Download the Paper server JAR [PaperMC Downloads version 1.20.4-462](https://api.papermc.io/v2/projects/paper/versions/1.20.4/builds/462/downloads/paper-1.20.4-462.jar).
 2. Place the downloaded JAR file in this directory.
-3. Run it.
+3. Run run.bat file.
 
 ### 2. Initial Set-Up
 
@@ -26,10 +26,10 @@ To set up the Minecraft server, make sure you have the following:
 2. **Run `run.bat` to Start the Server**.
 3. **Stop the Server** after it starts successfully by typing `stop` in the console and pressing Enter.
 4. **Add the WorldEdit Plugin**:
-   - Download the latest WorldEdit JAR from [CurseForge](https://dev.bukkit.org/projects/worldedit).
+   - Download the latest WorldEdit JAR from [Bukkit](https://dev.bukkit.org/projects/worldedit).
    - Place the downloaded JAR file in the `plugins` folder.
 5. **Install a World Management Plugin like Multiverse-Core**:
-   - Download the Multiverse-Core JAR.
+   - Download the Multiverse-Core JAR from [Bukkit](https://dev.bukkit.org/projects/multiverse-core).
    - Place the downloaded JAR file in the `plugins` folder.
 
 ### 3. Enter Local Server
