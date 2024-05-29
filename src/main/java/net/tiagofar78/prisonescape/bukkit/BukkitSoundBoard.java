@@ -16,7 +16,6 @@ public class BukkitSoundBoard {
     public static void playMetalDetectorSound(PrisonEscapeLocation location) {
         Location bukkitLocation = new Location(WORLD, location.getX(), location.getY(), location.getZ());
         WORLD.playSound(bukkitLocation, Sound.BLOCK_NOTE_BLOCK_HARP, DEFAULT_VOLUME, DEFAULT_PITCH);
-        WORLD.playSound(bukkitLocation, Sound.BLOCK_NOTE_BLOCK_HARP, DEFAULT_VOLUME, DEFAULT_PITCH);
     }
 
 }

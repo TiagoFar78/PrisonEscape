@@ -568,8 +568,14 @@ public class PrisonEscapeGame {
         } else if (prisioner.isInRestrictedArea()) {
             prisioner.leftRestrictedArea();
         }
+    }
 
-        if (_prison.checkIfMetalDetectorTriggered(loc, player)) {
+    public void playerWalkOverMetalDetector(String playerName, PrisonEscapeLocation loc) {
+        PrisonEscapePlayer player = getPlayerOnPrisionersTeam(playerName);
+        if (player == null) {
+            return;
+        }
+        if (player.hasMetalItems()) {
             BukkitSoundBoard.playMetalDetectorSound(loc);
         }
     }

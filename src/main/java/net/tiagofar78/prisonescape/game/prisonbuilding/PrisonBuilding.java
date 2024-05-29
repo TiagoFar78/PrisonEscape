@@ -2,7 +2,6 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
@@ -40,7 +39,6 @@ public class PrisonBuilding {
 
     private Hashtable<String, Chest> _chests;
     private Hashtable<String, Door> _doors;
-    private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
 
     private Maze _maze;
@@ -110,9 +108,6 @@ public class PrisonBuilding {
             _doors.put(referenceLoc.createKey(), codeDoor);
             _doors.put(referenceLoc.add(0, 1, 0).createKey(), codeDoor);
         }
-
-        _metalDetectorsLocations = new ArrayList<>();
-        // TODO: adicionar localização de metal detectors aqui
 
         _wall = new Wall();
 
@@ -219,10 +214,6 @@ public class PrisonBuilding {
         return true;
     }
 
-//  #########################################
-//  #            Metal Detectors            #
-//  #########################################
-
     public boolean isInRestrictedArea(PrisonEscapeLocation loc) {
         for (Region region : _regions) {
             if (region.contains(loc)) {
@@ -231,10 +222,6 @@ public class PrisonBuilding {
         }
 
         return false;
-    }
-
-    public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, PrisonEscapePlayer player) {
-        return _metalDetectorsLocations.contains(location) && player.hasMetalItems();
     }
 
 //	#########################################
