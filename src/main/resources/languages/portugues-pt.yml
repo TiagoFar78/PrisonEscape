@@ -1,0 +1,212 @@
+BossBar:
+  DayTitle: "&eDia {DAY}"
+  NightTitle: "&9Noite {DAY}"
+Scoreboard:
+  DisplayName: "&6&lPrison Escape"
+  LastLine: "&eServidor de Teste"
+  GuardSideBar:
+    BalanceLine: "&fSaldo: &a{BALANCE}"
+    SoundDectorLine: "&fDetectores de Som:   "
+Items:
+  SelectPrisionerTeam:
+    Name: "&6Selecionar equipa dos prisioneiros"
+  SelectPoliceTeam:
+    Name: "&9Selecionar equipa dos polícias"
+  SelectNoneTeam:
+    Name: "&8Remover preferência"
+  Bolts:
+    Name: "Parafusos"
+  DuctTape:
+    Name: "Fita Isoladora"
+  Matches:
+    Name: "Fósforos"
+  Oil:
+    Name: "Óleo"
+  Stick:
+    Name: "Graveto"
+  PlasticPlate:
+    Name: "Placa de Plástico"
+  MetalPlate:
+    Name: "Placa de Metal"
+  Copper:
+    Name: "Cobre"
+  CircuitBoard:
+    Name: "Circuito Impresso"
+  Antena:
+    Name: "Antena"
+  Battery:
+    Name: "Bateria"
+  NotePart:
+    Name: "Parte da Nota {NUMBER}"
+  GoldBar:
+    Name: "Barra de Ouro"
+  GoldenKey:
+    Name: "Chave Dourada"
+    Lore:
+    - "&6Desbloqueia a porta dourada"
+  GrayKey:
+    Name: "Chave Prateada"
+    Lore:
+    - "&7Desbloqueia as portas prateadas"
+  DoorCode:
+    Name: "Código da Porta"
+    Lore:
+    - "&eRevela o código da porta principal"
+  EnergyDrink:
+    Name: "Bebida Energética"
+  Handcuffs:
+    Name: "Algemas"
+  PlasticSpoon:
+    Name: "Pá de Madeira"
+  MetalSpoon:
+    Name: "Pá de Ouro"
+  PlasticShovel:
+    Name: "Pá de Pedra"
+  MetalShovel:
+    Name: "Pá de Diamante"
+  WireCutter:
+    Name: "Alicate de Corte"
+  Wrench:
+    Name: "Picareta"
+  Bomb:
+    Name: "Bomba"
+  Glass:
+    Name: " "
+  Missions:
+    Name: "Livro de Missões"
+  OpenCameras:
+    Name: "Câmara"
+    Lore:
+    - "&eClique esquerdo para ir para a próxima câmara"
+    - "&eClique direito para ver a câmara selecionada"
+  Shop:
+    Name: "Loja"
+  Search:
+    Name: "Procurar"
+  Radar:
+    Name: "Radar"
+  SoundDetector:
+    Name: "Sensor"
+  Camera:
+    Name: "Câmera"
+  Trap:
+    Name: "Armadilha"
+  CellPhone:
+    Name: "Telemóvel"
+    Lore:
+    - "&eChama um helicóptero de fuga para o telhado"
+ItemsProperties:
+  Metalic: "&8Metálico"
+  Illegal: "&cIlegal"
+  LoreLine: "- {PROPERTY}"
+Inventory:
+  Vault:
+    Title: "Inventário Pessoal"
+    HiddenGlass:
+      Name: "&cOculto"
+  Chest:
+    Title: "Baú"
+Messages:
+  GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
+  PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
+  PrisionerTeamMessage: "&6[TEAM] <{PLAYER}> &f{MESSAGE}"
+  Warnings:
+    StartedGame: "&aJogo iniciado com sucesso."
+    ForceStartedGame: "&aFase de espera ultrapassada com sucesso."
+    StoppedGame: "&aFase final ultrapassada com sucesso."
+    ForceStoppedGame: "&aJogo cancelado com sucesso."
+    SelectedPrisionersTeam: "&aDefiniste &6Prisioneiros &acomo sua equipa preferida."
+    SelectedPoliceTeam: "&aDefiniste &9Polícias &acomo sua equipa preferida."
+    SelectedRandomTeam: "&aRemoveste a tua equipa preferida. Serás colocado numa equipa aleatória."
+    PrisionerGameStart: "&6Estás na equipa dos prisioneiros. Escapa com todos. Ninguém fica para trás."
+    PoliceGameStart: "&9Estás na equipa dos polícias. Impede os prisioneiros de escapar."
+    PoliceOpenVault: "&cNão podes abrir cofres pessoais. No entanto, podes inspecioná-los."
+    PrisionerOtherVault: "&cSó podes aceder ao teu próprio cofre."
+    PoliceFoundIllegalItems: "&eEncontraste itens ilegais e o jogador &4{PLAYER} &eagora é procurado."
+    PrisionerFoundIllegalItems: "&eItens ilegais foram encontrados no no cofre e agora és procurado."
+    PoliceNoIllegalItemsFound: "&eNão há itens ilegais aqui."
+    PrisionerNoIllegalItemsFound: "&eAlguém inspecionou o teu cofre, mas não foram encontrados itens ilegais."
+    PoliceCanNotOpenChest: "&cApenas prisioneiros podem abrir baús."
+    ChestAlreadyOpened: "&eAlguém já está a aceder esse baú."
+    FullInventory: "&cO teu inventário está cheio."
+    NotWantedPlayer: "&cSó podes enviar jogadores procurados para a solitária."
+    PrisionerInspected: "&aUm polícia inspecionou o teu inventário, mas não encontrou itens ilegais."
+    PoliceInspected: "&a{PLAYER} não possui itens ilegais."
+    CanOnlyFixHoles: "&cSó podes consertar buracos, não blocos rachados."
+    ReachedItemLimit: "&cDesculpa, já atingiste o limite máximo para este item."
+    NotEnoughMoney: "&cNão tens dinheiro suficiente para comprar este item."
+    SuccessfullyBoughtItem: "&aItem comprado com sucesso. O teu saldo atual é: {BALANCE}."
+    CannotDropThatItem: "&cNão podes largar este item."
+    HelicopterOnTheWay: "&eChamaste um helicóptero e ele estará aqui em &b{SECONDS} &esegundos."
+    NoCellPhoneCoverage: "&cNão podes usar o telemóvel aqui porque não à rede."
+    CameraPlaced: "&aCâmara colocada com sucesso. Usa o teu visualizador de câmaras para ver o que está a acontecer."
+    NoCamerasPlaced: "&cNão há câmaras colocadas. Compre algumas na loja."
+    SneakToLeaveCamera: "&eAperte shift para sair da câmara"
+    SoundDetectorPlaced: "&aDetector de som colocado com sucesso. Verifique se há jogadores passando na barra lateral."
+    InvalidSoundDetectorLoc: "&cO detector de som não pode ser colocado aqui. &eTente colocá-lo diretamente no chão."
+  Announcements:
+    GameStarting:
+    - "&6==================================="
+    - "&6O jogo começará em &f{SECONDS} &6segundos"
+    - "&6Para participar, use &f/PrisonEscape join"
+    - "&6Já existem &f{PLAYERS} &6à espera"
+    - "&6==================================="
+    PrisionerArrested: "&4Prisioneiro &f{PLAYER} &4foi enviado para a solitária"
+    PrisionerFreedOfSolitary: "&aTu sairás da solitária em breve"
+    PrisionersWonTitle: "&l&6PRISIONEIROS VENCERAM"
+    PrisionersWonSubtitle: "&fTodos conseguiram escapar"
+    PoliceWonTitle: "&l&9POLÍCIA VENCEU"
+    PoliceWonSubtitle: "&f{PLAYERS} ainda estava na prisão"
+    VictoryWord: "Vitória"
+    DefeatWord: "Derrota"
+    GameResult:
+    - "&6==================================="
+    - ""
+    - "                &f&l{RESULT}"
+    - ""
+    - "      Estatísticas:"
+    - "      - &4EM BREVE"
+    - ""
+    - "&6==================================="
+    PlayerEscaped: "&eJogador &f{PLAYER} &efugiu da prisão."
+    GameCancelledFewPlayers: "&cO jogo foi cancelado porque não havia jogadores suficientes."
+    NewDayTitle: "&aDia &a{DAYNUMBER}"
+    NewDaySubtitle: "&fO sol nasceu"
+    NightTitle: "&4A noite aproxima-se"
+    NightSubtitle: "&fPlaneia a tua fuga"
+    JoinedGame: "&a{PLAYER} entrou no jogo. {PLAYERNUMBER}/{MAXPLAYERS}"
+    LeftGame: "&a{PLAYER} saiu do jogo. {PLAYERNUMBER}/{MAXPLAYERS}"
+    RejoinedGame: "&a{PLAYER} retornou ao jogo. {PLAYERNUMBER}/{MAXPLAYERS}"
+  Errors:
+    NotAllowed: "&cNão tens permissão para fazer isto."
+    CommandForPlayers: "&cApenas jogadores têm permissão para usar este comando."
+    GameAlreadyStarted: "&cJá há um jogo a acontecer."
+    GameNotStartedYet: "&cNão há nenhum jogo acontecer neste momento."
+    GameAlreadyOngoing: "&cO jogo já está em andamento."
+    GameIsStillWaiting: "&cO jogo está na fase de espera. Podes entrar utilizando &f/PrisonEscape Join"
+    GameIsNotFinished: "&cO jogo não está na fase de término. Podes forçar o encerramento utilizando &f/PrisonEscape ForceStop"
+    LobbyIsFull: "&cA sala de espera do jogo já está cheia."
+    AlreadyJoined: "&cTu já estás no jogo."
+    NotOnLobby: "&cTu não estás na sala de espera do jogo."
+    NeverInGame: "&cSó podes retornar a jogos dos quais participou desde o início."
+  Usages:
+    General:
+    - "Uso:"
+    - "/PrisonEscape Start - para iniciar o jogo"
+    - "/PrisonEscape ForceStart - para saltar a fase de espera"
+    - "/PrisonEscape Stop - para saltar a fase final"
+    - "/PrisonEscape ForceStop - para cancelar o jogo"
+    - "/PrisonEscape Join - para entrar no jogo"
+    - "/PrisonEscape Leave - para sair do jogo"
+    - "/PrisonEscape Rejoin - para retornar ao jogo"
+    - ""
+    - "Nota: comandos não são sensíveis a maiúsculas e /PrisonEscape pode ser substituído por /PE"
+    - ""
+    Start: "/PrisonEscape Start - para iniciar o jogo"
+    ForceStart: "/PrisonEscape ForceStart - para saltar a fase de espera"
+    Stop: "/PrisonEscape Stop - para saltar a fase final"
+    ForceStop: "/PrisonEscape ForceStop - para cancelar o jogo"
+    Join: "/PrisonEscape Join - para entrar no jogo"
+    Leave: "/PrisonEscape Leave - para sair do jogo"
+    Rejoin: "/PrisonEscape Rejoin - para retornar ao jogo"
+    Stop: "/PrisonEscape Stop - para parar o jogo"
