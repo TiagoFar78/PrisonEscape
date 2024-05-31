@@ -760,6 +760,7 @@ public class PrisonEscapeGame {
 
     public void playerEscaped(Prisioner player) {
         player.escaped();
+        BukkitTeleporter.teleport(player, _prison.getAfterEscapeLocation());
 
         for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
