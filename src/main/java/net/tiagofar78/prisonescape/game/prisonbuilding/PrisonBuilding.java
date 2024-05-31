@@ -34,6 +34,7 @@ public class PrisonBuilding {
     private PrisonEscapeLocation _solitaryExitLocation;
     private PrisonEscapeLocation _helicopterExitLocation;
     private PrisonEscapeLocation _helicopterJoinLocation;
+    private PrisonEscapeLocation _afterEscapeLocation;
     private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
 
@@ -78,6 +79,8 @@ public class PrisonBuilding {
 
         _helicopterExitLocation = config.getHelicopterExitLocation().add(reference);
         _helicopterJoinLocation = config.getHelicopterJoinLocation().add(reference);
+
+        _afterEscapeLocation = config.getAfterEscapeLocation().add(reference);
 
         _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
@@ -438,6 +441,10 @@ public class PrisonBuilding {
 
     public PrisonEscapeLocation getHelicopterJoinLocation() {
         return _helicopterJoinLocation;
+    }
+
+    public PrisonEscapeLocation getAfterEscapeLocation() {
+        return _afterEscapeLocation;
     }
 
     public PrisonEscapeLocation getSecretPassageDestinationLocation(
