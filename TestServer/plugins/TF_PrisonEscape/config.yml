@@ -1,5 +1,5 @@
-PrisionersRatio: 0.27
-PoliceRatio: 0.73
+PrisionersRatio: 0.73
+PoliceRatio: 0.27
 MinPlayers: 1
 MaxPlayers: 11
 SecondsInSolitary: 30
@@ -127,6 +127,10 @@ Helicopter:
     X: -43
     Y: 113
     Z: -5
+AfterEscapeLocation:
+  X: 22
+  Y: 100
+  Z: 35
 PrisionersSecretPassagesLocation:
   "1":
     Key:
