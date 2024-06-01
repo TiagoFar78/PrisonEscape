@@ -463,6 +463,10 @@ public class PrisonEscapeGame {
     }
 
     private void runDayTimer(int totalSeconds, int secondsLeft) {
+        if (_phase.isClockStopped()) {
+            return;
+        }
+
         updateBossBarClock(totalSeconds, secondsLeft);
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
@@ -507,6 +511,10 @@ public class PrisonEscapeGame {
     }
 
     private void runNightTimer(int totalSeconds, int secondsLeft) {
+        if (_phase.isClockStopped()) {
+            return;
+        }
+
         updateBossBarClock(totalSeconds, secondsLeft);
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
