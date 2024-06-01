@@ -709,7 +709,6 @@ PoliceSecretPassagesLocation:
       X: -3
       Y: 100
       Z: 48
-VaultsDirection: "WEST"
   "9":
     Key:
       X: 1
@@ -746,6 +745,7 @@ VaultsDirection: "WEST"
       X: -3
       Y: 101
       Z: 9
+VaultsDirection: "WEST"
 VaultsLocations:
   "1":
     X: 5
