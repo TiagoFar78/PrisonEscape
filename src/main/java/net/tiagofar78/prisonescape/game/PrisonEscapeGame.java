@@ -451,6 +451,7 @@ public class PrisonEscapeGame {
         setDayTimeBossBar();
 
         _prison.reloadChests();
+        _prison.openCellDoors();
 
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -463,6 +464,10 @@ public class PrisonEscapeGame {
     }
 
     private void runDayTimer(int totalSeconds, int secondsLeft) {
+        if (_phase.isClockStopped()) {
+            return;
+        }
+
         updateBossBarClock(totalSeconds, secondsLeft);
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
@@ -494,6 +499,8 @@ public class PrisonEscapeGame {
         BukkitWorldEditor.changeTimeToNight();
         setNightTimeBossBar();
 
+        _prison.closeCellDoors();
+
         for (PrisonEscapePlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             String title = messages.getNightTitleMessage();
@@ -505,6 +512,10 @@ public class PrisonEscapeGame {
     }
 
     private void runNightTimer(int totalSeconds, int secondsLeft) {
+        if (_phase.isClockStopped()) {
+            return;
+        }
+
         updateBossBarClock(totalSeconds, secondsLeft);
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
@@ -768,6 +779,7 @@ public class PrisonEscapeGame {
 
     public void playerEscaped(Prisioner player) {
         player.escaped();
+        BukkitTeleporter.teleport(player, _prison.getAfterEscapeLocation());
 
         for (PrisonEscapePlayer playerOnLobby : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
@@ -936,7 +948,7 @@ public class PrisonEscapeGame {
 
         ConfigManager config = ConfigManager.getInstance();
 
-        player.setEffect(PotionEffectType.SPEED, config.getSpeedLevel(), config.getSpeedDuration());
+        player.setEffect(PotionEffectType.SPEED, config.getSpeedDuration(), config.getSpeedLevel());
 
         int contentIndex = player.convertToInventoryIndex(eneryDrinkIndex);
         player.removeItem(contentIndex);
@@ -1034,14 +1046,12 @@ public class PrisonEscapeGame {
         ClickDoorReturnAction returnAction = door.click(player, itemHeld);
 
         if (returnAction == ClickDoorReturnAction.CLOSE_DOOR) {
-            door.close();
-            BukkitWorldEditor.closeDoor(doorLocation);
+            door.close(doorLocation);
             return;
         }
 
         if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
-            door.open();
-            BukkitWorldEditor.openDoor(doorLocation);
+            door.open(doorLocation);
             player.removeItem(inventoryIndex);
             player.updateInventory();
         }

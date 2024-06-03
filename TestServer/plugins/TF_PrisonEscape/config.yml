@@ -127,6 +127,10 @@ Helicopter:
     X: -43
     Y: 113
     Z: -5
+AfterEscapeLocation:
+  X: 22
+  Y: 100
+  Z: 35
 PrisionersSecretPassagesLocation:
   "1":
     Key:
@@ -596,6 +600,42 @@ PrisionersSecretPassagesLocation:
       X: -20
       Y: 82
       Z: 20
+  "53":
+    Key:
+      X: -1
+      Y: 101
+      Z: 11
+    Value:
+      X: 2
+      Y: 100
+      Z: 8
+  "54":
+    Key:
+      X: -1
+      Y: 101
+      Z: 5
+    Value:
+      X: 2
+      Y: 100
+      Z: 2
+  "55":
+    Key:
+      X: -1
+      Y: 101
+      Z: -1
+    Value:
+      X: 2
+      Y: 100
+      Z: -4
+  "55":
+    Key:
+      X: -1
+      Y: 101
+      Z: -7
+    Value:
+      X: 2
+      Y: 100
+      Z: -10
 PoliceSecretPassagesLocation:
   "1":
     Key:
@@ -669,6 +709,42 @@ PoliceSecretPassagesLocation:
       X: -3
       Y: 100
       Z: 48
+  "9":
+    Key:
+      X: 1
+      Y: 101
+      Z: -9
+    Value:
+      X: -3
+      Y: 101
+      Z: -9
+  "10":
+    Key:
+      X: 1
+      Y: 101
+      Z: -3
+    Value:
+      X: -3
+      Y: 101
+      Z: -3
+  "11":
+    Key:
+      X: 1
+      Y: 101
+      Z: 3
+    Value:
+      X: -3
+      Y: 101
+      Z: 3
+  "12":
+    Key:
+      X: 1
+      Y: 101
+      Z: 9
+    Value:
+      X: -3
+      Y: 101
+      Z: 9
 VaultsDirection: "WEST"
 VaultsLocations:
   "1":
@@ -1012,6 +1088,46 @@ ChestsLocations:
     X: 7
     Y: 100
     Z: -26
+GoldenDoorsLocations:
+  "1":
+    X: 29
+    Y: 100
+    Z: -2
+GrayDoorsLocations:
+  "1":
+    X: -41
+    Y: 100
+    Z: 45
+  "2":
+    X: 27
+    Y: 82
+    Z: -2
+  "3":
+    X: -27
+    Y: 82
+    Z: -2
+CodeDoorsLocations:
+  "1":
+    X: 37
+    Y: 100
+    Z: -2
+CellDoorsLocations:
+  "1":
+    X: 0
+    Y: 100
+    Z: -8
+  "2":
+    X: 0
+    Y: 100
+    Z: -2
+  "3":
+    X: 0
+    Y: 100
+    Z: 4
+  "4":
+    X: 0
+    Y: 100
+    Z: 10
 Regions:
   CellBlock:
     IsRestricted: false

@@ -45,9 +45,15 @@ mvn spotless:apply
 
 To ensure consistency and maintainability, please make sure that your code is properly formatted and compiles successfully before submitting a pull request.
 
+For a more in detail explanation on how to run your local copy please go to the [TestServer folder](/TestServer/).
+
 **Thank you for your contributions!** 😊
 
 ## Credits
 - **Plugin Developers**:
   - [TiagoFar78](https://github.com/TiagoFar78)
   - [Raquel Braunschweig](https://github.com/iquelli)
+
+## License
+
+This project is licensed under the GNU General Public License (GPL). See the [LICENSE](LICENSE) file for details.

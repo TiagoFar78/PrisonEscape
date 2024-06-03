@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
@@ -32,6 +33,7 @@ public class PrisonBuilding {
     private PrisonEscapeLocation _solitaryExitLocation;
     private PrisonEscapeLocation _helicopterExitLocation;
     private PrisonEscapeLocation _helicopterJoinLocation;
+    private PrisonEscapeLocation _afterEscapeLocation;
     private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _metalDetectorsLocations;
@@ -40,6 +42,8 @@ public class PrisonBuilding {
 
     private Hashtable<String, Chest> _chests;
     private Hashtable<String, Door> _doors;
+    private List<CellDoor> _cellDoors;
+    private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
 
     private Maze _maze;
@@ -76,6 +80,8 @@ public class PrisonBuilding {
         _helicopterExitLocation = config.getHelicopterExitLocation().add(reference);
         _helicopterJoinLocation = config.getHelicopterJoinLocation().add(reference);
 
+        _afterEscapeLocation = config.getAfterEscapeLocation().add(reference);
+
         _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
 
@@ -110,6 +116,18 @@ public class PrisonBuilding {
             _doors.put(referenceLoc.add(0, 1, 0).createKey(), codeDoor);
         }
 
+        _cellDoors = new ArrayList<CellDoor>();
+        for (PrisonEscapeLocation loc : config.getCellDoorsLocations()) {
+            PrisonEscapeLocation referenceLoc = loc.add(reference);
+            CellDoor door = new CellDoor(referenceLoc);
+            _cellDoors.add(door);
+        }
+
+        _metalDetectorsLocations = new ArrayList<>();
+        for (PrisonEscapeLocation location : config.getMetalDetectorLocations()) {
+            _metalDetectorsLocations.add(location);
+        }
+      
         _wall = new Wall();
 
         _obstacles = new ArrayList<>();
@@ -329,6 +347,18 @@ public class PrisonBuilding {
         return _doors.get(location.createKey());
     }
 
+    public void openCellDoors() {
+        for (CellDoor door : _cellDoors) {
+            door.open();
+        }
+    }
+
+    public void closeCellDoors() {
+        for (CellDoor door : _cellDoors) {
+            door.close();
+        }
+    }
+
 //  ########################################
 //  #              Helicopter              #
 //  ########################################
@@ -419,6 +449,10 @@ public class PrisonBuilding {
 
     public PrisonEscapeLocation getHelicopterJoinLocation() {
         return _helicopterJoinLocation;
+    }
+
+    public PrisonEscapeLocation getAfterEscapeLocation() {
+        return _afterEscapeLocation;
     }
 
     public PrisonEscapeLocation getSecretPassageDestinationLocation(

@@ -93,6 +93,10 @@ Helicopter:
     X: 0
     Y: 0
     Z: 0
+AfterEscapeLocation:
+  X: 0
+  Y: 0
+  Z: 0
 PrisionersSecretPassagesLocation:
   "1":
     Key:
@@ -135,6 +139,11 @@ GrayDoorsLocations:
     Y: 0
     Z: 0
 CodeDoorsLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+CellDoorsLocations:
   "1":
     X: 0
     Y: 0

@@ -71,6 +71,7 @@ public class ConfigManager {
     private PrisonEscapeLocation _helicopterJoinLocation;
     private PrisonEscapeLocation _helicopterUpperLocation;
     private PrisonEscapeLocation _helicopterLowerLocation;
+    private PrisonEscapeLocation _afterEscapeLocation;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
     private List<PrisonEscapeLocation> _vaultsLocations;
@@ -79,6 +80,7 @@ public class ConfigManager {
     private List<PrisonEscapeLocation> _goldenDoorsLocations;
     private List<PrisonEscapeLocation> _grayDoorsLocations;
     private List<PrisonEscapeLocation> _codeDoorsLocations;
+    private List<PrisonEscapeLocation> _cellDoorsLocations;
     private List<PrisonEscapeLocation> _wallCornersLocations;
     private List<List<String>> _wallCrackFormats;
     private List<String> _mazeFormat;
@@ -148,6 +150,7 @@ public class ConfigManager {
         _helicopterJoinLocation = createLocation(config, "Helicopter.JoinLocation");
         _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation");
         _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation");
+        _afterEscapeLocation = createLocation(config, "AfterEscapeLocation");
         _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
@@ -156,6 +159,7 @@ public class ConfigManager {
         _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
         _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations");
         _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations");
+        _cellDoorsLocations = createLocationList(config, "CellDoorsLocations");
         _wallCornersLocations = createLocationList(config, "WallCorners");
         _wallCrackFormats = createStringListList(config, "WallCrackFormats");
         _mazeFormat = config.getStringList("Maze.Format");
@@ -499,6 +503,10 @@ public class ConfigManager {
         return createLocationCopy(_helicopterLowerLocation);
     }
 
+    public PrisonEscapeLocation getAfterEscapeLocation() {
+        return createLocationCopy(_afterEscapeLocation);
+    }
+
     public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPrisionersSecretPassageLocations() {
         return createLocationsMapCopy(_prisionersSecretPassageLocations);
     }
@@ -529,6 +537,10 @@ public class ConfigManager {
 
     public List<PrisonEscapeLocation> getCodeDoorsLocations() {
         return createLocationsListCopy(_codeDoorsLocations);
+    }
+
+    public List<PrisonEscapeLocation> getCellDoorsLocations() {
+        return createLocationsListCopy(_cellDoorsLocations);
     }
 
     public List<PrisonEscapeLocation> getWallCornersLocations() {
