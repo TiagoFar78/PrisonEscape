@@ -463,6 +463,10 @@ public class PrisonEscapeGame {
     }
 
     private void runDayTimer(int totalSeconds, int secondsLeft) {
+        if (_phase.isClockStopped()) {
+            return;
+        }
+
         updateBossBarClock(totalSeconds, secondsLeft);
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
@@ -507,6 +511,10 @@ public class PrisonEscapeGame {
     }
 
     private void runNightTimer(int totalSeconds, int secondsLeft) {
+        if (_phase.isClockStopped()) {
+            return;
+        }
+
         updateBossBarClock(totalSeconds, secondsLeft);
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
@@ -929,7 +937,7 @@ public class PrisonEscapeGame {
 
         ConfigManager config = ConfigManager.getInstance();
 
-        player.setEffect(PotionEffectType.SPEED, config.getSpeedLevel(), config.getSpeedDuration());
+        player.setEffect(PotionEffectType.SPEED, config.getSpeedDuration(), config.getSpeedLevel());
 
         int contentIndex = player.convertToInventoryIndex(eneryDrinkIndex);
         player.removeItem(contentIndex);
