@@ -127,7 +127,7 @@ public class PrisonBuilding {
         for (PrisonEscapeLocation location : config.getMetalDetectorLocations()) {
             _metalDetectorsLocations.add(location);
         }
-      
+
         _wall = new Wall();
 
         _obstacles = new ArrayList<>();
