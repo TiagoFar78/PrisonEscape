@@ -68,14 +68,7 @@ public class Events implements Listener {
         }
 
         Player player = e.getPlayer();
-        Block blockWalkedOn = player.getLocation().subtract(0, 1, 0).getBlock();
-        Material blockType = blockWalkedOn.getType();
         PrisonEscapeLocation location = new PrisonEscapeLocation(x, y, z);
-
-        if (blockType == Material.BLACK_STAINED_GLASS) {
-            game.playerWalkOverMetalDetector(player.getName(), location);
-            return;
-        }
 
         game.playerMove(player.getName(), location);
     }

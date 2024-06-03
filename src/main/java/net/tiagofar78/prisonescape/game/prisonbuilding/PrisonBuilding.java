@@ -34,6 +34,7 @@ public class PrisonBuilding {
     private PrisonEscapeLocation _helicopterJoinLocation;
     private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
+    private List<PrisonEscapeLocation> _metalDetectorsLocations;
 
     private List<Vault> _vaults;
 
@@ -127,6 +128,11 @@ public class PrisonBuilding {
             Vent vent = new Vent(location);
             vent.generate();
             _obstacles.add(vent);
+        }
+
+        _metalDetectorsLocations = new ArrayList<>();
+        for (PrisonEscapeLocation location : config.getMetalDetectorLocations()) {
+            _metalDetectorsLocations.add(location);
         }
 
         PrisonEscapeLocation helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
@@ -373,6 +379,14 @@ public class PrisonBuilding {
         for (SoundDetector soundDetector : _soundDetectors) {
             soundDetector.delete();
         }
+    }
+
+//  #########################################
+//  #            Metal Detectors            #
+//  #########################################
+
+    public boolean checkIfWalkedOverMetalDetector(PrisonEscapeLocation location) {
+        return _metalDetectorsLocations.contains(location);
     }
 
 //	#########################################

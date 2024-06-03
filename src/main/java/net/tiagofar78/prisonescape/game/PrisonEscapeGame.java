@@ -568,9 +568,13 @@ public class PrisonEscapeGame {
         } else if (prisioner.isInRestrictedArea()) {
             prisioner.leftRestrictedArea();
         }
+
+        if (_prison.checkIfWalkedOverMetalDetector(loc)) {
+            playerWalkedOverMetalDetector(playerName, loc);
+        }
     }
 
-    public void playerWalkOverMetalDetector(String playerName, PrisonEscapeLocation loc) {
+    private void playerWalkedOverMetalDetector(String playerName, PrisonEscapeLocation loc) {
         PrisonEscapePlayer player = getPlayerOnPrisionersTeam(playerName);
         if (player == null) {
             return;
