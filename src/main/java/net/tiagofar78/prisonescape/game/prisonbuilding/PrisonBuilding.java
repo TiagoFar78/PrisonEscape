@@ -43,7 +43,6 @@ public class PrisonBuilding {
     private Hashtable<String, Chest> _chests;
     private Hashtable<String, Door> _doors;
     private List<CellDoor> _cellDoors;
-    private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
 
     private Maze _maze;
