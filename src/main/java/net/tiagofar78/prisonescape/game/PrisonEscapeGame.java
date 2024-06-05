@@ -40,7 +40,6 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -937,7 +936,7 @@ public class PrisonEscapeGame {
 
         ConfigManager config = ConfigManager.getInstance();
 
-        player.setEffect(PotionEffectType.SPEED, config.getSpeedDuration(), config.getSpeedLevel());
+        player.giveEnergyDrinkEffect(config.getSpeedDuration(), config.getSpeedLevel());
 
         int contentIndex = player.convertToInventoryIndex(eneryDrinkIndex);
         player.removeItem(contentIndex);
