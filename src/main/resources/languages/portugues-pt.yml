@@ -23,15 +23,15 @@ Items:
   Oil:
     Name: "Óleo"
   Stick:
-    Name: "Graveto"
+    Name: "Pau"
   PlasticPlate:
-    Name: "Placa de Plástico"
+    Name: "Prato de Plástico"
   MetalPlate:
-    Name: "Placa de Metal"
+    Name: "Prato de Metal"
   Copper:
     Name: "Cobre"
   CircuitBoard:
-    Name: "Circuito Impresso"
+    Name: "Placa de Circuito"
   Antena:
     Name: "Antena"
   Battery:
@@ -43,11 +43,11 @@ Items:
   GoldenKey:
     Name: "Chave Dourada"
     Lore:
-    - "&6Desbloqueia a porta dourada"
+    - "&6Abre a porta dourada"
   GrayKey:
     Name: "Chave Prateada"
     Lore:
-    - "&7Desbloqueia as portas prateadas"
+    - "&7Abre as portas prateadas"
   DoorCode:
     Name: "Código da Porta"
     Lore:
@@ -65,7 +65,7 @@ Items:
   MetalShovel:
     Name: "Pá de Diamante"
   WireCutter:
-    Name: "Alicate de Corte"
+    Name: "Alicate"
   Wrench:
     Name: "Picareta"
   Bomb:
@@ -82,7 +82,7 @@ Items:
   Shop:
     Name: "Loja"
   Search:
-    Name: "Procurar"
+    Name: "Inspecionar"
   Radar:
     Name: "Radar"
   SoundDetector:
@@ -101,7 +101,7 @@ ItemsProperties:
   LoreLine: "- {PROPERTY}"
 Inventory:
   Vault:
-    Title: "Inventário Pessoal"
+    Title: "Cofre"
     HiddenGlass:
       Name: "&cOculto"
   Chest:
@@ -115,8 +115,8 @@ Messages:
     ForceStartedGame: "&aFase de espera ultrapassada com sucesso."
     StoppedGame: "&aFase final ultrapassada com sucesso."
     ForceStoppedGame: "&aJogo cancelado com sucesso."
-    SelectedPrisionersTeam: "&aDefiniste &6Prisioneiros &acomo sua equipa preferida."
-    SelectedPoliceTeam: "&aDefiniste &9Polícias &acomo sua equipa preferida."
+    SelectedPrisionersTeam: "&aDefiniste &6Prisioneiros &acomo equipa preferida."
+    SelectedPoliceTeam: "&aDefiniste &9Polícias &acomo equipa preferida."
     SelectedRandomTeam: "&aRemoveste a tua equipa preferida. Serás colocado numa equipa aleatória."
     PrisionerGameStart: "&6Estás na equipa dos prisioneiros. Escapa com todos. Ninguém fica para trás."
     PoliceGameStart: "&9Estás na equipa dos polícias. Impede os prisioneiros de escapar."
@@ -137,8 +137,8 @@ Messages:
     NotEnoughMoney: "&cNão tens dinheiro suficiente para comprar este item."
     SuccessfullyBoughtItem: "&aItem comprado com sucesso. O teu saldo atual é: {BALANCE}."
     CannotDropThatItem: "&cNão podes largar este item."
-    HelicopterOnTheWay: "&eChamaste um helicóptero e ele estará aqui em &b{SECONDS} &esegundos."
-    NoCellPhoneCoverage: "&cNão podes usar o telemóvel aqui porque não à rede."
+    HelicopterOnTheWay: "&eChamaste um helicóptero e ele estará no telhado em &b{SECONDS} &esegundos."
+    NoCellPhoneCoverage: "&cNão podes usar o telemóvel aqui porque não há rede."
     CameraPlaced: "&aCâmara colocada com sucesso. Usa o teu visualizador de câmaras para ver o que está a acontecer."
     NoCamerasPlaced: "&cNão há câmaras colocadas. Compre algumas na loja."
     SneakToLeaveCamera: "&eAperte shift para sair da câmara"
@@ -149,9 +149,9 @@ Messages:
     - "&6==================================="
     - "&6O jogo começará em &f{SECONDS} &6segundos"
     - "&6Para participar, use &f/PrisonEscape join"
-    - "&6Já existem &f{PLAYERS} &6à espera"
+    - "&6Já estão &f{PLAYERS} &6à espera"
     - "&6==================================="
-    PrisionerArrested: "&4Prisioneiro &f{PLAYER} &4foi enviado para a solitária"
+    PrisionerArrested: "&4Prisioneiro &6{PLAYER} &4foi enviado para a solitária"
     PrisionerFreedOfSolitary: "&aTu sairás da solitária em breve"
     PrisionersWonTitle: "&l&6PRISIONEIROS VENCERAM"
     PrisionersWonSubtitle: "&fTodos conseguiram escapar"
@@ -168,7 +168,7 @@ Messages:
     - "      - &4EM BREVE"
     - ""
     - "&6==================================="
-    PlayerEscaped: "&eJogador &f{PLAYER} &efugiu da prisão."
+    PlayerEscaped: "&6{PLAYER} &efugiu da prisão."
     GameCancelledFewPlayers: "&cO jogo foi cancelado porque não havia jogadores suficientes."
     NewDayTitle: "&aDia &a{DAYNUMBER}"
     NewDaySubtitle: "&fO sol nasceu"
@@ -184,11 +184,11 @@ Messages:
     GameNotStartedYet: "&cNão há nenhum jogo acontecer neste momento."
     GameAlreadyOngoing: "&cO jogo já está em andamento."
     GameIsStillWaiting: "&cO jogo está na fase de espera. Podes entrar utilizando &f/PrisonEscape Join"
-    GameIsNotFinished: "&cO jogo não está na fase de término. Podes forçar o encerramento utilizando &f/PrisonEscape ForceStop"
+    GameIsNotFinished: "&cO jogo ainda não acabou. Podes forçar o encerramento utilizando &f/PrisonEscape ForceStop"
     LobbyIsFull: "&cA sala de espera do jogo já está cheia."
     AlreadyJoined: "&cTu já estás no jogo."
     NotOnLobby: "&cTu não estás na sala de espera do jogo."
-    NeverInGame: "&cSó podes retornar a jogos dos quais participou desde o início."
+    NeverInGame: "&cSó podes retornar a jogos dos quais participaste desde o início."
   Usages:
     General:
     - "Uso:"
