@@ -257,14 +257,13 @@ public abstract class PrisonEscapePlayer {
     public void giveEnergyDrinkEffect(int seconds, int amplifier) {
         long currentTime = System.currentTimeMillis();
         _secondsLeft = Math.max(0, _secondsLeft + seconds - convertToSeconds(currentTime - _lastDrankPotionTime));
-        
+
         if (_lastDrankPotionTime == -1) {
             setEffect(PotionEffectType.SPEED, seconds, amplifier);
-        }
-        else {
+        } else {
             setEffect(PotionEffectType.SPEED, _secondsLeft + seconds, amplifier);
         }
-        
+
         _lastDrankPotionTime = currentTime;
     }
 
