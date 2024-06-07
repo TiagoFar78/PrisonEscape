@@ -176,8 +176,22 @@ public class Guard extends PrisonEscapePlayer {
     }
 
     private String createSoundDetectorValueLine(int index, int value) {
-        // TODO improve how this looks
-        String valueBars = value == 10 ? "§c|||§e||||§a|||" : "§8||||||||||";
+        value = Math.max(Math.min(value, 1), 0);
+
+        int barsAmount = 30;
+        String valueBars = "|".repeat(barsAmount);
+
+        String[] colors = {"§c", "§e", "§a", "§8"};
+        double[] colorPercentage = {0.15, 0.75, 0.10, 1};
+        int coloredBars = 30 * value / 1;
+
+        int currentColoredBars = 0;
+        for (int i = 0; i < colors.length; i++) {
+            int colorIndex = currentColoredBars + i * 2;
+            currentColoredBars += coloredBars * colorPercentage[i];
+            valueBars = valueBars.substring(0, colorIndex) + colors[i] + valueBars.substring(colorIndex);
+        }
+
         return "§f" + index + ": " + valueBars;
     }
 
