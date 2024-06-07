@@ -17,11 +17,10 @@ import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class SoundDetector {
 
-    private static final int MAX_VALUE = 10;
-    private static final int MIN_VALUE = 1;
     private static final int CIRCLE_SEGMENTS = 32;
 
     private int _index;
@@ -29,11 +28,17 @@ public class SoundDetector {
     private PrisonEscapeLocation _location;
     private List<PrisonEscapePlayer> _playersInRange;
 
+    private Random _random;
+    private int _updateId;
+
     public SoundDetector(int index, PrisonEscapeLocation location) {
         _index = index;
         _isWorking = true;
         _location = location;
         _playersInRange = new ArrayList<>();
+
+        _random = new Random();
+        _updateId = 0;
 
         createOnWorld();
         createPerimeterParticles();
@@ -41,7 +46,7 @@ public class SoundDetector {
         PrisonEscapeGame game = GameManager.getGame();
         List<Guard> guards = game.getGuardsTeam().getMembers();
         for (Guard guard : guards) {
-            guard.addSoundDetectorLine(MIN_VALUE);
+            guard.addSoundDetectorLine(calculateValue());
         }
     }
 
@@ -124,13 +129,43 @@ public class SoundDetector {
         location.getBlock().setType(Material.AIR);
     }
 
-    private void updateValue() {
-        int value = isDetectingSound() ? MAX_VALUE : MIN_VALUE;
+    private int calculateValue() {
+        return isDetectingSound() ? 1 : 0;
+    }
 
+    private void updateValue() {
+        int value = calculateValue();
+
+        updateScoreboards(value);
+    }
+
+    private double noiseFunction(int x, int value) {
+        double intensity = 0.1;
+        return value + (_random.nextDouble() * 2 - 1) * intensity;
+    }
+
+    private void updateScoreboards(int value) {
+        _updateId++;
+        updateScoreboards(0, value, _updateId);
+    }
+
+    private void updateScoreboards(int x, int value, int updateId) {
         List<Guard> guards = GameManager.getGame().getGuardsTeam().getMembers();
         for (Guard guard : guards) {
-            guard.updateSoundDetectorValue(_index, value);
+            guard.updateSoundDetectorValue(_index, noiseFunction(x, value));
         }
+
+        Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
+
+            @Override
+            public void run() {
+                if (updateId == _updateId) {
+                    updateScoreboards(x + 1, value, updateId);
+                }
+            }
+
+        }, value);
+
     }
 
 }
