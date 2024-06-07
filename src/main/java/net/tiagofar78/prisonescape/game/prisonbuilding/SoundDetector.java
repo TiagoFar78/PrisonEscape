@@ -22,6 +22,7 @@ import java.util.Random;
 public class SoundDetector {
 
     private static final int CIRCLE_SEGMENTS = 32;
+    private static final int UPDATE_TICKS_DELAY = 5;
 
     private int _index;
     private boolean _isWorking;
@@ -150,6 +151,10 @@ public class SoundDetector {
     }
 
     private void updateScoreboards(int x, int value, int updateId) {
+        if (updateId == _updateId) {
+            return;
+        }
+        
         List<Guard> guards = GameManager.getGame().getGuardsTeam().getMembers();
         for (Guard guard : guards) {
             guard.updateSoundDetectorValue(_index, noiseFunction(x, value));
@@ -159,12 +164,10 @@ public class SoundDetector {
 
             @Override
             public void run() {
-                if (updateId == _updateId) {
-                    updateScoreboards(x + 1, value, updateId);
-                }
+                updateScoreboards(x + 1, value, updateId);
             }
 
-        }, value);
+        }, UPDATE_TICKS_DELAY);
 
     }
 
