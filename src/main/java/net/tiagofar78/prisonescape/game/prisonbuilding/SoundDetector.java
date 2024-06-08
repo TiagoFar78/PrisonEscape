@@ -138,17 +138,17 @@ public class SoundDetector {
         updateScoreboards(calculateValue());
     }
 
-    private double addRandomNoise(int x, int value) {
+    private double addRandomNoise(int value) {
         double intensity = 0.1;
         return value + (_random.nextDouble() * 2 - 1) * intensity;
     }
 
     private void updateScoreboards(int value) {
         _updateId++;
-        updateScoreboards(0, value, _updateId);
+        updateAudioLevelMeters(value, _updateId);
     }
 
-    private void updateScoreboards(int x, int value, int updateId) {
+    private void updateAudioLevelMeters(int value, int updateId) {
         PrisonEscapeGame game = GameManager.getGame();
         if (game == null) {
             return;
@@ -156,7 +156,7 @@ public class SoundDetector {
 
         List<Guard> guards = game.getGuardsTeam().getMembers();
         for (Guard guard : guards) {
-            guard.updateSoundDetectorValue(_index, addRandomNoise(x, value));
+            guard.updateSoundDetectorValue(_index, addRandomNoise(value));
         }
 
         Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
@@ -164,7 +164,7 @@ public class SoundDetector {
             @Override
             public void run() {
                 if (updateId == _updateId) {
-                    updateScoreboards(x + 1, value, updateId);
+                    updateAudioLevelMeters(value, updateId);
                 }
             }
 
