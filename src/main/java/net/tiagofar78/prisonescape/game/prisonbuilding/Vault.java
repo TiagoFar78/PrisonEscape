@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
@@ -13,7 +12,6 @@ import net.tiagofar78.prisonescape.menus.Clickable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -177,12 +175,11 @@ public class Vault implements Clickable {
     }
 
     public void deleteVaultAndRespectiveSignFromWorld() {
-        World world = BukkitWorldEditor.getWorld();
         Location vaultLocation = _location;
-        Location signLocation = new Location(world, _location.getX(), _location.getY() + 1, _location.getZ());
+        Location signLocation = _location.clone().add(0, 1, 0);
 
         vaultLocation.getBlock().setType(Material.AIR);
-        signLocation.getBlock().setType(Material.AIR);
+        signLocation.clone().add(0, 1, 0).getBlock().setType(Material.AIR);
     }
 
     @Override

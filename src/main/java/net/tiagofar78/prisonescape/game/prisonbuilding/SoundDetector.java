@@ -1,7 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
@@ -70,21 +69,16 @@ public class SoundDetector {
     }
 
     private void createOnWorld() {
-        World world = BukkitWorldEditor.getWorld();
-        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
-
-        location.getBlock().setType(Material.LIGHTNING_ROD);
+        _location.getBlock().setType(Material.LIGHTNING_ROD);
     }
 
     private void createPerimeterParticles() {
-        World world = BukkitWorldEditor.getWorld();
-
         double centerX = _location.getX() + 0.5;
         double centerY = _location.getY();
         double centerZ = _location.getZ() + 0.5;
         double radius = ConfigManager.getInstance().getSoundDetectorRange();
 
-        loopCreateParticles(world, centerX, centerY, centerZ, radius);
+        loopCreateParticles(_location.getWorld(), centerX, centerY, centerZ, radius);
     }
 
     private void loopCreateParticles(World world, double centerX, double centerY, double centerZ, double radius) {
@@ -111,9 +105,7 @@ public class SoundDetector {
     }
 
     private void deleteFromWorld() {
-        World world = BukkitWorldEditor.getWorld();
-        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
-        location.getBlock().setType(Material.AIR);
+        _location.getBlock().setType(Material.AIR);
     }
 
     private void updateValue() {

@@ -1,21 +1,13 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.PEResources;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.TNTPrimed;
 
 public class BukkitWorldEditor {
-
-    private static final World WORLD = Bukkit.getWorld(ConfigManager.getInstance().getWorldName());
-
-    public static World getWorld() {
-        return WORLD;
-    }
 
 //  ########################################
 //  #                 Time                 #
@@ -25,11 +17,11 @@ public class BukkitWorldEditor {
     private static final int NIGHT_START_TIME = 13000;
 
     public static void changeTimeToDay() {
-        WORLD.setTime(DAY_START_TIME);
+        PEResources.getWorld().setTime(DAY_START_TIME);
     }
 
     public static void changeTimeToNight() {
-        WORLD.setTime(NIGHT_START_TIME);
+        PEResources.getWorld().setTime(NIGHT_START_TIME);
     }
 
 //  ########################################
@@ -74,7 +66,7 @@ public class BukkitWorldEditor {
         for (int x = lowerX; x <= higherX; x++) {
             for (int z = lowerZ; z <= higherZ; z++) {
                 for (int y = lowerY; y <= higherY; y++) {
-                    WORLD.getBlockAt(x, y, z).setType(DEFAULT_BLOCK);
+                    PEResources.getWorld().getBlockAt(x, y, z).setType(DEFAULT_BLOCK);
                 }
             }
         }
@@ -85,19 +77,19 @@ public class BukkitWorldEditor {
     }
 
     public static void putCrackOnWall(int x, int y, int z) {
-        WORLD.getBlockAt(x, y, z).setType(CRACKED_BLOCK);
+        PEResources.getWorld().getBlockAt(x, y, z).setType(CRACKED_BLOCK);
     }
 
     public static void fixCrack(Location location) {
-        WORLD.getBlockAt(location).setType(DEFAULT_BLOCK);
+        PEResources.getWorld().getBlockAt(location).setType(DEFAULT_BLOCK);
     }
 
     public static void removeWallBlock(Location location) {
-        WORLD.getBlockAt(location).setType(Material.AIR);
+        PEResources.getWorld().getBlockAt(location).setType(Material.AIR);
     }
 
     public static void placeTNT(Location location) {
-        ((TNTPrimed) WORLD.spawn(location, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
+        ((TNTPrimed) PEResources.getWorld().spawn(location, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
     }
 
 //  ########################################
@@ -117,14 +109,14 @@ public class BukkitWorldEditor {
     }
 
     public static boolean isDirtBlock(int x, int y, int z) {
-        return WORLD.getBlockAt(x, y, z).getType() == Material.DIRT;
+        return PEResources.getWorld().getBlockAt(x, y, z).getType() == Material.DIRT;
     }
 
     public static void clearDirtFromMazePart(Location upperCorner, Location lowerCorner) {
         for (int x = lowerCorner.getBlockX(); x <= upperCorner.getBlockX(); x++) {
             for (int y = lowerCorner.getBlockY(); y <= upperCorner.getBlockY(); y++) {
                 for (int z = lowerCorner.getBlockZ(); z <= upperCorner.getBlockZ(); z++) {
-                    Block block = WORLD.getBlockAt(x, y, z);
+                    Block block = PEResources.getWorld().getBlockAt(x, y, z);
                     if (block.getType() == Material.DIRT) {
                         block.setType(Material.AIR);
                     }
@@ -153,7 +145,7 @@ public class BukkitWorldEditor {
         for (int x = lowerCorner.getBlockX(); x <= upperCorner.getBlockX(); x++) {
             for (int y = lowerCorner.getBlockY(); y <= upperCorner.getBlockY(); y++) {
                 for (int z = lowerCorner.getBlockZ(); z <= upperCorner.getBlockZ(); z++) {
-                    WORLD.getBlockAt(x, y, z).setType(type);
+                    PEResources.getWorld().getBlockAt(x, y, z).setType(type);
                 }
             }
         }

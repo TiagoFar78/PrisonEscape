@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class PrisonEscapeResources {
+public class PEResources {
 
 //	########################################
 //	#                Config                #

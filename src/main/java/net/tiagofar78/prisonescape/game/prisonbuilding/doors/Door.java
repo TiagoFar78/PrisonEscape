@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.doors;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.Item;
 
@@ -32,7 +32,7 @@ public abstract class Door {
     public abstract ClickDoorReturnAction click(PrisonEscapePlayer player, Item itemHeld);
 
     private static void updateDoor(Location blockLocation, boolean isOpen) {
-        Block block = BukkitWorldEditor.getWorld().getBlockAt(blockLocation);
+        Block block = PEResources.getWorld().getBlockAt(blockLocation);
 
         if (block == null || !(block.getBlockData() instanceof org.bukkit.block.data.type.Door)) {
             throw new IllegalArgumentException("This location should contain a door");

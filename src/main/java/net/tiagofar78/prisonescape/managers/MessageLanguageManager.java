@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.managers;
 
-import net.tiagofar78.prisonescape.PrisonEscapeResources;
+import net.tiagofar78.prisonescape.PEResources;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -197,7 +197,7 @@ public class MessageLanguageManager {
     private String _stopCommandUsage;
 
     private MessageLanguageManager(String language) {
-        YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
+        YamlConfiguration messages = PEResources.getYamlLanguage(language);
 
         String bossBarPath = "BossBar.";
         _bossBarDayTitle = createMessage(messages.getString(bossBarPath + "DayTitle"));

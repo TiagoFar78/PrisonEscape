@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.PrisonEscapeResources;
+import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ public class WallCrack {
                     int y = location.getBlockY() + h;
                     int z = location.getBlockZ() + zDirection * l;
 
-                    _locations.add(new Location(PrisonEscapeResources.getWorld(), x, y, z));
+                    _locations.add(new Location(PEResources.getWorld(), x, y, z));
                 }
             }
         }

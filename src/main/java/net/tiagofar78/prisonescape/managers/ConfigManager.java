@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.managers;
 
-import net.tiagofar78.prisonescape.PrisonEscapeResources;
+import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 
@@ -100,7 +100,7 @@ public class ConfigManager {
     private int _chestSize;
 
     public ConfigManager() {
-        YamlConfiguration config = PrisonEscapeResources.getYamlConfiguration();
+        YamlConfiguration config = PEResources.getYamlConfiguration();
 
         _prisionerRatio = config.getDouble("PrisionersRatio");
         _officerRatio = config.getDouble("PoliceRatio");
@@ -187,7 +187,7 @@ public class ConfigManager {
         int y = config.getInt(path + ".Y");
         int z = config.getInt(path + ".Z");
 
-        return new Location(PrisonEscapeResources.getWorld(), x, y, z);
+        return new Location(PEResources.getWorld(), x, y, z);
     }
 
     private List<Location> createLocationList(YamlConfiguration config, String path) {

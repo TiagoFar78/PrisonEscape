@@ -17,10 +17,10 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockState;
 
+import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
@@ -152,7 +152,7 @@ public class Helicopter {
             ClipboardReader reader = format.getReader(new FileInputStream(file));
             Clipboard clipboard = reader.read();
 
-            World world = BukkitAdapter.adapt(BukkitWorldEditor.getWorld());
+            World world = BukkitAdapter.adapt(PEResources.getWorld());
             EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
             Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(
                     BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ())
@@ -166,7 +166,7 @@ public class Helicopter {
     }
 
     private void removeFromWorld() {
-        World world = BukkitAdapter.adapt(BukkitWorldEditor.getWorld());
+        World world = BukkitAdapter.adapt(PEResources.getWorld());
         BlockVector3 min = BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ());
         BlockVector3 max = BlockVector3.at(_upperLocation.getX(), _upperLocation.getY(), _upperLocation.getZ());
         CuboidRegion selection = new CuboidRegion(world, min, max);

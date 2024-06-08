@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.PrisonEscapeResources;
+import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
@@ -304,7 +304,7 @@ public class PrisonBuilding {
         List<Location> crackedBlocksLocations = explodedBlocks.stream().filter(
                 b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK
         ).map(b -> b.getLocation()).map(
-                l -> new Location(PrisonEscapeResources.getWorld(), l.getBlockX(), l.getBlockY(), l.getBlockZ())
+                l -> new Location(PEResources.getWorld(), l.getBlockX(), l.getBlockY(), l.getBlockZ())
         ).toList();
 
         _wall.crackedBlocksExploded(crackedBlocksLocations);
