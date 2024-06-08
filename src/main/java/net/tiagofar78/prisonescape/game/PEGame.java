@@ -59,8 +59,8 @@ public class PEGame {
     private PrisonBuilding _prison;
 
     private List<PrisonEscapePlayer> _playersOnLobby;
-    private PrisonEscapeTeam<Guard> _policeTeam;
-    private PrisonEscapeTeam<Prisioner> _prisionersTeam;
+    private PETeam<Guard> _policeTeam;
+    private PETeam<Prisioner> _prisionersTeam;
 
     private Phase _phase;
 
@@ -75,8 +75,8 @@ public class PEGame {
         _prison = new PrisonBuilding(referenceBlock);
 
         _playersOnLobby = new ArrayList<>();
-        _policeTeam = new PrisonEscapeTeam<Guard>(POLICE_TEAM_NAME);
-        _prisionersTeam = new PrisonEscapeTeam<Prisioner>(PRISIONERS_TEAM_NAME);
+        _policeTeam = new PETeam<Guard>(POLICE_TEAM_NAME);
+        _prisionersTeam = new PETeam<Prisioner>(PRISIONERS_TEAM_NAME);
 
         _hasDoorCode = false;
 
@@ -246,11 +246,11 @@ public class PEGame {
         return player.isPrisioner();
     }
 
-    public PrisonEscapeTeam<Prisioner> getPrisionerTeam() {
+    public PETeam<Prisioner> getPrisionerTeam() {
         return _prisionersTeam;
     }
 
-    public PrisonEscapeTeam<Guard> getGuardsTeam() {
+    public PETeam<Guard> getGuardsTeam() {
         return _policeTeam;
     }
 
@@ -381,7 +381,7 @@ public class PEGame {
         startDay();
     }
 
-    private void startFinishedPhase(PrisonEscapeTeam<? extends PrisonEscapePlayer> winnerTeam) {
+    private void startFinishedPhase(PETeam<? extends PrisonEscapePlayer> winnerTeam) {
         _phase = _phase.next();
 
         boolean prisionersWon = winnerTeam.getName().equals(_prisionersTeam.getName());

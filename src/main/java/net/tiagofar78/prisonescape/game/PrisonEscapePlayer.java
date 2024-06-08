@@ -308,14 +308,14 @@ public abstract class PrisonEscapePlayer {
     }
 
     public void updateScoreaboardTeams() {
-        PrisonEscapeTeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
+        PETeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
         addScoreboardTeamMembers(guardsTeam);
 
-        PrisonEscapeTeam<Prisioner> prisionersTeam = GameManager.getGame().getPrisionerTeam();
+        PETeam<Prisioner> prisionersTeam = GameManager.getGame().getPrisionerTeam();
         addScoreboardTeamMembers(prisionersTeam);
     }
 
-    private void addScoreboardTeamMembers(PrisonEscapeTeam<? extends PrisonEscapePlayer> team) {
+    private void addScoreboardTeamMembers(PETeam<? extends PrisonEscapePlayer> team) {
         Team sbTeam = getScoreboardData().getScoreboard().getTeam(team.getName());
         for (PrisonEscapePlayer player : team.getMembers()) {
             sbTeam.addEntry(player.getName());

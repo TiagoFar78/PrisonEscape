@@ -3,12 +3,12 @@ package net.tiagofar78.prisonescape.game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrisonEscapeTeam<T extends PrisonEscapePlayer> {
+public class PETeam<T extends PrisonEscapePlayer> {
 
     private String _name;
     private List<T> _players;
 
-    public PrisonEscapeTeam(String name) {
+    public PETeam(String name) {
         this._name = name;
         this._players = new ArrayList<>();
     }
