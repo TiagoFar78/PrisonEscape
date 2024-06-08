@@ -122,11 +122,6 @@ public class PrisonBuilding {
             _cellDoors.add(door);
         }
 
-        _metalDetectorsLocations = new ArrayList<>();
-        for (PrisonEscapeLocation location : config.getMetalDetectorLocations()) {
-            _metalDetectorsLocations.add(location);
-        }
-
         _wall = new Wall();
 
         _obstacles = new ArrayList<>();
@@ -149,7 +144,7 @@ public class PrisonBuilding {
 
         _metalDetectorsLocations = new ArrayList<>();
         for (PrisonEscapeLocation location : config.getMetalDetectorLocations()) {
-            _metalDetectorsLocations.add(location);
+            _metalDetectorsLocations.add(location.add(reference));
         }
 
         PrisonEscapeLocation helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
