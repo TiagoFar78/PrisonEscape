@@ -68,9 +68,10 @@ public class Events implements Listener {
             return;
         }
 
+        Player player = e.getPlayer();
         PrisonEscapeLocation location = new PrisonEscapeLocation(x, y, z);
 
-        game.playerMove(e.getPlayer().getName(), location);
+        game.playerMove(player.getName(), location);
     }
 
     @EventHandler

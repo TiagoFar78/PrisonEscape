@@ -87,6 +87,7 @@ public class ConfigManager {
     private PrisonEscapeLocation _mazeUpperCornerLocation;
     private List<List<PrisonEscapeLocation>> _fencesLocations;
     private List<PrisonEscapeLocation> _ventsLocations;
+    private List<PrisonEscapeLocation> _metalDetectorLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -165,6 +166,7 @@ public class ConfigManager {
         _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation");
         _fencesLocations = createLocationPairList(config, "Fences");
         _ventsLocations = createLocationList(config, "Vents");
+        _metalDetectorLocations = createLocationList(config, "MetalDetectors");
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -563,6 +565,10 @@ public class ConfigManager {
 
     public List<PrisonEscapeLocation> getVentsLocations() {
         return createLocationsListCopy(_ventsLocations);
+    }
+
+    public List<PrisonEscapeLocation> getMetalDetectorLocations() {
+        return createLocationsListCopy(_metalDetectorLocations);
     }
 
     public List<ItemProbability> getChestContents(String regionName) {

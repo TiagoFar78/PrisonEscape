@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
+import net.tiagofar78.prisonescape.bukkit.BukkitSoundBoard;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.phases.Finished;
@@ -578,8 +579,18 @@ public class PrisonEscapeGame {
             prisioner.leftRestrictedArea();
         }
 
-        if (_prison.checkIfMetalDetectorTriggered(loc, player)) {
-            // TODO: Do beep
+        if (_prison.checkIfWalkedOverMetalDetector(loc)) {
+            playerWalkedOverMetalDetector(playerName, loc);
+        }
+    }
+
+    private void playerWalkedOverMetalDetector(String playerName, PrisonEscapeLocation loc) {
+        PrisonEscapePlayer player = getPlayerOnPrisionersTeam(playerName);
+        if (player == null) {
+            return;
+        }
+        if (player.hasMetalItems()) {
+            BukkitSoundBoard.playMetalDetectorSound(loc);
         }
     }
 

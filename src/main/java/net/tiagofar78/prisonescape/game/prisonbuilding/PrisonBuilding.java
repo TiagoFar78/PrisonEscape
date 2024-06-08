@@ -2,7 +2,6 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Prisioner;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
@@ -37,13 +36,13 @@ public class PrisonBuilding {
     private PrisonEscapeLocation _afterEscapeLocation;
     private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
     private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
+    private List<PrisonEscapeLocation> _metalDetectorsLocations;
 
     private List<Vault> _vaults;
 
     private Hashtable<String, Chest> _chests;
     private Hashtable<String, Door> _doors;
     private List<CellDoor> _cellDoors;
-    private List<PrisonEscapeLocation> _metalDetectorsLocations;
     private Wall _wall;
 
     private Maze _maze;
@@ -123,8 +122,6 @@ public class PrisonBuilding {
             _cellDoors.add(door);
         }
 
-        _metalDetectorsLocations = new ArrayList<>();
-
         _wall = new Wall();
 
         _obstacles = new ArrayList<>();
@@ -143,6 +140,11 @@ public class PrisonBuilding {
             Vent vent = new Vent(location);
             vent.generate();
             _obstacles.add(vent);
+        }
+
+        _metalDetectorsLocations = new ArrayList<>();
+        for (PrisonEscapeLocation location : config.getMetalDetectorLocations()) {
+            _metalDetectorsLocations.add(location.add(reference));
         }
 
         PrisonEscapeLocation helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
@@ -230,10 +232,6 @@ public class PrisonBuilding {
         return true;
     }
 
-//  #########################################
-//  #            Metal Detectors            #
-//  #########################################
-
     public boolean isInRestrictedArea(PrisonEscapeLocation loc) {
         for (Region region : _regions) {
             if (region.contains(loc)) {
@@ -242,10 +240,6 @@ public class PrisonBuilding {
         }
 
         return false;
-    }
-
-    public boolean checkIfMetalDetectorTriggered(PrisonEscapeLocation location, PrisonEscapePlayer player) {
-        return _metalDetectorsLocations.contains(location) && player.hasMetalItems();
     }
 
 //	#########################################
@@ -409,6 +403,14 @@ public class PrisonBuilding {
         for (SoundDetector soundDetector : _soundDetectors) {
             soundDetector.delete();
         }
+    }
+
+//  #########################################
+//  #            Metal Detectors            #
+//  #########################################
+
+    public boolean checkIfWalkedOverMetalDetector(PrisonEscapeLocation location) {
+        return _metalDetectorsLocations.contains(location);
     }
 
 //	#########################################
