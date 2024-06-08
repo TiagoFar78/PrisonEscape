@@ -56,6 +56,9 @@ public class ConfigManager {
 
     private String _teamChatPrefix;
 
+    private String _cameraSkinSignature;
+    private String _cameraSkinTexture;
+
     private String _worldName;
     private PrisonEscapeLocation _referenceBlock;
     private PrisonEscapeLocation _leavingLocation;
@@ -133,6 +136,9 @@ public class ConfigManager {
         _defaultLanguage = config.getString("DefaultLanguage");
 
         _teamChatPrefix = config.getString("TeamChatPrefix");
+
+        _cameraSkinSignature = config.getString("CameraSkinSignature");
+        _cameraSkinTexture = config.getString("CameraSkinTexture");
 
         _worldName = config.getString("WorldName");
         _referenceBlock = createLocation(config, "ReferenceBlock");
@@ -438,6 +444,14 @@ public class ConfigManager {
 
     public String getTeamChatPrefix() {
         return _teamChatPrefix;
+    }
+
+    public String getCameraSkinSignature() {
+        return _cameraSkinSignature;
+    }
+
+    public String getCameraSkinTexture() {
+        return _cameraSkinTexture;
     }
 
     public String getWorldName() {
