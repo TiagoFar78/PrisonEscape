@@ -1,5 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Guard;
 
@@ -14,6 +16,7 @@ import org.bukkit.entity.Player;
 public class Camera {
 
     private ArmorStand _armorStand;
+    private NPC _npc;
 
     public Camera(PrisonEscapeLocation location) {
         _armorStand = createCameraRepresentation(location);
@@ -27,12 +30,17 @@ public class Camera {
 
     public void delete() {
         _armorStand.remove();
+        _npc.despawn();
+        _npc.destroy();
     }
 
     private ArmorStand createCameraRepresentation(PrisonEscapeLocation location) {
         World world = BukkitWorldEditor.getWorld();
-
         Location bukkitLoc = new Location(world, location.getX() + 0.5, location.getY(), location.getZ() + 0.5);
+
+        _npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "TiagoFar78");
+        _npc.spawn(bukkitLoc);
+
         ArmorStand armorStand = (ArmorStand) world.spawnEntity(bukkitLoc, EntityType.ARMOR_STAND);
         armorStand.setVisible(false);
         armorStand.setInvulnerable(true);
