@@ -5,7 +5,7 @@ import net.tiagofar78.prisonescape.items.Item;
 
 import java.util.Hashtable;
 
-public class PrisionerKit extends Kit {
+public class PrisonerKit extends Kit {
 
     private static final int FIRST_GLASS_ITEM_INDEX = 4;
     private static final int LAST_GLASS_ITEM_INDEX = 35;

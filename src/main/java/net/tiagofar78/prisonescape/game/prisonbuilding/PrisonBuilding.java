@@ -2,7 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
@@ -29,14 +29,14 @@ public class PrisonBuilding {
     private Location _waitingLobbyLocation;
     private Region _prison;
     private List<Region> _regions;
-    private List<Location> _prisionersSpawnLocations;
+    private List<Location> _prisonersSpawnLocations;
     private List<Location> _policeSpawnLocations;
     private Location _solitaryLocation;
     private Location _solitaryExitLocation;
     private Location _helicopterExitLocation;
     private Location _helicopterJoinLocation;
     private Location _afterEscapeLocation;
-    private Hashtable<Location, Location> _prisionersSecretPassageLocations;
+    private Hashtable<Location, Location> _prisonersSecretPassageLocations;
     private Hashtable<Location, Location> _policeSecretPassageLocations;
     private List<Location> _metalDetectorsLocations;
 
@@ -72,7 +72,7 @@ public class PrisonBuilding {
 
         _waitingLobbyLocation = config.getWaitingLobbyLocation().add(reference);
 
-        _prisionersSpawnLocations = createLocationsList(reference, config.getPrisionersSpawnLocations());
+        _prisonersSpawnLocations = createLocationsList(reference, config.getPrisonersSpawnLocations());
         _policeSpawnLocations = createLocationsList(reference, config.getPoliceSpawnLocations());
 
         _solitaryLocation = config.getSolitaryLocation().add(reference);
@@ -83,7 +83,7 @@ public class PrisonBuilding {
 
         _afterEscapeLocation = config.getAfterEscapeLocation().add(reference);
 
-        _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
+        _prisonersSecretPassageLocations = createLocationsMap(reference, config.getPrisonersSecretPassageLocations());
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
 
         _vaults = new ArrayList<>();
@@ -245,12 +245,12 @@ public class PrisonBuilding {
 //	#                 Vault                 #
 //	#########################################
 
-    public void addVaults(List<Prisioner> prisioners) {
+    public void addVaults(List<Prisoner> prisoners) {
         ConfigManager config = ConfigManager.getInstance();
         List<Location> vaultsLocations = createLocationsList(_reference, config.getVaultsLocations());
 
-        for (int i = 0; i < prisioners.size(); i++) {
-            _vaults.add(new Vault(prisioners.get(i), vaultsLocations.get(i)));
+        for (int i = 0; i < prisoners.size(); i++) {
+            _vaults.add(new Vault(prisoners.get(i), vaultsLocations.get(i)));
         }
     }
 
@@ -425,7 +425,7 @@ public class PrisonBuilding {
     }
 
     public Location getPlayerCellLocation(int index) {
-        return _prisionersSpawnLocations.get(index);
+        return _prisonersSpawnLocations.get(index);
     }
 
     public Location getSolitaryLocation() {
@@ -448,9 +448,9 @@ public class PrisonBuilding {
         return _afterEscapeLocation;
     }
 
-    public Location getSecretPassageDestinationLocation(Location location, boolean isPrisioner) {
+    public Location getSecretPassageDestinationLocation(Location location, boolean isPrisoner) {
         Hashtable<Location, Location> secretPassageLocations =
-                isPrisioner ? _prisionersSecretPassageLocations : _policeSecretPassageLocations;
+                isPrisoner ? _prisonersSecretPassageLocations : _policeSecretPassageLocations;
 
         return secretPassageLocations.get(location);
     }

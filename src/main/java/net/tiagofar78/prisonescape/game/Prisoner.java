@@ -2,7 +2,7 @@ package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
-public class Prisioner extends PEPlayer {
+public class Prisoner extends PEPlayer {
 
     private boolean _hasEscaped;
     private boolean _isWanted;
@@ -11,7 +11,7 @@ public class Prisioner extends PEPlayer {
     private PEPlayer _tradeRequestTarget;
     private long _tradeRequestTime;
 
-    public Prisioner(String name) {
+    public Prisoner(String name) {
         super(name);
         _hasEscaped = false;
         _isWanted = false;
@@ -19,7 +19,7 @@ public class Prisioner extends PEPlayer {
     }
 
     @Override
-    public boolean isPrisioner() {
+    public boolean isPrisoner() {
         return true;
     }
 

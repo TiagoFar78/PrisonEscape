@@ -37,7 +37,7 @@ public class SearchItem extends FunctionalItem {
             return;
         }
 
-        game.policeInspectedPrisioner(e.getPlayer().getName(), prisioner.getName());
+        game.policeInspectedPrisoner(e.getPlayer().getName(), prisioner.getName());
     }
 
 }

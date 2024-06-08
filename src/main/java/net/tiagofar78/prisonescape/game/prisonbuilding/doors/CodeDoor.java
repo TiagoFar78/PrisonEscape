@@ -18,7 +18,7 @@ public class CodeDoor extends Door {
         if (game.isGuard(player))
             return isOpened ? ClickDoorReturnAction.CLOSE_DOOR : ClickDoorReturnAction.NOTHING;
 
-        if (game.isPrisioner(player))
+        if (game.isPrisoner(player))
             return !isOpened && game.playersHaveDoorCode()
                     ? ClickDoorReturnAction.OPEN_DOOR
                     : ClickDoorReturnAction.NOTHING;

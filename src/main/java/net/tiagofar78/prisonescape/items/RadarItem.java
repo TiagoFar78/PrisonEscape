@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
@@ -53,8 +53,8 @@ public class RadarItem extends FunctionalItem implements Buyable {
         ConfigManager config = ConfigManager.getInstance();
         int effectDuration = config.getRadarDuration();
 
-        List<Prisioner> prisioners = game.getPrisionerTeam().getMembers();
-        for (Prisioner prisioner : prisioners) {
+        List<Prisoner> prisioners = game.getPrisonerTeam().getMembers();
+        for (Prisoner prisioner : prisioners) {
             if (!prisioner.hasEscaped()) {
                 prisioner.setEffect(PotionEffectType.GLOWING, effectDuration, 1);
             }

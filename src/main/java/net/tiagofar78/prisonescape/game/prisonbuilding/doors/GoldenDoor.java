@@ -19,7 +19,7 @@ public class GoldenDoor extends Door {
         if (game.isGuard(player))
             return isOpen ? ClickDoorReturnAction.CLOSE_DOOR : ClickDoorReturnAction.NOTHING;
 
-        if (game.isPrisioner(player))
+        if (game.isPrisoner(player))
             return !isOpen && itemHeld instanceof GoldenKeyItem
                     ? ClickDoorReturnAction.OPEN_DOOR
                     : ClickDoorReturnAction.NOTHING;

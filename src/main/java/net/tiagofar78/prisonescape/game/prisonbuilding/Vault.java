@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -36,11 +36,11 @@ public class Vault implements Clickable {
     private List<Item> _nonHiddenContents;
     private List<Item> _hiddenContents;
 
-    private Prisioner _owner;
+    private Prisoner _owner;
 
     private Location _location;
 
-    public Vault(Prisioner owner, Location location) {
+    public Vault(Prisoner owner, Location location) {
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
 
@@ -65,7 +65,7 @@ public class Vault implements Clickable {
         return list;
     }
 
-    public Prisioner getOwner() {
+    public Prisoner getOwner() {
         return _owner;
     }
 

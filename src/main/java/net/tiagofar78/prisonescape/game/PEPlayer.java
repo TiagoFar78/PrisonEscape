@@ -52,7 +52,7 @@ public abstract class PEPlayer {
         setScoreboard(_scoreboardData.getScoreboard());
     }
 
-    public boolean isPrisioner() {
+    public boolean isPrisoner() {
         return false;
     }
 
@@ -285,8 +285,8 @@ public abstract class PEPlayer {
         String guardsTeamName = GameManager.getGame().getGuardsTeam().getName();
         registerTeam(sbData, guardsTeamName, ChatColor.BLUE);
 
-        String prisionersTeamName = GameManager.getGame().getPrisionerTeam().getName();
-        registerTeam(sbData, prisionersTeamName, ChatColor.GOLD);
+        String prisonersTeamName = GameManager.getGame().getPrisonerTeam().getName();
+        registerTeam(sbData, prisonersTeamName, ChatColor.GOLD);
 
         return sbData;
     }
@@ -311,8 +311,8 @@ public abstract class PEPlayer {
         PETeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
         addScoreboardTeamMembers(guardsTeam);
 
-        PETeam<Prisioner> prisionersTeam = GameManager.getGame().getPrisionerTeam();
-        addScoreboardTeamMembers(prisionersTeam);
+        PETeam<Prisoner> prisonersTeam = GameManager.getGame().getPrisonerTeam();
+        addScoreboardTeamMembers(prisonersTeam);
     }
 
     private void addScoreboardTeamMembers(PETeam<? extends PEPlayer> team) {

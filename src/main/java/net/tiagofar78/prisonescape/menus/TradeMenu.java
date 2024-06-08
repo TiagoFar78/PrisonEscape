@@ -2,7 +2,7 @@ package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
@@ -25,8 +25,8 @@ public class TradeMenu implements Clickable {
     private static final int STATUS_WOOL_SLOT = 4 * 9 + 1;
     private static final int STATUS_GLASS_SLOT = 4 * 9 + 6;
 
-    private Prisioner _player1;
-    private Prisioner _player2;
+    private Prisoner _player1;
+    private Prisoner _player2;
 
     private boolean _hasPlayer1Accepted = false;
     private boolean _hasPlayer2Accepted = false;
@@ -46,7 +46,7 @@ public class TradeMenu implements Clickable {
         return list;
     }
 
-    public TradeMenu(Prisioner player1, Prisioner player2) {
+    public TradeMenu(Prisoner player1, Prisoner player2) {
         _player1 = player1;
         _player2 = player2;
 

@@ -23,7 +23,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
@@ -43,7 +43,7 @@ public class Helicopter {
 
     private Location _upperLocation;
     private Location _lowerLocation;
-    private List<Prisioner> _players = new ArrayList<>();
+    private List<Prisoner> _players = new ArrayList<>();
     private boolean _isOnGround = false;
 
     protected Helicopter(Location upperLocation, Location lowerLocation) {
@@ -105,7 +105,7 @@ public class Helicopter {
         destroyHelicopter();
 
         PEGame game = GameManager.getGame();
-        for (Prisioner player : _players) {
+        for (Prisoner player : _players) {
             game.playerEscaped(player);
         }
 
@@ -117,15 +117,15 @@ public class Helicopter {
             return;
         }
 
-        if (player.isPrisioner()) {
-            prisionerClicked((Prisioner) player, joinLocation);
+        if (player.isPrisoner()) {
+            prisionerClicked((Prisoner) player, joinLocation);
             return;
         }
 
         policeClicked(exitLocation);
     }
 
-    private void prisionerClicked(Prisioner player, Location joinLocation) {
+    private void prisionerClicked(Prisoner player, Location joinLocation) {
         if (_players.contains(player)) {
             return;
         }

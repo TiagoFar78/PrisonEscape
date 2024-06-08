@@ -24,7 +24,7 @@ public class SelectPrisionerTeamItem extends FunctionalItem {
 
     @Override
     public void use(PlayerInteractEvent e) {
-        GameManager.getGame().playerSelectPrisionersTeam(e.getPlayer().getName());
+        GameManager.getGame().playerSelectPrisonersTeam(e.getPlayer().getName());
     }
 
 }

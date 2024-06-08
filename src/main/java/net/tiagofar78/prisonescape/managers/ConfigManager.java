@@ -20,7 +20,7 @@ public class ConfigManager {
         return instance;
     }
 
-    private double _prisionerRatio;
+    private double _prisonerRatio;
     private double _officerRatio;
     private int _minimumPlayers;
     private int _maxPlayers;
@@ -66,7 +66,7 @@ public class ConfigManager {
     private Location _prisonUpperCornerLocation;
     private Location _prisonLowerCornerLocation;
     private List<SquaredRegion> _regions;
-    private List<Location> _prisionersSpawnLocation;
+    private List<Location> _prisonersSpawnLocation;
     private List<Location> _policeSpawnLocation;
     private Location _solitaryLocation;
     private Location _solitaryExitLocation;
@@ -75,7 +75,7 @@ public class ConfigManager {
     private Location _helicopterUpperLocation;
     private Location _helicopterLowerLocation;
     private Location _afterEscapeLocation;
-    private Hashtable<Location, Location> _prisionersSecretPassageLocations;
+    private Hashtable<Location, Location> _prisonersSecretPassageLocations;
     private Hashtable<Location, Location> _policeSecretPassageLocations;
     private List<Location> _vaultsLocations;
     private String _vaultsDirection;
@@ -102,7 +102,7 @@ public class ConfigManager {
     public ConfigManager() {
         YamlConfiguration config = PEResources.getYamlConfiguration();
 
-        _prisionerRatio = config.getDouble("PrisionersRatio");
+        _prisonerRatio = config.getDouble("PrisonersRatio");
         _officerRatio = config.getDouble("PoliceRatio");
         _minimumPlayers = config.getInt("MinPlayers");
         _maxPlayers = config.getInt("MaxPlayers");
@@ -148,7 +148,7 @@ public class ConfigManager {
         _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation");
         _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation");
         _regions = createRegionsList(config);
-        _prisionersSpawnLocation = createLocationList(config, "PrisionersSpawnLocations");
+        _prisonersSpawnLocation = createLocationList(config, "PrisonersSpawnLocations");
         _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations");
         _solitaryLocation = createLocation(config, "SolitaryLocation");
         _solitaryExitLocation = createLocation(config, "SolitaryExitLocation");
@@ -157,7 +157,7 @@ public class ConfigManager {
         _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation");
         _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation");
         _afterEscapeLocation = createLocation(config, "AfterEscapeLocation");
-        _prisionersSecretPassageLocations = createLocationsMap(config, "PrisionersSecretPassagesLocation");
+        _prisonersSecretPassageLocations = createLocationsMap(config, "PrisonersSecretPassagesLocation");
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
         _vaultsLocations = createLocationList(config, "VaultsLocations");
         _vaultsDirection = config.getString("VaultsDirection");
@@ -316,8 +316,8 @@ public class ConfigManager {
         return map;
     }
 
-    public Double getPrisionerRatio() {
-        return _prisionerRatio;
+    public Double getPrisonerRatio() {
+        return _prisonerRatio;
     }
 
     public Double getOfficerRatio() {
@@ -485,8 +485,8 @@ public class ConfigManager {
         return createRegionsListCopy(_regions);
     }
 
-    public List<Location> getPrisionersSpawnLocations() {
-        return createLocationsListCopy(_prisionersSpawnLocation);
+    public List<Location> getPrisonersSpawnLocations() {
+        return createLocationsListCopy(_prisonersSpawnLocation);
     }
 
     public List<Location> getPoliceSpawnLocations() {
@@ -521,8 +521,8 @@ public class ConfigManager {
         return createLocationCopy(_afterEscapeLocation);
     }
 
-    public Hashtable<Location, Location> getPrisionersSecretPassageLocations() {
-        return createLocationsMapCopy(_prisionersSecretPassageLocations);
+    public Hashtable<Location, Location> getPrisonersSecretPassageLocations() {
+        return createLocationsMapCopy(_prisonersSecretPassageLocations);
     }
 
     public Hashtable<Location, Location> getPoliceSecretPassageLocations() {
