@@ -1,5 +1,9 @@
 package net.tiagofar78.prisonescape;
 
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -42,6 +46,16 @@ public class PrisonEscapeResources {
                 PrisonEscape.getPrisonEscape().getDataFolder() + File.separator + "languages",
                 language + ".yml"
         );
+    }
+
+//  #########################################
+//  #                 World                 #
+//  #########################################
+
+    private static final World WORLD = Bukkit.getWorld(ConfigManager.getInstance().getWorldName());
+
+    public static World getWorld() {
+        return WORLD;
     }
 
 }

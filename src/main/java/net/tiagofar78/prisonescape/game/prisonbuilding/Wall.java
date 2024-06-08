@@ -3,6 +3,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
+import org.bukkit.Location;
 import org.joml.Math;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Wall {
     private static final int MIN_CRACK_DISTANCE = 10;
     private static final int MAX_CRACK_DISTANCE = 30;
 
-    private List<PrisonEscapeLocation> _cornersLocations;
+    private List<Location> _cornersLocations;
     private List<WallCrack> _cracks;
 
     public Wall() {
@@ -25,12 +26,8 @@ public class Wall {
 
     public void raiseFixedWall() {
         for (int i = 0; i < _cornersLocations.size() - 1; i++) {
-            PrisonEscapeLocation loc1 = _cornersLocations.get(i);
-            PrisonEscapeLocation loc2 = new PrisonEscapeLocation(_cornersLocations.get(i + 1)).add(
-                    0,
-                    WALL_HEIGHT - 1,
-                    0
-            );
+            Location loc1 = _cornersLocations.get(i);
+            Location loc2 = _cornersLocations.get(i + 1).clone().add(0, WALL_HEIGHT - 1, 0);
             BukkitWorldEditor.buildWall(loc1, loc2);
         }
     }
@@ -44,12 +41,12 @@ public class Wall {
 
         int accumulatedDistance = MIN_CRACK_DISTANCE;
         for (int i = 0; i < _cornersLocations.size() - 1; i++) {
-            PrisonEscapeLocation corner1 = _cornersLocations.get(i);
-            PrisonEscapeLocation corner2 = _cornersLocations.get(i + 1);
+            Location corner1 = _cornersLocations.get(i);
+            Location corner2 = _cornersLocations.get(i + 1);
 
-            int xDiff = corner2.getX() - corner1.getX();
+            int xDiff = corner2.getBlockX() - corner1.getBlockX();
             int xAbsDiff = Math.abs(xDiff);
-            int zDiff = corner2.getZ() - corner1.getZ();
+            int zDiff = corner2.getBlockZ() - corner1.getBlockZ();
             int zAbsDiff = Math.abs(zDiff);
 
             int xDirection = xDiff == 0 ? 0 : xDiff > 0 ? 1 : -1;
@@ -76,7 +73,7 @@ public class Wall {
                     break;
                 }
 
-                PrisonEscapeLocation crackLoc = new PrisonEscapeLocation(corner1).add(nextX, 0, nextZ);
+                Location crackLoc = corner1.clone().add(nextX, 0, nextZ);
                 WallCrack crack = new WallCrack(crackLoc, crackFormat, xDirection, zDirection);
                 _cracks.add(crack);
                 crack.putCrackOnWall();
@@ -128,19 +125,19 @@ public class Wall {
         return true;
     }
 
-    public void crackedBlocksExploded(List<PrisonEscapeLocation> explodedBlocksLocations) {
+    public void crackedBlocksExploded(List<Location> explodedBlocksLocations) {
         for (WallCrack crack : _cracks) {
             if (crack.contains(explodedBlocksLocations)) {
                 crack.exploded();
             }
         }
 
-        for (PrisonEscapeLocation location : explodedBlocksLocations) {
+        for (Location location : explodedBlocksLocations) {
             BukkitWorldEditor.removeWallBlock(location);
         }
     }
 
-    public WallCrack getAffectedCrack(PrisonEscapeLocation location) {
+    public WallCrack getAffectedCrack(Location location) {
         for (WallCrack crack : _cracks) {
             if (crack.contains(location)) {
                 return crack;

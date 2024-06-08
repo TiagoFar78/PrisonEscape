@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
@@ -34,12 +33,7 @@ public class BombItem extends FunctionalItem {
         }
 
         Location blockLoc = getPlacedBlockLocation(block.getLocation(), e.getBlockFace());
-        PrisonEscapeLocation location = new PrisonEscapeLocation(
-                blockLoc.getBlockX(),
-                blockLoc.getBlockY(),
-                blockLoc.getBlockZ()
-        );
-        GameManager.getGame().placeBomb(location);
+        GameManager.getGame().placeBomb(blockLoc);
     }
 
     private Location getPlacedBlockLocation(Location blockLocation, BlockFace face) {

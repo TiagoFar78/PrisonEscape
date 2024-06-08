@@ -1,23 +1,23 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.regions;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import org.bukkit.Location;
 
 import java.util.List;
 
 public class ComplexRegion extends Region {
 
-    public ComplexRegion(String name, boolean isRestricted, List<PrisonEscapeLocation> locations) {
+    public ComplexRegion(String name, boolean isRestricted, List<Location> locations) {
         super(name, isRestricted);
     }
 
     @Override
-    public boolean contains(PrisonEscapeLocation loc) {
+    public boolean contains(Location loc) {
         // TODO
         return false;
     }
 
     @Override
-    public void add(PrisonEscapeLocation location) {
+    public void add(Location location) {
         // TODO
     }
 

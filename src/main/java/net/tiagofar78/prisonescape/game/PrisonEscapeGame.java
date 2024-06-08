@@ -12,7 +12,6 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Helicopter;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
 import net.tiagofar78.prisonescape.game.prisonbuilding.SoundDetector;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
@@ -35,6 +34,7 @@ import net.tiagofar78.prisonescape.menus.Shop;
 import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -68,7 +68,7 @@ public class PrisonEscapeGame {
 
     private BossBar _bossBar;
 
-    public PrisonEscapeGame(String mapName, PrisonEscapeLocation referenceBlock) {
+    public PrisonEscapeGame(String mapName, Location referenceBlock) {
         _settings = new Settings();
 
         _currentDay = 0;
@@ -545,7 +545,7 @@ public class PrisonEscapeGame {
 //	#                Events                #
 //	########################################
 
-    public void playerMove(String playerName, PrisonEscapeLocation loc) {
+    public void playerMove(String playerName, Location loc) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return;
@@ -584,7 +584,7 @@ public class PrisonEscapeGame {
         }
     }
 
-    private void playerWalkedOverMetalDetector(String playerName, PrisonEscapeLocation loc) {
+    private void playerWalkedOverMetalDetector(String playerName, Location loc) {
         PrisonEscapePlayer player = getPlayerOnPrisionersTeam(playerName);
         if (player == null) {
             return;
@@ -594,12 +594,7 @@ public class PrisonEscapeGame {
         }
     }
 
-    public int playerInteract(
-            String playerName,
-            PrisonEscapeLocation blockLocation,
-            int itemSlot,
-            PlayerInteractEvent e
-    ) {
+    public int playerInteract(String playerName, Location blockLocation, int itemSlot, PlayerInteractEvent e) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
         if (player == null) {
             return -1;
@@ -634,10 +629,7 @@ public class PrisonEscapeGame {
                 return 0;
             }
 
-            PrisonEscapeLocation destination = _prison.getSecretPassageDestinationLocation(
-                    blockLocation,
-                    isPrisioner(player)
-            );
+            Location destination = _prison.getSecretPassageDestinationLocation(blockLocation, isPrisioner(player));
             if (destination != null) {
                 BukkitTeleporter.teleport(player, destination);
                 return 0;
@@ -953,7 +945,7 @@ public class PrisonEscapeGame {
         player.removeItem(contentIndex);
     }
 
-    public void playerCalledHelicopter(String playerName, PrisonEscapeLocation location, int itemSlot) {
+    public void playerCalledHelicopter(String playerName, Location location, int itemSlot) {
         PrisonEscapePlayer player = getPrisonEscapePlayer(playerName);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
@@ -1040,7 +1032,7 @@ public class PrisonEscapeGame {
             int inventoryIndex,
             Item itemHeld,
             Door door,
-            PrisonEscapeLocation doorLocation
+            Location doorLocation
     ) {
         ClickDoorReturnAction returnAction = door.click(player, itemHeld);
 
@@ -1056,7 +1048,7 @@ public class PrisonEscapeGame {
         }
     }
 
-    public void placeBomb(PrisonEscapeLocation location) {
+    public void placeBomb(Location location) {
         _prison.placeBomb(location);
     }
 

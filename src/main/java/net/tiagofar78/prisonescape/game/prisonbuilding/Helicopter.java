@@ -27,6 +27,7 @@ import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.io.File;
@@ -40,20 +41,20 @@ public class Helicopter {
     private static final String HELICOPTER_SCHEM_NAME = "helicopter.schem";
     private static final int TICKS_PER_SECOND = 20;
 
-    private PrisonEscapeLocation _upperLocation;
-    private PrisonEscapeLocation _lowerLocation;
+    private Location _upperLocation;
+    private Location _lowerLocation;
     private List<Prisioner> _players = new ArrayList<>();
     private boolean _isOnGround = false;
 
-    protected Helicopter(PrisonEscapeLocation upperLocation, PrisonEscapeLocation lowerLocation) {
+    protected Helicopter(Location upperLocation, Location lowerLocation) {
         _upperLocation = upperLocation;
         _lowerLocation = lowerLocation;
     }
 
-    public boolean contains(PrisonEscapeLocation location) {
-        int x = location.getX();
-        int y = location.getY();
-        int z = location.getZ();
+    public boolean contains(Location location) {
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
 
         return _lowerLocation.getX() <= x && x <= _upperLocation.getX() && _lowerLocation.getY() <= y &&
                 y <= _upperLocation.getY() && _lowerLocation.getZ() <= z && z <= _upperLocation.getZ();
@@ -111,7 +112,7 @@ public class Helicopter {
         _players.clear();
     }
 
-    public void click(PrisonEscapePlayer player, PrisonEscapeLocation exitLocation, PrisonEscapeLocation joinLocation) {
+    public void click(PrisonEscapePlayer player, Location exitLocation, Location joinLocation) {
         if (!isOnGround()) {
             return;
         }
@@ -124,7 +125,7 @@ public class Helicopter {
         policeClicked(exitLocation);
     }
 
-    private void prisionerClicked(Prisioner player, PrisonEscapeLocation joinLocation) {
+    private void prisionerClicked(Prisioner player, Location joinLocation) {
         if (_players.contains(player)) {
             return;
         }
@@ -133,7 +134,7 @@ public class Helicopter {
         BukkitTeleporter.teleport(player, joinLocation);
     }
 
-    private void policeClicked(PrisonEscapeLocation exitLocation) {
+    private void policeClicked(Location exitLocation) {
         destroyHelicopter();
 
         for (PrisonEscapePlayer player : _players) {

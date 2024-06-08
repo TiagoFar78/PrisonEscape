@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import org.bukkit.Bukkit;
@@ -41,35 +40,35 @@ public class BukkitWorldEditor {
     public static final Material CRACKED_BLOCK = Material.CRACKED_STONE_BRICKS;
     private static final int EXPLOSION_TICKS = 20 * 4;
 
-    public static void buildWall(PrisonEscapeLocation loc1, PrisonEscapeLocation loc2) {
+    public static void buildWall(Location loc1, Location loc2) {
         int lowerX;
         int higherX;
-        if (loc1.getX() >= loc2.getX()) {
-            higherX = loc1.getX();
-            lowerX = loc2.getX();
+        if (loc1.getBlockX() >= loc2.getBlockX()) {
+            higherX = loc1.getBlockX();
+            lowerX = loc2.getBlockX();
         } else {
-            higherX = loc2.getX();
-            lowerX = loc1.getX();
+            higherX = loc2.getBlockX();
+            lowerX = loc1.getBlockX();
         }
 
         int lowerZ;
         int higherZ;
-        if (loc1.getZ() >= loc2.getZ()) {
-            higherZ = loc1.getZ();
-            lowerZ = loc2.getZ();
+        if (loc1.getBlockZ() >= loc2.getBlockZ()) {
+            higherZ = loc1.getBlockZ();
+            lowerZ = loc2.getBlockZ();
         } else {
-            higherZ = loc2.getZ();
-            lowerZ = loc1.getZ();
+            higherZ = loc2.getBlockZ();
+            lowerZ = loc1.getBlockZ();
         }
 
         int lowerY;
         int higherY;
-        if (loc1.getY() >= loc2.getY()) {
-            higherY = loc1.getY();
-            lowerY = loc2.getY();
+        if (loc1.getBlockY() >= loc2.getBlockY()) {
+            higherY = loc1.getBlockY();
+            lowerY = loc2.getBlockY();
         } else {
-            higherY = loc2.getY();
-            lowerY = loc1.getY();
+            higherY = loc2.getBlockY();
+            lowerY = loc1.getBlockY();
         }
 
         for (int x = lowerX; x <= higherX; x++) {
@@ -81,43 +80,39 @@ public class BukkitWorldEditor {
         }
     }
 
-    public static void putCrackOnWall(PrisonEscapeLocation loc) {
-        putCrackOnWall(loc.getX(), loc.getY(), loc.getZ());
+    public static void putCrackOnWall(Location loc) {
+        putCrackOnWall(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
     public static void putCrackOnWall(int x, int y, int z) {
         WORLD.getBlockAt(x, y, z).setType(CRACKED_BLOCK);
     }
 
-    public static void fixCrack(PrisonEscapeLocation loc) {
-        WORLD.getBlockAt(loc.getX(), loc.getY(), loc.getZ()).setType(DEFAULT_BLOCK);
+    public static void fixCrack(Location location) {
+        WORLD.getBlockAt(location).setType(DEFAULT_BLOCK);
     }
 
-    public static void removeWallBlock(PrisonEscapeLocation location) {
-        int x = location.getX();
-        int y = location.getY();
-        int z = location.getZ();
-        WORLD.getBlockAt(x, y, z).setType(Material.AIR);
+    public static void removeWallBlock(Location location) {
+        WORLD.getBlockAt(location).setType(Material.AIR);
     }
 
-    public static void placeTNT(PrisonEscapeLocation location) {
-        Location bukkitLocation = new Location(WORLD, location.getX(), location.getY(), location.getZ());
-        ((TNTPrimed) WORLD.spawn(bukkitLocation, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
+    public static void placeTNT(Location location) {
+        ((TNTPrimed) WORLD.spawn(location, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
     }
 
 //  ########################################
 //  #                 Maze                 #
 //  ########################################
 
-    public static void fillMazeWithDirt(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+    public static void fillMazeWithDirt(Location upperCorner, Location lowerCorner) {
         fill(upperCorner, lowerCorner, Material.DIRT);
     }
 
-    public static void clearMazePart(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+    public static void clearMazePart(Location upperCorner, Location lowerCorner) {
         fill(upperCorner, lowerCorner, Material.AIR);
     }
 
-    public static void raiseMazeWall(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+    public static void raiseMazeWall(Location upperCorner, Location lowerCorner) {
         fill(upperCorner, lowerCorner, Material.COBBLESTONE);
     }
 
@@ -125,10 +120,10 @@ public class BukkitWorldEditor {
         return WORLD.getBlockAt(x, y, z).getType() == Material.DIRT;
     }
 
-    public static void clearDirtFromMazePart(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
-        for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {
-            for (int y = lowerCorner.getY(); y <= upperCorner.getY(); y++) {
-                for (int z = lowerCorner.getZ(); z <= upperCorner.getZ(); z++) {
+    public static void clearDirtFromMazePart(Location upperCorner, Location lowerCorner) {
+        for (int x = lowerCorner.getBlockX(); x <= upperCorner.getBlockX(); x++) {
+            for (int y = lowerCorner.getBlockY(); y <= upperCorner.getBlockY(); y++) {
+                for (int z = lowerCorner.getBlockZ(); z <= upperCorner.getBlockZ(); z++) {
                     Block block = WORLD.getBlockAt(x, y, z);
                     if (block.getType() == Material.DIRT) {
                         block.setType(Material.AIR);
@@ -142,7 +137,7 @@ public class BukkitWorldEditor {
 //  #               Obstacle               #
 //  ########################################
 
-    public static void fillWithBars(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+    public static void fillWithBars(Location upperCorner, Location lowerCorner) {
         fill(upperCorner, lowerCorner, Material.IRON_BARS);
     }
 
@@ -150,14 +145,14 @@ public class BukkitWorldEditor {
 //  #                 Util                 #
 //  ########################################
 
-    public static void clear(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner) {
+    public static void clear(Location upperCorner, Location lowerCorner) {
         fill(upperCorner, lowerCorner, Material.AIR);
     }
 
-    private static void fill(PrisonEscapeLocation upperCorner, PrisonEscapeLocation lowerCorner, Material type) {
-        for (int x = lowerCorner.getX(); x <= upperCorner.getX(); x++) {
-            for (int y = lowerCorner.getY(); y <= upperCorner.getY(); y++) {
-                for (int z = lowerCorner.getZ(); z <= upperCorner.getZ(); z++) {
+    private static void fill(Location upperCorner, Location lowerCorner, Material type) {
+        for (int x = lowerCorner.getBlockX(); x <= upperCorner.getBlockX(); x++) {
+            for (int y = lowerCorner.getBlockY(); y <= upperCorner.getBlockY(); y++) {
+                for (int z = lowerCorner.getBlockZ(); z <= upperCorner.getBlockZ(); z++) {
                     WORLD.getBlockAt(x, y, z).setType(type);
                 }
             }

@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.regions;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import org.bukkit.Location;
 
 public abstract class Region implements Locatable {
 
@@ -31,9 +31,9 @@ public abstract class Region implements Locatable {
         return _isHelicopterCallable;
     }
 
-    public abstract void add(PrisonEscapeLocation location);
+    public abstract void add(Location location);
 
     @Override
-    public abstract boolean contains(PrisonEscapeLocation loc);
+    public abstract boolean contains(Location loc);
 
 }

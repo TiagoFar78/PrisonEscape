@@ -2,9 +2,9 @@ package net.tiagofar78.prisonescape.managers;
 
 import net.tiagofar78.prisonescape.PrisonEscapeResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
@@ -60,37 +60,37 @@ public class ConfigManager {
     private String _cameraSkinTexture;
 
     private String _worldName;
-    private PrisonEscapeLocation _referenceBlock;
-    private PrisonEscapeLocation _leavingLocation;
-    private PrisonEscapeLocation _waitingLocation;
-    private PrisonEscapeLocation _prisonUpperCornerLocation;
-    private PrisonEscapeLocation _prisonLowerCornerLocation;
+    private Location _referenceBlock;
+    private Location _leavingLocation;
+    private Location _waitingLocation;
+    private Location _prisonUpperCornerLocation;
+    private Location _prisonLowerCornerLocation;
     private List<SquaredRegion> _regions;
-    private List<PrisonEscapeLocation> _prisionersSpawnLocation;
-    private List<PrisonEscapeLocation> _policeSpawnLocation;
-    private PrisonEscapeLocation _solitaryLocation;
-    private PrisonEscapeLocation _solitaryExitLocation;
-    private PrisonEscapeLocation _helicopterExitLocation;
-    private PrisonEscapeLocation _helicopterJoinLocation;
-    private PrisonEscapeLocation _helicopterUpperLocation;
-    private PrisonEscapeLocation _helicopterLowerLocation;
-    private PrisonEscapeLocation _afterEscapeLocation;
-    private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _prisionersSecretPassageLocations;
-    private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> _policeSecretPassageLocations;
-    private List<PrisonEscapeLocation> _vaultsLocations;
+    private List<Location> _prisionersSpawnLocation;
+    private List<Location> _policeSpawnLocation;
+    private Location _solitaryLocation;
+    private Location _solitaryExitLocation;
+    private Location _helicopterExitLocation;
+    private Location _helicopterJoinLocation;
+    private Location _helicopterUpperLocation;
+    private Location _helicopterLowerLocation;
+    private Location _afterEscapeLocation;
+    private Hashtable<Location, Location> _prisionersSecretPassageLocations;
+    private Hashtable<Location, Location> _policeSecretPassageLocations;
+    private List<Location> _vaultsLocations;
     private String _vaultsDirection;
-    private List<PrisonEscapeLocation> _chestsLocations;
-    private List<PrisonEscapeLocation> _goldenDoorsLocations;
-    private List<PrisonEscapeLocation> _grayDoorsLocations;
-    private List<PrisonEscapeLocation> _codeDoorsLocations;
-    private List<PrisonEscapeLocation> _cellDoorsLocations;
-    private List<PrisonEscapeLocation> _wallCornersLocations;
+    private List<Location> _chestsLocations;
+    private List<Location> _goldenDoorsLocations;
+    private List<Location> _grayDoorsLocations;
+    private List<Location> _codeDoorsLocations;
+    private List<Location> _cellDoorsLocations;
+    private List<Location> _wallCornersLocations;
     private List<List<String>> _wallCrackFormats;
     private List<String> _mazeFormat;
-    private PrisonEscapeLocation _mazeUpperCornerLocation;
-    private List<List<PrisonEscapeLocation>> _fencesLocations;
-    private List<PrisonEscapeLocation> _ventsLocations;
-    private List<PrisonEscapeLocation> _metalDetectorLocations;
+    private Location _mazeUpperCornerLocation;
+    private List<List<Location>> _fencesLocations;
+    private List<Location> _ventsLocations;
+    private List<Location> _metalDetectorLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -182,16 +182,16 @@ public class ConfigManager {
         _chestSize = config.getInt("ChestSize");
     }
 
-    private PrisonEscapeLocation createLocation(YamlConfiguration config, String path) {
+    private Location createLocation(YamlConfiguration config, String path) {
         int x = config.getInt(path + ".X");
         int y = config.getInt(path + ".Y");
         int z = config.getInt(path + ".Z");
 
-        return new PrisonEscapeLocation(x, y, z);
+        return new Location(PrisonEscapeResources.getWorld(), x, y, z);
     }
 
-    private List<PrisonEscapeLocation> createLocationList(YamlConfiguration config, String path) {
-        List<PrisonEscapeLocation> list = new ArrayList<>();
+    private List<Location> createLocationList(YamlConfiguration config, String path) {
+        List<Location> list = new ArrayList<>();
 
         List<String> filteredKeys = config.getKeys(true).stream().filter(
                 key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
@@ -204,15 +204,15 @@ public class ConfigManager {
         return list;
     }
 
-    private List<List<PrisonEscapeLocation>> createLocationPairList(YamlConfiguration config, String path) {
-        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+    private List<List<Location>> createLocationPairList(YamlConfiguration config, String path) {
+        List<List<Location>> list = new ArrayList<>();
 
         List<String> filteredKeys = config.getKeys(true).stream().filter(
                 key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
         ).toList();
 
         for (String key : filteredKeys) {
-            List<PrisonEscapeLocation> pair = new ArrayList<>();
+            List<Location> pair = new ArrayList<>();
             pair.add(createLocation(config, key + ".UpperCornerLocation"));
             pair.add(createLocation(config, key + ".LowerCornerLocation"));
             list.add(pair);
@@ -235,11 +235,11 @@ public class ConfigManager {
         return list;
     }
 
-    private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> createLocationsMap(
+    private Hashtable<Location, Location> createLocationsMap(
             YamlConfiguration config,
             String path
     ) {
-        Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> map = new Hashtable<>();
+        Hashtable<Location, Location> map = new Hashtable<>();
 
         List<String> filteredKeys = config.getKeys(true).stream().filter(
                 key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
@@ -272,8 +272,8 @@ public class ConfigManager {
             ).toList();
 
             for (String regionPath : regionsPaths) {
-                PrisonEscapeLocation upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
-                PrisonEscapeLocation lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner");
+                Location upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
+                Location lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner");
 
                 list.add(
                         new SquaredRegion(
@@ -461,23 +461,23 @@ public class ConfigManager {
     }
 
     @Deprecated
-    public PrisonEscapeLocation getReferenceBlock() {
+    public Location getReferenceBlock() {
         return createLocationCopy(_referenceBlock);
     }
 
-    public PrisonEscapeLocation getLeavingLocation() {
+    public Location getLeavingLocation() {
         return createLocationCopy(_leavingLocation);
     }
 
-    public PrisonEscapeLocation getWaitingLobbyLocation() {
+    public Location getWaitingLobbyLocation() {
         return createLocationCopy(_waitingLocation);
     }
 
-    public PrisonEscapeLocation getPrisonUpperCornerLocation() {
+    public Location getPrisonUpperCornerLocation() {
         return createLocationCopy(_prisonUpperCornerLocation);
     }
 
-    public PrisonEscapeLocation getPrisonLowerCornerLocation() {
+    public Location getPrisonLowerCornerLocation() {
         return createLocationCopy(_prisonLowerCornerLocation);
     }
 
@@ -485,51 +485,51 @@ public class ConfigManager {
         return createRegionsListCopy(_regions);
     }
 
-    public List<PrisonEscapeLocation> getPrisionersSpawnLocations() {
+    public List<Location> getPrisionersSpawnLocations() {
         return createLocationsListCopy(_prisionersSpawnLocation);
     }
 
-    public List<PrisonEscapeLocation> getPoliceSpawnLocations() {
+    public List<Location> getPoliceSpawnLocations() {
         return createLocationsListCopy(_policeSpawnLocation);
     }
 
-    public PrisonEscapeLocation getSolitaryLocation() {
+    public Location getSolitaryLocation() {
         return createLocationCopy(_solitaryLocation);
     }
 
-    public PrisonEscapeLocation getSolitaryExitLocation() {
+    public Location getSolitaryExitLocation() {
         return createLocationCopy(_solitaryExitLocation);
     }
 
-    public PrisonEscapeLocation getHelicopterExitLocation() {
+    public Location getHelicopterExitLocation() {
         return createLocationCopy(_helicopterExitLocation);
     }
 
-    public PrisonEscapeLocation getHelicopterJoinLocation() {
+    public Location getHelicopterJoinLocation() {
         return createLocationCopy(_helicopterJoinLocation);
     }
 
-    public PrisonEscapeLocation getHelicopterUpperLocation() {
+    public Location getHelicopterUpperLocation() {
         return createLocationCopy(_helicopterUpperLocation);
     }
 
-    public PrisonEscapeLocation getHelicopterLowerLocation() {
+    public Location getHelicopterLowerLocation() {
         return createLocationCopy(_helicopterLowerLocation);
     }
 
-    public PrisonEscapeLocation getAfterEscapeLocation() {
+    public Location getAfterEscapeLocation() {
         return createLocationCopy(_afterEscapeLocation);
     }
 
-    public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPrisionersSecretPassageLocations() {
+    public Hashtable<Location, Location> getPrisionersSecretPassageLocations() {
         return createLocationsMapCopy(_prisionersSecretPassageLocations);
     }
 
-    public Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> getPoliceSecretPassageLocations() {
+    public Hashtable<Location, Location> getPoliceSecretPassageLocations() {
         return createLocationsMapCopy(_policeSecretPassageLocations);
     }
 
-    public List<PrisonEscapeLocation> getVaultsLocations() {
+    public List<Location> getVaultsLocations() {
         return createLocationsListCopy(_vaultsLocations);
     }
 
@@ -537,27 +537,27 @@ public class ConfigManager {
         return _vaultsDirection;
     }
 
-    public List<PrisonEscapeLocation> getChestsLocations() {
+    public List<Location> getChestsLocations() {
         return createLocationsListCopy(_chestsLocations);
     }
 
-    public List<PrisonEscapeLocation> getGoldenDoorsLocations() {
+    public List<Location> getGoldenDoorsLocations() {
         return createLocationsListCopy(_goldenDoorsLocations);
     }
 
-    public List<PrisonEscapeLocation> getGrayDoorsLocations() {
+    public List<Location> getGrayDoorsLocations() {
         return createLocationsListCopy(_grayDoorsLocations);
     }
 
-    public List<PrisonEscapeLocation> getCodeDoorsLocations() {
+    public List<Location> getCodeDoorsLocations() {
         return createLocationsListCopy(_codeDoorsLocations);
     }
 
-    public List<PrisonEscapeLocation> getCellDoorsLocations() {
+    public List<Location> getCellDoorsLocations() {
         return createLocationsListCopy(_cellDoorsLocations);
     }
 
-    public List<PrisonEscapeLocation> getWallCornersLocations() {
+    public List<Location> getWallCornersLocations() {
         return createLocationsListCopy(_wallCornersLocations);
     }
 
@@ -569,19 +569,19 @@ public class ConfigManager {
         return new ArrayList<>(_mazeFormat);
     }
 
-    public PrisonEscapeLocation getMazeUpperCornerLocation() {
+    public Location getMazeUpperCornerLocation() {
         return createLocationCopy(_mazeUpperCornerLocation);
     }
 
-    public List<List<PrisonEscapeLocation>> getFencesLocations() {
+    public List<List<Location>> getFencesLocations() {
         return createLocationsPairListCopy(_fencesLocations);
     }
 
-    public List<PrisonEscapeLocation> getVentsLocations() {
+    public List<Location> getVentsLocations() {
         return createLocationsListCopy(_ventsLocations);
     }
 
-    public List<PrisonEscapeLocation> getMetalDetectorLocations() {
+    public List<Location> getMetalDetectorLocations() {
         return createLocationsListCopy(_metalDetectorLocations);
     }
 
@@ -609,38 +609,38 @@ public class ConfigManager {
 //  #                 Copy                 #
 //  ########################################
 
-    private PrisonEscapeLocation createLocationCopy(PrisonEscapeLocation location) {
-        return new PrisonEscapeLocation(location);
+    private Location createLocationCopy(Location location) {
+        return location.clone();
     }
 
-    private List<PrisonEscapeLocation> createLocationsListCopy(List<PrisonEscapeLocation> locations) {
-        List<PrisonEscapeLocation> list = new ArrayList<>();
+    private List<Location> createLocationsListCopy(List<Location> locations) {
+        List<Location> list = new ArrayList<>();
 
-        for (PrisonEscapeLocation location : locations) {
+        for (Location location : locations) {
             list.add(createLocationCopy(location));
         }
 
         return list;
     }
 
-    private List<List<PrisonEscapeLocation>> createLocationsPairListCopy(
-            List<List<PrisonEscapeLocation>> locationPairs
+    private List<List<Location>> createLocationsPairListCopy(
+            List<List<Location>> locationPairs
     ) {
-        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+        List<List<Location>> list = new ArrayList<>();
 
-        for (List<PrisonEscapeLocation> locationPair : locationPairs) {
+        for (List<Location> locationPair : locationPairs) {
             list.add(createLocationsListCopy(locationPair));
         }
 
         return list;
     }
 
-    private Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> createLocationsMapCopy(
-            Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> locations
+    private Hashtable<Location, Location> createLocationsMapCopy(
+            Hashtable<Location, Location> locations
     ) {
-        Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> map = new Hashtable<>();
+        Hashtable<Location, Location> map = new Hashtable<>();
 
-        for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : locations.entrySet()) {
+        for (Entry<Location, Location> entry : locations.entrySet()) {
             map.put(createLocationCopy(entry.getKey()), createLocationCopy(entry.getValue()));
         }
 

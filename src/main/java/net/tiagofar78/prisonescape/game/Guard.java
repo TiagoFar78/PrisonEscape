@@ -1,7 +1,6 @@
 package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SoundDetectorItem;
@@ -11,6 +10,7 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class Guard extends PrisonEscapePlayer {
     private int _numOfSensorsBought = 0;
     private int _numOfTrapsBought = 0;
 
-    private PrisonEscapeLocation _locationBeforeWatchingCameras = null;
+    private Location _locationBeforeWatchingCameras = null;
 
     public Guard(String name) {
         super(name);
@@ -103,7 +103,7 @@ public class Guard extends PrisonEscapePlayer {
         return _locationBeforeWatchingCameras != null;
     }
 
-    public void startedWatchingCamera(PrisonEscapeLocation location) {
+    public void startedWatchingCamera(Location location) {
         _locationBeforeWatchingCameras = location;
     }
 

@@ -1,19 +1,19 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.regions;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import org.bukkit.Location;
 
 public class SquaredRegion extends Region {
 
-    private PrisonEscapeLocation _upperCornerLocation;
-    private PrisonEscapeLocation _lowerCornerLocation;
+    private Location _upperCornerLocation;
+    private Location _lowerCornerLocation;
 
     public SquaredRegion(SquaredRegion region) {
         this(
                 region.getName(),
                 region.isRestricted(),
                 region.canCallHelicopter(),
-                new PrisonEscapeLocation(region._upperCornerLocation),
-                new PrisonEscapeLocation(region._lowerCornerLocation)
+                region._upperCornerLocation.clone(),
+                region._lowerCornerLocation.clone()
         );
     }
 
@@ -21,8 +21,8 @@ public class SquaredRegion extends Region {
             String name,
             boolean isRestricted,
             boolean isHelicopterCallable,
-            PrisonEscapeLocation upperCorner,
-            PrisonEscapeLocation lowerCorner
+            Location upperCorner,
+            Location lowerCorner
     ) {
         super(name, isRestricted, isHelicopterCallable);
         _upperCornerLocation = upperCorner;
@@ -30,16 +30,16 @@ public class SquaredRegion extends Region {
     }
 
     @Override
-    public void add(PrisonEscapeLocation location) {
-        _upperCornerLocation.add(location);
-        _lowerCornerLocation.add(location);
+    public void add(Location location) {
+        _upperCornerLocation.clone().add(location);
+        _lowerCornerLocation.clone().add(location);
     }
 
     @Override
-    public boolean contains(PrisonEscapeLocation loc) {
-        int x = loc.getX();
-        int y = loc.getY();
-        int z = loc.getZ();
+    public boolean contains(Location loc) {
+        int x = loc.getBlockX();
+        int y = loc.getBlockY();
+        int z = loc.getBlockZ();
 
         boolean isXBetweenBoundaries = _upperCornerLocation.getX() >= x && _lowerCornerLocation.getX() <= x;
         boolean isYBetweenBoundaries = _upperCornerLocation.getY() >= y && _lowerCornerLocation.getY() <= y;

@@ -26,10 +26,10 @@ public class SoundDetector {
 
     private int _index;
     private boolean _isWorking;
-    private PrisonEscapeLocation _location;
+    private Location _location;
     private List<PrisonEscapePlayer> _playersInRange;
 
-    public SoundDetector(int index, PrisonEscapeLocation location) {
+    public SoundDetector(int index, Location location) {
         _index = index;
         _isWorking = true;
         _location = location;
@@ -49,7 +49,7 @@ public class SoundDetector {
         return _playersInRange.size() != 0;
     }
 
-    public void playerMoved(PrisonEscapePlayer player, PrisonEscapeLocation playerLocation) {
+    public void playerMoved(PrisonEscapePlayer player, Location playerLocation) {
         if (isInRange(playerLocation) && !_playersInRange.contains(player)) {
             _playersInRange.add(player);
             updateValue();
@@ -59,17 +59,9 @@ public class SoundDetector {
         }
     }
 
-    private boolean isInRange(PrisonEscapeLocation location) {
+    private boolean isInRange(Location location) {
         double range = ConfigManager.getInstance().getSoundDetectorRange();
-        return distance(_location, location) <= range;
-    }
-
-    private double distance(PrisonEscapeLocation loc1, PrisonEscapeLocation loc2) {
-        double xComponent = Math.pow(loc1.getX() - loc2.getX(), 2);
-        double yComponent = Math.pow(loc1.getY() - loc2.getY(), 2);
-        double zComponent = Math.pow(loc1.getZ() - loc2.getZ(), 2);
-
-        return Math.sqrt(xComponent + yComponent + zComponent);
+        return _location.distance(location) <= range;
     }
 
     public void delete() {
