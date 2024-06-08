@@ -138,7 +138,7 @@ public class SoundDetector {
         updateScoreboards(calculateValue());
     }
 
-    private double noiseFunction(int x, int value) {
+    private double addRandomNoise(int x, int value) {
         double intensity = 0.1;
         return value + (_random.nextDouble() * 2 - 1) * intensity;
     }
@@ -156,7 +156,7 @@ public class SoundDetector {
 
         List<Guard> guards = game.getGuardsTeam().getMembers();
         for (Guard guard : guards) {
-            guard.updateSoundDetectorValue(_index, noiseFunction(x, value));
+            guard.updateSoundDetectorValue(_index, addRandomNoise(x, value));
         }
 
         Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
