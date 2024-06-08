@@ -35,6 +35,8 @@ public abstract class PrisonEscapePlayer {
     private boolean _isOnline;
     private List<Item> _inventory;
     private Kit _currentKit;
+    private long _lastDrankPotionTime;
+    private int _secondsLeft;
 
     private ScoreboardData _scoreboardData;
     private Clickable _openedMenu;
@@ -43,6 +45,8 @@ public abstract class PrisonEscapePlayer {
         _name = name;
         _isOnline = true;
         _inventory = createInventory();
+        _lastDrankPotionTime = -1;
+        _secondsLeft = 0;
 
         _scoreboardData = createScoreboardData();
         setScoreboard(_scoreboardData.getScoreboard());
@@ -244,6 +248,27 @@ public abstract class PrisonEscapePlayer {
         if (closeView) {
             closeInventoryView();
         }
+    }
+
+//  ########################################
+//  #             Energy Drink             #
+//  ########################################
+
+    public void giveEnergyDrinkEffect(int seconds, int amplifier) {
+        long currentTime = System.currentTimeMillis();
+        _secondsLeft = Math.max(0, _secondsLeft + seconds - convertToSeconds(currentTime - _lastDrankPotionTime));
+
+        if (_lastDrankPotionTime == -1) {
+            setEffect(PotionEffectType.SPEED, seconds, amplifier);
+        } else {
+            setEffect(PotionEffectType.SPEED, _secondsLeft + seconds, amplifier);
+        }
+
+        _lastDrankPotionTime = currentTime;
+    }
+
+    private int convertToSeconds(long miliseconds) {
+        return (int) (miliseconds / 1000);
     }
 
 //  ########################################
