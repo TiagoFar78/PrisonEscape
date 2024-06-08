@@ -21,8 +21,8 @@ import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.Prisioner;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
@@ -104,7 +104,7 @@ public class Helicopter {
     public void departed() {
         destroyHelicopter();
 
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         for (Prisioner player : _players) {
             game.playerEscaped(player);
         }

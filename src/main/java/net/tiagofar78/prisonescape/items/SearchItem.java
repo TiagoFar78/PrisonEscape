@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
@@ -27,7 +27,7 @@ public class SearchItem extends FunctionalItem {
 
     @Override
     public void use(PlayerInteractEntityEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }

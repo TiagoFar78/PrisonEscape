@@ -46,10 +46,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PrisonEscapeGame {
+public class PEGame {
 
     private static final int TICKS_PER_SECOND = 20;
-    private static final String POLICE_TEAM_NAME = "Police";
+    private static final String POLICE_TEAM_NAME = "Guards";
     private static final String PRISIONERS_TEAM_NAME = "Prisioners";
 
     private Settings _settings;
@@ -68,7 +68,7 @@ public class PrisonEscapeGame {
 
     private BossBar _bossBar;
 
-    public PrisonEscapeGame(String mapName, Location referenceBlock) {
+    public PEGame(String mapName, Location referenceBlock) {
         _settings = new Settings();
 
         _currentDay = 0;

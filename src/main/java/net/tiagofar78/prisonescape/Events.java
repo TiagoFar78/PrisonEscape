@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.ItemFactory;
@@ -48,7 +48,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -73,7 +73,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerInteractWithPrison(PlayerInteractEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -99,7 +99,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerLeave(PlayerQuitEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -131,7 +131,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerCloseInventory(InventoryCloseEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -146,7 +146,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerClickInventory(InventoryClickEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -229,7 +229,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -277,7 +277,7 @@ public class Events implements Listener {
 
         e.setCancelled(true);
 
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game != null) {
             game.explosion(e.blockList());
         }
@@ -285,7 +285,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerInteractWithPlayer(PlayerInteractEntityEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -325,7 +325,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }

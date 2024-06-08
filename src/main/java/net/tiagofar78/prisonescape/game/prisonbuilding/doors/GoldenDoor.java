@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.doors;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.items.GoldenKeyItem;
 import net.tiagofar78.prisonescape.items.Item;
@@ -13,7 +13,7 @@ public class GoldenDoor extends Door {
     }
 
     public ClickDoorReturnAction click(PrisonEscapePlayer player, Item itemHeld) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         boolean isOpen = isOpened();
 
         if (game.isGuard(player))

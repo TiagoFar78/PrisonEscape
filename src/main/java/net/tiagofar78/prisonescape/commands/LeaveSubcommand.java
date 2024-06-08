@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.commands;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
@@ -29,7 +29,7 @@ public class LeaveSubcommand implements PrisonEscapeSubcommandExecutor {
             return false;
         }
 
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             sender.sendMessage(messages.getGameNotStartedYetMessage());
             return true;

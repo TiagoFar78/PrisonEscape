@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -46,7 +46,7 @@ public class CameraItem extends FunctionalItem implements Buyable {
     public void use(PlayerInteractEvent e) {
         Location loc = e.getPlayer().getLocation();
 
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         game.getPrison().addCamera(loc);
 
         String playerName = e.getPlayer().getName();

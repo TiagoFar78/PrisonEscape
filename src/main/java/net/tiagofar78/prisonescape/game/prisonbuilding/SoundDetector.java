@@ -2,7 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
@@ -37,7 +37,7 @@ public class SoundDetector {
         createOnWorld();
         createPerimeterParticles();
 
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         List<Guard> guards = game.getGuardsTeam().getMembers();
         for (Guard guard : guards) {
             guard.addSoundDetectorLine(MIN_VALUE);

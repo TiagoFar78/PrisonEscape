@@ -2,7 +2,7 @@ package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Camera;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -44,7 +44,7 @@ public class OpenCamerasItem extends FunctionalItem {
     @Override
     public void use(PlayerInteractEvent e) {
         String playerName = e.getPlayer().getName();
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
