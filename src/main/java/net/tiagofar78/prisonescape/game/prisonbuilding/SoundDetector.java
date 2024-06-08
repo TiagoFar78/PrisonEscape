@@ -3,7 +3,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
@@ -26,7 +26,7 @@ public class SoundDetector {
     private int _index;
     private boolean _isWorking;
     private Location _location;
-    private List<PrisonEscapePlayer> _playersInRange;
+    private List<PEPlayer> _playersInRange;
 
     public SoundDetector(int index, Location location) {
         _index = index;
@@ -48,7 +48,7 @@ public class SoundDetector {
         return _playersInRange.size() != 0;
     }
 
-    public void playerMoved(PrisonEscapePlayer player, Location playerLocation) {
+    public void playerMoved(PEPlayer player, Location playerLocation) {
         if (isInRange(playerLocation) && !_playersInRange.contains(player)) {
             _playersInRange.add(player);
             updateValue();

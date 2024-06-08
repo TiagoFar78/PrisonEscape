@@ -15,7 +15,7 @@ import org.bukkit.Location;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Guard extends PrisonEscapePlayer {
+public class Guard extends PEPlayer {
 
     private static final int BALANCE_LINE_INDEX = 1;
     private static final int SOUND_DETECTORS_FIRST_LINE_INDEX = 3;

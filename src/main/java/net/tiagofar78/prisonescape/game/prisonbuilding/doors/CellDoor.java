@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.doors;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Item;
 
 import org.bukkit.Location;
@@ -22,7 +22,7 @@ public class CellDoor extends Door {
     }
 
     @Override
-    public ClickDoorReturnAction click(PrisonEscapePlayer player, Item itemHeld) {
+    public ClickDoorReturnAction click(PEPlayer player, Item itemHeld) {
         return ClickDoorReturnAction.NOTHING;
     }
 

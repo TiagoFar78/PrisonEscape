@@ -54,7 +54,7 @@ public class OpenCamerasItem extends FunctionalItem {
             return;
         }
 
-        Guard guard = (Guard) game.getPrisonEscapePlayer(playerName);
+        Guard guard = (Guard) game.getPEPlayer(playerName);
 
         Action action = e.getAction();
         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {

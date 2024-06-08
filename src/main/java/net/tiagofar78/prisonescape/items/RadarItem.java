@@ -48,7 +48,7 @@ public class RadarItem extends FunctionalItem implements Buyable {
         PEGame game = GameManager.getGame();
 
         String playerName = e.getPlayer().getName();
-        game.getPrisonEscapePlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
+        game.getPEPlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         ConfigManager config = ConfigManager.getInstance();
         int effectDuration = config.getRadarDuration();

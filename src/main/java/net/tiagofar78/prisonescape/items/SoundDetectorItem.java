@@ -56,7 +56,7 @@ public class SoundDetectorItem extends FunctionalItem implements Buyable {
         PEGame game = GameManager.getGame();
         game.getPrison().addSoundDetector(loc);
 
-        game.getPrisonEscapePlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
+        game.getPEPlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         BukkitMessageSender.sendChatMessage(playerName, messages.getSoundDetectorPlacedMessage());
     }

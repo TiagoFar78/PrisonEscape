@@ -22,8 +22,8 @@ import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisioner;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
@@ -112,7 +112,7 @@ public class Helicopter {
         _players.clear();
     }
 
-    public void click(PrisonEscapePlayer player, Location exitLocation, Location joinLocation) {
+    public void click(PEPlayer player, Location exitLocation, Location joinLocation) {
         if (!isOnGround()) {
             return;
         }
@@ -137,7 +137,7 @@ public class Helicopter {
     private void policeClicked(Location exitLocation) {
         destroyHelicopter();
 
-        for (PrisonEscapePlayer player : _players) {
+        for (PEPlayer player : _players) {
             BukkitTeleporter.teleport(player, exitLocation);
         }
 

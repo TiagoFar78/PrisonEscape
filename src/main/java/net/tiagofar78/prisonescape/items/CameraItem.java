@@ -51,7 +51,7 @@ public class CameraItem extends FunctionalItem implements Buyable {
 
         String playerName = e.getPlayer().getName();
 
-        game.getPrisonEscapePlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
+        game.getPEPlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         BukkitMessageSender.sendChatMessage(playerName, messages.getCameraPlacedMessage());

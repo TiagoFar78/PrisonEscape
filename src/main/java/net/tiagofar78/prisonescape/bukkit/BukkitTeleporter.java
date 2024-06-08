@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,7 +10,7 @@ public class BukkitTeleporter {
 
     private static final double CENTER_OF_BLOCK = 0.5;
 
-    public static void teleport(PrisonEscapePlayer player, Location loc) {
+    public static void teleport(PEPlayer player, Location loc) {
         Player bukkitPlayer = Bukkit.getPlayer(player.getName());
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;

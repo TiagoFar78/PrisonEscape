@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.game;
 
-public class WaitingPlayer extends PrisonEscapePlayer {
+public class WaitingPlayer extends PEPlayer {
 
     private TeamPreference _preference;
 

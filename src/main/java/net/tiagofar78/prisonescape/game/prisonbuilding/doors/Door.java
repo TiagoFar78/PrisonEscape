@@ -1,7 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.doors;
 
 import net.tiagofar78.prisonescape.PEResources;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Item;
 
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ public abstract class Door {
         updateDoor(location, false);
     }
 
-    public abstract ClickDoorReturnAction click(PrisonEscapePlayer player, Item itemHeld);
+    public abstract ClickDoorReturnAction click(PEPlayer player, Item itemHeld);
 
     private static void updateDoor(Location blockLocation, boolean isOpen) {
         Block block = PEResources.getWorld().getBlockAt(blockLocation);

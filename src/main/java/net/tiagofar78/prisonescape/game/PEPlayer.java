@@ -24,7 +24,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PrisonEscapePlayer {
+public abstract class PEPlayer {
 
     private static final int TICKS_PER_SECOND = 20;
 
@@ -41,7 +41,7 @@ public abstract class PrisonEscapePlayer {
     private ScoreboardData _scoreboardData;
     private Clickable _openedMenu;
 
-    public PrisonEscapePlayer(String name) {
+    public PEPlayer(String name) {
         _name = name;
         _isOnline = true;
         _inventory = createInventory();
@@ -315,9 +315,9 @@ public abstract class PrisonEscapePlayer {
         addScoreboardTeamMembers(prisionersTeam);
     }
 
-    private void addScoreboardTeamMembers(PETeam<? extends PrisonEscapePlayer> team) {
+    private void addScoreboardTeamMembers(PETeam<? extends PEPlayer> team) {
         Team sbTeam = getScoreboardData().getScoreboard().getTeam(team.getName());
-        for (PrisonEscapePlayer player : team.getMembers()) {
+        for (PEPlayer player : team.getMembers()) {
             sbTeam.addEntry(player.getName());
         }
     }
@@ -414,7 +414,7 @@ public abstract class PrisonEscapePlayer {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof PrisonEscapePlayer && ((PrisonEscapePlayer) o).getName().equals(this.getName());
+        return o instanceof PEPlayer && ((PEPlayer) o).getName().equals(this.getName());
     }
 
 }
