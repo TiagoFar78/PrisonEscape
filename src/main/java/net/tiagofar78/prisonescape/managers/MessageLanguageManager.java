@@ -10,6 +10,10 @@ import java.util.List;
 
 public class MessageLanguageManager {
 
+    public static void load() {
+        // Just needs to enter this class to initialize static values
+    }
+
     private static Hashtable<String, MessageLanguageManager> instance = initializeLanguageMessages();
 
     private static Hashtable<String, MessageLanguageManager> initializeLanguageMessages() {

@@ -1,6 +1,8 @@
 package net.tiagofar78.prisonescape;
 
 import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +35,10 @@ public class PrisonEscape extends JavaPlugin {
         getCommand(COMMAND_LABEL).setExecutor(new PrisonEscapeCommand());
 
         getServer().getPluginManager().registerEvents(new Events(), this);
+
+        ConfigManager.load();
+        MessageLanguageManager.load();
+        PEResources.initializeWorld();
     }
 
     public static PrisonEscape getPrisonEscape() {

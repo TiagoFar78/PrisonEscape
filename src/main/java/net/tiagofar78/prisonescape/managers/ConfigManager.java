@@ -4,7 +4,9 @@ import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
@@ -13,6 +15,10 @@ import java.util.List;
 import java.util.Map.Entry;
 
 public class ConfigManager {
+
+    public static void load() {
+        // Just needs to enter this class to initialize static values
+    }
 
     private static ConfigManager instance = new ConfigManager();
 
@@ -142,37 +148,38 @@ public class ConfigManager {
         _cameraSkinTexture = config.getString("CameraSkinTexture");
 
         _worldName = config.getString("WorldName");
-        _referenceBlock = createLocation(config, "ReferenceBlock");
-        _leavingLocation = createLocation(config, "LeavingLocation");
-        _waitingLocation = createLocation(config, "WaitingLocation");
-        _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation");
-        _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation");
-        _regions = createRegionsList(config);
-        _prisonersSpawnLocation = createLocationList(config, "PrisonersSpawnLocations");
-        _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations");
-        _solitaryLocation = createLocation(config, "SolitaryLocation");
-        _solitaryExitLocation = createLocation(config, "SolitaryExitLocation");
-        _helicopterExitLocation = createLocation(config, "Helicopter.ExitLocation");
-        _helicopterJoinLocation = createLocation(config, "Helicopter.JoinLocation");
-        _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation");
-        _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation");
-        _afterEscapeLocation = createLocation(config, "AfterEscapeLocation");
-        _prisonersSecretPassageLocations = createLocationsMap(config, "PrisonersSecretPassagesLocation");
-        _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation");
-        _vaultsLocations = createLocationList(config, "VaultsLocations");
+        World world = Bukkit.getWorld(_worldName);
+        _referenceBlock = createLocation(config, "ReferenceBlock", world);
+        _leavingLocation = createLocation(config, "LeavingLocation", world);
+        _waitingLocation = createLocation(config, "WaitingLocation", world);
+        _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation", world);
+        _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation", world);
+        _regions = createRegionsList(config, world);
+        _prisonersSpawnLocation = createLocationList(config, "PrisonersSpawnLocations", world);
+        _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations", world);
+        _solitaryLocation = createLocation(config, "SolitaryLocation", world);
+        _solitaryExitLocation = createLocation(config, "SolitaryExitLocation", world);
+        _helicopterExitLocation = createLocation(config, "Helicopter.ExitLocation", world);
+        _helicopterJoinLocation = createLocation(config, "Helicopter.JoinLocation", world);
+        _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation", world);
+        _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation", world);
+        _afterEscapeLocation = createLocation(config, "AfterEscapeLocation", world);
+        _prisonersSecretPassageLocations = createLocationsMap(config, "PrisonersSecretPassagesLocation", world);
+        _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation", world);
+        _vaultsLocations = createLocationList(config, "VaultsLocations", world);
         _vaultsDirection = config.getString("VaultsDirection");
-        _chestsLocations = createLocationList(config, "ChestsLocations");
-        _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations");
-        _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations");
-        _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations");
-        _cellDoorsLocations = createLocationList(config, "CellDoorsLocations");
-        _wallCornersLocations = createLocationList(config, "WallCorners");
+        _chestsLocations = createLocationList(config, "ChestsLocations", world);
+        _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations", world);
+        _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations", world);
+        _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations", world);
+        _cellDoorsLocations = createLocationList(config, "CellDoorsLocations", world);
+        _wallCornersLocations = createLocationList(config, "WallCorners", world);
         _wallCrackFormats = createStringListList(config, "WallCrackFormats");
         _mazeFormat = config.getStringList("Maze.Format");
-        _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation");
-        _fencesLocations = createLocationPairList(config, "Fences");
-        _ventsLocations = createLocationList(config, "Vents");
-        _metalDetectorLocations = createLocationList(config, "MetalDetectors");
+        _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation", world);
+        _fencesLocations = createLocationPairList(config, "Fences", world);
+        _ventsLocations = createLocationList(config, "Vents", world);
+        _metalDetectorLocations = createLocationList(config, "MetalDetectors", world);
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -182,15 +189,15 @@ public class ConfigManager {
         _chestSize = config.getInt("ChestSize");
     }
 
-    private Location createLocation(YamlConfiguration config, String path) {
+    private Location createLocation(YamlConfiguration config, String path, World world) {
         int x = config.getInt(path + ".X");
         int y = config.getInt(path + ".Y");
         int z = config.getInt(path + ".Z");
 
-        return new Location(PEResources.getWorld(), x, y, z);
+        return new Location(world, x, y, z);
     }
 
-    private List<Location> createLocationList(YamlConfiguration config, String path) {
+    private List<Location> createLocationList(YamlConfiguration config, String path, World world) {
         List<Location> list = new ArrayList<>();
 
         List<String> filteredKeys = config.getKeys(true).stream().filter(
@@ -198,13 +205,13 @@ public class ConfigManager {
         ).toList();
 
         for (String key : filteredKeys) {
-            list.add(createLocation(config, key));
+            list.add(createLocation(config, key, world));
         }
 
         return list;
     }
 
-    private List<List<Location>> createLocationPairList(YamlConfiguration config, String path) {
+    private List<List<Location>> createLocationPairList(YamlConfiguration config, String path, World world) {
         List<List<Location>> list = new ArrayList<>();
 
         List<String> filteredKeys = config.getKeys(true).stream().filter(
@@ -213,8 +220,8 @@ public class ConfigManager {
 
         for (String key : filteredKeys) {
             List<Location> pair = new ArrayList<>();
-            pair.add(createLocation(config, key + ".UpperCornerLocation"));
-            pair.add(createLocation(config, key + ".LowerCornerLocation"));
+            pair.add(createLocation(config, key + ".UpperCornerLocation", world));
+            pair.add(createLocation(config, key + ".LowerCornerLocation", world));
             list.add(pair);
         }
 
@@ -235,10 +242,7 @@ public class ConfigManager {
         return list;
     }
 
-    private Hashtable<Location, Location> createLocationsMap(
-            YamlConfiguration config,
-            String path
-    ) {
+    private Hashtable<Location, Location> createLocationsMap(YamlConfiguration config, String path, World world) {
         Hashtable<Location, Location> map = new Hashtable<>();
 
         List<String> filteredKeys = config.getKeys(true).stream().filter(
@@ -246,13 +250,13 @@ public class ConfigManager {
         ).toList();
 
         for (String key : filteredKeys) {
-            map.put(createLocation(config, key + ".Key"), createLocation(config, key + ".Value"));
+            map.put(createLocation(config, key + ".Key", world), createLocation(config, key + ".Value", world));
         }
 
         return map;
     }
 
-    private List<SquaredRegion> createRegionsList(YamlConfiguration config) {
+    private List<SquaredRegion> createRegionsList(YamlConfiguration config, World world) {
         List<SquaredRegion> list = new ArrayList<>();
 
         String regionsPath = "Regions";
@@ -272,8 +276,8 @@ public class ConfigManager {
             ).toList();
 
             for (String regionPath : regionsPaths) {
-                Location upperCornerLocation = createLocation(config, regionPath + ".UpperCorner");
-                Location lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner");
+                Location upperCornerLocation = createLocation(config, regionPath + ".UpperCorner", world);
+                Location lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner", world);
 
                 list.add(
                         new SquaredRegion(

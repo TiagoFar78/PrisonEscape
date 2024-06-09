@@ -52,10 +52,14 @@ public class PEResources {
 //  #                 World                 #
 //  #########################################
 
-    private static final World WORLD = Bukkit.getWorld(ConfigManager.getInstance().getWorldName());
+    private static World world;
+
+    public static void initializeWorld() {
+        world = Bukkit.getWorld(ConfigManager.getInstance().getWorldName());
+    }
 
     public static World getWorld() {
-        return WORLD;
+        return world;
     }
 
 }
