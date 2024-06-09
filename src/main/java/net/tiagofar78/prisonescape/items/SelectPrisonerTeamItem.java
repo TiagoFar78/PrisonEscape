@@ -5,7 +5,7 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class SelectPrisionerTeamItem extends FunctionalItem {
+public class SelectPrisonerTeamItem extends FunctionalItem {
 
     @Override
     public boolean isMetalic() {
