@@ -2,6 +2,8 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.items.ToolItem;
 
+import org.bukkit.Location;
+
 public abstract class Obstacle {
 
     private static final int STARTING_DURABILITY = 100;
@@ -31,7 +33,7 @@ public abstract class Obstacle {
 
     public abstract boolean isEffectiveTool(ToolItem tool);
 
-    public abstract boolean contains(PrisonEscapeLocation location);
+    public abstract boolean contains(Location location);
 
     public abstract void removeFromWorld();
 

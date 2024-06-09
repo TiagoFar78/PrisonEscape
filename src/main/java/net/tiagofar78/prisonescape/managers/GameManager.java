@@ -1,12 +1,12 @@
 package net.tiagofar78.prisonescape.managers;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 
 public class GameManager {
 
-    private static PrisonEscapeGame game = null;
+    private static PEGame game = null;
 
-    public static PrisonEscapeGame getGame() {
+    public static PEGame getGame() {
         return game;
     }
 
@@ -22,7 +22,7 @@ public class GameManager {
         }
 
         ConfigManager config = ConfigManager.getInstance();
-        game = new PrisonEscapeGame(null, config.getReferenceBlock());
+        game = new PEGame(null, config.getReferenceBlock());
 
         return 0;
     }

@@ -2,7 +2,7 @@ package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
@@ -40,7 +40,7 @@ public class Shop implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
         Guard guard = (Guard) player;
 
         if (clickedPlayerInv) {

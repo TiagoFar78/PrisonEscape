@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.managers;
 
-import net.tiagofar78.prisonescape.PrisonEscapeResources;
+import net.tiagofar78.prisonescape.PEResources;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -9,6 +9,11 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class MessageLanguageManager {
+
+    public static boolean load() {
+        // Just needs to enter this class to initialize static values
+        return true;
+    }
 
     private static Hashtable<String, MessageLanguageManager> instance = initializeLanguageMessages();
 
@@ -98,7 +103,7 @@ public class MessageLanguageManager {
 
     private String _generalMessage;
     private String _policeTeamMessage;
-    private String _prisionerTeamMessage;
+    private String _prisonerTeamMessage;
 
 //	########################################
 //	#               Warnings               #
@@ -108,23 +113,23 @@ public class MessageLanguageManager {
     private String _successfullyForceStartedGameMessage;
     private String _successfullyForceStoppedGameMessage;
     private String _successfullyStoppedGameMessage;
-    private String _selectedPrisionersTeamMessage;
+    private String _selectedPrisonersTeamMessage;
     private String _selectedPoliceTeamMessage;
     private String _removedTeamPreferenceMessage;
-    private String _prisionerGameStartedMessage;
+    private String _prisonerGameStartedMessage;
     private String _policeGameStartedMessage;
     private String _policeOpenVaultMessage;
-    private String _prisionerOtherVaultMessage;
+    private String _prisonerOtherVaultMessage;
     private String _policeFoundIllegalItemsMessage;
-    private String _prisionerFoundIllegalItemsMessage;
+    private String _prisonerFoundIllegalItemsMessage;
     private String _policeNoIllegalItemsFoundMessage;
-    private String _prisionerNoIllegalItemsFoundMessage;
+    private String _prisonerNoIllegalItemsFoundMessage;
     private String _policeCanNotOpenChestMessage;
     private String _chestAlreadyOpenedMessage;
     private String _fullInventoryMessage;
     private String _notWantedPlayerMessage;
     private String _policeInspectedMessage;
-    private String _prisionerInspectedMessage;
+    private String _prisonerInspectedMessage;
     private String _canOnlyFixHolesMessage;
     private String _reachedItemLimitMessage;
     private String _notEnoughMoneyMessage;
@@ -146,10 +151,10 @@ public class MessageLanguageManager {
 //	########################################
 
     private List<String> _gameStartingAnnouncementMessage;
-    private String _prisionerArrested;
-    private String _prisionerFreedOfSolitary;
-    private String _prisionersWonTitle;
-    private String _prisionersWonSubtitle;
+    private String _prisonerArrested;
+    private String _prisonerFreedOfSolitary;
+    private String _prisonersWonTitle;
+    private String _prisonersWonSubtitle;
     private String _policeWonTitle;
     private String _policeWonSubtitle;
     private String _victoryWord;
@@ -197,7 +202,7 @@ public class MessageLanguageManager {
     private String _stopCommandUsage;
 
     private MessageLanguageManager(String language) {
-        YamlConfiguration messages = PrisonEscapeResources.getYamlLanguage(language);
+        YamlConfiguration messages = PEResources.getYamlLanguage(language);
 
         String bossBarPath = "BossBar.";
         _bossBarDayTitle = createMessage(messages.getString(bossBarPath + "DayTitle"));
@@ -247,36 +252,36 @@ public class MessageLanguageManager {
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
         _policeTeamMessage = createMessage(messages.getString(messagePath + "PoliceTeamMessage"));
-        _prisionerTeamMessage = createMessage(messages.getString(messagePath + "PrisionerTeamMessage"));
+        _prisonerTeamMessage = createMessage(messages.getString(messagePath + "PrisonerTeamMessage"));
 
         String warningPath = messagePath + "Warnings.";
         _successfullyStartedGameMessage = createMessage(messages.getString(warningPath + "StartedGame"));
         _successfullyForceStartedGameMessage = createMessage(messages.getString(warningPath + "ForceStartedGame"));
         _successfullyForceStoppedGameMessage = createMessage(messages.getString(warningPath + "ForceStoppedGame"));
         _successfullyStoppedGameMessage = createMessage(messages.getString(warningPath + "StoppedGame"));
-        _selectedPrisionersTeamMessage = createMessage(messages.getString(warningPath + "SelectedPrisionersTeam"));
+        _selectedPrisonersTeamMessage = createMessage(messages.getString(warningPath + "SelectedPrisonersTeam"));
         _selectedPoliceTeamMessage = createMessage(messages.getString(warningPath + "SelectedPoliceTeam"));
         _removedTeamPreferenceMessage = createMessage(messages.getString(warningPath + "SelectedRandomTeam"));
-        _prisionerGameStartedMessage = createMessage(messages.getString(warningPath + "PrisionerGameStart"));
+        _prisonerGameStartedMessage = createMessage(messages.getString(warningPath + "PrisonerGameStart"));
         _policeGameStartedMessage = createMessage(messages.getString(warningPath + "PoliceGameStart"));
         _policeOpenVaultMessage = createMessage(messages.getString(warningPath + "PoliceOpenVault"));
-        _prisionerOtherVaultMessage = createMessage(messages.getString(warningPath + "PrisionerOtherVault"));
+        _prisonerOtherVaultMessage = createMessage(messages.getString(warningPath + "PrisonerOtherVault"));
         _policeFoundIllegalItemsMessage = createMessage(messages.getString(warningPath + "PoliceFoundIllegalItems"));
-        _prisionerFoundIllegalItemsMessage = createMessage(
-                messages.getString(warningPath + "PrisionerFoundIllegalItems")
+        _prisonerFoundIllegalItemsMessage = createMessage(
+                messages.getString(warningPath + "PrisonerFoundIllegalItems")
         );
         _policeNoIllegalItemsFoundMessage = createMessage(
                 messages.getString(warningPath + "PoliceNoIllegalItemsFound")
         );
-        _prisionerNoIllegalItemsFoundMessage = createMessage(
-                messages.getString(warningPath + "PrisionerNoIllegalItemsFound")
+        _prisonerNoIllegalItemsFoundMessage = createMessage(
+                messages.getString(warningPath + "PrisonerNoIllegalItemsFound")
         );
         _policeCanNotOpenChestMessage = createMessage(messages.getString(warningPath + "PoliceCanNotOpenChest"));
         _chestAlreadyOpenedMessage = createMessage(messages.getString(warningPath + "ChestAlreadyOpened"));
         _fullInventoryMessage = createMessage(messages.getString(warningPath + "FullInventory"));
         _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
-        _prisionerInspectedMessage = createMessage(messages.getString(warningPath + "PrisionerInspected"));
+        _prisonerInspectedMessage = createMessage(messages.getString(warningPath + "PrisonerInspected"));
         _canOnlyFixHolesMessage = createMessage(messages.getString(warningPath + "CanOnlyFixHoles"));
         _reachedItemLimitMessage = createMessage(messages.getString(warningPath + "ReachedItemLimit"));
         _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
@@ -295,10 +300,10 @@ public class MessageLanguageManager {
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
-        _prisionerArrested = createMessage(messages.getString(announcementPath + "PrisionerArrested"));
-        _prisionerFreedOfSolitary = createMessage(messages.getString(announcementPath + "PrisionerFreedOfSolitary"));
-        _prisionersWonTitle = createMessage(messages.getString(announcementPath + "PrisionersWonTitle"));
-        _prisionersWonSubtitle = createMessage(messages.getString(announcementPath + "PrisionersWonSubtitle"));
+        _prisonerArrested = createMessage(messages.getString(announcementPath + "PrisonerArrested"));
+        _prisonerFreedOfSolitary = createMessage(messages.getString(announcementPath + "PrisonerFreedOfSolitary"));
+        _prisonersWonTitle = createMessage(messages.getString(announcementPath + "PrisonersWonTitle"));
+        _prisonersWonSubtitle = createMessage(messages.getString(announcementPath + "PrisonersWonSubtitle"));
         _policeWonTitle = createMessage(messages.getString(announcementPath + "PoliceWonTitle"));
         _policeWonSubtitle = createMessage(messages.getString(announcementPath + "PoliceWonSubtitle"));
         _victoryWord = messages.getString(announcementPath + "VictoryWord");
@@ -470,8 +475,8 @@ public class MessageLanguageManager {
         return _policeTeamMessage.replace("{PLAYER}", playerName).replace("{MESSAGE}", message);
     }
 
-    public String getPrisionerTeamMessage(String playerName, String message) {
-        return _prisionerTeamMessage.replace("{PLAYER}", playerName).replace("{MESSAGE}", message);
+    public String getPrisonerTeamMessage(String playerName, String message) {
+        return _prisonerTeamMessage.replace("{PLAYER}", playerName).replace("{MESSAGE}", message);
     }
 
 //	########################################
@@ -494,8 +499,8 @@ public class MessageLanguageManager {
         return _successfullyStoppedGameMessage;
     }
 
-    public String getSelectedPrisionersTeamMessage() {
-        return _selectedPrisionersTeamMessage;
+    public String getSelectedPrisonersTeamMessage() {
+        return _selectedPrisonersTeamMessage;
     }
 
     public String getSelectedPoliceTeamMessage() {
@@ -506,8 +511,8 @@ public class MessageLanguageManager {
         return _removedTeamPreferenceMessage;
     }
 
-    public String getPrisionerGameStartedMessage() {
-        return _prisionerGameStartedMessage;
+    public String getPrisonerGameStartedMessage() {
+        return _prisonerGameStartedMessage;
     }
 
     public String getPoliceGameStartedMessage() {
@@ -518,24 +523,24 @@ public class MessageLanguageManager {
         return _policeOpenVaultMessage;
     }
 
-    public String getPrisionerOtherVaultMessage() {
-        return _prisionerOtherVaultMessage;
+    public String getPrisonerOtherVaultMessage() {
+        return _prisonerOtherVaultMessage;
     }
 
     public String getPoliceFoundIllegalItemsMessage(String vaultOwner) {
         return _policeFoundIllegalItemsMessage.replace("{PLAYER}", vaultOwner);
     }
 
-    public String getPrisionerFoundIllegalItemsMessage() {
-        return _prisionerFoundIllegalItemsMessage;
+    public String getPrisonerFoundIllegalItemsMessage() {
+        return _prisonerFoundIllegalItemsMessage;
     }
 
     public String getPoliceNoIllegalItemsFoundMessage() {
         return _policeNoIllegalItemsFoundMessage;
     }
 
-    public String getPrisionerNoIllegalItemsFoundMessage() {
-        return _prisionerNoIllegalItemsFoundMessage;
+    public String getPrisonerNoIllegalItemsFoundMessage() {
+        return _prisonerNoIllegalItemsFoundMessage;
     }
 
     public String getPoliceCanNotOpenChestMessage() {
@@ -558,8 +563,8 @@ public class MessageLanguageManager {
         return _policeInspectedMessage.replace("{PLAYER}", playerName);
     }
 
-    public String getPrisionerInspectedMessage() {
-        return _prisionerInspectedMessage;
+    public String getPrisonerInspectedMessage() {
+        return _prisonerInspectedMessage;
     }
 
     public String getCanOnlyFixHolesMessage() {
@@ -642,20 +647,20 @@ public class MessageLanguageManager {
         return message;
     }
 
-    public String getPrisionerArrested(String playerName) {
-        return _prisionerArrested.replace("{PLAYER}", playerName);
+    public String getPrisonerArrested(String playerName) {
+        return _prisonerArrested.replace("{PLAYER}", playerName);
     }
 
-    public String getPrisionerFreedOfSolitary() {
-        return _prisionerFreedOfSolitary;
+    public String getPrisonerFreedOfSolitary() {
+        return _prisonerFreedOfSolitary;
     }
 
-    public String getPrisionersWonTitle() {
-        return _prisionersWonTitle;
+    public String getPrisonersWonTitle() {
+        return _prisonersWonTitle;
     }
 
-    public String getPrisionersWonSubtitle() {
-        return _prisionersWonSubtitle;
+    public String getPrisonersWonSubtitle() {
+        return _prisonersWonSubtitle;
     }
 
     public String getPoliceWonTitle() {

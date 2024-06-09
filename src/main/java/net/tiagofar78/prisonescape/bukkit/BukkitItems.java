@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
@@ -50,7 +50,7 @@ public class BukkitItems {
     }
 
     private static ItemStack getEventItem(ItemStack item) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return null;
         }

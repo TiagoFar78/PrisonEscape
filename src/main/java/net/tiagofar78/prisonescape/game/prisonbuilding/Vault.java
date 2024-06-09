@@ -1,8 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.Prisioner;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -13,7 +12,6 @@ import net.tiagofar78.prisonescape.menus.Clickable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -38,11 +36,11 @@ public class Vault implements Clickable {
     private List<Item> _nonHiddenContents;
     private List<Item> _hiddenContents;
 
-    private Prisioner _owner;
+    private Prisoner _owner;
 
-    private PrisonEscapeLocation _location;
+    private Location _location;
 
-    public Vault(Prisioner owner, PrisonEscapeLocation location) {
+    public Vault(Prisoner owner, Location location) {
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
 
@@ -53,7 +51,7 @@ public class Vault implements Clickable {
         createWorldSignAboveVault(location, _owner.getName());
     }
 
-    public boolean isIn(PrisonEscapeLocation location) {
+    public boolean isIn(Location location) {
         return _location.equals(location);
     }
 
@@ -67,7 +65,7 @@ public class Vault implements Clickable {
         return list;
     }
 
-    public Prisioner getOwner() {
+    public Prisoner getOwner() {
         return _owner;
     }
 
@@ -106,7 +104,7 @@ public class Vault implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PrisonEscapePlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
         if (clickedPlayerInv) {
             int index = player.convertToInventoryIndex(slot);
             if (index == -1) {
@@ -150,20 +148,15 @@ public class Vault implements Clickable {
 //  #                 World                 #
 //  #########################################
 
-    private void createWorldVault(PrisonEscapeLocation location) {
-        World world = BukkitWorldEditor.getWorld();
-        Location bukkitLocation = new Location(world, location.getX(), location.getY(), location.getZ());
-
-        Block block = bukkitLocation.getBlock();
+    private void createWorldVault(Location location) {
+        Block block = location.getBlock();
         block.setType(Material.CHEST);
 
         rotate(block);
     }
 
-    private void createWorldSignAboveVault(PrisonEscapeLocation location, String text) {
-        World world = BukkitWorldEditor.getWorld();
-        Location bukkitLocation = new Location(world, location.getX(), location.getY() + 1, location.getZ());
-        Block block = bukkitLocation.getBlock();
+    private void createWorldSignAboveVault(Location location, String text) {
+        Block block = location.getBlock();
         block.setType(Material.OAK_WALL_SIGN);
 
         rotate(block);
@@ -182,12 +175,11 @@ public class Vault implements Clickable {
     }
 
     public void deleteVaultAndRespectiveSignFromWorld() {
-        World world = BukkitWorldEditor.getWorld();
-        Location vaultLocation = new Location(world, _location.getX(), _location.getY(), _location.getZ());
-        Location signLocation = new Location(world, _location.getX(), _location.getY() + 1, _location.getZ());
+        Location vaultLocation = _location;
+        Location signLocation = _location.clone().add(0, 1, 0);
 
         vaultLocation.getBlock().setType(Material.AIR);
-        signLocation.getBlock().setType(Material.AIR);
+        signLocation.clone().add(0, 1, 0).getBlock().setType(Material.AIR);
     }
 
     @Override

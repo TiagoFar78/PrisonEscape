@@ -1,10 +1,9 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
@@ -26,13 +25,13 @@ public class SoundDetector {
 
     private int _index;
     private boolean _isWorking;
-    private PrisonEscapeLocation _location;
-    private List<PrisonEscapePlayer> _playersInRange;
+    private Location _location;
+    private List<PEPlayer> _playersInRange;
 
     private Random _random;
     private int _updateId;
 
-    public SoundDetector(int index, PrisonEscapeLocation location) {
+    public SoundDetector(int index, Location location) {
         _index = index;
         _isWorking = true;
         _location = location;
@@ -44,7 +43,7 @@ public class SoundDetector {
         createOnWorld();
         createPerimeterParticles();
 
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         List<Guard> guards = game.getGuardsTeam().getMembers();
         for (Guard guard : guards) {
             guard.addSoundDetectorLine(calculateValue());
@@ -55,7 +54,7 @@ public class SoundDetector {
         return _playersInRange.size() != 0;
     }
 
-    public void playerMoved(PrisonEscapePlayer player, PrisonEscapeLocation playerLocation) {
+    public void playerMoved(PEPlayer player, Location playerLocation) {
         if (isInRange(playerLocation) && !_playersInRange.contains(player)) {
             _playersInRange.add(player);
             updateValue();
@@ -65,17 +64,9 @@ public class SoundDetector {
         }
     }
 
-    private boolean isInRange(PrisonEscapeLocation location) {
+    private boolean isInRange(Location location) {
         double range = ConfigManager.getInstance().getSoundDetectorRange();
-        return distance(_location, location) <= range;
-    }
-
-    private double distance(PrisonEscapeLocation loc1, PrisonEscapeLocation loc2) {
-        double xComponent = Math.pow(loc1.getX() - loc2.getX(), 2);
-        double yComponent = Math.pow(loc1.getY() - loc2.getY(), 2);
-        double zComponent = Math.pow(loc1.getZ() - loc2.getZ(), 2);
-
-        return Math.sqrt(xComponent + yComponent + zComponent);
+        return _location.distance(location) <= range;
     }
 
     public void delete() {
@@ -84,21 +75,16 @@ public class SoundDetector {
     }
 
     private void createOnWorld() {
-        World world = BukkitWorldEditor.getWorld();
-        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
-
-        location.getBlock().setType(Material.LIGHTNING_ROD);
+        _location.getBlock().setType(Material.LIGHTNING_ROD);
     }
 
     private void createPerimeterParticles() {
-        World world = BukkitWorldEditor.getWorld();
-
         double centerX = _location.getX() + 0.5;
         double centerY = _location.getY();
         double centerZ = _location.getZ() + 0.5;
         double radius = ConfigManager.getInstance().getSoundDetectorRange();
 
-        loopCreateParticles(world, centerX, centerY, centerZ, radius);
+        loopCreateParticles(_location.getWorld(), centerX, centerY, centerZ, radius);
     }
 
     private void loopCreateParticles(World world, double centerX, double centerY, double centerZ, double radius) {
@@ -125,9 +111,7 @@ public class SoundDetector {
     }
 
     private void deleteFromWorld() {
-        World world = BukkitWorldEditor.getWorld();
-        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
-        location.getBlock().setType(Material.AIR);
+        _location.getBlock().setType(Material.AIR);
     }
 
     private int calculateValue() {
@@ -149,7 +133,7 @@ public class SoundDetector {
     }
 
     private void updateAudioLevelMeters(int value, int updateId) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }

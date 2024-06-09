@@ -1,7 +1,8 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
+import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.Prisioner;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
@@ -11,6 +12,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import java.util.ArrayList;
@@ -22,26 +24,26 @@ public class PrisonBuilding {
 
     private static final String PRISON_REGION_NAME = "PRISON";
 
-    private PrisonEscapeLocation _reference;
+    private Location _reference;
 
-    private PrisonEscapeLocation _waitingLobbyLocation;
+    private Location _waitingLobbyLocation;
     private Region _prison;
     private List<Region> _regions;
-    private List<PrisonEscapeLocation> _prisionersSpawnLocations;
-    private List<PrisonEscapeLocation> _policeSpawnLocations;
-    private PrisonEscapeLocation _solitaryLocation;
-    private PrisonEscapeLocation _solitaryExitLocation;
-    private PrisonEscapeLocation _helicopterExitLocation;
-    private PrisonEscapeLocation _helicopterJoinLocation;
-    private PrisonEscapeLocation _afterEscapeLocation;
-    private Hashtable<String, PrisonEscapeLocation> _prisionersSecretPassageLocations;
-    private Hashtable<String, PrisonEscapeLocation> _policeSecretPassageLocations;
-    private List<PrisonEscapeLocation> _metalDetectorsLocations;
+    private List<Location> _prisonersSpawnLocations;
+    private List<Location> _policeSpawnLocations;
+    private Location _solitaryLocation;
+    private Location _solitaryExitLocation;
+    private Location _helicopterExitLocation;
+    private Location _helicopterJoinLocation;
+    private Location _afterEscapeLocation;
+    private Hashtable<Location, Location> _prisonersSecretPassageLocations;
+    private Hashtable<Location, Location> _policeSecretPassageLocations;
+    private List<Location> _metalDetectorsLocations;
 
     private List<Vault> _vaults;
 
-    private Hashtable<String, Chest> _chests;
-    private Hashtable<String, Door> _doors;
+    private Hashtable<Location, Chest> _chests;
+    private Hashtable<Location, Door> _doors;
     private List<CellDoor> _cellDoors;
     private Wall _wall;
 
@@ -57,20 +59,20 @@ public class PrisonBuilding {
 //  #              Constructor              #
 //  #########################################
 
-    public PrisonBuilding(PrisonEscapeLocation reference) {
+    public PrisonBuilding(Location reference) {
         ConfigManager config = ConfigManager.getInstance();
 
         _reference = reference;
 
-        PrisonEscapeLocation prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
-        PrisonEscapeLocation prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
+        Location prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
+        Location prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
         _prison = new SquaredRegion(PRISON_REGION_NAME, false, true, prisonUpperCorner, prisonLowerCorner);
 
         _regions = createRegionsList(reference, config.getRegions());
 
         _waitingLobbyLocation = config.getWaitingLobbyLocation().add(reference);
 
-        _prisionersSpawnLocations = createLocationsList(reference, config.getPrisionersSpawnLocations());
+        _prisonersSpawnLocations = createLocationsList(reference, config.getPrisonersSpawnLocations());
         _policeSpawnLocations = createLocationsList(reference, config.getPoliceSpawnLocations());
 
         _solitaryLocation = config.getSolitaryLocation().add(reference);
@@ -81,43 +83,43 @@ public class PrisonBuilding {
 
         _afterEscapeLocation = config.getAfterEscapeLocation().add(reference);
 
-        _prisionersSecretPassageLocations = createLocationsMap(reference, config.getPrisionersSecretPassageLocations());
+        _prisonersSecretPassageLocations = createLocationsMap(reference, config.getPrisonersSecretPassageLocations());
         _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
 
         _vaults = new ArrayList<>();
 
         _chests = new Hashtable<>();
-        for (PrisonEscapeLocation loc : config.getChestsLocations()) {
+        for (Location loc : config.getChestsLocations()) {
             String regionName = getRegionName(loc);
             if (regionName == null) {
                 regionName = "Default";
             }
-            _chests.put(loc.add(reference).createKey(), new Chest(regionName));
+            _chests.put(loc.add(reference), new Chest(regionName));
         }
 
         _doors = new Hashtable<>();
-        for (PrisonEscapeLocation loc : config.getGoldenDoorsLocations()) {
-            PrisonEscapeLocation referenceLoc = loc.add(reference);
+        for (Location loc : config.getGoldenDoorsLocations()) {
+            Location referenceLoc = loc.add(reference);
             GoldenDoor goldenDoor = new GoldenDoor();
-            _doors.put(referenceLoc.createKey(), goldenDoor);
-            _doors.put(referenceLoc.add(0, 1, 0).createKey(), goldenDoor);
+            _doors.put(referenceLoc, goldenDoor);
+            _doors.put(referenceLoc.clone().add(0, 1, 0), goldenDoor);
         }
-        for (PrisonEscapeLocation loc : config.getGrayDoorsLocations()) {
-            PrisonEscapeLocation referenceLoc = loc.add(reference);
+        for (Location loc : config.getGrayDoorsLocations()) {
+            Location referenceLoc = loc.add(reference);
             GrayDoor grayDoor = new GrayDoor();
-            _doors.put(referenceLoc.createKey(), grayDoor);
-            _doors.put(referenceLoc.add(0, 1, 0).createKey(), grayDoor);
+            _doors.put(referenceLoc, grayDoor);
+            _doors.put(referenceLoc.clone().add(0, 1, 0), grayDoor);
         }
-        for (PrisonEscapeLocation loc : config.getCodeDoorsLocations()) {
-            PrisonEscapeLocation referenceLoc = loc.add(reference);
+        for (Location loc : config.getCodeDoorsLocations()) {
+            Location referenceLoc = loc.add(reference);
             CodeDoor codeDoor = new CodeDoor();
-            _doors.put(referenceLoc.createKey(), codeDoor);
-            _doors.put(referenceLoc.add(0, 1, 0).createKey(), codeDoor);
+            _doors.put(referenceLoc, codeDoor);
+            _doors.put(referenceLoc.clone().add(0, 1, 0), codeDoor);
         }
 
         _cellDoors = new ArrayList<CellDoor>();
-        for (PrisonEscapeLocation loc : config.getCellDoorsLocations()) {
-            PrisonEscapeLocation referenceLoc = loc.add(reference);
+        for (Location loc : config.getCellDoorsLocations()) {
+            Location referenceLoc = loc.add(reference);
             CellDoor door = new CellDoor(referenceLoc);
             _cellDoors.add(door);
         }
@@ -130,25 +132,25 @@ public class PrisonBuilding {
         List<Dirt> dirts = _maze.buildMaze(config.getMazeUpperCornerLocation().add(reference), config.getMazeFormat());
         _obstacles.addAll(dirts);
 
-        for (List<PrisonEscapeLocation> pair : createLocationsPairList(reference, config.getFencesLocations())) {
+        for (List<Location> pair : createLocationsPairList(reference, config.getFencesLocations())) {
             Fence fence = new Fence(pair.get(0), pair.get(1));
             fence.generate();
             _obstacles.add(fence);
         }
 
-        for (PrisonEscapeLocation location : createLocationsList(reference, config.getVentsLocations())) {
+        for (Location location : createLocationsList(reference, config.getVentsLocations())) {
             Vent vent = new Vent(location);
             vent.generate();
             _obstacles.add(vent);
         }
 
         _metalDetectorsLocations = new ArrayList<>();
-        for (PrisonEscapeLocation location : config.getMetalDetectorLocations()) {
+        for (Location location : config.getMetalDetectorLocations()) {
             _metalDetectorsLocations.add(location.add(reference));
         }
 
-        PrisonEscapeLocation helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
-        PrisonEscapeLocation helicopterLowerLocation = config.getHelicopterLowerLocation().add(reference);
+        Location helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
+        Location helicopterLowerLocation = config.getHelicopterLowerLocation().add(reference);
         _helicopter = new Helicopter(helicopterUpperLocation, helicopterLowerLocation);
         _helicopter.departed();
 
@@ -156,48 +158,45 @@ public class PrisonBuilding {
         _soundDetectors = new ArrayList<>();
     }
 
-    private List<PrisonEscapeLocation> createLocationsList(
-            PrisonEscapeLocation reference,
-            List<PrisonEscapeLocation> locs
+    private List<Location> createLocationsList(
+            Location reference,
+            List<Location> locs
     ) {
-        List<PrisonEscapeLocation> list = new ArrayList<>();
+        List<Location> list = new ArrayList<>();
 
-        for (PrisonEscapeLocation loc : locs) {
+        for (Location loc : locs) {
             list.add(loc.add(reference));
         }
 
         return list;
     }
 
-    private List<List<PrisonEscapeLocation>> createLocationsPairList(
-            PrisonEscapeLocation reference,
-            List<List<PrisonEscapeLocation>> pairs
+    private List<List<Location>> createLocationsPairList(
+            Location reference,
+            List<List<Location>> pairs
     ) {
-        List<List<PrisonEscapeLocation>> list = new ArrayList<>();
+        List<List<Location>> list = new ArrayList<>();
 
-        for (List<PrisonEscapeLocation> pair : pairs) {
+        for (List<Location> pair : pairs) {
             list.add(createLocationsList(reference, pair));
         }
 
         return list;
     }
 
-    private Hashtable<String, PrisonEscapeLocation> createLocationsMap(
-            PrisonEscapeLocation reference,
-            Hashtable<PrisonEscapeLocation, PrisonEscapeLocation> locs
-    ) {
-        Hashtable<String, PrisonEscapeLocation> map = new Hashtable<>();
+    private Hashtable<Location, Location> createLocationsMap(Location reference, Hashtable<Location, Location> locs) {
+        Hashtable<Location, Location> map = new Hashtable<>();
 
-        for (Entry<PrisonEscapeLocation, PrisonEscapeLocation> entry : locs.entrySet()) {
-            String key = entry.getKey().add(reference).createKey();
-            PrisonEscapeLocation value = entry.getValue().add(reference);
+        for (Entry<Location, Location> entry : locs.entrySet()) {
+            Location key = entry.getKey().add(reference);
+            Location value = entry.getValue().add(reference);
             map.put(key, value);
         }
 
         return map;
     }
 
-    private List<Region> createRegionsList(PrisonEscapeLocation reference, List<SquaredRegion> regions) {
+    private List<Region> createRegionsList(Location reference, List<SquaredRegion> regions) {
         List<Region> list = new ArrayList<>();
 
         for (Region region : regions) {
@@ -212,7 +211,7 @@ public class PrisonBuilding {
 //  #                Regions                #
 //  #########################################
 
-    public String getRegionName(PrisonEscapeLocation location) {
+    public String getRegionName(Location location) {
         for (Region region : _regions) {
             if (region.contains(location)) {
                 return region.getName();
@@ -222,7 +221,7 @@ public class PrisonBuilding {
         return null;
     }
 
-    public boolean hasCellPhoneCoverage(PrisonEscapeLocation location) {
+    public boolean hasCellPhoneCoverage(Location location) {
         for (Region region : _regions) {
             if (region.contains(location)) {
                 return region.canCallHelicopter();
@@ -232,7 +231,7 @@ public class PrisonBuilding {
         return true;
     }
 
-    public boolean isInRestrictedArea(PrisonEscapeLocation loc) {
+    public boolean isInRestrictedArea(Location loc) {
         for (Region region : _regions) {
             if (region.contains(loc)) {
                 return region.isRestricted();
@@ -246,12 +245,12 @@ public class PrisonBuilding {
 //	#                 Vault                 #
 //	#########################################
 
-    public void addVaults(List<Prisioner> prisioners) {
+    public void addVaults(List<Prisoner> prisoners) {
         ConfigManager config = ConfigManager.getInstance();
-        List<PrisonEscapeLocation> vaultsLocations = createLocationsList(_reference, config.getVaultsLocations());
+        List<Location> vaultsLocations = createLocationsList(_reference, config.getVaultsLocations());
 
-        for (int i = 0; i < prisioners.size(); i++) {
-            _vaults.add(new Vault(prisioners.get(i), vaultsLocations.get(i)));
+        for (int i = 0; i < prisoners.size(); i++) {
+            _vaults.add(new Vault(prisoners.get(i), vaultsLocations.get(i)));
         }
     }
 
@@ -259,7 +258,7 @@ public class PrisonBuilding {
         return _vaults.get(index);
     }
 
-    public int getVaultIndex(PrisonEscapeLocation location) {
+    public int getVaultIndex(Location location) {
         for (int i = 0; i < _vaults.size(); i++) {
             if (_vaults.get(i).isIn(location)) {
                 return i;
@@ -285,8 +284,8 @@ public class PrisonBuilding {
         }
     }
 
-    public Chest getChest(PrisonEscapeLocation location) {
-        return _chests.get(location.createKey());
+    public Chest getChest(Location location) {
+        return _chests.get(location);
     }
 
 //  #########################################
@@ -302,20 +301,20 @@ public class PrisonBuilding {
     }
 
     public void removeExplodedBlocks(List<Block> explodedBlocks) {
-        List<PrisonEscapeLocation> crackedBlocksLocations = explodedBlocks.stream().filter(
+        List<Location> crackedBlocksLocations = explodedBlocks.stream().filter(
                 b -> b.getType() == BukkitWorldEditor.CRACKED_BLOCK
         ).map(b -> b.getLocation()).map(
-                l -> new PrisonEscapeLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ())
+                l -> new Location(PEResources.getWorld(), l.getBlockX(), l.getBlockY(), l.getBlockZ())
         ).toList();
 
         _wall.crackedBlocksExploded(crackedBlocksLocations);
     }
 
-    public void placeBomb(PrisonEscapeLocation location) {
+    public void placeBomb(Location location) {
         BukkitWorldEditor.placeTNT(location);
     }
 
-    public WallCrack getWallCrack(PrisonEscapeLocation location) {
+    public WallCrack getWallCrack(Location location) {
         return _wall.getAffectedCrack(location);
     }
 
@@ -323,7 +322,7 @@ public class PrisonBuilding {
 //  #               Obstacles               #
 //  #########################################
 
-    public Obstacle getObstacle(PrisonEscapeLocation location) {
+    public Obstacle getObstacle(Location location) {
         for (Obstacle obstacle : _obstacles) {
             if (obstacle.contains(location)) {
                 return obstacle;
@@ -337,8 +336,8 @@ public class PrisonBuilding {
 //  #                 Doors                 #
 //  #########################################
 
-    public Door getDoor(PrisonEscapeLocation location) {
-        return _doors.get(location.createKey());
+    public Door getDoor(Location location) {
+        return _doors.get(location);
     }
 
     public void openCellDoors() {
@@ -357,7 +356,7 @@ public class PrisonBuilding {
 //  #              Helicopter              #
 //  ########################################
 
-    public Helicopter getHelicopter(PrisonEscapeLocation location) {
+    public Helicopter getHelicopter(Location location) {
         return _helicopter.contains(location) ? _helicopter : null;
     }
 
@@ -373,7 +372,7 @@ public class PrisonBuilding {
         return _cameras;
     }
 
-    public void addCamera(PrisonEscapeLocation location) {
+    public void addCamera(Location location) {
         _cameras.add(new Camera(location));
     }
 
@@ -391,7 +390,7 @@ public class PrisonBuilding {
         return _soundDetectors.size();
     }
 
-    public void addSoundDetector(PrisonEscapeLocation location) {
+    public void addSoundDetector(Location location) {
         _soundDetectors.add(new SoundDetector(_soundDetectors.size(), location));
     }
 
@@ -409,7 +408,7 @@ public class PrisonBuilding {
 //  #            Metal Detectors            #
 //  #########################################
 
-    public boolean checkIfWalkedOverMetalDetector(PrisonEscapeLocation location) {
+    public boolean checkIfWalkedOverMetalDetector(Location location) {
         return _metalDetectorsLocations.contains(location);
     }
 
@@ -417,49 +416,46 @@ public class PrisonBuilding {
 //	#               Locations               #
 //	#########################################
 
-    public PrisonEscapeLocation getWaitingLobbyLocation() {
+    public Location getWaitingLobbyLocation() {
         return _waitingLobbyLocation;
     }
 
-    public PrisonEscapeLocation getPoliceSpawnLocation(int index) {
+    public Location getPoliceSpawnLocation(int index) {
         return _policeSpawnLocations.get(index);
     }
 
-    public PrisonEscapeLocation getPlayerCellLocation(int index) {
-        return _prisionersSpawnLocations.get(index);
+    public Location getPlayerCellLocation(int index) {
+        return _prisonersSpawnLocations.get(index);
     }
 
-    public PrisonEscapeLocation getSolitaryLocation() {
+    public Location getSolitaryLocation() {
         return _solitaryLocation;
     }
 
-    public PrisonEscapeLocation getSolitaryExitLocation() {
+    public Location getSolitaryExitLocation() {
         return _solitaryExitLocation;
     }
 
-    public PrisonEscapeLocation getHelicopterExitLocation() {
+    public Location getHelicopterExitLocation() {
         return _helicopterExitLocation;
     }
 
-    public PrisonEscapeLocation getHelicopterJoinLocation() {
+    public Location getHelicopterJoinLocation() {
         return _helicopterJoinLocation;
     }
 
-    public PrisonEscapeLocation getAfterEscapeLocation() {
+    public Location getAfterEscapeLocation() {
         return _afterEscapeLocation;
     }
 
-    public PrisonEscapeLocation getSecretPassageDestinationLocation(
-            PrisonEscapeLocation location,
-            boolean isPrisioner
-    ) {
-        Hashtable<String, PrisonEscapeLocation> secretPassageLocations =
-                isPrisioner ? _prisionersSecretPassageLocations : _policeSecretPassageLocations;
+    public Location getSecretPassageDestinationLocation(Location location, boolean isPrisoner) {
+        Hashtable<Location, Location> secretPassageLocations =
+                isPrisoner ? _prisonersSecretPassageLocations : _policeSecretPassageLocations;
 
-        return secretPassageLocations.get(location.createKey());
+        return secretPassageLocations.get(location);
     }
 
-    public boolean isOutsidePrison(PrisonEscapeLocation loc) {
+    public boolean isOutsidePrison(Location loc) {
         return !_prison.contains(loc);
     }
 

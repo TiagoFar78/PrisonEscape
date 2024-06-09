@@ -30,7 +30,7 @@ public class HandcuffsItem extends FunctionalItem {
             return;
         }
 
-        GameManager.getGame().policeHandcuffedPrisioner(police.getName(), prisioner.getName());
+        GameManager.getGame().policeHandcuffedPrisoner(police.getName(), prisioner.getName());
     }
 
     @Override

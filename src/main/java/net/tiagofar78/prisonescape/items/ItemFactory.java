@@ -31,7 +31,7 @@ public class ItemFactory {
             new SearchItem(),
             new SelectNoneTeamItem(),
             new SelectPoliceTeamItem(),
-            new SelectPrisionerTeamItem(),
+            new SelectPrisonerTeamItem(),
             new StickItem(),
             new WireCutterItem(),
             new WrenchItem(),

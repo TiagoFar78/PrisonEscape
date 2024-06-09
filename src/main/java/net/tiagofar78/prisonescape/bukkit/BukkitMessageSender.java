@@ -1,6 +1,6 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ public class BukkitMessageSender {
         return Bukkit.getOnlinePlayers().stream().map(p -> p.getName()).toList();
     }
 
-    public static void sendChatMessage(PrisonEscapePlayer player, String message) {
+    public static void sendChatMessage(PEPlayer player, String message) {
         sendChatMessage(player.getName(), message);
     }
 
@@ -30,7 +30,7 @@ public class BukkitMessageSender {
         bukkitPlayer.sendMessage(message);
     }
 
-    public static void sendChatMessage(PrisonEscapePlayer player, String[] message) {
+    public static void sendChatMessage(PEPlayer player, String[] message) {
         sendChatMessage(player.getName(), message);
     }
 
@@ -43,7 +43,7 @@ public class BukkitMessageSender {
         bukkitPlayer.sendMessage(message);
     }
 
-    public static void sendChatMessage(PrisonEscapePlayer player, List<String> message) {
+    public static void sendChatMessage(PEPlayer player, List<String> message) {
         sendChatMessage(player.getName(), message);
     }
 

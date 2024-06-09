@@ -1,7 +1,6 @@
 package net.tiagofar78.prisonescape;
 
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.ItemFactory;
@@ -49,34 +48,32 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
 
-        Location bukkitLocFrom = e.getFrom();
-        int xFrom = bukkitLocFrom.getBlockX();
-        int yFrom = bukkitLocFrom.getBlockY();
-        int zFrom = bukkitLocFrom.getBlockZ();
+        Location locFrom = e.getFrom();
+        int xFrom = locFrom.getBlockX();
+        int yFrom = locFrom.getBlockY();
+        int zFrom = locFrom.getBlockZ();
 
-        Location bukkitLoc = e.getTo();
-        int x = bukkitLoc.getBlockX();
-        int y = bukkitLoc.getBlockY();
-        int z = bukkitLoc.getBlockZ();
+        Location locTo = e.getTo();
+        int x = locTo.getBlockX();
+        int y = locTo.getBlockY();
+        int z = locTo.getBlockZ();
 
         if (xFrom == x && yFrom == y && zFrom == z) {
             return;
         }
 
         Player player = e.getPlayer();
-        PrisonEscapeLocation location = new PrisonEscapeLocation(x, y, z);
-
-        game.playerMove(player.getName(), location);
+        game.playerMove(player.getName(), locTo);
     }
 
     @EventHandler
     public void playerInteractWithPrison(PlayerInteractEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -92,9 +89,7 @@ public class Events implements Listener {
         }
 
         int itemSlot = e.getPlayer().getInventory().getHeldItemSlot();
-        PrisonEscapeLocation location = block == null
-                ? null
-                : new PrisonEscapeLocation(block.getX(), block.getY(), block.getZ());
+        Location location = block == null ? null : block.getLocation();
 
         int returnCode = game.playerInteract(e.getPlayer().getName(), location, itemSlot, e);
         if (returnCode == 0) {
@@ -104,7 +99,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerLeave(PlayerQuitEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -136,7 +131,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerCloseInventory(InventoryCloseEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -151,7 +146,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void playerClickInventory(InventoryClickEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -234,7 +229,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -282,7 +277,7 @@ public class Events implements Listener {
 
         e.setCancelled(true);
 
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game != null) {
             game.explosion(e.blockList());
         }
@@ -290,7 +285,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerInteractWithPlayer(PlayerInteractEntityEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
@@ -330,7 +325,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }

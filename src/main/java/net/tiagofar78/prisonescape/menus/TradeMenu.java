@@ -1,8 +1,8 @@
 package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
-import net.tiagofar78.prisonescape.game.Prisioner;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
@@ -25,8 +25,8 @@ public class TradeMenu implements Clickable {
     private static final int STATUS_WOOL_SLOT = 4 * 9 + 1;
     private static final int STATUS_GLASS_SLOT = 4 * 9 + 6;
 
-    private Prisioner _player1;
-    private Prisioner _player2;
+    private Prisoner _player1;
+    private Prisoner _player2;
 
     private boolean _hasPlayer1Accepted = false;
     private boolean _hasPlayer2Accepted = false;
@@ -46,7 +46,7 @@ public class TradeMenu implements Clickable {
         return list;
     }
 
-    public TradeMenu(Prisioner player1, Prisioner player2) {
+    public TradeMenu(Prisoner player1, Prisoner player2) {
         _player1 = player1;
         _player2 = player2;
 
@@ -81,7 +81,7 @@ public class TradeMenu implements Clickable {
     }
 
     @Override
-    public void close(PrisonEscapePlayer firstCloser) {
+    public void close(PEPlayer firstCloser) {
         if (_isClosed) {
             return;
         }
@@ -105,7 +105,7 @@ public class TradeMenu implements Clickable {
 
     @Override
     public ClickReturnAction click(
-            PrisonEscapePlayer player,
+            PEPlayer player,
             int slot,
             Item itemHeld,
             boolean clickedPlayerInv
@@ -113,7 +113,7 @@ public class TradeMenu implements Clickable {
         return clickedPlayerInv ? clickPlayerInv(player, slot) : clickViewInv(player, slot);
     }
 
-    private ClickReturnAction clickPlayerInv(PrisonEscapePlayer player, int slot) {
+    private ClickReturnAction clickPlayerInv(PEPlayer player, int slot) {
         int index = player.convertToInventoryIndex(slot);
         if (index == -1) {
             return ClickReturnAction.NOTHING;
@@ -135,7 +135,7 @@ public class TradeMenu implements Clickable {
         return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
     }
 
-    private ClickReturnAction clickViewInv(PrisonEscapePlayer player, int slot) {
+    private ClickReturnAction clickViewInv(PEPlayer player, int slot) {
         int index = convertSlotToIndex(slot);
         if (index == -1) {
             if (slot == STATUS_WOOL_SLOT) {
@@ -156,7 +156,7 @@ public class TradeMenu implements Clickable {
         return null;
     }
 
-    private void clickStatusWool(PrisonEscapePlayer player) {
+    private void clickStatusWool(PEPlayer player) {
         if (!isValidTrade()) {
             player.playSound(Sound.ENTITY_VILLAGER_NO);
         }
@@ -240,7 +240,7 @@ public class TradeMenu implements Clickable {
     }
 
     @Override
-    public void updateInventory(Inventory inv, PrisonEscapePlayer player) {
+    public void updateInventory(Inventory inv, PEPlayer player) {
         List<Item> leftOfferedItems;
         List<Item> rightOfferedItems;
 

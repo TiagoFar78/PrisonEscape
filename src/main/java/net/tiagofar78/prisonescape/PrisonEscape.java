@@ -1,6 +1,8 @@
 package net.tiagofar78.prisonescape;
 
 import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,10 +35,29 @@ public class PrisonEscape extends JavaPlugin {
         getCommand(COMMAND_LABEL).setExecutor(new PrisonEscapeCommand());
 
         getServer().getPluginManager().registerEvents(new Events(), this);
+
+        loadResourcesAndManagers();
     }
 
     public static PrisonEscape getPrisonEscape() {
         return (PrisonEscape) Bukkit.getServer().getPluginManager().getPlugin("TF_PrisonEscape");
+    }
+
+    private void loadResourcesAndManagers() {
+        if (!ConfigManager.load()) {
+            Bukkit.getLogger().severe("[TF_PrisonEscape] Could not load config");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
+        if (!MessageLanguageManager.load()) {
+            Bukkit.getLogger().severe("[TF_PrisonEscape] Could not load messages");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
+        if (!PEResources.initializeWorld()) {
+            Bukkit.getLogger().severe("[TF_PrisonEscape] Could not load resources");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
     }
 
 }

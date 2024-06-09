@@ -24,7 +24,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PrisonEscapePlayer {
+public abstract class PEPlayer {
 
     private static final int TICKS_PER_SECOND = 20;
 
@@ -41,7 +41,7 @@ public abstract class PrisonEscapePlayer {
     private ScoreboardData _scoreboardData;
     private Clickable _openedMenu;
 
-    public PrisonEscapePlayer(String name) {
+    public PEPlayer(String name) {
         _name = name;
         _isOnline = true;
         _inventory = createInventory();
@@ -52,7 +52,7 @@ public abstract class PrisonEscapePlayer {
         setScoreboard(_scoreboardData.getScoreboard());
     }
 
-    public boolean isPrisioner() {
+    public boolean isPrisoner() {
         return false;
     }
 
@@ -285,8 +285,8 @@ public abstract class PrisonEscapePlayer {
         String guardsTeamName = GameManager.getGame().getGuardsTeam().getName();
         registerTeam(sbData, guardsTeamName, ChatColor.BLUE);
 
-        String prisionersTeamName = GameManager.getGame().getPrisionerTeam().getName();
-        registerTeam(sbData, prisionersTeamName, ChatColor.GOLD);
+        String prisonersTeamName = GameManager.getGame().getPrisonerTeam().getName();
+        registerTeam(sbData, prisonersTeamName, ChatColor.GOLD);
 
         return sbData;
     }
@@ -308,16 +308,16 @@ public abstract class PrisonEscapePlayer {
     }
 
     public void updateScoreaboardTeams() {
-        PrisonEscapeTeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
+        PETeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
         addScoreboardTeamMembers(guardsTeam);
 
-        PrisonEscapeTeam<Prisioner> prisionersTeam = GameManager.getGame().getPrisionerTeam();
-        addScoreboardTeamMembers(prisionersTeam);
+        PETeam<Prisoner> prisonersTeam = GameManager.getGame().getPrisonerTeam();
+        addScoreboardTeamMembers(prisonersTeam);
     }
 
-    private void addScoreboardTeamMembers(PrisonEscapeTeam<? extends PrisonEscapePlayer> team) {
+    private void addScoreboardTeamMembers(PETeam<? extends PEPlayer> team) {
         Team sbTeam = getScoreboardData().getScoreboard().getTeam(team.getName());
-        for (PrisonEscapePlayer player : team.getMembers()) {
+        for (PEPlayer player : team.getMembers()) {
             sbTeam.addEntry(player.getName());
         }
     }
@@ -414,7 +414,7 @@ public abstract class PrisonEscapePlayer {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof PrisonEscapePlayer && ((PrisonEscapePlayer) o).getName().equals(this.getName());
+        return o instanceof PEPlayer && ((PEPlayer) o).getName().equals(this.getName());
     }
 
 }

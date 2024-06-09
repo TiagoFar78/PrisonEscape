@@ -3,12 +3,12 @@ package net.tiagofar78.prisonescape.game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrisonEscapeTeam<T extends PrisonEscapePlayer> {
+public class PETeam<T extends PEPlayer> {
 
     private String _name;
     private List<T> _players;
 
-    public PrisonEscapeTeam(String name) {
+    public PETeam(String name) {
         this._name = name;
         this._players = new ArrayList<>();
     }
@@ -21,7 +21,7 @@ public class PrisonEscapeTeam<T extends PrisonEscapePlayer> {
         _players.add(player);
     }
 
-    public int getPlayerIndex(PrisonEscapePlayer player) {
+    public int getPlayerIndex(PEPlayer player) {
         for (int i = 0; i < _players.size(); i++) {
             if (_players.get(i).equals(player)) {
                 return i;
@@ -35,7 +35,7 @@ public class PrisonEscapeTeam<T extends PrisonEscapePlayer> {
         return _players;
     }
 
-    public boolean isOnTeam(PrisonEscapePlayer player) {
+    public boolean isOnTeam(PEPlayer player) {
         return _players.contains(player);
     }
 

@@ -4,13 +4,15 @@ import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.items.WireCutterItem;
 
+import org.bukkit.Location;
+
 public class Fence extends Obstacle implements Regenerable {
 
-    private PrisonEscapeLocation _upperCornerLocation;
-    private PrisonEscapeLocation _lowerCornerLocation;
+    private Location _upperCornerLocation;
+    private Location _lowerCornerLocation;
     private boolean _isDestroyed;
 
-    public Fence(PrisonEscapeLocation upperCornerLocation, PrisonEscapeLocation lowerCornerLocation) {
+    public Fence(Location upperCornerLocation, Location lowerCornerLocation) {
         _upperCornerLocation = upperCornerLocation;
         _lowerCornerLocation = lowerCornerLocation;
         _isDestroyed = false;
@@ -23,8 +25,8 @@ public class Fence extends Obstacle implements Regenerable {
     }
 
     @Override
-    public boolean contains(PrisonEscapeLocation location) {
-        return isBetweenCorners(location.getX(), location.getY(), location.getZ());
+    public boolean contains(Location location) {
+        return isBetweenCorners(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     private boolean isBetweenCorners(int x, int y, int z) {

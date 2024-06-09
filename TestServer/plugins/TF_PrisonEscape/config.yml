@@ -1,4 +1,4 @@
-PrisionersRatio: 0.73
+PrisonersRatio: 0.73
 PoliceRatio: 0.27
 MinPlayers: 1
 MaxPlayers: 11
@@ -58,7 +58,7 @@ PrisonBottomRightCornerLocation:
   X: -63
   Y: 70
   Z: -49
-PrisionersSpawnLocations:
+PrisonersSpawnLocations:
   "1":
     X: 2
     Y: 100
@@ -133,7 +133,7 @@ AfterEscapeLocation:
   X: 22
   Y: 100
   Z: 35
-PrisionersSecretPassagesLocation:
+PrisonersSecretPassagesLocation:
   "1":
     Key:
       X: 5

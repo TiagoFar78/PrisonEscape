@@ -1,9 +1,9 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.regions;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
+import org.bukkit.Location;
 
 public interface Locatable {
 
-    public boolean contains(PrisonEscapeLocation loc);
+    public boolean contains(Location loc);
 
 }

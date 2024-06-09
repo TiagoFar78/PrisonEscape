@@ -7,12 +7,14 @@ import net.tiagofar78.prisonescape.items.PlasticShovelItem;
 import net.tiagofar78.prisonescape.items.PlasticSpoonItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
 
+import org.bukkit.Location;
+
 public class Dirt extends Obstacle {
 
-    private PrisonEscapeLocation _upperCornerLocation;
-    private PrisonEscapeLocation _lowerCornerLocation;
+    private Location _upperCornerLocation;
+    private Location _lowerCornerLocation;
 
-    public Dirt(PrisonEscapeLocation upperCornerLocation, PrisonEscapeLocation lowerCornerLocation) {
+    public Dirt(Location upperCornerLocation, Location lowerCornerLocation) {
         _upperCornerLocation = upperCornerLocation;
         _lowerCornerLocation = lowerCornerLocation;
     }
@@ -24,10 +26,10 @@ public class Dirt extends Obstacle {
     }
 
     @Override
-    public boolean contains(PrisonEscapeLocation location) {
-        int x = location.getX();
-        int y = location.getY();
-        int z = location.getZ();
+    public boolean contains(Location location) {
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
 
         return isBetweenCorners(x, y, z) && BukkitWorldEditor.isDirtBlock(x, y, z);
     }

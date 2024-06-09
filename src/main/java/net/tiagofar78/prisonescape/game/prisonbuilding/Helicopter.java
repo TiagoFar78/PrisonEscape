@@ -17,16 +17,17 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockState;
 
+import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.Prisioner;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.io.File;
@@ -40,20 +41,20 @@ public class Helicopter {
     private static final String HELICOPTER_SCHEM_NAME = "helicopter.schem";
     private static final int TICKS_PER_SECOND = 20;
 
-    private PrisonEscapeLocation _upperLocation;
-    private PrisonEscapeLocation _lowerLocation;
-    private List<Prisioner> _players = new ArrayList<>();
+    private Location _upperLocation;
+    private Location _lowerLocation;
+    private List<Prisoner> _players = new ArrayList<>();
     private boolean _isOnGround = false;
 
-    protected Helicopter(PrisonEscapeLocation upperLocation, PrisonEscapeLocation lowerLocation) {
+    protected Helicopter(Location upperLocation, Location lowerLocation) {
         _upperLocation = upperLocation;
         _lowerLocation = lowerLocation;
     }
 
-    public boolean contains(PrisonEscapeLocation location) {
-        int x = location.getX();
-        int y = location.getY();
-        int z = location.getZ();
+    public boolean contains(Location location) {
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
 
         return _lowerLocation.getX() <= x && x <= _upperLocation.getX() && _lowerLocation.getY() <= y &&
                 y <= _upperLocation.getY() && _lowerLocation.getZ() <= z && z <= _upperLocation.getZ();
@@ -103,28 +104,28 @@ public class Helicopter {
     public void departed() {
         destroyHelicopter();
 
-        PrisonEscapeGame game = GameManager.getGame();
-        for (Prisioner player : _players) {
+        PEGame game = GameManager.getGame();
+        for (Prisoner player : _players) {
             game.playerEscaped(player);
         }
 
         _players.clear();
     }
 
-    public void click(PrisonEscapePlayer player, PrisonEscapeLocation exitLocation, PrisonEscapeLocation joinLocation) {
+    public void click(PEPlayer player, Location exitLocation, Location joinLocation) {
         if (!isOnGround()) {
             return;
         }
 
-        if (player.isPrisioner()) {
-            prisionerClicked((Prisioner) player, joinLocation);
+        if (player.isPrisoner()) {
+            prisionerClicked((Prisoner) player, joinLocation);
             return;
         }
 
         policeClicked(exitLocation);
     }
 
-    private void prisionerClicked(Prisioner player, PrisonEscapeLocation joinLocation) {
+    private void prisionerClicked(Prisoner player, Location joinLocation) {
         if (_players.contains(player)) {
             return;
         }
@@ -133,10 +134,10 @@ public class Helicopter {
         BukkitTeleporter.teleport(player, joinLocation);
     }
 
-    private void policeClicked(PrisonEscapeLocation exitLocation) {
+    private void policeClicked(Location exitLocation) {
         destroyHelicopter();
 
-        for (PrisonEscapePlayer player : _players) {
+        for (PEPlayer player : _players) {
             BukkitTeleporter.teleport(player, exitLocation);
         }
 
@@ -151,7 +152,7 @@ public class Helicopter {
             ClipboardReader reader = format.getReader(new FileInputStream(file));
             Clipboard clipboard = reader.read();
 
-            World world = BukkitAdapter.adapt(BukkitWorldEditor.getWorld());
+            World world = BukkitAdapter.adapt(PEResources.getWorld());
             EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
             Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(
                     BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ())
@@ -165,7 +166,7 @@ public class Helicopter {
     }
 
     private void removeFromWorld() {
-        World world = BukkitAdapter.adapt(BukkitWorldEditor.getWorld());
+        World world = BukkitAdapter.adapt(PEResources.getWorld());
         BlockVector3 min = BlockVector3.at(_lowerLocation.getX(), _lowerLocation.getY(), _lowerLocation.getZ());
         BlockVector3 max = BlockVector3.at(_upperLocation.getX(), _upperLocation.getY(), _upperLocation.getZ());
         CuboidRegion selection = new CuboidRegion(world, min, max);

@@ -2,9 +2,8 @@ package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Camera;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
@@ -45,7 +44,7 @@ public class OpenCamerasItem extends FunctionalItem {
     @Override
     public void use(PlayerInteractEvent e) {
         String playerName = e.getPlayer().getName();
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
@@ -55,7 +54,7 @@ public class OpenCamerasItem extends FunctionalItem {
             return;
         }
 
-        Guard guard = (Guard) game.getPrisonEscapePlayer(playerName);
+        Guard guard = (Guard) game.getPEPlayer(playerName);
 
         Action action = e.getAction();
         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
@@ -63,14 +62,9 @@ public class OpenCamerasItem extends FunctionalItem {
             guard.getKit().update(playerName);
         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
             Location loc = e.getPlayer().getLocation();
-            PrisonEscapeLocation peLocation = new PrisonEscapeLocation(
-                    loc.getBlockX(),
-                    loc.getBlockY(),
-                    loc.getBlockZ()
-            );
 
             cameras.get(_currentCameraIndex).addWatcher(guard);
-            guard.startedWatchingCamera(peLocation);
+            guard.startedWatchingCamera(loc);
 
             BukkitMessageSender.sendTitleMessage(playerName, "", messages.getSneakToLeaveCameraMessage());
         }
