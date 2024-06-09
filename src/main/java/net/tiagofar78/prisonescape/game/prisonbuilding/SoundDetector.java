@@ -133,7 +133,7 @@ public class SoundDetector {
     }
 
     private void updateAudioLevelMeters(int value, int updateId) {
-        PrisonEscapeGame game = GameManager.getGame();
+        PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
