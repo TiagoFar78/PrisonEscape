@@ -16,8 +16,9 @@ import java.util.Map.Entry;
 
 public class ConfigManager {
 
-    public static void load() {
+    public static boolean load() {
         // Just needs to enter this class to initialize static values
+        return true;
     }
 
     private static ConfigManager instance = new ConfigManager();

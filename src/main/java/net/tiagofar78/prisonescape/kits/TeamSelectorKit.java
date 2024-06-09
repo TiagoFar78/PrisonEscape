@@ -1,11 +1,11 @@
 package net.tiagofar78.prisonescape.kits;
 
-import java.util.Hashtable;
-
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
 import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
 import net.tiagofar78.prisonescape.items.SelectPrisonerTeamItem;
+
+import java.util.Hashtable;
 
 public class TeamSelectorKit extends Kit {
 

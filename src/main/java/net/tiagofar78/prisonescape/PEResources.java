@@ -54,8 +54,9 @@ public class PEResources {
 
     private static World world;
 
-    public static void initializeWorld() {
+    public static boolean initializeWorld() {        
         world = Bukkit.getWorld(ConfigManager.getInstance().getWorldName());
+        return world != null;
     }
 
     public static World getWorld() {

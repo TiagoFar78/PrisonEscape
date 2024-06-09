@@ -6,4 +6,4 @@ main: net.tiagofar78.prisonescape.PrisonEscape
 commands:
   prisonescape:
     aliases: [pe]
-depend: [WorldEdit, Citizens]
+depend: [WorldEdit, Citizens, Multiverse-Core]
