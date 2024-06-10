@@ -2,7 +2,10 @@ package net.tiagofar78.prisonescape.items;
 
 import org.bukkit.Material;
 
-public class WireCutterItem extends ToolItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class WireCutterItem extends ToolItem implements Craftable {
 
     @Override
     protected int usesAmount() {
@@ -27,6 +30,17 @@ public class WireCutterItem extends ToolItem {
     @Override
     public Material getMaterial() {
         return Material.SHEARS;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new BoltsItem());
+        items.add(new MatchesItem());
+        items.add(new DuctTapeItem());
+
+        return items;
     }
 
 }

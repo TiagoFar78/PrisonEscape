@@ -5,6 +5,7 @@ import net.tiagofar78.prisonescape.items.AntenaItem;
 import net.tiagofar78.prisonescape.items.BombItem;
 import net.tiagofar78.prisonescape.items.CellPhoneItem;
 import net.tiagofar78.prisonescape.items.CircuitBoardItem;
+import net.tiagofar78.prisonescape.items.Craftable;
 import net.tiagofar78.prisonescape.items.DoorCodeItem;
 import net.tiagofar78.prisonescape.items.GoldenKeyItem;
 import net.tiagofar78.prisonescape.items.GrayKeyItem;
@@ -23,9 +24,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
+
 public class CraftingMenu implements Clickable {
 
-    private static final int CONFIRM_CRAFTING_ITEM_INDEX = 9 * 4 + 6;
+    private static final int CRAFTING_ITEMS_STARTING_SLOT = 9 * 4 + 1;
+    private static final int CONFIRM_CRAFTING_ITEM_SLOT = 9 * 4 + 6;
     private static final int[] ITEMS_SLOTS = {
             9 + 1,
             9 + 2,
@@ -41,6 +45,8 @@ public class CraftingMenu implements Clickable {
             18 + 5,
             18 + 6,
             18 + 7};
+
+    private Craftable _selectedItem;
 
     @Override
     public Inventory toInventory(MessageLanguageManager messages) {
@@ -68,11 +74,25 @@ public class CraftingMenu implements Clickable {
     }
 
     private void placeItems(Inventory inv, MessageLanguageManager messages) {
-        Item[] items = getItems();
+        Item[] items = (Item[]) getItems();
 
         for (int i = 0; i < ITEMS_SLOTS.length; i++) {
             inv.setItem(ITEMS_SLOTS[i], items[i].toItemStack(messages));
         }
+    }
+
+    private void placeItemsToCraft(Inventory inv, MessageLanguageManager messages) {
+        List<Item> craftingItems = _selectedItem.getCratingItems();
+        for (int i = 0; i < craftingItems.size(); i++) {
+            inv.setItem(CRAFTING_ITEMS_STARTING_SLOT + i, craftingItems.get(i).toItemStack(messages));
+        }
+
+    }
+
+    @Override
+    public void updateInventory(Inventory inv, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+        placeItemsToCraft(inv, messages);
     }
 
     @Override
@@ -81,7 +101,7 @@ public class CraftingMenu implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        if (slot == CONFIRM_CRAFTING_ITEM_INDEX) {
+        if (slot == CONFIRM_CRAFTING_ITEM_SLOT) {
             return clickConfirmation(player);
         }
 
@@ -90,7 +110,8 @@ public class CraftingMenu implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        // TODO
+        _selectedItem = getItems()[index];
+        player.updateInventory();
 
         return ClickReturnAction.NOTHING;
     }
@@ -99,8 +120,8 @@ public class CraftingMenu implements Clickable {
         return ClickReturnAction.NOTHING; // TODO
     }
 
-    private Item[] getItems() {
-        Item[] items = {
+    private Craftable[] getItems() {
+        Craftable[] items = {
                 new MetalSpoonItem(),
                 new PlasticShovelItem(),
                 new MetalShovelItem(),

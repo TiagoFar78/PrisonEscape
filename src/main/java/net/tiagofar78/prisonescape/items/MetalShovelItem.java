@@ -6,7 +6,10 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class MetalShovelItem extends ToolItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MetalShovelItem extends ToolItem implements Craftable {
 
     @Override
     protected int usesAmount() {
@@ -40,6 +43,17 @@ public class MetalShovelItem extends ToolItem {
     @Override
     public Material getMaterial() {
         return Material.DIAMOND_SHOVEL;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new StickItem());
+        items.add(new DuctTapeItem());
+        items.add(new MetalPlateItem());
+
+        return items;
     }
 
 }

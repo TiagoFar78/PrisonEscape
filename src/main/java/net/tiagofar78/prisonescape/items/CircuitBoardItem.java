@@ -2,7 +2,10 @@ package net.tiagofar78.prisonescape.items;
 
 import org.bukkit.Material;
 
-public class CircuitBoardItem extends Item {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CircuitBoardItem extends Item implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -17,6 +20,17 @@ public class CircuitBoardItem extends Item {
     @Override
     public Material getMaterial() {
         return Material.REPEATER;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new PlasticPlateItem());
+        items.add(new CopperItem());
+        items.add(new MatchesItem());
+
+        return items;
     }
 
 }

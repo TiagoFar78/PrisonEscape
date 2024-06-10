@@ -8,7 +8,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class BombItem extends FunctionalItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BombItem extends FunctionalItem implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -53,6 +56,18 @@ public class BombItem extends FunctionalItem {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new CircuitBoardItem());
+        items.add(new OilItem());
+        items.add(new DuctTapeItem());
+        items.add(new BoltsItem());
+
+        return items;
     }
 
 }
