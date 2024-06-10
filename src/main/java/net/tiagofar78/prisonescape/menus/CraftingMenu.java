@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.menus;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.AntenaItem;
 import net.tiagofar78.prisonescape.items.BombItem;
@@ -24,11 +25,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CraftingMenu implements Clickable {
 
     private static final int CRAFTING_ITEMS_STARTING_SLOT = 9 * 4 + 1;
+    private static final int MAX_CRAFTING_ITEMS = 4;
     private static final int CONFIRM_CRAFTING_ITEM_SLOT = 9 * 4 + 6;
     private static final int[] ITEMS_SLOTS = {
             9 + 1,
@@ -46,7 +49,7 @@ public class CraftingMenu implements Clickable {
             18 + 6,
             18 + 7};
 
-    private Craftable _selectedItem;
+    private Item _selectedItem;
 
     @Override
     public Inventory toInventory(MessageLanguageManager messages) {
@@ -61,16 +64,22 @@ public class CraftingMenu implements Clickable {
     }
 
     private void placeGlasses(Inventory inv, int lines) {
-        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta glassMeta = glass.getItemMeta();
-        glassMeta.setDisplayName(" ");
-        glass.setItemMeta(glassMeta);
+        ItemStack glass = createGlass();
 
         for (int i = 0; i < lines; i++) {
             for (int j = 0; j < 9; j++) {
                 inv.setItem(i * 9 + j, glass);
             }
         }
+    }
+
+    private ItemStack createGlass() {
+        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta glassMeta = glass.getItemMeta();
+        glassMeta.setDisplayName(" ");
+        glass.setItemMeta(glassMeta);
+
+        return glass;
     }
 
     private void placeItems(Inventory inv, MessageLanguageManager messages) {
@@ -82,11 +91,18 @@ public class CraftingMenu implements Clickable {
     }
 
     private void placeItemsToCraft(Inventory inv, MessageLanguageManager messages) {
-        List<Item> craftingItems = _selectedItem.getCratingItems();
-        for (int i = 0; i < craftingItems.size(); i++) {
+        List<Item> craftingItems = ((Craftable) _selectedItem).getCratingItems();
+
+        int i;
+        for (i = 0; i < craftingItems.size(); i++) {
             inv.setItem(CRAFTING_ITEMS_STARTING_SLOT + i, craftingItems.get(i).toItemStack(messages));
         }
 
+        ItemStack glass = createGlass();
+
+        for (; i < MAX_CRAFTING_ITEMS; i++) {
+            inv.setItem(CRAFTING_ITEMS_STARTING_SLOT + i, glass);
+        }
     }
 
     @Override
@@ -117,11 +133,50 @@ public class CraftingMenu implements Clickable {
     }
 
     private ClickReturnAction clickConfirmation(PEPlayer player) {
-        return ClickReturnAction.NOTHING; // TODO
+        List<Integer> itemsIndexes = playerCraftingItemsIndexes(player);
+
+        if (itemsIndexes.size() == 0) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, messages.getCraftingItemsMissingMessage());
+        } else {
+            processCrafting(player, itemsIndexes);
+        }
+
+        return ClickReturnAction.NOTHING;
     }
 
-    private Craftable[] getItems() {
-        Craftable[] items = {
+    private void processCrafting(PEPlayer player, List<Integer> itemsIndexes) {
+        for (int itemIndex : itemsIndexes) {
+            player.removeItemIndex(itemIndex);
+        }
+
+        player.giveItem(_selectedItem);
+    }
+
+    private List<Integer> playerCraftingItemsIndexes(PEPlayer player) {
+        List<Integer> alreadyFoundItemIndexes = new ArrayList<>();
+
+        List<Item> items = player.getItemsInInventory();
+
+        for (Item craftingItem : ((Craftable) _selectedItem).getCratingItems()) {
+            boolean foundMatch = false;
+            for (int i = 0; i < items.size(); i++) {
+                if (craftingItem.equals(items.get(i)) && !alreadyFoundItemIndexes.contains(i)) {
+                    alreadyFoundItemIndexes.add(i);
+                    break;
+                }
+            }
+
+            if (!foundMatch) {
+                return new ArrayList<>();
+            }
+        }
+
+        return alreadyFoundItemIndexes;
+    }
+
+    private Item[] getItems() {
+        Item[] items = {
                 new MetalSpoonItem(),
                 new PlasticShovelItem(),
                 new MetalShovelItem(),

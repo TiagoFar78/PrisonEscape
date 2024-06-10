@@ -146,6 +146,7 @@ public class MessageLanguageManager {
     private String _tradeAlreadyAcceptedMessage;
     private String _tradeRequestSentMessage;
     private String _tradeRequestReceivedMessage;
+    private String _craftingItemsMissingMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -299,6 +300,7 @@ public class MessageLanguageManager {
         _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
         _tradeRequestSentMessage = createMessage(messages.getString(warningPath + "TradeRequestSent"));
         _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
+        _craftingItemsMissingMessage = createMessage(messages.getString(warningPath + "CraftingItemsMissing"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -631,6 +633,10 @@ public class MessageLanguageManager {
 
     public String getTradeRequestReceivedMessage(String playerName, int time) {
         return _tradeRequestReceivedMessage.replace("{PLAYER}", playerName).replace("{TIME}", Integer.toString(time));
+    }
+
+    public String getCraftingItemsMissingMessage() {
+        return _craftingItemsMissingMessage;
     }
 
 //	########################################

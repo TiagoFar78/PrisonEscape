@@ -161,6 +161,7 @@ Messages:
     TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
     TradeRequestSent: "&eTrade request sent to &b{PLAYER}&e."
     TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
+    CraftingItemsMissing: "&cYou are missing some items required to craft that item."
   Announcements:
     GameStarting:
     - "&6==================================="
