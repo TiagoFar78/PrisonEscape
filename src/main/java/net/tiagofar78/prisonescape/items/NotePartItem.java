@@ -36,4 +36,9 @@ public class NotePartItem extends Item {
         return super.getDisplayName(messages).replace("{NUMBER}", Integer.toString(_number));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o) && _number == ((NotePartItem) o)._number;
+    }
+
 }

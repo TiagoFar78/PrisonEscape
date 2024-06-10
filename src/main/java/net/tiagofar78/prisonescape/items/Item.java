@@ -82,4 +82,9 @@ public abstract class Item {
         return matches(item.getType());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o.getClass().getSimpleName().equals(this.getClass().getSimpleName());
+    }
+
 }
