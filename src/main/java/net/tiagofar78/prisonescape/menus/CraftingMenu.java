@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class CraftingMenu implements Clickable {
 
+    private static final int CONFIRM_CRAFTING_ITEM_INDEX = 9 * 4 + 6;
     private static final int[] ITEMS_SLOTS = {
             9 + 1,
             9 + 2,
@@ -67,6 +68,38 @@ public class CraftingMenu implements Clickable {
     }
 
     private void placeItems(Inventory inv, MessageLanguageManager messages) {
+        Item[] items = getItems();
+
+        for (int i = 0; i < ITEMS_SLOTS.length; i++) {
+            inv.setItem(ITEMS_SLOTS[i], items[i].toItemStack(messages));
+        }
+    }
+
+    @Override
+    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+        if (clickedPlayerInv) {
+            return ClickReturnAction.NOTHING;
+        }
+
+        if (slot == CONFIRM_CRAFTING_ITEM_INDEX) {
+            return clickConfirmation(player);
+        }
+
+        int index = slotToIndex(slot);
+        if (index == -1) {
+            return ClickReturnAction.NOTHING;
+        }
+
+        // TODO
+
+        return ClickReturnAction.NOTHING;
+    }
+
+    private ClickReturnAction clickConfirmation(PEPlayer player) {
+        return ClickReturnAction.NOTHING; // TODO
+    }
+
+    private Item[] getItems() {
         Item[] items = {
                 new MetalSpoonItem(),
                 new PlasticShovelItem(),
@@ -82,15 +115,17 @@ public class CraftingMenu implements Clickable {
                 new WireCutterItem(),
                 new WrenchItem()};
 
-        for (int i = 0; i < items.length; i++) {
-            inv.setItem(ITEMS_SLOTS[i], items[i].toItemStack(messages));
-        }
+        return items;
     }
 
-    @Override
-    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
-        // TODO Auto-generated method stub
-        return null;
+    private int slotToIndex(int slot) {
+        for (int i = 0; i < ITEMS_SLOTS.length; i++) {
+            if (ITEMS_SLOTS[i] == slot) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 }
