@@ -11,6 +11,14 @@ import java.util.List;
 
 public class WrenchItem extends ToolItem implements Craftable {
 
+    public WrenchItem() {
+
+    }
+
+    public WrenchItem(boolean useRandomDurability) {
+        super(useRandomDurability);
+    }
+
     @Override
     protected int usesAmount() {
         return 5;

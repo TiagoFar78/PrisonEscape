@@ -15,6 +15,14 @@ public class NotePartItem extends Item {
     public NotePartItem() {
         _number = new Random().nextInt(NOTES_AMOUNT) + 1;
     }
+    
+    public NotePartItem(int number) {
+        if (number <= 0 || number > NOTES_AMOUNT) {
+            throw new IllegalArgumentException();
+        }
+        
+        _number = number;
+    }
 
     @Override
     public boolean isMetalic() {

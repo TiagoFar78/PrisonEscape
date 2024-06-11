@@ -11,6 +11,14 @@ import java.util.List;
 
 public class PlasticShovelItem extends ToolItem implements Craftable {
 
+    public PlasticShovelItem() {
+
+    }
+
+    public PlasticShovelItem(boolean useRandomDurability) {
+        super(useRandomDurability);
+    }
+
     @Override
     protected int usesAmount() {
         return 10;

@@ -95,6 +95,8 @@ Items:
     Name: "Cell Phone"
     Lore:
     - "&eCalls an escape helicopter to the roof"
+  CraftingMenu:
+    Name: "Crafting Menu"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"

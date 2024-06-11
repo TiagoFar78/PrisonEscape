@@ -7,6 +7,14 @@ import java.util.List;
 
 public class WireCutterItem extends ToolItem implements Craftable {
 
+    public WireCutterItem() {
+
+    }
+
+    public WireCutterItem(boolean useRandomDurability) {
+        super(useRandomDurability);
+    }
+
     @Override
     protected int usesAmount() {
         return 5;

@@ -46,8 +46,7 @@ public class CraftingMenu implements Clickable {
             18 + 3,
             18 + 4,
             18 + 5,
-            18 + 6,
-            18 + 7};
+            18 + 6};
 
     private Item _selectedItem;
 
@@ -127,12 +126,16 @@ public class CraftingMenu implements Clickable {
         }
 
         _selectedItem = getItems()[index];
-        player.updateInventory();
+        player.updateView();
 
         return ClickReturnAction.NOTHING;
     }
 
     private ClickReturnAction clickConfirmation(PEPlayer player) {
+        if (_selectedItem == null) {
+            return ClickReturnAction.NOTHING;
+        }
+        
         List<Integer> itemsIndexes = playerCraftingItemsIndexes(player);
 
         if (itemsIndexes.size() == 0) {
@@ -177,9 +180,9 @@ public class CraftingMenu implements Clickable {
 
     private Item[] getItems() {
         Item[] items = {
-                new MetalSpoonItem(),
-                new PlasticShovelItem(),
-                new MetalShovelItem(),
+                new MetalSpoonItem(false),
+                new PlasticShovelItem(false),
+                new MetalShovelItem(false),
                 new MetalPlateItem(),
                 new GrayKeyItem(),
                 new GoldenKeyItem(),
@@ -188,8 +191,8 @@ public class CraftingMenu implements Clickable {
                 new BombItem(),
                 new AntenaItem(),
                 new CellPhoneItem(),
-                new WireCutterItem(),
-                new WrenchItem()};
+                new WireCutterItem(false),
+                new WrenchItem(false)};
 
         return items;
     }

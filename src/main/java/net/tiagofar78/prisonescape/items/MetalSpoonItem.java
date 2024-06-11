@@ -11,6 +11,14 @@ import java.util.List;
 
 public class MetalSpoonItem extends ToolItem implements Craftable {
 
+    public MetalSpoonItem() {
+
+    }
+
+    public MetalSpoonItem(boolean useRandomDurability) {
+        super(useRandomDurability);
+    }
+
     @Override
     protected int usesAmount() {
         return 8;

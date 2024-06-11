@@ -26,10 +26,10 @@ public class DoorCodeItem extends Item implements Craftable {
     public List<Item> getCratingItems() {
         List<Item> items = new ArrayList<>();
 
-        items.add(new NotePartItem());
-        items.add(new NotePartItem());
-        items.add(new NotePartItem());
-        items.add(new NotePartItem());
+        items.add(new NotePartItem(1));
+        items.add(new NotePartItem(2));
+        items.add(new NotePartItem(3));
+        items.add(new NotePartItem(4));
 
         return items;
     }

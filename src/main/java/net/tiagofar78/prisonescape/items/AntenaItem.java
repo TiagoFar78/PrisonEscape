@@ -26,7 +26,7 @@ public class AntenaItem extends Item implements Craftable {
     public List<Item> getCratingItems() {
         List<Item> items = new ArrayList<>();
 
-        items.add(new PlasticSpoonItem());
+        items.add(new PlasticSpoonItem(false));
         items.add(new MatchesItem());
 
         return items;
