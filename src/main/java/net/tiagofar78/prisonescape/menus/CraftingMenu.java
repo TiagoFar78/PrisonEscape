@@ -135,7 +135,7 @@ public class CraftingMenu implements Clickable {
         if (_selectedItem == null) {
             return ClickReturnAction.NOTHING;
         }
-        
+
         List<Integer> itemsIndexes = playerCraftingItemsIndexes(player);
 
         if (itemsIndexes.size() == 0) {
