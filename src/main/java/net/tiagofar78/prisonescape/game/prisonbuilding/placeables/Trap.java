@@ -1,38 +1,30 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.placeables;
 
+import net.tiagofar78.prisonescape.game.PEPlayer;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-
-import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
-import net.tiagofar78.prisonescape.game.PrisonEscapePlayer;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 
 public class Trap {
 
-    private PrisonEscapeLocation _location;
+    private Location _location;
     private boolean _caughtAPrisoner;
 
-    public Trap(PrisonEscapeLocation location) {
+    public Trap(Location location) {
         _location = location;
         _caughtAPrisoner = false;
         create();
     }
 
     public void create() {
-        World world = BukkitWorldEditor.getWorld();
-        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
-
-        location.getBlock().setType(Material.COBWEB);
+        _location.getBlock().setType(Material.COBWEB);
     }
-    
+
     public void delete() {
-        World world = BukkitWorldEditor.getWorld();
-        Location location = new Location(world, _location.getX(), _location.getY(), _location.getZ());
-        location.getBlock().setType(Material.AIR);
+        _location.getBlock().setType(Material.AIR);
     }
 
-    public void triggerTrap(PrisonEscapePlayer player) {
+    public void triggerTrap(PEPlayer player) {
         if (_caughtAPrisoner) {
             return;
         }

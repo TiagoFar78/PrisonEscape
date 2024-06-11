@@ -417,7 +417,7 @@ public class PrisonBuilding {
         return _traps;
     }
 
-    public void addTrap(PrisonEscapeLocation location) {
+    public void addTrap(Location location) {
         _traps.add(new Trap(location));
     }
 
