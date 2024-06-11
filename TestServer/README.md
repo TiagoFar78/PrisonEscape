@@ -31,6 +31,7 @@ To set up the Minecraft server, make sure you have the following:
 5. **Install a World Management Plugin like Multiverse-Core**:
    - Download the Multiverse-Core JAR from [Bukkit](https://dev.bukkit.org/projects/multiverse-core).
    - Place the downloaded JAR file in the `plugins` folder.
+6. **Unzip the world file `PrisonEscapeWorld.zip`**
 
 ### 3. Enter Local Server
 
