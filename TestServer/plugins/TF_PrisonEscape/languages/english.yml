@@ -152,6 +152,7 @@ Messages:
     HelicopterOnTheWay: "&eYou called an helicopter and it will be here in &b{SECONDS} &eseconds."
     NoCellPhoneCoverage: "&cYou cannot use your cell phone here because of lack of coverage."
     CameraPlaced: "&aCamera placed successfully. Use your camera viewer to watch what is going on."
+    TrapPlaced: "&aTrap placed successfully. Any prisoner that walks through the trap will be stuck momentarily."
     NoCamerasPlaced: "&cThere aren't cameras placed. Buy some from the shop."
     SneakToLeaveCamera: "&eSneak to leave the camera"
     SoundDetectorPlaced: "&aSound detector placed sucessfully. Check if there are players walking by in the sidebar."

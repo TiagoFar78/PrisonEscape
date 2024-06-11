@@ -138,6 +138,7 @@ public class MessageLanguageManager {
     private String _helicopterOnTheWayMessage;
     private String _noCellPhoneCoverageMessage;
     private String _cameraPlacedMessage;
+    private String _trapPlacedMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
     private String _soundDetectorPlacedMessage;
@@ -290,6 +291,7 @@ public class MessageLanguageManager {
         _helicopterOnTheWayMessage = createMessage(messages.getString(warningPath + "HelicopterOnTheWay"));
         _noCellPhoneCoverageMessage = createMessage(messages.getString(warningPath + "NoCellPhoneCoverage"));
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
+        _trapPlacedMessage = createMessage(messages.getString(warningPath + "TrapPlaced"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
@@ -597,6 +599,10 @@ public class MessageLanguageManager {
 
     public String getCameraPlacedMessage() {
         return _cameraPlacedMessage;
+    }
+
+    public String getTrapPlacedMessage() {
+        return _trapPlacedMessage;
     }
 
     public String getNoCamerasPlacedMessage() {

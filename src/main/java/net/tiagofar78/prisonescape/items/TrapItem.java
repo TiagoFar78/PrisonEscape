@@ -1,10 +1,18 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PrisonEscapeGame;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonEscapeLocation;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 
-public class TrapItem extends Item implements Buyable {
+public class TrapItem extends FunctionalItem implements Buyable {
 
     @Override
     public int getPrice() {
@@ -34,6 +42,22 @@ public class TrapItem extends Item implements Buyable {
     @Override
     public boolean isBuyable() {
         return true;
+    }
+
+    @Override
+    public void use(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        String playerName = player.getName();
+
+        Location loc = player.getLocation();
+        PrisonEscapeLocation peLocation = new PrisonEscapeLocation(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+
+        PrisonEscapeGame game = GameManager.getGame();
+        game.getPrison().addTrap(peLocation);
+        game.getPrisonEscapePlayer(playerName).removeItem(player.getInventory().getHeldItemSlot());
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+        BukkitMessageSender.sendChatMessage(playerName, messages.getTrapPlacedMessage());
     }
 
 }

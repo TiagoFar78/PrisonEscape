@@ -3,7 +3,7 @@ package net.tiagofar78.prisonescape.items;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Camera;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Camera;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 

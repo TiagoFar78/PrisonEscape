@@ -8,6 +8,9 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GrayDoor;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Camera;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Trap;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -54,6 +57,7 @@ public class PrisonBuilding {
 
     private List<Camera> _cameras;
     private List<SoundDetector> _soundDetectors;
+    private List<Trap> _traps;
 
 //  #########################################
 //  #              Constructor              #
@@ -156,6 +160,7 @@ public class PrisonBuilding {
 
         _cameras = new ArrayList<>();
         _soundDetectors = new ArrayList<>();
+        _traps = new ArrayList<>();
     }
 
     private List<Location> createLocationsList(
@@ -401,6 +406,24 @@ public class PrisonBuilding {
     public void deleteSoundDetectors() {
         for (SoundDetector soundDetector : _soundDetectors) {
             soundDetector.delete();
+        }
+    }
+
+//  #########################################
+//  #                 Traps                 #
+//  #########################################
+
+    public List<Trap> getTraps() {
+        return _traps;
+    }
+
+    public void addTrap(PrisonEscapeLocation location) {
+        _traps.add(new Trap(location));
+    }
+
+    public void deleteTraps() {
+        for (Trap trap : _traps) {
+            trap.delete();
         }
     }
 
