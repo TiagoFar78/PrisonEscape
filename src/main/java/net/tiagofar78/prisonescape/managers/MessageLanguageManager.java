@@ -97,6 +97,8 @@ public class MessageLanguageManager {
     private String _tradeNotAcceptedGlassName;
     private String _tradeAcceptedGlassName;
     private String _craftingMenuTitle;
+    private String _missingItemsWoolName;
+    private String _confirmCraftWoolName;
 
 //	########################################
 //	#                 Chat                 #
@@ -251,6 +253,8 @@ public class MessageLanguageManager {
         _tradeNotAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.NotAcceptedGlass.Name"));
         _tradeAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.AcceptedGlass.Name"));
         _craftingMenuTitle = createMessage(messages.getString("Inventory.Crafting.Title"));
+        _missingItemsWoolName = createMessage(messages.getString("Inventory.Crafting.MissingItemsWool.Name"));
+        _confirmCraftWoolName = createMessage(messages.getString("Inventory.Crafting.ConfirmCraftWool.Name"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -469,6 +473,14 @@ public class MessageLanguageManager {
 
     public String getCraftingMenuTitle() {
         return _craftingMenuTitle;
+    }
+
+    public String getMissingItemsWoolName() {
+        return _missingItemsWoolName;
+    }
+
+    public String getConfirmCraftWoolName() {
+        return _confirmCraftWoolName;
     }
 
 //	########################################

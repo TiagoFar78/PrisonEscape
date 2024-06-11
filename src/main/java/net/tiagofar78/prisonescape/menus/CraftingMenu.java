@@ -104,10 +104,30 @@ public class CraftingMenu implements Clickable {
         }
     }
 
+    private void placeConfirmationItem(Inventory inv, PEPlayer player, MessageLanguageManager messages) {
+        ItemStack item;
+        String itemName;
+
+        if (findCraftingItemsIndexes(player).size() == 0) {
+            item = new ItemStack(Material.RED_WOOL);
+            itemName = messages.getMissingItemsWoolName();
+        } else {
+            item = new ItemStack(Material.LIME_WOOL);
+            itemName = messages.getConfirmCraftWoolName();
+        }
+
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(itemName);
+        item.setItemMeta(meta);
+
+        inv.setItem(CONFIRM_CRAFTING_ITEM_SLOT, item);
+    }
+
     @Override
     public void updateInventory(Inventory inv, PEPlayer player) {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         placeItemsToCraft(inv, messages);
+        placeConfirmationItem(inv, player, messages);
     }
 
     @Override
@@ -136,7 +156,7 @@ public class CraftingMenu implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        List<Integer> itemsIndexes = playerCraftingItemsIndexes(player);
+        List<Integer> itemsIndexes = findCraftingItemsIndexes(player);
 
         if (itemsIndexes.size() == 0) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
@@ -156,7 +176,7 @@ public class CraftingMenu implements Clickable {
         player.giveItem(_selectedItem);
     }
 
-    private List<Integer> playerCraftingItemsIndexes(PEPlayer player) {
+    private List<Integer> findCraftingItemsIndexes(PEPlayer player) {
         List<Integer> alreadyFoundItemIndexes = new ArrayList<>();
 
         List<Item> items = player.getItemsInInventory();
