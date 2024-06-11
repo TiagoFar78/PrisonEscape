@@ -185,6 +185,7 @@ public class CraftingMenu implements Clickable {
             boolean foundMatch = false;
             for (int i = 0; i < items.size(); i++) {
                 if (craftingItem.equals(items.get(i)) && !alreadyFoundItemIndexes.contains(i)) {
+                    foundMatch = true;
                     alreadyFoundItemIndexes.add(i);
                     break;
                 }
