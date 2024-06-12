@@ -156,7 +156,7 @@ public class Vault implements Clickable {
     }
 
     private void createWorldSignAboveVault(Location location, String text) {
-        Block block = location.getBlock();
+        Block block = location.clone().add(0, 1, 0).getBlock();
         block.setType(Material.OAK_WALL_SIGN);
 
         rotate(block);
