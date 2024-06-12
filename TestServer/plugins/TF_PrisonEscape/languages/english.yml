@@ -159,6 +159,7 @@ Messages:
     TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
     TradeRequestSent: "&eTrade request sent to &b{PLAYER}&e."
     TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
+    CodeFound: "&eSomeone found the main door code."
   Announcements:
     GameStarting:
     - "&6==================================="

@@ -1207,4 +1207,8 @@ public class PEGame {
         _hasDoorCode = true;
     }
 
+    public void changeDoorCode() {
+        _hasDoorCode = false;
+    }
+
 }

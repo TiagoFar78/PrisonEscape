@@ -1,8 +1,15 @@
 package net.tiagofar78.prisonescape.items;
 
-import org.bukkit.Material;
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.Prisoner;
+import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-public class DoorCodeItem extends Item {
+import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+public class DoorCodeItem extends FunctionalItem {
 
     @Override
     public boolean isMetalic() {
@@ -17,6 +24,21 @@ public class DoorCodeItem extends Item {
     @Override
     public Material getMaterial() {
         return Material.FILLED_MAP;
+    }
+
+    @Override
+    public void use(PlayerInteractEvent e) {
+        PEGame game = GameManager.getGame();
+
+        game.findDoorCode();
+
+        String playerName = e.getPlayer().getName();
+        game.getPEPlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
+
+        for (Prisoner prisoner : game.getPrisonerTeam().getMembers()) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(prisoner.getName());
+            BukkitMessageSender.sendChatMessage(prisoner, messages.getCodeFoundMessage());
+        }
     }
 
 }
