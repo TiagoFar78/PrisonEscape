@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -41,7 +42,7 @@ import org.bukkit.inventory.ItemStack;
 public class Events implements Listener {
 
     private static final EntityType[] ALLOWED_MOBS =
-            {EntityType.PRIMED_TNT, EntityType.PAINTING, EntityType.ARMOR_STAND};
+            {EntityType.PRIMED_TNT, EntityType.PAINTING, EntityType.ARMOR_STAND, EntityType.ITEM_FRAME};
 
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
@@ -252,6 +253,17 @@ public class Events implements Listener {
     }
 
     @EventHandler
+    public void onBlockHangingBreak(HangingBreakEvent e) {
+        EntityType type = e.getEntity().getType();
+        for (EntityType mobType : ALLOWED_MOBS) {
+            if (mobType == type) {
+                e.setCancelled(true);
+                break;
+            }
+        }
+    }
+
+    @EventHandler
     public void onExplosion(EntityExplodeEvent e) {
         if (!e.getEntity().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             return;
@@ -285,6 +297,14 @@ public class Events implements Listener {
         Entity eAttacker = e.getDamager();
         if (!(eAttacker instanceof Player)) {
             return;
+        }
+
+        EntityType type = e.getEntity().getType();
+        for (EntityType mobType : ALLOWED_MOBS) {
+            if (mobType == type) {
+                e.setCancelled(true);
+                break;
+            }
         }
 
         Player pAttacker = (Player) eAttacker;

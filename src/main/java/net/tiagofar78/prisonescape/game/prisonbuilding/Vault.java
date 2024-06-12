@@ -220,7 +220,7 @@ public class Vault implements Clickable {
         Location signLocation = _location.clone().add(0, 1, 0);
 
         vaultLocation.getBlock().setType(Material.AIR);
-        signLocation.clone().add(0, 1, 0).getBlock().setType(Material.AIR);
+        signLocation.getBlock().setType(Material.AIR);
     }
 
     @Override
