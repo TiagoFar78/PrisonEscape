@@ -136,17 +136,22 @@ public class Vault implements Clickable {
 
     @Override
     public void close(PEPlayer player) {
+        player.setCursorItem(null);
+
         if (_cursorItem.equals(new NullItem())) {
             return;
         }
 
         if (player.giveItem(_cursorItem) != -1) {
+            _cursorItem = new NullItem();
+            player.updateInventory();
             return;
         }
 
         for (int i = 0; i < _hiddenContents.size(); i++) {
             if (_hiddenContents.get(i).equals(new NullItem())) {
                 setItem(false, i, _cursorItem);
+                _cursorItem = new NullItem();
                 return;
             }
         }
@@ -154,6 +159,7 @@ public class Vault implements Clickable {
         for (int i = 0; i < _nonHiddenContents.size(); i++) {
             if (_nonHiddenContents.get(i).equals(new NullItem())) {
                 setItem(true, i, _cursorItem);
+                _cursorItem = new NullItem();
                 return;
             }
         }
