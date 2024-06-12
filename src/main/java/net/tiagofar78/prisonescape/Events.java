@@ -9,7 +9,6 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -38,7 +37,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class Events implements Listener {
@@ -156,28 +154,14 @@ public class Events implements Listener {
         }
 
         Player player = (Player) e.getWhoClicked();
-        boolean isPlayerInv = false;
-        if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
-            Inventory topInv = e.getView().getTopInventory();
-            if (topInv == null) {
+        boolean isPlayerInv = e.getClickedInventory().getType() == InventoryType.PLAYER;
+
+        if (isPlayerInv && e.getAction() == InventoryAction.DROP_ONE_SLOT) {
+            if (game.playerDropItem(player.getName(), e.getSlot()) == -1) {
                 e.setCancelled(true);
-                return;
             }
 
-            if (e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE) {
-                e.setCancelled(true);
-                return;
-            }
-
-            if (e.getAction() == InventoryAction.DROP_ALL_SLOT || e.getAction() == InventoryAction.DROP_ONE_SLOT) {
-                int slot = e.getSlot();
-                if (game.playerDropItem(player.getName(), slot) == -1) {
-                    e.setCancelled(true);
-                }
-                return;
-            }
-
-            isPlayerInv = true;
+            return;
         }
 
         ItemStack cursor = e.getCursor();

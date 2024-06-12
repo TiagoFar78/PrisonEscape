@@ -718,7 +718,7 @@ public class PEGame {
 
         Clickable menu = player.getOpenedMenu();
         if (menu == null) {
-            return ClickReturnAction.IGNORE;
+            return ClickReturnAction.NOTHING;
         }
 
         return menu.click(player, slot, itemHeld, clickedPlayerInv);
