@@ -3,7 +3,6 @@ package net.tiagofar78.prisonescape;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
@@ -167,8 +166,7 @@ public class Events implements Listener {
         ItemStack cursor = e.getCursor();
         ItemStack current = e.getCurrentItem();
 
-        Item item = ItemFactory.createItem(e.getCursor());
-        ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), item, isPlayerInv);
+        ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), isPlayerInv);
         if (returnAction == ClickReturnAction.IGNORE) {
             return;
         }
@@ -279,7 +277,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerCombat(EntityDamageByEntityEvent e) {
-        if (GameManager.getGame() == null) {
+        PEGame game = GameManager.getGame();
+        if (game == null) {
             return;
         }
 
@@ -290,8 +289,8 @@ public class Events implements Listener {
 
         Player pAttacker = (Player) eAttacker;
 
-        @SuppressWarnings("deprecation")
-        Item item = ItemFactory.createItem(pAttacker.getItemInHand());
+        String attackerName = pAttacker.getName();
+        Item item = game.getPEPlayer(attackerName).getItemAt(pAttacker.getInventory().getHeldItemSlot());
 
         if (item.isFunctional()) {
             ((FunctionalItem) item).use(e);

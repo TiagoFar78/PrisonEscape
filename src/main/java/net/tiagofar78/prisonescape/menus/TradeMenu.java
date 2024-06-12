@@ -104,12 +104,7 @@ public class TradeMenu implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(
-            PEPlayer player,
-            int slot,
-            Item itemHeld,
-            boolean clickedPlayerInv
-    ) {
+    public ClickReturnAction click(PEPlayer player, int slot, boolean clickedPlayerInv) {
         return clickedPlayerInv ? clickPlayerInv(player, slot) : clickViewInv(player, slot);
     }
 

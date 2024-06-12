@@ -40,7 +40,7 @@ public class Shop implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, boolean clickedPlayerInv) {
         Guard guard = (Guard) player;
 
         if (clickedPlayerInv) {

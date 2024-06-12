@@ -82,7 +82,7 @@ public class Chest implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, boolean clickedPlayerInv) {
         if (clickedPlayerInv) {
             return ClickReturnAction.NOTHING;
         }

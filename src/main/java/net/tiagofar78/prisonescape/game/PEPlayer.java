@@ -111,6 +111,10 @@ public abstract class PEPlayer {
 //	#               Inventory               #
 //	#########################################
 
+    public List<Item> getItemsInInventory() {
+        return _inventory;
+    }
+
     public Item getItemAt(int slot) {
         Item item = _currentKit.getItemAt(slot);
         if (item != null) {
