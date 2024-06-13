@@ -2,7 +2,10 @@ package net.tiagofar78.prisonescape.items;
 
 import org.bukkit.Material;
 
-public class DoorCodeItem extends Item {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DoorCodeItem extends Item implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -17,6 +20,18 @@ public class DoorCodeItem extends Item {
     @Override
     public Material getMaterial() {
         return Material.FILLED_MAP;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new NotePartItem(1));
+        items.add(new NotePartItem(2));
+        items.add(new NotePartItem(3));
+        items.add(new NotePartItem(4));
+
+        return items;
     }
 
 }

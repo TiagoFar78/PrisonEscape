@@ -111,6 +111,10 @@ public abstract class PEPlayer {
 //	#               Inventory               #
 //	#########################################
 
+    public List<Item> getItemsInInventory() {
+        return _inventory;
+    }
+
     public Item getItemAt(int slot) {
         Item item = _currentKit.getItemAt(slot);
         if (item != null) {
@@ -168,6 +172,10 @@ public abstract class PEPlayer {
             return -1;
         }
 
+        return removeItemIndex(index);
+    }
+
+    public int removeItemIndex(int index) {
         _inventory.set(index, new NullItem());
         setItemBukkit(index, new NullItem());
         return 0;

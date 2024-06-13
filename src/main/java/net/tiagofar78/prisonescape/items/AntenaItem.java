@@ -2,7 +2,10 @@ package net.tiagofar78.prisonescape.items;
 
 import org.bukkit.Material;
 
-public class AntenaItem extends Item {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AntenaItem extends Item implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -17,6 +20,16 @@ public class AntenaItem extends Item {
     @Override
     public Material getMaterial() {
         return Material.END_ROD;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new PlasticSpoonItem(false));
+        items.add(new MatchesItem());
+
+        return items;
     }
 
 }

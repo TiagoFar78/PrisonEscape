@@ -6,7 +6,18 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class PlasticShovelItem extends ToolItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PlasticShovelItem extends ToolItem implements Craftable {
+
+    public PlasticShovelItem() {
+
+    }
+
+    public PlasticShovelItem(boolean useRandomDurability) {
+        super(useRandomDurability);
+    }
 
     @Override
     protected int usesAmount() {
@@ -40,6 +51,17 @@ public class PlasticShovelItem extends ToolItem {
     @Override
     public Material getMaterial() {
         return Material.STONE_SHOVEL;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new StickItem());
+        items.add(new DuctTapeItem());
+        items.add(new PlasticPlateItem());
+
+        return items;
     }
 
 }

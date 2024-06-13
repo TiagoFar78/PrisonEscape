@@ -6,7 +6,18 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class WrenchItem extends ToolItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class WrenchItem extends ToolItem implements Craftable {
+
+    public WrenchItem() {
+
+    }
+
+    public WrenchItem(boolean useRandomDurability) {
+        super(useRandomDurability);
+    }
 
     @Override
     protected int usesAmount() {
@@ -40,6 +51,16 @@ public class WrenchItem extends ToolItem {
     @Override
     public Material getMaterial() {
         return Material.IRON_PICKAXE;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new BoltsItem());
+        items.add(new MatchesItem());
+
+        return items;
     }
 
 }
