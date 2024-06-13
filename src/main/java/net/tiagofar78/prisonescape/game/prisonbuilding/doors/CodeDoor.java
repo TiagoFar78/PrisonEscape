@@ -15,8 +15,15 @@ public class CodeDoor extends Door {
         PEGame game = GameManager.getGame();
         boolean isOpened = isOpened();
 
-        if (game.isGuard(player))
-            return isOpened ? ClickDoorReturnAction.CLOSE_DOOR : ClickDoorReturnAction.NOTHING;
+        if (game.isGuard(player)) {
+            if (isOpened) {
+                game.changeDoorCode();
+                return ClickDoorReturnAction.CLOSE_DOOR;
+            }
+
+            return ClickDoorReturnAction.NOTHING;
+        }
+
 
         if (game.isPrisoner(player))
             return !isOpened && game.playersHaveDoorCode()

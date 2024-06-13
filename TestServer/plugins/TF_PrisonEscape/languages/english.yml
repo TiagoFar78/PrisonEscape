@@ -168,6 +168,7 @@ Messages:
     TradeRequestSent: "&eTrade request sent to &b{PLAYER}&e."
     TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
     CraftingItemsMissing: "&cYou are missing some items required to craft that item."
+    CodeFound: "&eSomeone found the main door code."
   Announcements:
     GameStarting:
     - "&6==================================="

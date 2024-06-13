@@ -35,6 +35,7 @@ public class Vault implements Clickable {
 
     private List<Item> _nonHiddenContents;
     private List<Item> _hiddenContents;
+    private Item _cursorItem;
 
     private Prisoner _owner;
 
@@ -43,6 +44,7 @@ public class Vault implements Clickable {
     public Vault(Prisoner owner, Location location) {
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
+        _cursorItem = new NullItem();
 
         _owner = owner;
 
@@ -99,19 +101,22 @@ public class Vault implements Clickable {
 
     private void clearContents(List<Item> contents, int size) {
         for (int i = 0; i < size; i++) {
-            contents.set(i, null);
+            contents.set(i, new NullItem());
         }
     }
 
     @Override
-    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, boolean clickedPlayerInv) {
         if (clickedPlayerInv) {
             int index = player.convertToInventoryIndex(slot);
             if (index == -1) {
                 return ClickReturnAction.NOTHING;
             }
 
-            player.setItem(index, itemHeld);
+            Item currentItem = player.getItemsInInventory().get(index);
+
+            player.setItem(index, _cursorItem);
+            _cursorItem = currentItem;
             return ClickReturnAction.CHANGE_HOLD_AND_SELECTED;
         }
 
@@ -122,8 +127,44 @@ public class Vault implements Clickable {
 
         boolean isHidden = isHiddenIndex(slot);
 
-        setItem(isHidden, itemIndex, itemHeld);
+        Item currentItem = isHidden ? _hiddenContents.get(itemIndex) : _nonHiddenContents.get(itemIndex);
+
+        setItem(isHidden, itemIndex, _cursorItem);
+        _cursorItem = currentItem;
         return ClickReturnAction.CHANGE_HOLD_AND_SELECTED;
+    }
+
+    @Override
+    public void close(PEPlayer player) {
+        player.setCursorItem(null);
+
+        if (_cursorItem.equals(new NullItem())) {
+            return;
+        }
+
+        if (player.giveItem(_cursorItem) != -1) {
+            _cursorItem = new NullItem();
+            player.updateInventory();
+            return;
+        }
+
+        for (int i = 0; i < _hiddenContents.size(); i++) {
+            if (_hiddenContents.get(i).equals(new NullItem())) {
+                setItem(false, i, _cursorItem);
+                _cursorItem = new NullItem();
+                return;
+            }
+        }
+
+        for (int i = 0; i < _nonHiddenContents.size(); i++) {
+            if (_nonHiddenContents.get(i).equals(new NullItem())) {
+                setItem(true, i, _cursorItem);
+                _cursorItem = new NullItem();
+                return;
+            }
+        }
+
+        throw new RuntimeException("There are more items in inventory + vault now than when it was opened");
     }
 
     private int convertToIndex(int slot) {
@@ -156,7 +197,7 @@ public class Vault implements Clickable {
     }
 
     private void createWorldSignAboveVault(Location location, String text) {
-        Block block = location.getBlock();
+        Block block = location.clone().add(0, 1, 0).getBlock();
         block.setType(Material.OAK_WALL_SIGN);
 
         rotate(block);
@@ -179,7 +220,7 @@ public class Vault implements Clickable {
         Location signLocation = _location.clone().add(0, 1, 0);
 
         vaultLocation.getBlock().setType(Material.AIR);
-        signLocation.clone().add(0, 1, 0).getBlock().setType(Material.AIR);
+        signLocation.getBlock().setType(Material.AIR);
     }
 
     @Override

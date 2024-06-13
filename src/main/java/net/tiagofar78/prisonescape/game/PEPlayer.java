@@ -398,6 +398,15 @@ public abstract class PEPlayer {
         player.closeInventory();
     }
 
+    public void setCursorItem(ItemStack item) {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.setItemOnCursor(item);
+    }
+
     public void playSound(Sound sound) {
         Player player = getBukkitPlayer();
         if (player == null) {

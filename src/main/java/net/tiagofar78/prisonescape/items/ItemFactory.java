@@ -1,7 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import org.bukkit.inventory.ItemStack;
-
 public class ItemFactory {
 
     private static Item[] items = {
@@ -42,16 +40,6 @@ public class ItemFactory {
             new RadarItem(),
             new OpenCamerasItem(),
             new MissionsItem()};
-
-    public static Item createItem(ItemStack bukkitItem) {
-        for (Item item : items) {
-            if (item.matches(bukkitItem)) {
-                return instantiateItem(item.getClass());
-            }
-        }
-
-        return new NullItem();
-    }
 
     public static Item createItem(String name) {
         for (Item item : items) {

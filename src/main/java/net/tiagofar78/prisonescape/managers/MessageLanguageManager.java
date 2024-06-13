@@ -149,6 +149,7 @@ public class MessageLanguageManager {
     private String _tradeRequestSentMessage;
     private String _tradeRequestReceivedMessage;
     private String _craftingItemsMissingMessage;
+    private String _codeFoundMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -305,6 +306,7 @@ public class MessageLanguageManager {
         _tradeRequestSentMessage = createMessage(messages.getString(warningPath + "TradeRequestSent"));
         _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
         _craftingItemsMissingMessage = createMessage(messages.getString(warningPath + "CraftingItemsMissing"));
+        _codeFoundMessage = createMessage(messages.getString(warningPath + "CodeFound"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -649,6 +651,10 @@ public class MessageLanguageManager {
 
     public String getCraftingItemsMissingMessage() {
         return _craftingItemsMissingMessage;
+    }
+
+    public String getCodeFoundMessage() {
+        return _codeFoundMessage;
     }
 
 //	########################################

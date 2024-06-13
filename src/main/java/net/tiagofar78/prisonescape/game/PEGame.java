@@ -710,7 +710,7 @@ public class PEGame {
         player.closeMenu();
     }
 
-    public ClickReturnAction playerClickMenu(String playerName, int slot, Item itemHeld, boolean clickedPlayerInv) {
+    public ClickReturnAction playerClickMenu(String playerName, int slot, boolean clickedPlayerInv) {
         PEPlayer player = getPEPlayer(playerName);
         if (player == null) {
             return ClickReturnAction.IGNORE;
@@ -718,10 +718,10 @@ public class PEGame {
 
         Clickable menu = player.getOpenedMenu();
         if (menu == null) {
-            return ClickReturnAction.IGNORE;
+            return ClickReturnAction.NOTHING;
         }
 
-        return menu.click(player, slot, itemHeld, clickedPlayerInv);
+        return menu.click(player, slot, clickedPlayerInv);
     }
 
     public void playerSneak(String playerName) {
@@ -1205,6 +1205,10 @@ public class PEGame {
 
     public void findDoorCode() {
         _hasDoorCode = true;
+    }
+
+    public void changeDoorCode() {
+        _hasDoorCode = false;
     }
 
 }
