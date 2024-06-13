@@ -43,7 +43,7 @@ public class DoorCodeItem extends FunctionalItem implements Craftable {
             BukkitMessageSender.sendChatMessage(prisoner, messages.getCodeFoundMessage());
         }
     }
-  
+
     @Override
     public List<Item> getCratingItems() {
         List<Item> items = new ArrayList<>();
