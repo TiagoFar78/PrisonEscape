@@ -68,7 +68,7 @@ public class Events implements Listener {
         }
 
         Player player = e.getPlayer();
-        game.playerMove(player.getName(), locTo);
+        game.playerMove(player.getName(), locTo, e);
     }
 
     @EventHandler

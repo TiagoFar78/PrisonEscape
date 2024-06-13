@@ -35,7 +35,7 @@ public class TrapItem extends FunctionalItem implements Buyable {
 
     @Override
     public Material getMaterial() {
-        return Material.COBWEB;
+        return Material.POWERED_RAIL;
     }
 
     @Override
@@ -48,13 +48,16 @@ public class TrapItem extends FunctionalItem implements Buyable {
         Player player = e.getPlayer();
         String playerName = player.getName();
 
-        Location loc = player.getLocation();
+        Location loc = e.getClickedBlock().getLocation();
 
         PEGame game = GameManager.getGame();
-        game.getPrison().addTrap(loc);
-        game.getPEPlayer(playerName).removeItem(player.getInventory().getHeldItemSlot());
-
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+        if (game.getPrison().addTrap(loc) != 0) {
+            BukkitMessageSender.sendChatMessage(playerName, messages.getCannotPlaceTrapMessage());
+            return;
+        }
+
+        game.getPEPlayer(playerName).removeItem(player.getInventory().getHeldItemSlot());
         BukkitMessageSender.sendChatMessage(playerName, messages.getTrapPlacedMessage());
     }
 

@@ -1,5 +1,5 @@
-PrisonersRatio: 0.73
-PoliceRatio: 0.27
+PrisonersRatio: 0.27
+PoliceRatio: 0.73
 MinPlayers: 1
 MaxPlayers: 11
 SecondsInSolitary: 30
@@ -30,6 +30,7 @@ HelicopterSpawnDelay: 10
 HelicopterDepartureDelay: 5
 SoundDetectorRange: 2.5
 RadarDuration: 10
+TrapDuration: 10
 TradeRequestTimeout: 15
 AvailableLanguages:
 - "english"

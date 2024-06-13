@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
@@ -417,8 +418,38 @@ public class PrisonBuilding {
         return _traps;
     }
 
-    public void addTrap(Location location) {
+    public int addTrap(Location location) {
+        Trap trap = new Trap(location);
+        if (!trap.wasPlaced()) {
+            return 1;
+        }
+
         _traps.add(new Trap(location));
+        return 0;
+    }
+
+    public void checkIfwalkedOverTrap(Location location, PEPlayer player) {
+        int locX = location.getBlockX();
+        int locY = location.getBlockY();
+        int locZ = location.getBlockZ();
+
+        for (Trap trap : _traps) {
+            Location trapLocation = trap.getLocation();
+            System.out.println(locY);
+            System.out.println(trapLocation);
+            
+            int trapX = trapLocation.getBlockX();
+            int trapY = trapLocation.getBlockY() - 1;
+            int trapZ = trapLocation.getBlockZ();
+            System.out.println(trapY);
+
+            if (trapX == locX && trapY == locY && trapZ == locZ) {
+                trap.triggerTrap(player);
+                _traps.remove(trap);
+                break;
+            }
+        }
+
     }
 
     public void deleteTraps() {

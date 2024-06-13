@@ -3,6 +3,7 @@ package net.tiagofar78.prisonescape.managers;
 import net.tiagofar78.prisonescape.PEResources;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.stringtemplate.v4.compiler.CodeGenerator.primary_return;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -139,6 +140,7 @@ public class MessageLanguageManager {
     private String _noCellPhoneCoverageMessage;
     private String _cameraPlacedMessage;
     private String _trapPlacedMessage;
+    private String _cannotPlaceTrapMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
     private String _soundDetectorPlacedMessage;
@@ -146,6 +148,8 @@ public class MessageLanguageManager {
     private String _tradeAlreadyAcceptedMessage;
     private String _tradeRequestSentMessage;
     private String _tradeRequestReceivedMessage;
+    private String _caughtInATrap;
+    private String _canNowMoveFreely;
 
 //	########################################
 //	#             Announcements            #
@@ -292,6 +296,7 @@ public class MessageLanguageManager {
         _noCellPhoneCoverageMessage = createMessage(messages.getString(warningPath + "NoCellPhoneCoverage"));
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
         _trapPlacedMessage = createMessage(messages.getString(warningPath + "TrapPlaced"));
+        _cannotPlaceTrapMessage = createMessage(messages.getString(warningPath + "CannotPlaceTrap"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
@@ -299,6 +304,8 @@ public class MessageLanguageManager {
         _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
         _tradeRequestSentMessage = createMessage(messages.getString(warningPath + "TradeRequestSent"));
         _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
+        _caughtInATrap = createMessage(messages.getString(warningPath + "CaughtInATrap"));
+        _canNowMoveFreely = createMessage(messages.getString(warningPath + "CanMoveFreely"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -605,6 +612,10 @@ public class MessageLanguageManager {
         return _trapPlacedMessage;
     }
 
+    public String getCannotPlaceTrapMessage() {
+        return _cannotPlaceTrapMessage;
+    }
+
     public String getNoCamerasPlacedMessage() {
         return _noCamerasPlacedMessage;
     }
@@ -631,6 +642,14 @@ public class MessageLanguageManager {
 
     public String getTradeRequestReceivedMessage(String playerName, int time) {
         return _tradeRequestReceivedMessage.replace("{PLAYER}", playerName).replace("{TIME}", Integer.toString(time));
+    }
+
+    public String getCaughtInATrapMessage(int time) {
+        return _caughtInATrap.replace("{TIME}", Integer.toString(time));
+    }
+
+    public String getCanMoveFreelyMessage() {
+        return _canNowMoveFreely;
     }
 
 //	########################################
