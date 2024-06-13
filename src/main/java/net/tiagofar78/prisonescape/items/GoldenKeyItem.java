@@ -2,7 +2,10 @@ package net.tiagofar78.prisonescape.items;
 
 import org.bukkit.Material;
 
-public class GoldenKeyItem extends Item {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GoldenKeyItem extends Item implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -17,5 +20,15 @@ public class GoldenKeyItem extends Item {
     @Override
     public Material getMaterial() {
         return Material.TORCH;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new GoldBarItem());
+        items.add(new MatchesItem());
+
+        return items;
     }
 }

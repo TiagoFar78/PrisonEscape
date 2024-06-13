@@ -95,6 +95,8 @@ Items:
     Name: "Cell Phone"
     Lore:
     - "&eCalls an escape helicopter to the roof"
+  CraftingMenu:
+    Name: "Crafting Menu"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -118,6 +120,12 @@ Inventory:
       Name: "&cYour partner didn't accept yet"
     AcceptedGlass:
       Name: "&aYour partner already accepted the trade"
+  Crafting:
+    Title: "Craft items"
+    MissingItemsWool:
+      Name: "&cMissing crafting items"
+    ConfirmCraftWool:
+      Name: "&aConfirm"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
@@ -159,6 +167,7 @@ Messages:
     TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
     TradeRequestSent: "&eTrade request sent to &b{PLAYER}&e."
     TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
+    CraftingItemsMissing: "&cYou are missing some items required to craft that item."
     CodeFound: "&eSomeone found the main door code."
   Announcements:
     GameStarting:

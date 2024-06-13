@@ -9,7 +9,10 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class DoorCodeItem extends FunctionalItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DoorCodeItem extends FunctionalItem implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -39,6 +42,18 @@ public class DoorCodeItem extends FunctionalItem {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(prisoner.getName());
             BukkitMessageSender.sendChatMessage(prisoner, messages.getCodeFoundMessage());
         }
+    }
+  
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new NotePartItem(1));
+        items.add(new NotePartItem(2));
+        items.add(new NotePartItem(3));
+        items.add(new NotePartItem(4));
+
+        return items;
     }
 
 }

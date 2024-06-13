@@ -172,6 +172,10 @@ public abstract class PEPlayer {
             return -1;
         }
 
+        return removeItemIndex(index);
+    }
+
+    public int removeItemIndex(int index) {
         _inventory.set(index, new NullItem());
         setItemBukkit(index, new NullItem());
         return 0;

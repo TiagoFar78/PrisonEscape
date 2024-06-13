@@ -16,6 +16,14 @@ public class NotePartItem extends Item {
         _number = new Random().nextInt(NOTES_AMOUNT) + 1;
     }
 
+    public NotePartItem(int number) {
+        if (number <= 0 || number > NOTES_AMOUNT) {
+            throw new IllegalArgumentException();
+        }
+
+        _number = number;
+    }
+
     @Override
     public boolean isMetalic() {
         return false;
@@ -34,6 +42,11 @@ public class NotePartItem extends Item {
     @Override
     public String getDisplayName(MessageLanguageManager messages) {
         return super.getDisplayName(messages).replace("{NUMBER}", Integer.toString(_number));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o) && _number == ((NotePartItem) o)._number;
     }
 
 }

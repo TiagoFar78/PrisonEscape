@@ -8,6 +8,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class PlasticSpoonItem extends ToolItem {
 
+    public PlasticSpoonItem() {
+
+    }
+
+    public PlasticSpoonItem(boolean useRandomDurability) {
+        super(useRandomDurability);
+    }
+
     @Override
     protected int usesAmount() {
         return 6;

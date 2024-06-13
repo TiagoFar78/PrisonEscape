@@ -96,6 +96,9 @@ public class MessageLanguageManager {
     private String _tradeAcceptedWoolName;
     private String _tradeNotAcceptedGlassName;
     private String _tradeAcceptedGlassName;
+    private String _craftingMenuTitle;
+    private String _missingItemsWoolName;
+    private String _confirmCraftWoolName;
 
 //	########################################
 //	#                 Chat                 #
@@ -145,6 +148,7 @@ public class MessageLanguageManager {
     private String _tradeAlreadyAcceptedMessage;
     private String _tradeRequestSentMessage;
     private String _tradeRequestReceivedMessage;
+    private String _craftingItemsMissingMessage;
     private String _codeFoundMessage;
 
 //	########################################
@@ -249,6 +253,9 @@ public class MessageLanguageManager {
         _tradeAcceptedWoolName = createMessage(messages.getString("Inventory.Trade.AcceptedWool.Name"));
         _tradeNotAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.NotAcceptedGlass.Name"));
         _tradeAcceptedGlassName = createMessage(messages.getString("Inventory.Trade.AcceptedGlass.Name"));
+        _craftingMenuTitle = createMessage(messages.getString("Inventory.Crafting.Title"));
+        _missingItemsWoolName = createMessage(messages.getString("Inventory.Crafting.MissingItemsWool.Name"));
+        _confirmCraftWoolName = createMessage(messages.getString("Inventory.Crafting.ConfirmCraftWool.Name"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -298,6 +305,7 @@ public class MessageLanguageManager {
         _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
         _tradeRequestSentMessage = createMessage(messages.getString(warningPath + "TradeRequestSent"));
         _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
+        _craftingItemsMissingMessage = createMessage(messages.getString(warningPath + "CraftingItemsMissing"));
         _codeFoundMessage = createMessage(messages.getString(warningPath + "CodeFound"));
 
         String announcementPath = messagePath + "Announcements.";
@@ -465,6 +473,18 @@ public class MessageLanguageManager {
         return _tradeAcceptedGlassName;
     }
 
+    public String getCraftingMenuTitle() {
+        return _craftingMenuTitle;
+    }
+
+    public String getMissingItemsWoolName() {
+        return _missingItemsWoolName;
+    }
+
+    public String getConfirmCraftWoolName() {
+        return _confirmCraftWoolName;
+    }
+
 //	########################################
 //	#                Chat                #
 //	########################################
@@ -627,6 +647,10 @@ public class MessageLanguageManager {
 
     public String getTradeRequestReceivedMessage(String playerName, int time) {
         return _tradeRequestReceivedMessage.replace("{PLAYER}", playerName).replace("{TIME}", Integer.toString(time));
+    }
+
+    public String getCraftingItemsMissingMessage() {
+        return _craftingItemsMissingMessage;
     }
 
     public String getCodeFoundMessage() {

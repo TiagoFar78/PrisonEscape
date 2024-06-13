@@ -7,7 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class CellPhoneItem extends FunctionalItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CellPhoneItem extends FunctionalItem implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -30,6 +33,17 @@ public class CellPhoneItem extends FunctionalItem {
         Location loc = player.getLocation();
 
         GameManager.getGame().playerCalledHelicopter(player.getName(), loc, player.getInventory().getHeldItemSlot());
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new BatteryItem());
+        items.add(new AntenaItem());
+        items.add(new CircuitBoardItem());
+
+        return items;
     }
 
 }
