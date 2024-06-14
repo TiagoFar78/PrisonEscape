@@ -1,10 +1,10 @@
 package net.tiagofar78.prisonescape.game.phases;
 
-public class Waiting extends Phase {
+public class Disabled extends Phase {
 
     @Override
     public Phase next() {
-        return new Ongoing();
+        return null;
     }
 
     @Override
@@ -14,16 +14,17 @@ public class Waiting extends Phase {
 
     @Override
     public boolean hasGameStarted() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean hasGameEnded() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isGameDisabled() {
-        return false;
+        return true;
     }
+
 }

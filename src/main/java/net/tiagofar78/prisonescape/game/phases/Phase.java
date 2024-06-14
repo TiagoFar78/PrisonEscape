@@ -10,4 +10,6 @@ public abstract class Phase {
 
     public abstract boolean hasGameEnded();
 
+    public abstract boolean isGameDisabled();
+
 }
