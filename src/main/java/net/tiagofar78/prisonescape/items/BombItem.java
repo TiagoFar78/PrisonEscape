@@ -1,11 +1,13 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -35,8 +37,12 @@ public class BombItem extends FunctionalItem implements Craftable {
             return;
         }
 
+        PEGame game = GameManager.getGame();
         Location blockLoc = getPlacedBlockLocation(block.getLocation(), e.getBlockFace());
-        GameManager.getGame().placeBomb(blockLoc);
+        game.placeBomb(blockLoc);
+
+        Player player = e.getPlayer();
+        game.getPEPlayer(player.getName()).removeItem(player.getInventory().getHeldItemSlot());
     }
 
     private Location getPlacedBlockLocation(Location blockLocation, BlockFace face) {
