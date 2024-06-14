@@ -118,6 +118,7 @@ public class PEGame {
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
         player.setKit(new TeamSelectorKit());
+        player.clearEffects();
 
         int maxPlayers = config.getMaxPlayers();
         int playerNumber = _playersOnLobby.size();
