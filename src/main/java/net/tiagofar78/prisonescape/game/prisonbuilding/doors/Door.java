@@ -11,8 +11,8 @@ public abstract class Door {
 
     private boolean _isOpen;
 
-    public Door() {
-        _isOpen = false;
+    public Door(Location location) {
+        close(location);
     }
 
     public boolean isOpened() {

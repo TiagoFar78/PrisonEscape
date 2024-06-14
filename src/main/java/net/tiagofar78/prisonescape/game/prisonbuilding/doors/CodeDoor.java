@@ -5,10 +5,12 @@ import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
+import org.bukkit.Location;
+
 public class CodeDoor extends Door {
 
-    public CodeDoor() {
-        super();
+    public CodeDoor(Location location) {
+        super(location);
     }
 
     public ClickDoorReturnAction click(PEPlayer player, Item itemHeld) {

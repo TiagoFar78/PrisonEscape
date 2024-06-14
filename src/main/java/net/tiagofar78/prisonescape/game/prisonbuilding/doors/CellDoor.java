@@ -10,6 +10,7 @@ public class CellDoor extends Door {
     private Location _location;
 
     public CellDoor(Location location) {
+        super(location);
         _location = location;
     }
 
