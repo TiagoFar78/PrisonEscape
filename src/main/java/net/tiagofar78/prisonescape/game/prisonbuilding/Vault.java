@@ -128,6 +128,7 @@ public class Vault implements Clickable {
         }
 
         player.setItem(index, new NullItem());
+        player.updateView();
         return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
     }
 
@@ -155,6 +156,7 @@ public class Vault implements Clickable {
         }
 
         contents.set(index, new NullItem());
+        player.updateView();
         return ClickReturnAction.DELETE_HOLD_AND_SELECTED;
     }
 
@@ -367,10 +369,9 @@ public class Vault implements Clickable {
             inv.setItem(i, glassItem);
         }
 
-        for (int i = 0; i < _nonHiddenContents.size(); i++) {
-            ItemStack item = _nonHiddenContents.get(i).toItemStack(messages);
-            inv.setItem(NON_HIDDEN_ITEMS_INDEXES[i], item);
-        }
+        placeNonHiddenContents(inv, messages);
+
+        placeTempContents(inv, messages);
 
         ItemStack hiddenIndicatorItem = createHiddenIndicatorItem(messages);
         for (int line = 4; line < 7; line++) {
@@ -380,10 +381,37 @@ public class Vault implements Clickable {
             }
         }
 
-        ItemStack hiddenItem = _hiddenContents.get(0).toItemStack(messages);
-        inv.setItem(HIDDEN_ITEM_INDEX, hiddenItem);
+        placeHiddenContents(inv, messages);
 
         return inv;
+    }
+
+    @Override
+    public void updateInventory(Inventory inv, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
+        placeNonHiddenContents(inv, messages);
+        placeHiddenContents(inv, messages);
+        placeTempContents(inv, messages);
+    }
+
+    private void placeNonHiddenContents(Inventory inv, MessageLanguageManager messages) {
+        for (int i = 0; i < _nonHiddenContents.size(); i++) {
+            ItemStack item = _nonHiddenContents.get(i).toItemStack(messages);
+            inv.setItem(NON_HIDDEN_ITEMS_INDEXES[i], item);
+        }
+    }
+
+    private void placeHiddenContents(Inventory inv, MessageLanguageManager messages) {
+        ItemStack hiddenItem = _hiddenContents.get(0).toItemStack(messages);
+        inv.setItem(HIDDEN_ITEM_INDEX, hiddenItem);
+    }
+
+    private void placeTempContents(Inventory inv, MessageLanguageManager messages) {
+        for (int i = 0; i < _tempContents.size(); i++) {
+            ItemStack item = _tempContents.get(i).toItemStack(messages);
+            inv.setItem(TEMP_ITEMS_INDEXES[i], item);
+        }
     }
 
     private static ItemStack createGlassItem() {
