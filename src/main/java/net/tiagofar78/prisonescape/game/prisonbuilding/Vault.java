@@ -227,17 +227,20 @@ public class Vault implements Clickable {
     }
 
     private boolean sendItemToNonHiddenList(PEPlayer player, Item item) {
-        String message = ""; // TODO
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+        String message = messages.getNoMoreNonHiddenSlotsMessage();
         return sendItemToVault(player, _nonHiddenContents, item, message);
     }
 
     private boolean sendItemToHiddenList(PEPlayer player, Item item) {
-        String message = ""; // TODO
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+        String message = messages.getNoMoreHiddenSlotsMessage();
         return sendItemToVault(player, _hiddenContents, item, message);
     }
 
     private boolean sendItemToTempList(PEPlayer player, Item item) {
-        String message = ""; // TODO
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+        String message = messages.getNoMoreTempSlotsMessage();
         return sendItemToVault(player, _tempContents, item, message);
     }
 
@@ -364,24 +367,16 @@ public class Vault implements Clickable {
         int lines = 6;
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
 
-        ItemStack glassItem = createGlassItem();
-        for (int i = 0; i < lines * 9; i++) {
-            inv.setItem(i, glassItem);
-        }
-
+        placeGrayGlasses(inv, lines);
         placeNonHiddenContents(inv, messages);
 
+        placeTempIndicatorGlasses(inv, lines, messages);
         placeTempContents(inv, messages);
 
-        ItemStack hiddenIndicatorItem = createHiddenIndicatorItem(messages);
-        for (int line = 4; line < 7; line++) {
-            for (int column = 4; column < 7; column++) {
-                int index = (line - 1) * 9 + (column - 1);
-                inv.setItem(index, hiddenIndicatorItem);
-            }
-        }
-
+        placeHiddenIndicatorGlasses(inv, lines, messages);
         placeHiddenContents(inv, messages);
+
+        placeInforTorchItem(inv, messages);
 
         return inv;
     }
@@ -414,22 +409,53 @@ public class Vault implements Clickable {
         }
     }
 
-    private static ItemStack createGlassItem() {
+    private void placeGrayGlasses(Inventory inv, int lines) {
         ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(" ");
         item.setItemMeta(itemMeta);
 
-        return item;
+        for (int i = 0; i < lines * 9; i++) {
+            inv.setItem(i, item);
+        }
     }
 
-    private static ItemStack createHiddenIndicatorItem(MessageLanguageManager messages) {
+    private void placeHiddenIndicatorGlasses(Inventory inv, int lines, MessageLanguageManager messages) {
         ItemStack item = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(messages.getVaultHiddenGlassName());
         item.setItemMeta(itemMeta);
 
-        return item;
+        for (int line = 4; line < 7; line++) {
+            for (int column = 4; column < 7; column++) {
+                int index = (line - 1) * 9 + (column - 1);
+                inv.setItem(index, item);
+            }
+        }
+    }
+
+    private void placeTempIndicatorGlasses(Inventory inv, int lines, MessageLanguageManager messages) {
+        ItemStack item = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(messages.getVaultTempGlassName());
+        item.setItemMeta(itemMeta);
+
+        for (int line = 1; line < 7; line++) {
+            for (int column = 7; column < 10; column++) {
+                int index = (line - 1) * 9 + (column - 1);
+                inv.setItem(index, item);
+            }
+        }
+    }
+
+    private void placeInforTorchItem(Inventory inv, MessageLanguageManager messages) {
+        ItemStack item = new ItemStack(Material.REDSTONE_TORCH);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(messages.getVaultInfoTorchName());
+        itemMeta.setLore(messages.getVaultInfoTorchLore());
+        item.setItemMeta(itemMeta);
+
+        inv.setItem(9 * 1 + 4, item);
     }
 
 }
