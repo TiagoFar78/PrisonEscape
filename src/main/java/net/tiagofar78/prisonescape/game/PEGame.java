@@ -40,6 +40,7 @@ import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -718,7 +719,7 @@ public class PEGame {
         player.closeMenu();
     }
 
-    public ClickReturnAction playerClickMenu(String playerName, int slot, boolean clickedPlayerInv) {
+    public ClickReturnAction playerClickMenu(String playerName, int slot, boolean isPlayerInv, ClickType type) {
         PEPlayer player = getPEPlayer(playerName);
         if (player == null) {
             return ClickReturnAction.IGNORE;
@@ -729,7 +730,7 @@ public class PEGame {
             return ClickReturnAction.NOTHING;
         }
 
-        return menu.click(player, slot, clickedPlayerInv);
+        return menu.click(player, slot, isPlayerInv, type);
     }
 
     public void playerSneak(String playerName) {

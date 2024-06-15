@@ -14,6 +14,7 @@ import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
@@ -40,10 +41,10 @@ public class Shop implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PEPlayer player, int slot, boolean clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, boolean isPlayerInv, ClickType type) {
         Guard guard = (Guard) player;
 
-        if (clickedPlayerInv) {
+        if (isPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
         int index = convertToIndex(slot);

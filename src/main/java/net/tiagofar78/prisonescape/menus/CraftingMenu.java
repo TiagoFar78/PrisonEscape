@@ -21,6 +21,7 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -131,8 +132,8 @@ public class CraftingMenu implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PEPlayer player, int slot, boolean clickedPlayerInv) {
-        if (clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, boolean isPlayerInv, ClickType type) {
+        if (isPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
 
