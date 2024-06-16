@@ -696,7 +696,7 @@ public class MessageLanguageManager {
     public String getCanMoveFreelyMessage() {
         return _canNowMoveFreely;
     }
-  
+
     public String getCraftingItemsMissingMessage() {
         return _craftingItemsMissingMessage;
     }
