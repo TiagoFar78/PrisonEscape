@@ -167,7 +167,7 @@ public class Events implements Listener {
         ItemStack cursor = e.getCursor();
         ItemStack current = e.getCurrentItem();
 
-        ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), isPlayerInv);
+        ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), isPlayerInv, e.getClick());
         if (returnAction == ClickReturnAction.IGNORE) {
             return;
         }

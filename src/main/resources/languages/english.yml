@@ -106,6 +106,20 @@ Inventory:
     Title: "Personal Storage"
     HiddenGlass:
       Name: "&cHidden"
+    TempGlass:
+      Name: "&eTemporary"
+    InfoTorch:
+      Name: "&fInfo"
+      Lore:
+      - ""
+      - "&8Left click to put items" 
+      - "&8in non hiden slots."
+      - ""
+      - "&cRight click to put items"
+      - "&cin hiden slots."
+      - ""
+      - "&eShift + Left click to put"
+      - "&eitems in temporary slots."
   Chest:
     Title: "Container"
   Trade:
@@ -169,6 +183,9 @@ Messages:
     TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
     CraftingItemsMissing: "&cYou are missing some items required to craft that item."
     CodeFound: "&eSomeone found the main door code."
+    NoMoreNonHiddenSlots: "&cThere isn't any non hidden slot available."
+    NoMoreHiddenSlots: "&cThere isn't any hidden slot available."
+    NoMoreTempSlots: "&cThere isn't any temporary slot available."
   Announcements:
     GameStarting:
     - "&6==================================="

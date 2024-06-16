@@ -90,6 +90,9 @@ public class MessageLanguageManager {
     private String _containerName;
     private String _vaultTitle;
     private String _vaultHiddenGlassName;
+    private String _vaultTempGlassName;
+    private String _vaultInfoTorchName;
+    private List<String> _vaultInfoTorchLore;
     private String _tradeTitle;
     private String _tradeInvalidWoolName;
     private String _tradeAcceptWoolName;
@@ -150,6 +153,9 @@ public class MessageLanguageManager {
     private String _tradeRequestReceivedMessage;
     private String _craftingItemsMissingMessage;
     private String _codeFoundMessage;
+    private String _noMoreNonHiddenSlotsMessage;
+    private String _noMoreHiddenSlotsMessage;
+    private String _noMoreTempSlotsMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -247,6 +253,9 @@ public class MessageLanguageManager {
         _containerName = createMessage(messages.getString("Inventory.Chest.Title"));
         _vaultTitle = createMessage(messages.getString("Inventory.Vault.Title"));
         _vaultHiddenGlassName = createMessage(messages.getString("Inventory.Vault.HiddenGlass.Name"));
+        _vaultTempGlassName = createMessage(messages.getString("Inventory.Vault.TempGlass.Name"));
+        _vaultInfoTorchName = createMessage(messages.getString("Inventory.Vault.InfoTorch.Name"));
+        _vaultInfoTorchLore = createMessage(messages.getStringList("Inventory.Vault.InfoTorch.Lore"));
         _tradeTitle = createMessage(messages.getString("Inventory.Trade.Title"));
         _tradeInvalidWoolName = createMessage(messages.getString("Inventory.Trade.InvalidWool.Name"));
         _tradeAcceptWoolName = createMessage(messages.getString("Inventory.Trade.AcceptWool.Name"));
@@ -307,6 +316,9 @@ public class MessageLanguageManager {
         _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
         _craftingItemsMissingMessage = createMessage(messages.getString(warningPath + "CraftingItemsMissing"));
         _codeFoundMessage = createMessage(messages.getString(warningPath + "CodeFound"));
+        _noMoreNonHiddenSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreNonHiddenSlots"));
+        _noMoreHiddenSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreHiddenSlots"));
+        _noMoreTempSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreTempSlots"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -447,6 +459,18 @@ public class MessageLanguageManager {
 
     public String getVaultHiddenGlassName() {
         return _vaultHiddenGlassName;
+    }
+
+    public String getVaultTempGlassName() {
+        return _vaultTempGlassName;
+    }
+
+    public String getVaultInfoTorchName() {
+        return _vaultInfoTorchName;
+    }
+
+    public List<String> getVaultInfoTorchLore() {
+        return new ArrayList<>(_vaultInfoTorchLore);
     }
 
     public String getTradeTitle() {
@@ -655,6 +679,18 @@ public class MessageLanguageManager {
 
     public String getCodeFoundMessage() {
         return _codeFoundMessage;
+    }
+
+    public String getNoMoreNonHiddenSlotsMessage() {
+        return _noMoreNonHiddenSlotsMessage;
+    }
+
+    public String getNoMoreHiddenSlotsMessage() {
+        return _noMoreHiddenSlotsMessage;
+    }
+
+    public String getNoMoreTempSlotsMessage() {
+        return _noMoreTempSlotsMessage;
     }
 
 //	########################################
