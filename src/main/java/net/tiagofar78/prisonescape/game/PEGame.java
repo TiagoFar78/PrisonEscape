@@ -564,8 +564,6 @@ public class PEGame {
             soundDetector.playerMoved(player, loc);
         }
 
-        _prison.checkIfwalkedOverTrap(loc, player); // delete this one later
-
         if (!isPrisoner(player)) {
             return;
         }
