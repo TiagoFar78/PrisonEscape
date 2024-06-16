@@ -5,6 +5,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitSoundBoard;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.phases.Disabled;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
@@ -118,6 +119,7 @@ public class PEGame {
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
         player.setKit(new TeamSelectorKit());
+        player.clearEffects();
 
         int maxPlayers = config.getMaxPlayers();
         int playerNumber = _playersOnLobby.size();
@@ -417,6 +419,12 @@ public class PEGame {
     }
 
     private void disableGame() {
+        if (_phase.isGameDisabled()) {
+            return;
+        }
+
+        _phase = new Disabled();
+
         for (PEPlayer player : _playersOnLobby) {
             teleportToLeavingLocation(player);
             player.removeScoreboard();

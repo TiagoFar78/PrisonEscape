@@ -19,7 +19,7 @@ public class GoldenKeyItem extends Item implements Craftable {
 
     @Override
     public Material getMaterial() {
-        return Material.TORCH;
+        return Material.BLAZE_ROD;
     }
 
     @Override

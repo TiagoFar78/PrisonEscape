@@ -369,6 +369,17 @@ public abstract class PEPlayer {
         player.addPotionEffect(new PotionEffect(effect, ticksDuration, level));
     }
 
+    public void clearEffects() {
+        Player player = Bukkit.getPlayer(getName());
+        if (player == null || !player.isOnline()) {
+            return;
+        }
+
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
+    }
+
     private void setItemBukkit(int index, Item item) {
         Player bukkitPlayer = Bukkit.getPlayer(getName());
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
