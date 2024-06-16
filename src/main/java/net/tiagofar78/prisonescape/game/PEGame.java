@@ -90,9 +90,9 @@ public class PEGame {
         return _prison;
     }
 
-    // #########################################
-    // # Lobby #
-    // #########################################
+//	#########################################
+//	#                 Lobby                 #
+//	#########################################
 
     /**
      * @return 0 if success<br>
@@ -255,9 +255,9 @@ public class PEGame {
         return _policeTeam;
     }
 
-    // ########################################
-    // # Admin zone #
-    // ########################################
+//	########################################
+//	#              Admin zone              #
+//	########################################
 
     /**
      * @return 0 if successful<br>
@@ -290,9 +290,9 @@ public class PEGame {
         return 0;
     }
 
-    // ########################################
-    // # Phases #
-    // ########################################
+//	########################################
+//	#                Phases                #
+//	########################################
 
     private void startWaitingPhase() {
         _phase = new Waiting();
@@ -424,8 +424,7 @@ public class PEGame {
         }
 
         _prison.deleteVaults();
-        _prison.deleteCameras();
-        _prison.deleteSoundDetectors();
+        _prison.deletePlaceables();
 
         _bossBar.removeAll();
 
@@ -436,9 +435,9 @@ public class PEGame {
         _bossBar.setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
     }
 
-    // ########################################
-    // # Time #
-    // ########################################
+//	########################################
+//	#                 Time                 #
+//	########################################
 
     private void startDay() {
         if (_phase.isClockStopped()) {
@@ -542,9 +541,9 @@ public class PEGame {
         _bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
     }
 
-    // ########################################
-    // # Events #
-    // ########################################
+//	########################################
+//	#                Events                #
+//	########################################
 
     public void playerMove(String playerName, Location loc, PlayerMoveEvent e) {
         PEPlayer player = getPEPlayer(playerName);
@@ -774,9 +773,9 @@ public class PEGame {
         _prison.removeExplodedBlocks(explodedBlocks);
     }
 
-    // ########################################
-    // # Events Results #
-    // ########################################
+//	########################################
+//	#            Events Results            #
+//	########################################
 
     public void playerEscaped(Prisoner player) {
         player.escaped();
@@ -1100,9 +1099,9 @@ public class PEGame {
         return 0;
     }
 
-    // ########################################
-    // # Util #
-    // ########################################
+//	########################################
+//	#                 Util                 #
+//	########################################
 
     public PEPlayer getPEPlayer(String playerName) {
         for (PEPlayer player : _playersOnLobby) {
@@ -1179,9 +1178,9 @@ public class PEGame {
         _playersOnLobby = newLobbyPlayers;
     }
 
-    // #########################################
-    // # Locations #
-    // #########################################
+//	#########################################
+//	#               Locations               #
+//	#########################################
 
     private void teleportPoliceToSpawnPoint(PEPlayer player) {
         int playerIndex = _policeTeam.getPlayerIndex(player);
@@ -1205,9 +1204,9 @@ public class PEGame {
         BukkitTeleporter.teleport(player, ConfigManager.getInstance().getLeavingLocation());
     }
 
-    // #########################################
-    // # DoorCode #
-    // #########################################
+//	#########################################
+//	#                DoorCode               #
+//	#########################################
 
     public boolean playersHaveDoorCode() {
         return _hasDoorCode;

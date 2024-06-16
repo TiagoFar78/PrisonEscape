@@ -3,7 +3,6 @@ package net.tiagofar78.prisonescape.managers;
 import net.tiagofar78.prisonescape.PEResources;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.stringtemplate.v4.compiler.CodeGenerator.primary_return;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

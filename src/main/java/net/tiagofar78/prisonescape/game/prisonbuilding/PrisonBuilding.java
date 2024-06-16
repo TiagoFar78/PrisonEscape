@@ -371,6 +371,16 @@ public class PrisonBuilding {
     }
 
 //  #########################################
+//  #              Placeables               #
+//  #########################################
+
+    public void deletePlaceables() {
+        deleteCameras();
+        deleteSoundDetectors();
+        deleteTraps();
+    }
+
+//  #########################################
 //  #                Cameras                #
 //  #########################################
 
@@ -382,7 +392,7 @@ public class PrisonBuilding {
         _cameras.add(new Camera(location));
     }
 
-    public void deleteCameras() {
+    private void deleteCameras() {
         for (Camera camera : _cameras) {
             camera.delete();
         }
@@ -404,7 +414,7 @@ public class PrisonBuilding {
         return _soundDetectors;
     }
 
-    public void deleteSoundDetectors() {
+    private void deleteSoundDetectors() {
         for (SoundDetector soundDetector : _soundDetectors) {
             soundDetector.delete();
         }
@@ -435,15 +445,11 @@ public class PrisonBuilding {
 
         for (Trap trap : _traps) {
             Location trapLocation = trap.getLocation();
-            System.out.println(locY);
-            System.out.println(trapLocation);
-            
             int trapX = trapLocation.getBlockX();
-            int trapY = trapLocation.getBlockY() - 1;
+            int trapY = trapLocation.getBlockY();
             int trapZ = trapLocation.getBlockZ();
-            System.out.println(trapY);
 
-            if (trapX == locX && trapY == locY && trapZ == locZ) {
+            if (trapX == locX && (trapY - 1 <= locY || locY <= trapY) && trapZ == locZ) {
                 trap.triggerTrap(player);
                 _traps.remove(trap);
                 break;
@@ -452,7 +458,7 @@ public class PrisonBuilding {
 
     }
 
-    public void deleteTraps() {
+    private void deleteTraps() {
         for (Trap trap : _traps) {
             trap.delete();
         }

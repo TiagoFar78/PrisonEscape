@@ -15,6 +15,7 @@ public class Trap {
     private Location _location;
     private boolean _caughtAPrisoner;
     private boolean _placed;
+    private Block trap;
 
     private static final int TICKS_PER_SECOND = 20;
 
@@ -33,20 +34,17 @@ public class Trap {
     }
 
     public void create() {
-        Block blockAbove = _location.add(0,1,0).getBlock();
-        if (!blockAbove.getType().equals(Material.AIR)) {
+        trap = _location.clone().add(0, 1, 0).getBlock();
+        if (!trap.getType().equals(Material.AIR)) {
             _placed = false;
             return;
         }
-        blockAbove.setType(Material.POWERED_RAIL);
-        System.out.println("localizaçao onde aaaa");
-        System.out.println(_location);
-        System.out.println("aaaaaaaaaaaaaaaaa");
+        trap.setType(Material.POWERED_RAIL);
         _placed = true;
     }
 
     public void delete() {
-        _location.getBlock().setType(Material.AIR);
+        trap.setType(Material.AIR);
     }
 
     public void triggerTrap(PEPlayer player) {
@@ -68,7 +66,7 @@ public class Trap {
             }
         }, trapDuration * TICKS_PER_SECOND);
 
-        delete();
+        this.delete();
     }
 
 }
