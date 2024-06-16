@@ -13,6 +13,7 @@ import net.tiagofar78.prisonescape.menus.Clickable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -82,8 +83,8 @@ public class Chest implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv) {
-        if (clickedPlayerInv) {
+    public ClickReturnAction click(PEPlayer player, int slot, boolean isPlayerInv, ClickType type) {
+        if (isPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
 

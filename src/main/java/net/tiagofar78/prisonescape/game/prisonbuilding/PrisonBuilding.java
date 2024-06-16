@@ -105,19 +105,19 @@ public class PrisonBuilding {
         _doors = new Hashtable<>();
         for (Location loc : config.getGoldenDoorsLocations()) {
             Location referenceLoc = loc.add(reference);
-            GoldenDoor goldenDoor = new GoldenDoor();
+            GoldenDoor goldenDoor = new GoldenDoor(referenceLoc);
             _doors.put(referenceLoc, goldenDoor);
             _doors.put(referenceLoc.clone().add(0, 1, 0), goldenDoor);
         }
         for (Location loc : config.getGrayDoorsLocations()) {
             Location referenceLoc = loc.add(reference);
-            GrayDoor grayDoor = new GrayDoor();
+            GrayDoor grayDoor = new GrayDoor(referenceLoc);
             _doors.put(referenceLoc, grayDoor);
             _doors.put(referenceLoc.clone().add(0, 1, 0), grayDoor);
         }
         for (Location loc : config.getCodeDoorsLocations()) {
             Location referenceLoc = loc.add(reference);
-            CodeDoor codeDoor = new CodeDoor();
+            CodeDoor codeDoor = new CodeDoor(referenceLoc);
             _doors.put(referenceLoc, codeDoor);
             _doors.put(referenceLoc.clone().add(0, 1, 0), codeDoor);
         }

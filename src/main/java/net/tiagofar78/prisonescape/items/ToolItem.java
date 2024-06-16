@@ -17,6 +17,14 @@ public abstract class ToolItem extends Item {
 
     private double _durability = durabilityPerUse() * randomUsesAmount();
 
+    public ToolItem() {
+        this(true);
+    }
+
+    public ToolItem(boolean useRandomDurability) {
+        _durability = (useRandomDurability ? randomUsesAmount() : usesAmount()) * durabilityPerUse();
+    }
+
     @Override
     public boolean isTool() {
         return true;

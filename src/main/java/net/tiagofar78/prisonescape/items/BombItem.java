@@ -1,14 +1,19 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class BombItem extends FunctionalItem {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BombItem extends FunctionalItem implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -32,8 +37,12 @@ public class BombItem extends FunctionalItem {
             return;
         }
 
+        PEGame game = GameManager.getGame();
         Location blockLoc = getPlacedBlockLocation(block.getLocation(), e.getBlockFace());
-        GameManager.getGame().placeBomb(blockLoc);
+        game.placeBomb(blockLoc);
+
+        Player player = e.getPlayer();
+        game.getPEPlayer(player.getName()).removeItem(player.getInventory().getHeldItemSlot());
     }
 
     private Location getPlacedBlockLocation(Location blockLocation, BlockFace face) {
@@ -53,6 +62,18 @@ public class BombItem extends FunctionalItem {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new CircuitBoardItem());
+        items.add(new OilItem());
+        items.add(new DuctTapeItem());
+        items.add(new BoltsItem());
+
+        return items;
     }
 
 }

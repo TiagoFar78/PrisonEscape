@@ -2,7 +2,10 @@ package net.tiagofar78.prisonescape.items;
 
 import org.bukkit.Material;
 
-public class GrayKeyItem extends Item {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GrayKeyItem extends Item implements Craftable {
 
     @Override
     public boolean isMetalic() {
@@ -17,5 +20,16 @@ public class GrayKeyItem extends Item {
     @Override
     public Material getMaterial() {
         return Material.LEVER;
+    }
+
+    @Override
+    public List<Item> getCratingItems() {
+        List<Item> items = new ArrayList<>();
+
+        items.add(new BoltsItem());
+        items.add(new DuctTapeItem());
+        items.add(new MatchesItem());
+
+        return items;
     }
 }

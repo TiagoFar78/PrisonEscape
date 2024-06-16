@@ -16,7 +16,7 @@ public class BukkitTeleporter {
             return;
         }
 
-        bukkitPlayer.teleport(loc.add(0, CENTER_OF_BLOCK, 0));
+        bukkitPlayer.teleport(loc.clone().add(CENTER_OF_BLOCK, 0, CENTER_OF_BLOCK));
     }
 
 }

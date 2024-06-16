@@ -142,7 +142,7 @@ PrisonersSecretPassagesLocation:
       Z: 8
     Value:
       X: 0
-      Y: 83
+      Y: 82
       Z: 5
   "2":
     Key:
@@ -151,7 +151,7 @@ PrisonersSecretPassagesLocation:
       Z: 2
     Value:
       X: 0
-      Y: 83
+      Y: 82
       Z: 0
   "3":
     Key:
@@ -160,7 +160,7 @@ PrisonersSecretPassagesLocation:
       Z: -4
     Value:
       X: 0
-      Y: 83
+      Y: 82
       Z: -5
   "4":
     Key:
@@ -169,7 +169,7 @@ PrisonersSecretPassagesLocation:
       Z: -10
     Value:
       X: 0
-      Y: 83
+      Y: 82
       Z: -10
   "5":
     Key:
@@ -1257,6 +1257,7 @@ ChestsContents:
     Stick: 0.005
     PlasticPlate: 0.01
     Copper: 0.01
+    GoldBar: 0.01
     Battery: 0.005
     NotePart: 0.01
     EnergyDrink: 0.1
@@ -1270,6 +1271,7 @@ ChestsContents:
     Stick: 0.005
     PlasticPlate: 0.01
     Copper: 0.01
+    GoldBar: 0.01
     Battery: 0.005
     NotePart: 0.01
     EnergyDrink: 0.1
@@ -1283,6 +1285,7 @@ ChestsContents:
     Stick: 0.005
     PlasticPlate: 0.01
     Copper: 0.05
+    GoldBar: 0.03
     Antena: 0.025
     Battery: 0.025
     NotePart: 0.05
@@ -1300,6 +1303,7 @@ ChestsContents:
     Stick: 0.025
     PlasticPlate: 0.01
     Copper: 0.01
+    GoldBar: 0.01
     Battery: 0.005
     NotePart: 0.01
     EnergyDrink: 0.1
@@ -1314,6 +1318,7 @@ ChestsContents:
     PlasticPlate: 0.05
     MetalPlate: 0.01
     Copper: 0.01
+    GoldBar: 0.01
     Battery: 0.005
     NotePart: 0.01
     EnergyDrink: 0.1
@@ -1329,6 +1334,7 @@ ChestsContents:
     PlasticPlate: 0.1
     MetalPlate: 0.01
     Copper: 0.01
+    GoldBar: 0.01
     Battery: 0.005
     NotePart: 0.01
     EnergyDrink: 0.1
@@ -1342,6 +1348,7 @@ ChestsContents:
     Stick: 0.005
     PlasticPlate: 0.01
     Copper: 0.01
+    GoldBar: 0.01
     Battery: 0.005
     NotePart: 0.01
     EnergyDrink: 0.1

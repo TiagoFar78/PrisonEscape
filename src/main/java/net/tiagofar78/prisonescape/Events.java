@@ -3,13 +3,11 @@ package net.tiagofar78.prisonescape;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -25,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -38,13 +37,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class Events implements Listener {
 
     private static final EntityType[] ALLOWED_MOBS =
-            {EntityType.PRIMED_TNT, EntityType.PAINTING, EntityType.ARMOR_STAND};
+            {EntityType.PRIMED_TNT, EntityType.PAINTING, EntityType.ARMOR_STAND, EntityType.ITEM_FRAME};
 
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
@@ -156,35 +154,20 @@ public class Events implements Listener {
         }
 
         Player player = (Player) e.getWhoClicked();
-        boolean isPlayerInv = false;
-        if (e.getClickedInventory().getType() == InventoryType.PLAYER) {
-            Inventory topInv = e.getView().getTopInventory();
-            if (topInv == null) {
+        boolean isPlayerInv = e.getClickedInventory().getType() == InventoryType.PLAYER;
+
+        if (isPlayerInv && e.getAction() == InventoryAction.DROP_ONE_SLOT) {
+            if (game.playerDropItem(player.getName(), e.getSlot()) == -1) {
                 e.setCancelled(true);
-                return;
             }
 
-            if (e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE) {
-                e.setCancelled(true);
-                return;
-            }
-
-            if (e.getAction() == InventoryAction.DROP_ALL_SLOT || e.getAction() == InventoryAction.DROP_ONE_SLOT) {
-                int slot = e.getSlot();
-                if (game.playerDropItem(player.getName(), slot) == -1) {
-                    e.setCancelled(true);
-                }
-                return;
-            }
-
-            isPlayerInv = true;
+            return;
         }
 
         ItemStack cursor = e.getCursor();
         ItemStack current = e.getCurrentItem();
 
-        Item item = ItemFactory.createItem(e.getCursor());
-        ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), item, isPlayerInv);
+        ClickReturnAction returnAction = game.playerClickMenu(player.getName(), e.getSlot(), isPlayerInv, e.getClick());
         if (returnAction == ClickReturnAction.IGNORE) {
             return;
         }
@@ -270,6 +253,17 @@ public class Events implements Listener {
     }
 
     @EventHandler
+    public void onBlockHangingBreak(HangingBreakEvent e) {
+        EntityType type = e.getEntity().getType();
+        for (EntityType mobType : ALLOWED_MOBS) {
+            if (mobType == type) {
+                e.setCancelled(true);
+                break;
+            }
+        }
+    }
+
+    @EventHandler
     public void onExplosion(EntityExplodeEvent e) {
         if (!e.getEntity().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
             return;
@@ -295,7 +289,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerCombat(EntityDamageByEntityEvent e) {
-        if (GameManager.getGame() == null) {
+        PEGame game = GameManager.getGame();
+        if (game == null) {
             return;
         }
 
@@ -304,10 +299,18 @@ public class Events implements Listener {
             return;
         }
 
+        EntityType type = e.getEntity().getType();
+        for (EntityType mobType : ALLOWED_MOBS) {
+            if (mobType == type) {
+                e.setCancelled(true);
+                break;
+            }
+        }
+
         Player pAttacker = (Player) eAttacker;
 
-        @SuppressWarnings("deprecation")
-        Item item = ItemFactory.createItem(pAttacker.getItemInHand());
+        String attackerName = pAttacker.getName();
+        Item item = game.getPEPlayer(attackerName).getItemAt(pAttacker.getInventory().getHeldItemSlot());
 
         if (item.isFunctional()) {
             ((FunctionalItem) item).use(e);

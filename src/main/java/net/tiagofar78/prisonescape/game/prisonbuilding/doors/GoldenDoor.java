@@ -6,10 +6,12 @@ import net.tiagofar78.prisonescape.items.GoldenKeyItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
+import org.bukkit.Location;
+
 public class GoldenDoor extends Door {
 
-    public GoldenDoor() {
-        super();
+    public GoldenDoor(Location location) {
+        super(location);
     }
 
     public ClickDoorReturnAction click(PEPlayer player, Item itemHeld) {

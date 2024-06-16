@@ -11,6 +11,7 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -104,13 +105,8 @@ public class TradeMenu implements Clickable {
     }
 
     @Override
-    public ClickReturnAction click(
-            PEPlayer player,
-            int slot,
-            Item itemHeld,
-            boolean clickedPlayerInv
-    ) {
-        return clickedPlayerInv ? clickPlayerInv(player, slot) : clickViewInv(player, slot);
+    public ClickReturnAction click(PEPlayer player, int slot, boolean isPlayerInv, ClickType type) {
+        return isPlayerInv ? clickPlayerInv(player, slot) : clickViewInv(player, slot);
     }
 
     private ClickReturnAction clickPlayerInv(PEPlayer player, int slot) {

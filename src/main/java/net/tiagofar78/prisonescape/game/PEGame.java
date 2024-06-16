@@ -5,6 +5,7 @@ import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitSoundBoard;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.phases.Disabled;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
@@ -39,6 +40,7 @@ import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -119,6 +121,7 @@ public class PEGame {
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
         player.setKit(new TeamSelectorKit());
+        player.clearEffects();
 
         int maxPlayers = config.getMaxPlayers();
         int playerNumber = _playersOnLobby.size();
@@ -418,6 +421,12 @@ public class PEGame {
     }
 
     private void disableGame() {
+        if (_phase.isGameDisabled()) {
+            return;
+        }
+
+        _phase = new Disabled();
+
         for (PEPlayer player : _playersOnLobby) {
             teleportToLeavingLocation(player);
             player.removeScoreboard();
@@ -717,7 +726,7 @@ public class PEGame {
         player.closeMenu();
     }
 
-    public ClickReturnAction playerClickMenu(String playerName, int slot, Item itemHeld, boolean clickedPlayerInv) {
+    public ClickReturnAction playerClickMenu(String playerName, int slot, boolean isPlayerInv, ClickType type) {
         PEPlayer player = getPEPlayer(playerName);
         if (player == null) {
             return ClickReturnAction.IGNORE;
@@ -725,10 +734,10 @@ public class PEGame {
 
         Clickable menu = player.getOpenedMenu();
         if (menu == null) {
-            return ClickReturnAction.IGNORE;
+            return ClickReturnAction.NOTHING;
         }
 
-        return menu.click(player, slot, itemHeld, clickedPlayerInv);
+        return menu.click(player, slot, isPlayerInv, type);
     }
 
     public void playerSneak(String playerName) {
@@ -1212,6 +1221,10 @@ public class PEGame {
 
     public void findDoorCode() {
         _hasDoorCode = true;
+    }
+
+    public void changeDoorCode() {
+        _hasDoorCode = false;
     }
 
 }

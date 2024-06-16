@@ -95,6 +95,8 @@ Items:
     Name: "Cell Phone"
     Lore:
     - "&eCalls an escape helicopter to the roof"
+  CraftingMenu:
+    Name: "Crafting Menu"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -104,6 +106,20 @@ Inventory:
     Title: "Personal Storage"
     HiddenGlass:
       Name: "&cHidden"
+    TempGlass:
+      Name: "&eTemporary"
+    InfoTorch:
+      Name: "&fInfo"
+      Lore:
+      - ""
+      - "&8Left click to put items" 
+      - "&8in non hiden slots."
+      - ""
+      - "&cRight click to put items"
+      - "&cin hiden slots."
+      - ""
+      - "&eShift + Left click to put"
+      - "&eitems in temporary slots."
   Chest:
     Title: "Container"
   Trade:
@@ -118,6 +134,12 @@ Inventory:
       Name: "&cYour partner didn't accept yet"
     AcceptedGlass:
       Name: "&aYour partner already accepted the trade"
+  Crafting:
+    Title: "Craft items"
+    MissingItemsWool:
+      Name: "&cMissing crafting items"
+    ConfirmCraftWool:
+      Name: "&aConfirm"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
@@ -163,6 +185,11 @@ Messages:
     TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
     CaughtInATrap: "&eYou have been caught in a trap. You can move again in &b{TIME} seconds"
     CanMoveFreely: "&eYou can now move freely"
+    CraftingItemsMissing: "&cYou are missing some items required to craft that item."
+    CodeFound: "&eSomeone found the main door code."
+    NoMoreNonHiddenSlots: "&cThere isn't any non hidden slot available."
+    NoMoreHiddenSlots: "&cThere isn't any hidden slot available."
+    NoMoreTempSlots: "&cThere isn't any temporary slot available."
   Announcements:
     GameStarting:
     - "&6==================================="

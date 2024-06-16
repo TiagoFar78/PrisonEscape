@@ -129,6 +129,10 @@ public abstract class PEPlayer {
 //	#               Inventory               #
 //	#########################################
 
+    public List<Item> getItemsInInventory() {
+        return _inventory;
+    }
+
     public Item getItemAt(int slot) {
         Item item = _currentKit.getItemAt(slot);
         if (item != null) {
@@ -186,6 +190,10 @@ public abstract class PEPlayer {
             return -1;
         }
 
+        return removeItemIndex(index);
+    }
+
+    public int removeItemIndex(int index) {
         _inventory.set(index, new NullItem());
         setItemBukkit(index, new NullItem());
         return 0;
@@ -379,6 +387,17 @@ public abstract class PEPlayer {
         player.addPotionEffect(new PotionEffect(effect, ticksDuration, level));
     }
 
+    public void clearEffects() {
+        Player player = Bukkit.getPlayer(getName());
+        if (player == null || !player.isOnline()) {
+            return;
+        }
+
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
+    }
+
     private void setItemBukkit(int index, Item item) {
         Player bukkitPlayer = Bukkit.getPlayer(getName());
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
@@ -406,6 +425,15 @@ public abstract class PEPlayer {
         }
 
         player.closeInventory();
+    }
+
+    public void setCursorItem(ItemStack item) {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.setItemOnCursor(item);
     }
 
     public void playSound(Sound sound) {

@@ -1,9 +1,9 @@
 package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 
 public interface Clickable {
@@ -18,6 +18,6 @@ public interface Clickable {
         // Nothing
     }
 
-    public abstract ClickReturnAction click(PEPlayer player, int slot, Item itemHeld, boolean clickedPlayerInv);
+    public abstract ClickReturnAction click(PEPlayer player, int slot, boolean isPlayerInv, ClickType type);
 
 }

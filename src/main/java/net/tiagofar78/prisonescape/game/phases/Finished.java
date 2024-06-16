@@ -4,7 +4,7 @@ public class Finished extends Phase {
 
     @Override
     public Phase next() {
-        return null;
+        return new Disabled();
     }
 
     @Override
@@ -20,5 +20,10 @@ public class Finished extends Phase {
     @Override
     public boolean hasGameEnded() {
         return true;
+    }
+
+    @Override
+    public boolean isGameDisabled() {
+        return false;
     }
 }
