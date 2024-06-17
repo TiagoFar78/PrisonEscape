@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game.prisonbuilding;
+package net.tiagofar78.prisonescape.game.prisonbuilding.placeables;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.game.Guard;

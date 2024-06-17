@@ -33,6 +33,7 @@ public abstract class PEPlayer {
 
     private String _name;
     private boolean _isOnline;
+    private boolean _canMove;
     private List<Item> _inventory;
     private Kit _currentKit;
     private long _lastDrankPotionTime;
@@ -47,6 +48,7 @@ public abstract class PEPlayer {
         _inventory = createInventory();
         _lastDrankPotionTime = -1;
         _secondsLeft = 0;
+        _canMove = true;
 
         _scoreboardData = createScoreboardData();
         setScoreboard(_scoreboardData.getScoreboard());
@@ -105,6 +107,22 @@ public abstract class PEPlayer {
 
     public void playerRejoined() {
         _isOnline = true;
+    }
+
+//	########################################
+//	#               Movement               #
+//	########################################
+
+    public boolean canMove() {
+        return _canMove;
+    }
+
+    public void restrictMovement() {
+        _canMove = false;
+    }
+
+    public void allowMovement() {
+        _canMove = true;
     }
 
 //	#########################################

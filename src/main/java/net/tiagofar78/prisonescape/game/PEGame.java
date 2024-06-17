@@ -14,11 +14,11 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.Helicopter;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
-import net.tiagofar78.prisonescape.game.prisonbuilding.SoundDetector;
 import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
 import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -43,6 +43,7 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -432,8 +433,7 @@ public class PEGame {
         }
 
         _prison.deleteVaults();
-        _prison.deleteCameras();
-        _prison.deleteSoundDetectors();
+        _prison.deletePlaceables();
 
         _bossBar.removeAll();
 
@@ -554,13 +554,18 @@ public class PEGame {
 //	#                Events                #
 //	########################################
 
-    public void playerMove(String playerName, Location loc) {
+    public void playerMove(String playerName, Location loc, PlayerMoveEvent e) {
         PEPlayer player = getPEPlayer(playerName);
         if (player == null) {
             return;
         }
 
         if (!_phase.hasGameStarted() || _phase.hasGameEnded()) {
+            return;
+        }
+
+        if (!player.canMove()) {
+            e.setCancelled(true);
             return;
         }
 
@@ -577,6 +582,8 @@ public class PEGame {
         if (prisoner.hasEscaped()) {
             return;
         }
+
+        _prison.checkIfWalkedOverTrap(loc, player);
 
         if (_prison.isOutsidePrison(loc)) {
             playerEscaped(prisoner);

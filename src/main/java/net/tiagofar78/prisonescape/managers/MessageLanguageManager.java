@@ -144,6 +144,8 @@ public class MessageLanguageManager {
     private String _helicopterOnTheWayMessage;
     private String _noCellPhoneCoverageMessage;
     private String _cameraPlacedMessage;
+    private String _trapPlacedMessage;
+    private String _cannotPlaceTrapMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
     private String _soundDetectorPlacedMessage;
@@ -151,6 +153,8 @@ public class MessageLanguageManager {
     private String _tradeAlreadyAcceptedMessage;
     private String _tradeRequestSentMessage;
     private String _tradeRequestReceivedMessage;
+    private String _caughtInATrap;
+    private String _canNowMoveFreely;
     private String _craftingItemsMissingMessage;
     private String _codeFoundMessage;
     private String _noMoreNonHiddenSlotsMessage;
@@ -307,6 +311,8 @@ public class MessageLanguageManager {
         _helicopterOnTheWayMessage = createMessage(messages.getString(warningPath + "HelicopterOnTheWay"));
         _noCellPhoneCoverageMessage = createMessage(messages.getString(warningPath + "NoCellPhoneCoverage"));
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
+        _trapPlacedMessage = createMessage(messages.getString(warningPath + "TrapPlaced"));
+        _cannotPlaceTrapMessage = createMessage(messages.getString(warningPath + "CannotPlaceTrap"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
@@ -314,6 +320,8 @@ public class MessageLanguageManager {
         _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
         _tradeRequestSentMessage = createMessage(messages.getString(warningPath + "TradeRequestSent"));
         _tradeRequestReceivedMessage = createMessage(messages.getString(warningPath + "TradeRequestReceived"));
+        _caughtInATrap = createMessage(messages.getString(warningPath + "CaughtInATrap"));
+        _canNowMoveFreely = createMessage(messages.getString(warningPath + "CanMoveFreely"));
         _craftingItemsMissingMessage = createMessage(messages.getString(warningPath + "CraftingItemsMissing"));
         _codeFoundMessage = createMessage(messages.getString(warningPath + "CodeFound"));
         _noMoreNonHiddenSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreNonHiddenSlots"));
@@ -645,6 +653,14 @@ public class MessageLanguageManager {
         return _cameraPlacedMessage;
     }
 
+    public String getTrapPlacedMessage() {
+        return _trapPlacedMessage;
+    }
+
+    public String getCannotPlaceTrapMessage() {
+        return _cannotPlaceTrapMessage;
+    }
+
     public String getNoCamerasPlacedMessage() {
         return _noCamerasPlacedMessage;
     }
@@ -671,6 +687,14 @@ public class MessageLanguageManager {
 
     public String getTradeRequestReceivedMessage(String playerName, int time) {
         return _tradeRequestReceivedMessage.replace("{PLAYER}", playerName).replace("{TIME}", Integer.toString(time));
+    }
+
+    public String getCaughtInATrapMessage(int time) {
+        return _caughtInATrap.replace("{TIME}", Integer.toString(time));
+    }
+
+    public String getCanMoveFreelyMessage() {
+        return _canNowMoveFreely;
     }
 
     public String getCraftingItemsMissingMessage() {

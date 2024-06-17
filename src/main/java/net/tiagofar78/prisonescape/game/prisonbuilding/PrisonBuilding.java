@@ -2,12 +2,16 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CodeDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GoldenDoor;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.GrayDoor;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Camera;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Trap;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -54,6 +58,7 @@ public class PrisonBuilding {
 
     private List<Camera> _cameras;
     private List<SoundDetector> _soundDetectors;
+    private List<Trap> _traps;
 
 //  #########################################
 //  #              Constructor              #
@@ -156,6 +161,7 @@ public class PrisonBuilding {
 
         _cameras = new ArrayList<>();
         _soundDetectors = new ArrayList<>();
+        _traps = new ArrayList<>();
     }
 
     private List<Location> createLocationsList(
@@ -365,6 +371,16 @@ public class PrisonBuilding {
     }
 
 //  #########################################
+//  #              Placeables               #
+//  #########################################
+
+    public void deletePlaceables() {
+        deleteCameras();
+        deleteSoundDetectors();
+        deleteTraps();
+    }
+
+//  #########################################
 //  #                Cameras                #
 //  #########################################
 
@@ -376,7 +392,7 @@ public class PrisonBuilding {
         _cameras.add(new Camera(location));
     }
 
-    public void deleteCameras() {
+    private void deleteCameras() {
         for (Camera camera : _cameras) {
             camera.delete();
         }
@@ -398,9 +414,53 @@ public class PrisonBuilding {
         return _soundDetectors;
     }
 
-    public void deleteSoundDetectors() {
+    private void deleteSoundDetectors() {
         for (SoundDetector soundDetector : _soundDetectors) {
             soundDetector.delete();
+        }
+    }
+
+//  #########################################
+//  #                 Traps                 #
+//  #########################################
+
+    public List<Trap> getTraps() {
+        return _traps;
+    }
+
+    public int addTrap(Location location) {
+        Trap trap = new Trap(location);
+        if (!trap.wasPlaced()) {
+            return 1;
+        }
+
+        _traps.add(new Trap(location));
+        return 0;
+    }
+
+    public void checkIfWalkedOverTrap(Location location, PEPlayer player) {
+        int locX = location.getBlockX();
+        int locY = location.getBlockY();
+        int locZ = location.getBlockZ();
+
+        for (Trap trap : _traps) {
+            Location trapLocation = trap.getLocation();
+            int trapX = trapLocation.getBlockX();
+            int trapY = trapLocation.getBlockY();
+            int trapZ = trapLocation.getBlockZ();
+
+            if (trapX == locX && (trapY - 1 <= locY || locY <= trapY) && trapZ == locZ) {
+                trap.triggerTrap(player);
+                _traps.remove(trap);
+                break;
+            }
+        }
+
+    }
+
+    private void deleteTraps() {
+        for (Trap trap : _traps) {
+            trap.delete();
         }
     }
 

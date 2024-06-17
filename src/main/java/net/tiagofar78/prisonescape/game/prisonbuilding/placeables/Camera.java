@@ -1,4 +1,4 @@
-package net.tiagofar78.prisonescape.game.prisonbuilding;
+package net.tiagofar78.prisonescape.game.prisonbuilding.placeables;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
