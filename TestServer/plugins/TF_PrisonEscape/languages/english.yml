@@ -1,3 +1,8 @@
+Kits:
+  Prisoner:
+    ArmorName: "&6Prisoner uniform"
+  Guard:
+    ArmorName: "&9Guard uniform"
 BossBar:
   DayTitle: "&eDay {DAY}"
   NightTitle: "&9Night {DAY}"
