@@ -438,7 +438,7 @@ public class PrisonBuilding {
         return 0;
     }
 
-    public void checkIfwalkedOverTrap(Location location, PEPlayer player) {
+    public void checkIfWalkedOverTrap(Location location, PEPlayer player) {
         int locX = location.getBlockX();
         int locY = location.getBlockY();
         int locZ = location.getBlockZ();

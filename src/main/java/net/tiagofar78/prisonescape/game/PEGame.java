@@ -583,7 +583,7 @@ public class PEGame {
             return;
         }
 
-        _prison.checkIfwalkedOverTrap(loc, player);
+        _prison.checkIfWalkedOverTrap(loc, player);
 
         if (_prison.isOutsidePrison(loc)) {
             playerEscaped(prisoner);

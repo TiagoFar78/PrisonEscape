@@ -12,12 +12,12 @@ import org.bukkit.block.Block;
 
 public class Trap {
 
+    private static final int TICKS_PER_SECOND = 20;
+
     private Location _location;
     private boolean _caughtAPrisoner;
     private boolean _placed;
     private Block trap;
-
-    private static final int TICKS_PER_SECOND = 20;
 
     public Trap(Location location) {
         _location = location;

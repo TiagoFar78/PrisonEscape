@@ -48,7 +48,7 @@ public class TrapItem extends FunctionalItem implements Buyable {
         Player player = e.getPlayer();
         String playerName = player.getName();
 
-        Location loc = e.getClickedBlock().getLocation();
+        Location loc = e.getPlayer().getLocation();
 
         PEGame game = GameManager.getGame();
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
