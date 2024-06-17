@@ -58,6 +58,13 @@ public class MessageLanguageManager {
     }
 
 //  #######################################
+//  #                 Kit                 #
+//  #######################################
+
+    private String _prisonerUniformName;
+    private String _guardUniformName;
+
+//  #######################################
 //  #               BossBar               #
 //  #######################################
 
@@ -218,6 +225,10 @@ public class MessageLanguageManager {
 
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PEResources.getYamlLanguage(language);
+
+        String kitsPath = "Kits.";
+        _prisonerUniformName = createMessage(messages.getString(kitsPath + "Prisoner.ArmorName"));
+        _guardUniformName = createMessage(messages.getString(kitsPath + "Guard.ArmorName"));
 
         String bossBarPath = "BossBar.";
         _bossBarDayTitle = createMessage(messages.getString(bossBarPath + "DayTitle"));
@@ -387,6 +398,18 @@ public class MessageLanguageManager {
         }
 
         return message;
+    }
+
+//  #######################################
+//  #                 Kit                 #
+//  #######################################
+
+    public String getPrisonerUniformName() {
+        return _prisonerUniformName;
+    }
+
+    public String getGuardUniformName() {
+        return _guardUniformName;
     }
 
 //  #######################################
