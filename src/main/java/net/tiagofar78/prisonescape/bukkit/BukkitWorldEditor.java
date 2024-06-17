@@ -186,7 +186,6 @@ public class BukkitWorldEditor {
         }
     }
 
-
     // Utility method to check if a block is air
     private static boolean isAir(Block block) {
         return block.getType() == Material.AIR;
