@@ -2,9 +2,13 @@ package net.tiagofar78.prisonescape.bukkit;
 
 import net.tiagofar78.prisonescape.PEResources;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.entity.TNTPrimed;
 
 public class BukkitWorldEditor {
@@ -131,6 +135,37 @@ public class BukkitWorldEditor {
 
     public static void fillWithBars(Location upperCorner, Location lowerCorner) {
         fill(upperCorner, lowerCorner, Material.IRON_BARS);
+        connectBars(upperCorner, lowerCorner);
+    }
+
+    private static void connectBars(Location upperCorner, Location lowerCorner) {
+        for (int x = lowerCorner.getBlockX(); x <= upperCorner.getBlockX(); x++) {
+            for (int y = lowerCorner.getBlockY(); y <= upperCorner.getBlockY(); y++) {
+                for (int z = lowerCorner.getBlockZ(); z <= upperCorner.getBlockZ(); z++) {
+                    Location currentLocation = new Location(lowerCorner.getWorld(), x, y, z);
+                    BlockData bd = Bukkit.createBlockData("minecraft:iron_bars");
+
+                    if (bd instanceof MultipleFacing) {
+                        MultipleFacing ironBars = (MultipleFacing) bd;
+
+                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.NORTH))) {
+                            ironBars.setFace(BlockFace.NORTH, true);
+                        }
+                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.SOUTH))) {
+                            ironBars.setFace(BlockFace.SOUTH, true);
+                        }
+                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.EAST))) {
+                            ironBars.setFace(BlockFace.EAST, true);
+                        }
+                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.WEST))) {
+                            ironBars.setFace(BlockFace.WEST, true);
+                        }
+                    }
+
+                    currentLocation.getBlock().setBlockData(bd);
+                }
+            }
+        }
     }
 
 //  ########################################
@@ -151,4 +186,9 @@ public class BukkitWorldEditor {
         }
     }
 
+
+    // Utility method to check if a block is air
+    private static boolean isAir(Block block) {
+        return block.getType() == Material.AIR;
+    }
 }
