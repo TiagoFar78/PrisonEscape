@@ -142,27 +142,24 @@ public class BukkitWorldEditor {
         for (int x = lowerCorner.getBlockX(); x <= upperCorner.getBlockX(); x++) {
             for (int y = lowerCorner.getBlockY(); y <= upperCorner.getBlockY(); y++) {
                 for (int z = lowerCorner.getBlockZ(); z <= upperCorner.getBlockZ(); z++) {
-                    Location currentLocation = new Location(lowerCorner.getWorld(), x, y, z);
+                    Block block = PEResources.getWorld().getBlockAt(x, y, z);
                     BlockData bd = Bukkit.createBlockData("minecraft:iron_bars");
+                    MultipleFacing ironBars = (MultipleFacing) bd;
 
-                    if (bd instanceof MultipleFacing) {
-                        MultipleFacing ironBars = (MultipleFacing) bd;
-
-                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.NORTH))) {
-                            ironBars.setFace(BlockFace.NORTH, true);
-                        }
-                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.SOUTH))) {
-                            ironBars.setFace(BlockFace.SOUTH, true);
-                        }
-                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.EAST))) {
-                            ironBars.setFace(BlockFace.EAST, true);
-                        }
-                        if (!isAir(currentLocation.getBlock().getRelative(BlockFace.WEST))) {
-                            ironBars.setFace(BlockFace.WEST, true);
-                        }
+                    if (!isAir(block.getRelative(BlockFace.NORTH))) {
+                        ironBars.setFace(BlockFace.NORTH, true);
+                    }
+                    if (!isAir(block.getRelative(BlockFace.SOUTH))) {
+                        ironBars.setFace(BlockFace.SOUTH, true);
+                    }
+                    if (!isAir(block.getRelative(BlockFace.EAST))) {
+                        ironBars.setFace(BlockFace.EAST, true);
+                    }
+                    if (!isAir(block.getRelative(BlockFace.WEST))) {
+                        ironBars.setFace(BlockFace.WEST, true);
                     }
 
-                    currentLocation.getBlock().setBlockData(bd);
+                    block.setBlockData(bd);
                 }
             }
         }
