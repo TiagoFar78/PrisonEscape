@@ -67,10 +67,6 @@ public class Prisoner extends PEPlayer {
 //  #                Wanted                #
 //  ########################################
 
-    public boolean isWanted() {
-        return _isWanted;
-    }
-
     public void setWanted() {
         _isWanted = true;
     }

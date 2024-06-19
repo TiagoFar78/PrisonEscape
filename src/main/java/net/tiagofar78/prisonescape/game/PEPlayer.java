@@ -27,6 +27,7 @@ import java.util.List;
 public abstract class PEPlayer {
 
     private static final int TICKS_PER_SECOND = 20;
+    private static final String WANTED_TEAM_NAME = "Wanted";
 
     private static final int INVENTORY_SIZE = 4;
     private static final int[] INVENTORY_INDEXES = {0, 1, 2, 3};
@@ -322,6 +323,8 @@ public abstract class PEPlayer {
         String prisonersTeamName = GameManager.getGame().getPrisonerTeam().getName();
         registerTeam(sbData, prisonersTeamName, ChatColor.GOLD);
 
+        registerTeam(sbData, WANTED_TEAM_NAME, ChatColor.RED);
+
         return sbData;
     }
 
@@ -354,6 +357,18 @@ public abstract class PEPlayer {
         for (PEPlayer player : team.getMembers()) {
             sbTeam.addEntry(player.getName());
         }
+    }
+
+    public void addScoreboardWantedTeamMember(String prisonerTeamName, String playerName) {
+        Scoreboard sb = getScoreboardData().getScoreboard();
+        sb.getTeam(prisonerTeamName).removeEntry(playerName);
+        sb.getTeam(WANTED_TEAM_NAME).addEntry(playerName);
+    }
+
+    public void removeScoreboardWantedTeamMember(String prisonerTeamName, String playerName) {
+        Scoreboard sb = getScoreboardData().getScoreboard();
+        sb.getTeam(WANTED_TEAM_NAME).removeEntry(playerName);
+        sb.getTeam(prisonerTeamName).addEntry(playerName);
     }
 
 //  ########################################

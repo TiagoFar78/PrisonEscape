@@ -36,6 +36,7 @@ import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -816,7 +817,7 @@ public class PEGame {
                     return;
                 }
 
-                arrested.removeWanted();
+                removeWanted(arrested);
 
                 MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(arrested.getName());
                 BukkitMessageSender.sendChatMessage(arrested.getName(), messages.getPrisonerFreedOfSolitary());
@@ -917,7 +918,7 @@ public class PEGame {
 
         int returnCode = vault.search();
         if (returnCode == 1) {
-            vaultOwner.setWanted();
+            setWanted(vaultOwner, guard);
 
             BukkitMessageSender.sendChatMessage(
                     guard,
@@ -1034,13 +1035,34 @@ public class PEGame {
         Prisoner prisoner = (Prisoner) playerPrisoner;
 
         if (prisoner.hasIllegalItems()) {
-            prisoner.setWanted();
+            setWanted(prisoner, playerGuard);
         } else {
             MessageLanguageManager prisonerMessages = MessageLanguageManager.getInstanceByPlayer(prisonerName);
             BukkitMessageSender.sendChatMessage(prisonerName, prisonerMessages.getPrisonerInspectedMessage());
 
             MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
             BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisonerName));
+        }
+    }
+
+    private void setWanted(Prisoner prisoner, PEPlayer guard) {
+        prisoner.setWanted();
+
+        String prisonerName = prisoner.getName();
+        for (PEPlayer playerOnLobby : _playersOnLobby) {
+            playerOnLobby.addScoreboardWantedTeamMember(PRISONERS_TEAM_NAME, prisonerName);
+        }
+
+        prisoner.playSound(Sound.BLOCK_BAMBOO_BREAK);
+        guard.playSound(Sound.BLOCK_BAMBOO_BREAK);
+    }
+
+    private void removeWanted(Prisoner prisoner) {
+        prisoner.removeWanted();
+
+        String prisonerName = prisoner.getName();
+        for (PEPlayer playerOnLobby : _playersOnLobby) {
+            playerOnLobby.removeScoreboardWantedTeamMember(PRISONERS_TEAM_NAME, prisonerName);
         }
     }
 
