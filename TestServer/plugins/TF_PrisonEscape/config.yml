@@ -44,9 +44,9 @@ ReferenceBlock:
   Y: 0
   Z: 0
 LeavingLocation:
-  X: 4
-  Y: 133
-  Z: -20
+  X: 6
+  Y: 67
+  Z: -16
 WaitingLocation:
   X: 12
   Y: 100
@@ -748,6 +748,114 @@ PoliceSecretPassagesLocation:
       X: -3
       Y: 101
       Z: 9
+  "13":
+    Key:
+      X: 28
+      Y: 101
+      Z: -1
+    Value:
+      X: 31
+      Y: 100
+      Z: -2
+  "14":
+    Key:
+      X: 30
+      Y: 101
+      Z: -3
+    Value:
+      X: 27
+      Y: 100
+      Z: -2
+  "15":
+    Key:
+      X: 36
+      Y: 101
+      Z: -1
+    Value:
+      X: 39
+      Y: 100
+      Z: -2
+  "16":
+    Key:
+      X: 38
+      Y: 101
+      Z: -3
+    Value:
+      X: 34
+      Y: 100
+      Z: -2
+  "17":
+    Key:
+      X: -23
+      Y: 101
+      Z: -38
+    Value:
+      X: -23
+      Y: 100
+      Z: -41
+  "18":
+    Key:
+      X: -23
+      Y: 101
+      Z: -40
+    Value:
+      X: -23
+      Y: 100
+      Z: -37
+  "19":
+    Key:
+      X: -12
+      Y: 101
+      Z: -35
+    Value:
+      X: -9
+      Y: 100
+      Z: -35
+  "20":
+    Key:
+      X: -10
+      Y: 101
+      Z: -35
+    Value:
+      X: -14
+      Y: 100
+      Z: -35
+  "21":
+    Key:
+      X: -24
+      Y: 101
+      Z: 42
+    Value:
+      X: -24
+      Y: 100
+      Z: 45
+  "22":
+    Key:
+      X: -24
+      Y: 101
+      Z: 44
+    Value:
+      X: -24
+      Y: 100
+      Z: 41
+  "23":
+    Key:
+      X: -17
+      Y: 101
+      Z: 35
+    Value:
+      X: -14
+      Y: 100
+      Z: 35
+  "24":
+    Key:
+      X: -15
+      Y: 101
+      Z: 35
+    Value:
+      X: -19
+      Y: 100
+      Z: 35
 VaultsDirection: "WEST"
 VaultsLocations:
   "1":
