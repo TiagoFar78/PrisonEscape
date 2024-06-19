@@ -1013,7 +1013,7 @@ public class PEGame {
             arrestPlayer(prisoner, guard);
         } else {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(prisonerName, messages.getNotWantedPlayerMessage());
+            BukkitMessageSender.sendChatMessage(policeName, messages.getNotWantedPlayerMessage());
         }
     }
 
@@ -1032,6 +1032,12 @@ public class PEGame {
             return;
         }
 
+        Guard guard = (Guard) playerGuard;
+        if (guard.countSearches() == 0) {
+            // TODO send message
+            return;
+        }
+
         Prisoner prisoner = (Prisoner) playerPrisoner;
 
         if (prisoner.hasIllegalItems()) {
@@ -1042,6 +1048,8 @@ public class PEGame {
 
             MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
             BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisonerName));
+
+            guard.usedSearch();
         }
     }
 

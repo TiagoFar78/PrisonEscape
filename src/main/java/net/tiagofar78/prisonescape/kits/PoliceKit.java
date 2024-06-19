@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.kits;
 
+import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.HandcuffsItem;
 import net.tiagofar78.prisonescape.items.Item;
@@ -7,6 +8,7 @@ import net.tiagofar78.prisonescape.items.MissionsItem;
 import net.tiagofar78.prisonescape.items.OpenCamerasItem;
 import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.ShopItem;
+import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
@@ -84,8 +86,13 @@ public class PoliceKit extends Kit {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
+        int searchesAmount = ((Guard) GameManager.getGame().getPEPlayer(playerName)).countSearches();
+        ItemStack searchItem = getItemAt(SEARCH_ITEM_INDEX).toItemStack(messages);
+        searchItem.setAmount(searchesAmount);
+
         Inventory inv = bukkitPlayer.getInventory();
         inv.setItem(CAMERA_ITEM_INDEX, getItemAt(CAMERA_ITEM_INDEX).toItemStack(messages));
+        inv.setItem(SEARCH_ITEM_INDEX, searchItem);
     }
 
 }

@@ -8,7 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-public class SearchItem extends FunctionalItem {
+public class SearchItem extends FunctionalItem implements Buyable {
 
     @Override
     public boolean isMetalic() {
@@ -38,6 +38,16 @@ public class SearchItem extends FunctionalItem {
         }
 
         game.policeInspectedPrisoner(e.getPlayer().getName(), prisioner.getName());
+    }
+
+    @Override
+    public int getPrice() {
+        return 5; // TODO
+    }
+
+    @Override
+    public int getLimit() {
+        return 0; // TODO
     }
 
 }
