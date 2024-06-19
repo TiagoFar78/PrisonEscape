@@ -800,6 +800,7 @@ public class PEGame {
 
     private void arrestPlayer(Prisoner arrested, Guard arrester) {
         teleportToSolitary(arrested);
+        arrested.clearInventory();
 
         for (PEPlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());

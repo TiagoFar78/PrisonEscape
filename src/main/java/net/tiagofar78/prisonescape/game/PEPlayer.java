@@ -199,6 +199,14 @@ public abstract class PEPlayer {
         return 0;
     }
 
+    public void clearInventory() {
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            _inventory.set(i, new NullItem());
+        }
+
+        updateInventory();
+    }
+
     public int convertToInventoryIndex(int slot) {
         for (int i = 0; i < INVENTORY_INDEXES.length; i++) {
             if (slot == INVENTORY_INDEXES[i]) {
