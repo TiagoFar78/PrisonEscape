@@ -781,7 +781,7 @@ public class MessageLanguageManager {
     }
 
     public String getPoliceWonSubtitle(int playersInPrison) {
-        return _policeWonSubtitle;
+        return _policeWonSubtitle.replace("{PLAYERS}", Integer.toString(playersInPrison));
     }
 
     public List<String> getGameResultMessage(boolean isWinner) {
