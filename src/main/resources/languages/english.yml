@@ -170,6 +170,7 @@ Messages:
     FullInventory: "&cYour inventory is full."
     NotWantedPlayer: "&cYou can only send to solitary wanted players."
     PrisonerInspected: "&aA police inspected your inventory, but no illegal items were found."
+    NoSearches: "&cYou haven't any search available. Buy some more in the shop."
     PoliceInspected: "&a{PLAYER} don't have any illegal items."
     CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
     ReachedItemLimit: "&cSorry, you've already reached the maximum limit for this item."

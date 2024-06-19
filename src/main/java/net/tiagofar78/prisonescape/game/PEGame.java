@@ -1034,7 +1034,8 @@ public class PEGame {
 
         Guard guard = (Guard) playerGuard;
         if (guard.countSearches() == 0) {
-            // TODO send message
+            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
+            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getNoSearchesMessage());
             return;
         }
 

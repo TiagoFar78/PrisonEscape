@@ -143,6 +143,7 @@ public class MessageLanguageManager {
     private String _notWantedPlayerMessage;
     private String _policeInspectedMessage;
     private String _prisonerInspectedMessage;
+    private String _noSearchesMessage;
     private String _canOnlyFixHolesMessage;
     private String _reachedItemLimitMessage;
     private String _notEnoughMoneyMessage;
@@ -314,6 +315,7 @@ public class MessageLanguageManager {
         _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
         _prisonerInspectedMessage = createMessage(messages.getString(warningPath + "PrisonerInspected"));
+        _noSearchesMessage = createMessage(messages.getString(warningPath + "NoSearches"));
         _canOnlyFixHolesMessage = createMessage(messages.getString(warningPath + "CanOnlyFixHoles"));
         _reachedItemLimitMessage = createMessage(messages.getString(warningPath + "ReachedItemLimit"));
         _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
@@ -642,6 +644,10 @@ public class MessageLanguageManager {
 
     public String getPrisonerInspectedMessage() {
         return _prisonerInspectedMessage;
+    }
+
+    public String getNoSearchesMessage() {
+        return _noSearchesMessage;
     }
 
     public String getCanOnlyFixHolesMessage() {

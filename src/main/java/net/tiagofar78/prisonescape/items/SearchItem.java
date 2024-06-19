@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
@@ -41,13 +42,18 @@ public class SearchItem extends FunctionalItem implements Buyable {
     }
 
     @Override
+    public boolean isBuyable() {
+        return true;
+    }
+
+    @Override
     public int getPrice() {
-        return 5; // TODO
+        return ConfigManager.getInstance().getSearchPrice();
     }
 
     @Override
     public int getLimit() {
-        return 0; // TODO
+        return ConfigManager.getInstance().getSearchLimit();
     }
 
 }
