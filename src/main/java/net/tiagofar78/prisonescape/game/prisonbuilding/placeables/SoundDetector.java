@@ -79,9 +79,9 @@ public class SoundDetector {
     }
 
     private void createPerimeterParticles() {
-        double centerX = _location.getX() + 0.5;
-        double centerY = _location.getY();
-        double centerZ = _location.getZ() + 0.5;
+        double centerX = _location.getBlockX() + 0.5;
+        double centerY = _location.getBlockY();
+        double centerZ = _location.getBlockZ() + 0.5;
         double radius = ConfigManager.getInstance().getSoundDetectorRange();
 
         loopCreateParticles(_location.getWorld(), centerX, centerY, centerZ, radius);
