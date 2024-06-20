@@ -244,7 +244,7 @@ public class PrisonBuilding {
             }
         }
 
-        return false;
+        return true;
     }
 
 //	#########################################

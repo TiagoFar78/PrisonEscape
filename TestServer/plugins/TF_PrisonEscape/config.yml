@@ -1242,6 +1242,17 @@ CellDoorsLocations:
     Y: 100
     Z: 10
 Regions:
+  Cells:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: 5
+        Y: 104
+        Z: 11
+      LowerCorner:
+        X: 1
+        Y: 100
+        Z: -12
   CellBlock:
     IsRestricted: false
     "1":
@@ -1358,6 +1369,120 @@ Regions:
         X: -59
         Y: 105
         Z: -43
+  Visitations:
+    IsRestricted: false
+    CutCellPhoneCalls: false
+    "1":
+      UpperCorner:
+        X: 26
+        Y: 102
+        Z: 36
+      LowerCorner:
+        X: 9
+        Y: 100
+        Z: 28
+  Corridor:
+    IsRestricted: false
+    CutCellPhoneCalls: false
+    "1":
+      UpperCorner:
+        X: 22
+        Y: 103
+        Z: 27
+      LowerCorner:
+        X: 19
+        Y: 100
+        Z: 5
+    "2":
+      UpperCorner:
+        X: 18
+        Y: 103
+        Z: 22
+      LowerCorner:
+        X: -36
+        Y: 100
+        Z: 19
+    "3":
+      UpperCorner:
+        X: 4
+        Y: 103
+        Z: 48
+      LowerCorner:
+        X: 1
+        Y: 100
+        Z: 23
+    "4":
+      UpperCorner:
+        X: -7
+        Y: 103
+        Z: 18
+      LowerCorner:
+        X: -10
+        Y: 100
+        Z: 12
+    "5":
+      UpperCorner:
+        X: -37
+        Y: 103
+        Z: 53
+      LowerCorner:
+        X: -40
+        Y: 100
+        Z: -26
+    "6":
+      UpperCorner:
+        X: -28
+        Y: 103
+        Z: 0
+      LowerCorner:
+        X: -36
+        Y: 100
+        Z: -3
+    "7":
+      UpperCorner:
+        X: -36
+        Y: 103
+        Z: -27
+      LowerCorner:
+        X: -39
+        Y: 100
+        Z: -42
+    "8":
+      UpperCorner:
+        X: 18
+        Y: 103
+        Z: -23
+      LowerCorner:
+        X: -36
+        Y: 100
+        Z: -26
+    "9":
+      UpperCorner:
+        X: -7
+        Y: 103
+        Z: -14
+      LowerCorner:
+        X: -10
+        Y: 100
+        Z: -22
+    "10":
+      UpperCorner:
+        X: 22
+        Y: 103
+        Z: -9
+      LowerCorner:
+        X: 19
+        Y: 100
+        Z: -28
+    "11":
+      UpperCorner:
+        X: 27
+        Y: 103
+        Z: 4
+      LowerCorner:
+        X: 15
+        Y: 100
+        Z: -8
 ChestsContents:
   Default: # These are the chest contents by default - DON'T CHANGE THE NAME!
     Bolts: 0.05

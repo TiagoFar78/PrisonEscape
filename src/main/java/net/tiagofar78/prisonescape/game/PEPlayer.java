@@ -11,6 +11,7 @@ import net.tiagofar78.prisonescape.menus.Clickable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
@@ -383,6 +384,15 @@ public abstract class PEPlayer {
         }
 
         return player;
+    }
+
+    public Location getLocation() {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return null;
+        }
+
+        return player.getLocation();
     }
 
     public void setGameMode(GameMode gameMode) {

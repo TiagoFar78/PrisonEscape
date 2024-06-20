@@ -56,6 +56,7 @@ public class PEGame {
     private static final int TICKS_PER_SECOND = 20;
     private static final String POLICE_TEAM_NAME = "Guards";
     private static final String PRISONERS_TEAM_NAME = "Prisoners";
+    private static final String CELLS_REGION_NAME = "Cells";
 
     private Settings _settings;
 
@@ -1023,7 +1024,8 @@ public class PEGame {
         Prisoner prisoner = (Prisoner) playerPrisoner;
         Guard guard = (Guard) playerGuard;
 
-        if (prisoner.canBeArrested()) {
+        boolean isOutsideCell = _prison.getRegionName(prisoner.getLocation()).equals(CELLS_REGION_NAME);
+        if (prisoner.canBeArrested() || (_dayPeriod == DayPeriod.NIGHT && isOutsideCell)) {
             arrestPlayer(prisoner, guard);
         } else {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
