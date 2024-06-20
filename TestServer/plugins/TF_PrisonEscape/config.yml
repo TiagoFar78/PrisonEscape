@@ -1498,6 +1498,20 @@ ChestsContents:
     EnergyDrink: 0.1
     PlasticSpoon: 0.075
     MetalSpoon: 0.025
+  Corridor:
+    Bolts: 0.05
+    DuctTape: 0.025
+    Matches: 0.05
+    Oil: 0.01
+    Stick: 0.005
+    PlasticPlate: 0.01
+    Copper: 0.01
+    GoldBar: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.025
   CellBlock:
     Bolts: 0.05
     DuctTape: 0.025
