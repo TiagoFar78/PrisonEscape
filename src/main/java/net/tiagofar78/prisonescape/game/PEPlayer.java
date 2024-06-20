@@ -460,12 +460,16 @@ public abstract class PEPlayer {
     }
 
     public void playSound(Sound sound) {
+        playSound(sound, 1);
+    }
+
+    public void playSound(Sound sound, int volume) {
         Player player = getBukkitPlayer();
         if (player == null) {
             return;
         }
 
-        player.playSound(player, sound, 1, 0.5f);
+        player.playSound(player, sound, volume, 0.5f);
     }
 
     public boolean isSneaking() {

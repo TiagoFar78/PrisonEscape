@@ -1076,8 +1076,8 @@ public class PEGame {
             playerOnLobby.addScoreboardWantedTeamMember(PRISONERS_TEAM_NAME, prisonerName);
         }
 
-        prisoner.playSound(Sound.BLOCK_BAMBOO_BREAK);
-        guard.playSound(Sound.BLOCK_BAMBOO_BREAK);
+        prisoner.playSound(Sound.BLOCK_BAMBOO_BREAK, 20);
+        guard.playSound(Sound.BLOCK_BAMBOO_BREAK, 20);
     }
 
     private void removeWanted(Prisoner prisoner) {
