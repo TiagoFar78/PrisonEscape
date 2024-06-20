@@ -941,6 +941,7 @@ public class PEGame {
         } else if (returnCode == 0) {
             BukkitMessageSender.sendChatMessage(guard, messagesPolice.getPoliceNoIllegalItemsFoundMessage());
             BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisoner.getPrisonerNoIllegalItemsFoundMessage());
+            guard.usedSearch();
         }
 
         return;
