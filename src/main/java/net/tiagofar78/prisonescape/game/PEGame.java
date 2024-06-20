@@ -35,6 +35,7 @@ import net.tiagofar78.prisonescape.menus.Shop;
 import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -809,11 +810,22 @@ public class PEGame {
             BukkitMessageSender.sendChatMessage(player.getName(), announcement);
         }
 
+        runArrestTimer(_settings.getSecondsInSolitary(), arrested);
+    }
+
+    private void runArrestTimer(int secondsLeft, Prisoner arrested) {
+        BukkitMessageSender.sendTitleMessage(arrested.getName(), "", ChatColor.WHITE + Integer.toString(secondsLeft));
+
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
             @Override
             public void run() {
                 if (_phase.isClockStopped()) {
+                    return;
+                }
+
+                if (secondsLeft - 1 != 0) {
+                    runArrestTimer(secondsLeft - 1, arrested);
                     return;
                 }
 
@@ -827,8 +839,9 @@ public class PEGame {
                 } else if (_dayPeriod == DayPeriod.NIGHT) {
                     teleportPrisonerToSpawnPoint(arrested);
                 }
+
             }
-        }, TICKS_PER_SECOND * _settings.getSecondsInSolitary());
+        }, TICKS_PER_SECOND);
     }
 
     public void playerSelectPrisonersTeam(String playerName) {
