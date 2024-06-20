@@ -1054,8 +1054,10 @@ public class PEGame {
         }
 
         Prisoner prisoner = (Prisoner) playerPrisoner;
-
-        if (prisoner.hasIllegalItems()) {
+        if (prisoner.isWanted()) {
+            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
+            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getAlreadyWantedPlayerMessage());
+        } else if (prisoner.hasIllegalItems()) {
             setWanted(prisoner, playerGuard);
         } else {
             MessageLanguageManager prisonerMessages = MessageLanguageManager.getInstanceByPlayer(prisonerName);

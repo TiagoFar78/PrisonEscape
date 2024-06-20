@@ -141,6 +141,7 @@ public class MessageLanguageManager {
     private String _chestAlreadyOpenedMessage;
     private String _fullInventoryMessage;
     private String _notWantedPlayerMessage;
+    private String _alreadyWantedPlayerMessage;
     private String _policeInspectedMessage;
     private String _prisonerInspectedMessage;
     private String _noSearchesMessage;
@@ -313,6 +314,7 @@ public class MessageLanguageManager {
         _chestAlreadyOpenedMessage = createMessage(messages.getString(warningPath + "ChestAlreadyOpened"));
         _fullInventoryMessage = createMessage(messages.getString(warningPath + "FullInventory"));
         _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
+        _alreadyWantedPlayerMessage = createMessage(messages.getString(warningPath + "AlreadyWantedPlayer"));
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
         _prisonerInspectedMessage = createMessage(messages.getString(warningPath + "PrisonerInspected"));
         _noSearchesMessage = createMessage(messages.getString(warningPath + "NoSearches"));
@@ -636,6 +638,10 @@ public class MessageLanguageManager {
 
     public String getNotWantedPlayerMessage() {
         return _notWantedPlayerMessage;
+    }
+
+    public String getAlreadyWantedPlayerMessage() {
+        return _alreadyWantedPlayerMessage;
     }
 
     public String getPoliceInspectedMessage(String playerName) {
