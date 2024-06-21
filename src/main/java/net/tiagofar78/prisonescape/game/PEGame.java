@@ -1024,7 +1024,8 @@ public class PEGame {
         Prisoner prisoner = (Prisoner) playerPrisoner;
         Guard guard = (Guard) playerGuard;
 
-        boolean isOutsideCell = _prison.getRegionName(prisoner.getLocation()).equals(CELLS_REGION_NAME);
+        String regionName = _prison.getRegionName(prisoner.getLocation());
+        boolean isOutsideCell = regionName == null || !regionName.equals(CELLS_REGION_NAME);
         if (prisoner.canBeArrested() || (_dayPeriod == DayPeriod.NIGHT && isOutsideCell)) {
             arrestPlayer(prisoner, guard);
         } else {

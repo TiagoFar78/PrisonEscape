@@ -58,7 +58,7 @@ PrisonTopLeftCornerLocation:
   Y: 150
   Z: 60
 PrisonBottomRightCornerLocation:
-  X: -63
+  X: -65
   Y: 70
   Z: -49
 PrisonersSpawnLocations:
