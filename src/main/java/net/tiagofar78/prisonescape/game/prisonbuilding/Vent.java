@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.items.WrenchItem;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +21,11 @@ public class Vent extends Obstacle {
     @Override
     public boolean isEffectiveTool(ToolItem tool) {
         return tool instanceof WrenchItem;
+    }
+
+    @Override
+    public String getEffectiveToolMessage(MessageLanguageManager messages) {
+        return messages.getVentsRequirementsMessage();
     }
 
     @Override

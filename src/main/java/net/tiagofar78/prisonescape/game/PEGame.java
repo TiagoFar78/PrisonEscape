@@ -1143,12 +1143,18 @@ public class PEGame {
         }
 
         if (!item.isTool()) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, obstacle.getEffectiveToolMessage(messages));
             return 0;
         }
 
         double returnCode = obstacle.takeDamage((ToolItem) item);
         if (returnCode == 0) {
             obstacle.removeFromWorld();
+        } else if (returnCode == -1) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+            BukkitMessageSender.sendChatMessage(player, obstacle.getEffectiveToolMessage(messages));
+            return 0;
         }
 
         player.updateInventory();

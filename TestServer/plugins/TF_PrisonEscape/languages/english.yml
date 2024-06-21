@@ -219,6 +219,12 @@ Messages:
     NoMoreNonHiddenSlots: "&cThere isn't any non hidden slot available."
     NoMoreHiddenSlots: "&cThere isn't any hidden slot available."
     NoMoreTempSlots: "&cThere isn't any temporary slot available."
+    GrayDoorRequirements: "&cYou need to use a &fGray Key &cto open this door."
+    GoldenDoorRequirements: "&cYou need to use a &fGolden Key &cto open this door."
+    CodeDoorRequirements: "&cSomeone needs to reveal the &fDoor Code &cin order to open this door."
+    DirtRequirements: "&cYou need to use a shovel to break dirt."
+    VentsRequirements: "&cYou need to use a &fPickaxe &cto break vents."
+    FencesRequirements: "&cYou need to use a &fWire Cutter &cto break fences."
   Announcements:
     GameStarting:
     - "&6==================================="

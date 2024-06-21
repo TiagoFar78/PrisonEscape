@@ -169,6 +169,12 @@ public class MessageLanguageManager {
     private String _noMoreNonHiddenSlotsMessage;
     private String _noMoreHiddenSlotsMessage;
     private String _noMoreTempSlotsMessage;
+    private String _grayDoorRequirementsMessage;
+    private String _goldenDoorRequirementsMessage;
+    private String _codeDoorRequirementsMessage;
+    private String _dirtRequirementsMessage;
+    private String _ventsRequirementsMessage;
+    private String _fenceRequirementsMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -342,6 +348,12 @@ public class MessageLanguageManager {
         _noMoreNonHiddenSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreNonHiddenSlots"));
         _noMoreHiddenSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreHiddenSlots"));
         _noMoreTempSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreTempSlots"));
+        _grayDoorRequirementsMessage = createMessage(messages.getString(warningPath + "GrayDoorRequirements"));
+        _goldenDoorRequirementsMessage = createMessage(messages.getString(warningPath + "GoldenDoorRequirements"));
+        _codeDoorRequirementsMessage = createMessage(messages.getString(warningPath + "CodeDoorRequirements"));
+        _dirtRequirementsMessage = createMessage(messages.getString(warningPath + "DirtRequirements"));
+        _ventsRequirementsMessage = createMessage(messages.getString(warningPath + "VentsRequirements"));
+        _fenceRequirementsMessage = createMessage(messages.getString(warningPath + "FencesRequirements"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -750,6 +762,30 @@ public class MessageLanguageManager {
 
     public String getNoMoreTempSlotsMessage() {
         return _noMoreTempSlotsMessage;
+    }
+
+    public String getGrayDoorRequirementsMessage() {
+        return _grayDoorRequirementsMessage;
+    }
+
+    public String getGoldenDoorRequirementsMessage() {
+        return _goldenDoorRequirementsMessage;
+    }
+
+    public String getCodeDoorRequirementsMessage() {
+        return _codeDoorRequirementsMessage;
+    }
+
+    public String getDirtRequirementsMessage() {
+        return _dirtRequirementsMessage;
+    }
+
+    public String getVentsRequirementsMessage() {
+        return _ventsRequirementsMessage;
+    }
+
+    public String getFencesRequirementsMessage() {
+        return _fenceRequirementsMessage;
     }
 
 //	########################################
