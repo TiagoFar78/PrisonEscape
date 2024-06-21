@@ -14,7 +14,7 @@ import java.util.List;
 public class PrisonEscape extends JavaPlugin {
 
     public static final String PLAY_PERMISSION = "TF_PrisonEscape.Play";
-    public static final String ADMIN_PERMISSION = "TF_PrisonEscape.PERMISSION";
+    public static final String ADMIN_PERMISSION = "TF_PrisonEscape.Admin";
 
     private static final String COMMAND_LABEL = "PrisonEscape";
     private static final List<String> COMMAND_ALIASES = getAliases();
