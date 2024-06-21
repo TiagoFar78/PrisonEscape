@@ -61,24 +61,42 @@ Items:
     Name: "Energy Drink"
   Handcuffs:
     Name: "Handcuffs"
+    Lore:
+    - "&eSend players to the solitary"
   PlasticSpoon:
     Name: "Wooden Shovel"
+    Lore:
+    - "&eUse in excavation"
   MetalSpoon:
     Name: "Golden Shovel"
+    Lore:
+    - "&eUse in excavation"
   PlasticShovel:
     Name: "Stone Shovel"
+    Lore:
+    - "&eUse in excavation"
   MetalShovel:
     Name: "Diamond Shovel"
+    Lore:
+    - "&eUse in excavation"
   WireCutter:
     Name: "Wire Cutter"
+    Lore:
+    - "&eUse to break fences (iron bars)"
   Wrench:
     Name: "Pickaxe"
+    Lore:
+    - "&eUse to break vents (iron trapdoors)"
   Bomb:
     Name: "Bomb"
+    Lore:
+    - "&eUse to blow cracked wall"
   Glass:
     Name: " "
   Missions:
     Name: "Missions Book"
+    Lore:
+    - "&4COMING SOON"
   OpenCameras:
     Name: "Cameras"
     Lore:
@@ -88,8 +106,12 @@ Items:
     Name: "Shop"
   Search:
     Name: "Search"
+    Lore:
+    - "&eSearch prisoners inventories and vaults"
   Radar:
     Name: "Radar"
+    Lore:
+    - "&eKnow where are all prisoners"
   SoundDetector:
     Name: "Sensor"
   Camera:
@@ -218,7 +240,7 @@ Messages:
     - "                &f&l{RESULT}"
     - ""
     - "      Statistics:"
-    - "      - &4COMMING SOON"
+    - "      - &4COMING SOON"
     - ""
     - "&6==================================="
     PlayerEscaped: "&ePlayer &f{PLAYER} &eescaped the prison."

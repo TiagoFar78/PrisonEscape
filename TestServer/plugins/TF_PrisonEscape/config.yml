@@ -586,7 +586,7 @@ PrisonersSecretPassagesLocation:
     Value:
       X: -25
       Y: 82
-      Z: 20
+      Z: -25
   "51":
     Key:
       X: -23
