@@ -155,6 +155,7 @@ public class MessageLanguageManager {
     private String _cannotPlaceTrapMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
+    private String _cantJoinCameraSneakingMessage;
     private String _soundDetectorPlacedMessage;
     private String _invalidSoundDetectorLocMessage;
     private String _tradeAlreadyAcceptedMessage;
@@ -326,6 +327,7 @@ public class MessageLanguageManager {
         _cannotPlaceTrapMessage = createMessage(messages.getString(warningPath + "CannotPlaceTrap"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
+        _cantJoinCameraSneakingMessage = createMessage(messages.getString(warningPath + "CantJoinCameraSneaking"));
         _soundDetectorPlacedMessage = createMessage(messages.getString(warningPath + "SoundDetectorPlaced"));
         _invalidSoundDetectorLocMessage = createMessage(messages.getString(warningPath + "InvalidSoundDetectorLoc"));
         _tradeAlreadyAcceptedMessage = createMessage(messages.getString(warningPath + "TradeAlreadyAccepted"));
@@ -690,6 +692,10 @@ public class MessageLanguageManager {
 
     public String getSneakToLeaveCameraMessage() {
         return _sneakToLeaveCameraMessage;
+    }
+    
+    public String getCantJoinCameraSneakingMessage() {
+        return _cantJoinCameraSneakingMessage;
     }
 
     public String getSoundDetectorPlacedMessage() {

@@ -61,6 +61,11 @@ public class OpenCamerasItem extends FunctionalItem {
             _currentCameraIndex = _currentCameraIndex + 1 == cameras.size() ? 0 : _currentCameraIndex + 1;
             guard.getKit().update(playerName);
         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
+            if (guard.isSneaking()) {
+                BukkitMessageSender.sendChatMessage(guard, messages.getCantJoinCameraSneakingMessage());
+                return;
+            }
+            
             Location loc = e.getPlayer().getLocation();
 
             cameras.get(_currentCameraIndex).addWatcher(guard);
