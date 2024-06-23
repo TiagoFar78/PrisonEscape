@@ -65,7 +65,7 @@ public class OpenCamerasItem extends FunctionalItem {
                 BukkitMessageSender.sendChatMessage(guard, messages.getCantJoinCameraSneakingMessage());
                 return;
             }
-            
+
             Location loc = e.getPlayer().getLocation();
 
             cameras.get(_currentCameraIndex).addWatcher(guard);

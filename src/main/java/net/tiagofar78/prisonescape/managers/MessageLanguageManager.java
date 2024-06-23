@@ -693,7 +693,7 @@ public class MessageLanguageManager {
     public String getSneakToLeaveCameraMessage() {
         return _sneakToLeaveCameraMessage;
     }
-    
+
     public String getCantJoinCameraSneakingMessage() {
         return _cantJoinCameraSneakingMessage;
     }
