@@ -19,12 +19,14 @@ public class Guard extends PEPlayer {
 
     private static final int BALANCE_LINE_INDEX = 1;
     private static final int SOUND_DETECTORS_FIRST_LINE_INDEX = 3;
+    private static final int INITIAL_SEARCHES = 1;
 
     private int _balance;
 
     private int _numOfCamerasBought = 0;
     private int _numOfSensorsBought = 0;
     private int _numOfTrapsBought = 0;
+    private int _searchesAmount = INITIAL_SEARCHES;
 
     private Location _locationBeforeWatchingCameras = null;
 
@@ -57,7 +59,7 @@ public class Guard extends PEPlayer {
         updateBalanceLine();
     }
 
-    public int buyItem(Item item, int price) {
+    public int buyItem(Item item, int price, boolean isGivableItem) {
         if (!canBuyItem(item)) {
             return -1;
         }
@@ -65,7 +67,7 @@ public class Guard extends PEPlayer {
             return -2;
         }
 
-        if (giveItem(item) == -1) {
+        if (isGivableItem && giveItem(item) == -1) {
             return -3;
         }
 
@@ -93,6 +95,24 @@ public class Guard extends PEPlayer {
         } else if (item instanceof SoundDetectorItem) {
             _numOfSensorsBought++;
         }
+    }
+
+//  #########################################
+//  #                Searches               #
+//  #########################################
+
+    public int countSearches() {
+        return _searchesAmount;
+    }
+
+    public void usedSearch() {
+        _searchesAmount--;
+        getKit().update(getName());
+    }
+
+    public void boughtSearch() {
+        _searchesAmount++;
+        getKit().update(getName());
     }
 
 //  ########################################

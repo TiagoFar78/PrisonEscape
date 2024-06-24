@@ -14,11 +14,13 @@ SensorLimit: 2
 RadarLimit: -1
 EnergyDrinkLimit: -1
 CameraLimit: 1
+SearchLimit: -1
 TrapPrice: 10
 SensorPrice: 10
 RadarPrice: 10
 EnergyDrinkPrice: 10
 CameraPrice: 10
+SearchPrice: 5
 WaitingPhaseDuration: 300
 FullLobbyWaitDuration: 10
 FinishedPhaseDuration: 30
@@ -44,9 +46,9 @@ ReferenceBlock:
   Y: 0
   Z: 0
 LeavingLocation:
-  X: 4
-  Y: 133
-  Z: -20
+  X: 6
+  Y: 67
+  Z: -16
 WaitingLocation:
   X: 12
   Y: 100
@@ -56,7 +58,7 @@ PrisonTopLeftCornerLocation:
   Y: 150
   Z: 60
 PrisonBottomRightCornerLocation:
-  X: -63
+  X: -65
   Y: 70
   Z: -49
 PrisonersSpawnLocations:
@@ -584,7 +586,7 @@ PrisonersSecretPassagesLocation:
     Value:
       X: -25
       Y: 82
-      Z: 20
+      Z: -25
   "51":
     Key:
       X: -23
@@ -748,6 +750,114 @@ PoliceSecretPassagesLocation:
       X: -3
       Y: 101
       Z: 9
+  "13":
+    Key:
+      X: 28
+      Y: 101
+      Z: -1
+    Value:
+      X: 31
+      Y: 100
+      Z: -2
+  "14":
+    Key:
+      X: 30
+      Y: 101
+      Z: -3
+    Value:
+      X: 27
+      Y: 100
+      Z: -2
+  "15":
+    Key:
+      X: 36
+      Y: 101
+      Z: -1
+    Value:
+      X: 39
+      Y: 100
+      Z: -2
+  "16":
+    Key:
+      X: 38
+      Y: 101
+      Z: -3
+    Value:
+      X: 34
+      Y: 100
+      Z: -2
+  "17":
+    Key:
+      X: -23
+      Y: 101
+      Z: -38
+    Value:
+      X: -23
+      Y: 100
+      Z: -41
+  "18":
+    Key:
+      X: -23
+      Y: 101
+      Z: -40
+    Value:
+      X: -23
+      Y: 100
+      Z: -37
+  "19":
+    Key:
+      X: -12
+      Y: 101
+      Z: -35
+    Value:
+      X: -9
+      Y: 100
+      Z: -35
+  "20":
+    Key:
+      X: -10
+      Y: 101
+      Z: -35
+    Value:
+      X: -14
+      Y: 100
+      Z: -35
+  "21":
+    Key:
+      X: -24
+      Y: 101
+      Z: 42
+    Value:
+      X: -24
+      Y: 100
+      Z: 45
+  "22":
+    Key:
+      X: -24
+      Y: 101
+      Z: 44
+    Value:
+      X: -24
+      Y: 100
+      Z: 41
+  "23":
+    Key:
+      X: -17
+      Y: 101
+      Z: 35
+    Value:
+      X: -14
+      Y: 100
+      Z: 35
+  "24":
+    Key:
+      X: -15
+      Y: 101
+      Z: 35
+    Value:
+      X: -19
+      Y: 100
+      Z: 35
 VaultsDirection: "WEST"
 VaultsLocations:
   "1":
@@ -1132,6 +1242,17 @@ CellDoorsLocations:
     Y: 100
     Z: 10
 Regions:
+  Cells:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: 5
+        Y: 104
+        Z: 11
+      LowerCorner:
+        X: 1
+        Y: 100
+        Z: -12
   CellBlock:
     IsRestricted: false
     "1":
@@ -1248,8 +1369,136 @@ Regions:
         X: -59
         Y: 105
         Z: -43
+  Visitations:
+    IsRestricted: false
+    CutCellPhoneCalls: false
+    "1":
+      UpperCorner:
+        X: 26
+        Y: 102
+        Z: 36
+      LowerCorner:
+        X: 9
+        Y: 100
+        Z: 28
+  Corridor:
+    IsRestricted: false
+    CutCellPhoneCalls: false
+    "1":
+      UpperCorner:
+        X: 22
+        Y: 103
+        Z: 27
+      LowerCorner:
+        X: 19
+        Y: 100
+        Z: 5
+    "2":
+      UpperCorner:
+        X: 18
+        Y: 103
+        Z: 22
+      LowerCorner:
+        X: -36
+        Y: 100
+        Z: 19
+    "3":
+      UpperCorner:
+        X: 4
+        Y: 103
+        Z: 48
+      LowerCorner:
+        X: 1
+        Y: 100
+        Z: 23
+    "4":
+      UpperCorner:
+        X: -7
+        Y: 103
+        Z: 18
+      LowerCorner:
+        X: -10
+        Y: 100
+        Z: 12
+    "5":
+      UpperCorner:
+        X: -37
+        Y: 103
+        Z: 53
+      LowerCorner:
+        X: -40
+        Y: 100
+        Z: -26
+    "6":
+      UpperCorner:
+        X: -28
+        Y: 103
+        Z: 0
+      LowerCorner:
+        X: -36
+        Y: 100
+        Z: -3
+    "7":
+      UpperCorner:
+        X: -36
+        Y: 103
+        Z: -27
+      LowerCorner:
+        X: -39
+        Y: 100
+        Z: -42
+    "8":
+      UpperCorner:
+        X: 18
+        Y: 103
+        Z: -23
+      LowerCorner:
+        X: -36
+        Y: 100
+        Z: -26
+    "9":
+      UpperCorner:
+        X: -7
+        Y: 103
+        Z: -14
+      LowerCorner:
+        X: -10
+        Y: 100
+        Z: -22
+    "10":
+      UpperCorner:
+        X: 22
+        Y: 103
+        Z: -9
+      LowerCorner:
+        X: 19
+        Y: 100
+        Z: -28
+    "11":
+      UpperCorner:
+        X: 27
+        Y: 103
+        Z: 4
+      LowerCorner:
+        X: 15
+        Y: 100
+        Z: -8
 ChestsContents:
   Default: # These are the chest contents by default - DON'T CHANGE THE NAME!
+    Bolts: 0.05
+    DuctTape: 0.025
+    Matches: 0.05
+    Oil: 0.01
+    Stick: 0.005
+    PlasticPlate: 0.01
+    Copper: 0.01
+    GoldBar: 0.01
+    Battery: 0.005
+    NotePart: 0.01
+    EnergyDrink: 0.1
+    PlasticSpoon: 0.075
+    MetalSpoon: 0.025
+  Corridor:
     Bolts: 0.05
     DuctTape: 0.025
     Matches: 0.05

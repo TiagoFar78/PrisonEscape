@@ -141,8 +141,10 @@ public class MessageLanguageManager {
     private String _chestAlreadyOpenedMessage;
     private String _fullInventoryMessage;
     private String _notWantedPlayerMessage;
+    private String _alreadyWantedPlayerMessage;
     private String _policeInspectedMessage;
     private String _prisonerInspectedMessage;
+    private String _noSearchesMessage;
     private String _canOnlyFixHolesMessage;
     private String _reachedItemLimitMessage;
     private String _notEnoughMoneyMessage;
@@ -167,6 +169,12 @@ public class MessageLanguageManager {
     private String _noMoreNonHiddenSlotsMessage;
     private String _noMoreHiddenSlotsMessage;
     private String _noMoreTempSlotsMessage;
+    private String _grayDoorRequirementsMessage;
+    private String _goldenDoorRequirementsMessage;
+    private String _codeDoorRequirementsMessage;
+    private String _dirtRequirementsMessage;
+    private String _ventsRequirementsMessage;
+    private String _fenceRequirementsMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -312,8 +320,10 @@ public class MessageLanguageManager {
         _chestAlreadyOpenedMessage = createMessage(messages.getString(warningPath + "ChestAlreadyOpened"));
         _fullInventoryMessage = createMessage(messages.getString(warningPath + "FullInventory"));
         _notWantedPlayerMessage = createMessage(messages.getString(warningPath + "NotWantedPlayer"));
+        _alreadyWantedPlayerMessage = createMessage(messages.getString(warningPath + "AlreadyWantedPlayer"));
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
         _prisonerInspectedMessage = createMessage(messages.getString(warningPath + "PrisonerInspected"));
+        _noSearchesMessage = createMessage(messages.getString(warningPath + "NoSearches"));
         _canOnlyFixHolesMessage = createMessage(messages.getString(warningPath + "CanOnlyFixHoles"));
         _reachedItemLimitMessage = createMessage(messages.getString(warningPath + "ReachedItemLimit"));
         _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
@@ -338,6 +348,12 @@ public class MessageLanguageManager {
         _noMoreNonHiddenSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreNonHiddenSlots"));
         _noMoreHiddenSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreHiddenSlots"));
         _noMoreTempSlotsMessage = createMessage(messages.getString(warningPath + "NoMoreTempSlots"));
+        _grayDoorRequirementsMessage = createMessage(messages.getString(warningPath + "GrayDoorRequirements"));
+        _goldenDoorRequirementsMessage = createMessage(messages.getString(warningPath + "GoldenDoorRequirements"));
+        _codeDoorRequirementsMessage = createMessage(messages.getString(warningPath + "CodeDoorRequirements"));
+        _dirtRequirementsMessage = createMessage(messages.getString(warningPath + "DirtRequirements"));
+        _ventsRequirementsMessage = createMessage(messages.getString(warningPath + "VentsRequirements"));
+        _fenceRequirementsMessage = createMessage(messages.getString(warningPath + "FencesRequirements"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -636,12 +652,20 @@ public class MessageLanguageManager {
         return _notWantedPlayerMessage;
     }
 
+    public String getAlreadyWantedPlayerMessage() {
+        return _alreadyWantedPlayerMessage;
+    }
+
     public String getPoliceInspectedMessage(String playerName) {
         return _policeInspectedMessage.replace("{PLAYER}", playerName);
     }
 
     public String getPrisonerInspectedMessage() {
         return _prisonerInspectedMessage;
+    }
+
+    public String getNoSearchesMessage() {
+        return _noSearchesMessage;
     }
 
     public String getCanOnlyFixHolesMessage() {
@@ -740,6 +764,30 @@ public class MessageLanguageManager {
         return _noMoreTempSlotsMessage;
     }
 
+    public String getGrayDoorRequirementsMessage() {
+        return _grayDoorRequirementsMessage;
+    }
+
+    public String getGoldenDoorRequirementsMessage() {
+        return _goldenDoorRequirementsMessage;
+    }
+
+    public String getCodeDoorRequirementsMessage() {
+        return _codeDoorRequirementsMessage;
+    }
+
+    public String getDirtRequirementsMessage() {
+        return _dirtRequirementsMessage;
+    }
+
+    public String getVentsRequirementsMessage() {
+        return _ventsRequirementsMessage;
+    }
+
+    public String getFencesRequirementsMessage() {
+        return _fenceRequirementsMessage;
+    }
+
 //	########################################
 //	#             Announcements            #
 //	########################################
@@ -781,7 +829,7 @@ public class MessageLanguageManager {
     }
 
     public String getPoliceWonSubtitle(int playersInPrison) {
-        return _policeWonSubtitle;
+        return _policeWonSubtitle.replace("{PLAYERS}", Integer.toString(playersInPrison));
     }
 
     public List<String> getGameResultMessage(boolean isWinner) {

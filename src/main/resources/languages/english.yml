@@ -61,24 +61,42 @@ Items:
     Name: "Energy Drink"
   Handcuffs:
     Name: "Handcuffs"
+    Lore:
+    - "&eSend players to the solitary"
   PlasticSpoon:
     Name: "Wooden Shovel"
+    Lore:
+    - "&eUse in excavation"
   MetalSpoon:
     Name: "Golden Shovel"
+    Lore:
+    - "&eUse in excavation"
   PlasticShovel:
     Name: "Stone Shovel"
+    Lore:
+    - "&eUse in excavation"
   MetalShovel:
     Name: "Diamond Shovel"
+    Lore:
+    - "&eUse in excavation"
   WireCutter:
     Name: "Wire Cutter"
+    Lore:
+    - "&eUse to break fences (iron bars)"
   Wrench:
     Name: "Pickaxe"
+    Lore:
+    - "&eUse to break vents (iron trapdoors)"
   Bomb:
     Name: "Bomb"
+    Lore:
+    - "&eUse to blow cracked wall"
   Glass:
     Name: " "
   Missions:
     Name: "Missions Book"
+    Lore:
+    - "&4COMING SOON"
   OpenCameras:
     Name: "Cameras"
     Lore:
@@ -88,8 +106,12 @@ Items:
     Name: "Shop"
   Search:
     Name: "Search"
+    Lore:
+    - "&eSearch prisoners inventories and vaults"
   Radar:
     Name: "Radar"
+    Lore:
+    - "&eKnow where are all prisoners"
   SoundDetector:
     Name: "Sensor"
   Camera:
@@ -169,7 +191,9 @@ Messages:
     ChestAlreadyOpened: "&eSomeone is accessing that container already."
     FullInventory: "&cYour inventory is full."
     NotWantedPlayer: "&cYou can only send to solitary wanted players."
+    AlreadyWantedPlayer: "&cThat player is wanted already. Use your handcuffs!"
     PrisonerInspected: "&aA police inspected your inventory, but no illegal items were found."
+    NoSearches: "&cYou haven't any search available. Buy some more in the shop."
     PoliceInspected: "&a{PLAYER} don't have any illegal items."
     CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
     ReachedItemLimit: "&cSorry, you've already reached the maximum limit for this item."
@@ -195,6 +219,12 @@ Messages:
     NoMoreNonHiddenSlots: "&cThere isn't any non hidden slot available."
     NoMoreHiddenSlots: "&cThere isn't any hidden slot available."
     NoMoreTempSlots: "&cThere isn't any temporary slot available."
+    GrayDoorRequirements: "&cYou need to use a &fGray Key &cto open this door."
+    GoldenDoorRequirements: "&cYou need to use a &fGolden Key &cto open this door."
+    CodeDoorRequirements: "&cSomeone needs to reveal the &fDoor Code &cin order to open this door."
+    DirtRequirements: "&cYou need to use a shovel to break dirt."
+    VentsRequirements: "&cYou need to use a &fPickaxe &cto break vents."
+    FencesRequirements: "&cYou need to use a &fWire Cutter &cto break fences."
   Announcements:
     GameStarting:
     - "&6==================================="
@@ -216,7 +246,7 @@ Messages:
     - "                &f&l{RESULT}"
     - ""
     - "      Statistics:"
-    - "      - &4COMMING SOON"
+    - "      - &4COMING SOON"
     - ""
     - "&6==================================="
     PlayerEscaped: "&ePlayer &f{PLAYER} &eescaped the prison."

@@ -14,11 +14,13 @@ SensorLimit: 2
 RadarLimit: -1
 EnergyDrinkLimit: -1
 CameraLimit: 1
+SearchLimit: -1
 TrapPrice: 10
 SensorPrice: 10
 RadarPrice: 10
 EnergyDrinkPrice: 10
 CameraPrice: 10
+SearchPrice: 5
 WaitingPhaseDuration: 300
 FullLobbyWaitDuration: 10
 FinishedPhaseDuration: 30
@@ -153,6 +155,17 @@ CellDoorsLocations:
     Y: 0
     Z: 0
 Regions:
+  Cells: # DO NOT CHANGE THIS REGION NAME
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: 0
+        Y: 0
+        Z: 0
+      LowerCorner:
+        X: 0
+        Y: 0
+        Z: 0  
   RegionName:
     IsRestricted: false
     "1":

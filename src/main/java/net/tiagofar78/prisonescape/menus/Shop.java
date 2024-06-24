@@ -9,6 +9,7 @@ import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.RadarItem;
+import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.SoundDetectorItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class Shop implements Clickable {
 
-    private static final int NUM_OF_ITEMS_FOR_SALE = 5;
+    private static final int NUM_OF_ITEMS_FOR_SALE = 6;
 
     private List<Item> _contents;
 
@@ -37,6 +38,7 @@ public class Shop implements Clickable {
         list.add(new SoundDetectorItem());
         list.add(new CameraItem());
         list.add(new RadarItem());
+        list.add(new SearchItem());
         return list;
     }
 
@@ -61,7 +63,9 @@ public class Shop implements Clickable {
         Buyable buyableItem = (Buyable) item;
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
-        int returnCode = guard.buyItem(item, buyableItem.getPrice());
+        boolean isGivableItem = !(item instanceof SearchItem);
+
+        int returnCode = guard.buyItem(item, buyableItem.getPrice(), isGivableItem);
         if (returnCode == -1) {
             BukkitMessageSender.sendChatMessage(player, messages.getReachedItemLimitMessage());
             return ClickReturnAction.NOTHING;
@@ -71,6 +75,10 @@ public class Shop implements Clickable {
         } else if (returnCode == -3) {
             BukkitMessageSender.sendChatMessage(player, messages.getFullInventoryMessage());
             return ClickReturnAction.NOTHING;
+        }
+
+        if (!isGivableItem) {
+            guard.boughtSearch();
         }
 
         BukkitMessageSender.sendChatMessage(player, messages.getSuccessfullyBoughtItemMessage(guard.getBalance()));
@@ -86,6 +94,7 @@ public class Shop implements Clickable {
         shopMenu.setItem(2, new SoundDetectorItem().toItemStack(messages));
         shopMenu.setItem(3, new CameraItem().toItemStack(messages));
         shopMenu.setItem(4, new RadarItem().toItemStack(messages));
+        shopMenu.setItem(5, new SearchItem().toItemStack(messages));
 
         return shopMenu;
     }

@@ -6,6 +6,7 @@ import net.tiagofar78.prisonescape.items.MetalSpoonItem;
 import net.tiagofar78.prisonescape.items.PlasticShovelItem;
 import net.tiagofar78.prisonescape.items.PlasticSpoonItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
 
@@ -23,6 +24,11 @@ public class Dirt extends Obstacle {
     public boolean isEffectiveTool(ToolItem tool) {
         return tool instanceof PlasticSpoonItem || tool instanceof MetalSpoonItem ||
                 tool instanceof PlasticShovelItem || tool instanceof MetalShovelItem;
+    }
+
+    @Override
+    public String getEffectiveToolMessage(MessageLanguageManager messages) {
+        return messages.getDirtRequirementsMessage();
     }
 
     @Override

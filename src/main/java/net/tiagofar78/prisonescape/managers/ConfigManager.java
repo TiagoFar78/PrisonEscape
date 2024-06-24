@@ -47,11 +47,13 @@ public class ConfigManager {
     private int _radarLimit;
     private int _energyDrinkLimit;
     private int _cameraLimit;
+    private int _searchLimit;
     private int _trapPrice;
     private int _sensorPrice;
     private int _radarPrice;
     private int _energyDrinkPrice;
     private int _cameraPrice;
+    private int _searchPrice;
     private int _helicopterSpawnDelay;
     private int _helicopterDepartureDelay;
     private int _radarDuration;
@@ -130,11 +132,13 @@ public class ConfigManager {
         _radarLimit = config.getInt("RadarLimit");
         _energyDrinkLimit = config.getInt("EnergyDrinkLimit");
         _cameraLimit = config.getInt("CameraLimit");
+        _searchLimit = config.getInt("SearchLimit");
         _trapPrice = config.getInt("TrapPrice");
         _sensorPrice = config.getInt("SensorPrice");
         _radarPrice = config.getInt("RadarPrice");
         _energyDrinkPrice = config.getInt("EnergyDrinkPrice");
         _cameraPrice = config.getInt("CameraPrice");
+        _searchPrice = config.getInt("SearchPrice");
         _helicopterSpawnDelay = config.getInt("HelicopterSpawnDelay");
         _helicopterDepartureDelay = config.getInt("HelicopterDepartureDelay");
         _radarDuration = config.getInt("RadarDuration");
@@ -403,6 +407,10 @@ public class ConfigManager {
         return _cameraLimit;
     }
 
+    public int getSearchLimit() {
+        return _searchLimit;
+    }
+
     public int getTrapPrice() {
         return _trapPrice;
     }
@@ -421,6 +429,10 @@ public class ConfigManager {
 
     public int getCameraPrice() {
         return _cameraPrice;
+    }
+
+    public int getSearchPrice() {
+        return _searchPrice;
     }
 
     public int getHelicopterSpawnDelay() {

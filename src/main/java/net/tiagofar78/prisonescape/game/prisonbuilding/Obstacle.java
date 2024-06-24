@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.items.ToolItem;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
 
@@ -32,6 +33,8 @@ public abstract class Obstacle {
     }
 
     public abstract boolean isEffectiveTool(ToolItem tool);
+
+    public abstract String getEffectiveToolMessage(MessageLanguageManager messages);
 
     public abstract boolean contains(Location location);
 

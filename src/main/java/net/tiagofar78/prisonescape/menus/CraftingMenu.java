@@ -91,7 +91,8 @@ public class CraftingMenu implements Clickable {
     }
 
     private void placeItemsToCraft(Inventory inv, MessageLanguageManager messages) {
-        List<Item> craftingItems = ((Craftable) _selectedItem).getCratingItems();
+        Craftable selectedItem = (Craftable) _selectedItem;
+        List<Item> craftingItems = selectedItem == null ? new ArrayList<>() : selectedItem.getCratingItems();
 
         int i;
         for (i = 0; i < craftingItems.size(); i++) {
@@ -109,7 +110,10 @@ public class CraftingMenu implements Clickable {
         ItemStack item;
         String itemName;
 
-        if (findCraftingItemsIndexes(player).size() == 0) {
+        if (_selectedItem == null) {
+            item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+            itemName = " ";
+        } else if (findCraftingItemsIndexes(player).size() == 0) {
             item = new ItemStack(Material.RED_WOOL);
             itemName = messages.getMissingItemsWoolName();
         } else {
@@ -164,6 +168,9 @@ public class CraftingMenu implements Clickable {
             BukkitMessageSender.sendChatMessage(player, messages.getCraftingItemsMissingMessage());
         } else {
             processCrafting(player, itemsIndexes);
+            _selectedItem = null;
+            player.updateView();
+
         }
 
         return ClickReturnAction.NOTHING;

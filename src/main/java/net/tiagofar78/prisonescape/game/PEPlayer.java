@@ -11,6 +11,7 @@ import net.tiagofar78.prisonescape.menus.Clickable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
@@ -27,6 +28,7 @@ import java.util.List;
 public abstract class PEPlayer {
 
     private static final int TICKS_PER_SECOND = 20;
+    private static final String WANTED_TEAM_NAME = "Wanted";
 
     private static final int INVENTORY_SIZE = 4;
     private static final int[] INVENTORY_INDEXES = {0, 1, 2, 3};
@@ -199,6 +201,14 @@ public abstract class PEPlayer {
         return 0;
     }
 
+    public void clearInventory() {
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            _inventory.set(i, new NullItem());
+        }
+
+        updateInventory();
+    }
+
     public int convertToInventoryIndex(int slot) {
         for (int i = 0; i < INVENTORY_INDEXES.length; i++) {
             if (slot == INVENTORY_INDEXES[i]) {
@@ -314,6 +324,8 @@ public abstract class PEPlayer {
         String prisonersTeamName = GameManager.getGame().getPrisonerTeam().getName();
         registerTeam(sbData, prisonersTeamName, ChatColor.GOLD);
 
+        registerTeam(sbData, WANTED_TEAM_NAME, ChatColor.RED);
+
         return sbData;
     }
 
@@ -348,6 +360,18 @@ public abstract class PEPlayer {
         }
     }
 
+    public void addScoreboardWantedTeamMember(String prisonerTeamName, String playerName) {
+        Scoreboard sb = getScoreboardData().getScoreboard();
+        sb.getTeam(prisonerTeamName).removeEntry(playerName);
+        sb.getTeam(WANTED_TEAM_NAME).addEntry(playerName);
+    }
+
+    public void removeScoreboardWantedTeamMember(String prisonerTeamName, String playerName) {
+        Scoreboard sb = getScoreboardData().getScoreboard();
+        sb.getTeam(WANTED_TEAM_NAME).removeEntry(playerName);
+        sb.getTeam(prisonerTeamName).addEntry(playerName);
+    }
+
 //  ########################################
 //  #                Bukkit                #
 //  ########################################
@@ -360,6 +384,15 @@ public abstract class PEPlayer {
         }
 
         return player;
+    }
+
+    public Location getLocation() {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return null;
+        }
+
+        return player.getLocation();
     }
 
     public void setGameMode(GameMode gameMode) {
@@ -437,12 +470,16 @@ public abstract class PEPlayer {
     }
 
     public void playSound(Sound sound) {
+        playSound(sound, 1);
+    }
+
+    public void playSound(Sound sound, int volume) {
         Player player = getBukkitPlayer();
         if (player == null) {
             return;
         }
 
-        player.playSound(player, sound, 1, 0.5f);
+        player.playSound(player, sound, volume, 0.5f);
     }
 
     public boolean isSneaking() {
