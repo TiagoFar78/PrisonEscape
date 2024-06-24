@@ -1,6 +1,8 @@
 package net.tiagofar78.prisonescape;
 
 import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
+import net.tiagofar78.prisonescape.listener.PlayerListener;
+import net.tiagofar78.prisonescape.listener.WorldListener;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
@@ -34,7 +36,8 @@ public class PrisonEscape extends JavaPlugin {
         getCommand(COMMAND_LABEL).setAliases(COMMAND_ALIASES);
         getCommand(COMMAND_LABEL).setExecutor(new PrisonEscapeCommand());
 
-        getServer().getPluginManager().registerEvents(new Events(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(), this);
 
         loadResourcesAndManagers();
     }
