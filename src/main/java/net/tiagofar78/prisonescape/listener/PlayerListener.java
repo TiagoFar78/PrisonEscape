@@ -135,6 +135,8 @@ public class PlayerListener implements Listener {
 //  #         Interact With Player         #
 //  ########################################
 
+    private static final String INTERACT_WITH_PLAYER_EVENT_NAME = "InteractWithPlayer";
+
     @EventHandler
     public void onPlayerInteractWithPlayer(PlayerInteractEntityEvent e) {
         PEGame game = GameManager.getGame();
@@ -146,6 +148,12 @@ public class PlayerListener implements Listener {
         if (player == null) {
             return;
         }
+
+        if (player.isOnCooldown(INTERACT_WITH_PLAYER_EVENT_NAME)) {
+            e.setCancelled(true);
+            return;
+        }
+        player.executedEvent(INTERACT_WITH_PLAYER_EVENT_NAME);
 
         PEPlayer clickedPlayer = game.getPEPlayer(e.getRightClicked().getName());
         if (clickedPlayer != null) {
@@ -212,6 +220,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (player.isOnCooldown(INTERACT_WITH_PLAYER_EVENT_NAME)) {
+            e.setCancelled(true);
+            return;
+        }
+        player.executedEvent(INTERACT_WITH_PLAYER_EVENT_NAME);
+
         Item item = player.getItemAt(pAttacker.getInventory().getHeldItemSlot());
 
         if (item.isFunctional()) {
@@ -243,33 +257,40 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (player.isOnCooldown(e.getEventName())) {
+            e.setCancelled(true);
+            return;
+        }
+
         int itemSlot = e.getPlayer().getInventory().getHeldItemSlot();
 
         Block block = e.getClickedBlock();
         Location location = block == null ? null : block.getLocation();
 
-        playerInteract(game, player, location, itemSlot, e);
+        if (playerInteract(game, player, location, itemSlot, e)) {
+            player.executedEvent(e.getEventName());
+        }
 
         e.setCancelled(true);
     }
 
-    private void playerInteract(
-            PEGame game,
-            PEPlayer player,
-            Location blockLocation,
-            int itemSlot,
-            PlayerInteractEvent e
-    ) {
-        if (blockLocation != null) {
-            if (!interactWithPrison(game, player, blockLocation, itemSlot)) {
-                return;
+    /**
+     * @return if player interacted with prison
+     */
+    private boolean playerInteract(PEGame game, PEPlayer player, Location location, int slot, PlayerInteractEvent e) {
+        if (location != null) {
+            if (!interactWithPrison(game, player, location, slot)) {
+                return true;
             }
         }
 
-        Item item = player.getItemAt(itemSlot);
+        Item item = player.getItemAt(slot);
         if (item.isFunctional()) {
             ((FunctionalItem) item).use(e);
+            return true;
         }
+
+        return false;
     }
 
     /**
