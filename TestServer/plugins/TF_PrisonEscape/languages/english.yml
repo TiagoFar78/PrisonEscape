@@ -127,6 +127,7 @@ Items:
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
+  Buyable: "&aPrice: {PRICE}"
   LoreLine: "- {PROPERTY}"
 Inventory:
   Vault:
