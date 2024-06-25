@@ -9,8 +9,6 @@ import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
-import net.tiagofar78.prisonescape.items.FunctionalItem;
-import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisonerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
@@ -18,7 +16,6 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.Shop;
-import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,7 +24,6 @@ import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -541,54 +537,6 @@ public class PEGame {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
         _bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
-    }
-
-//	########################################
-//	#                Events                #
-//	########################################
-
-    public void playerInteractWithPlayer(String playerName, int itemSlot, PlayerInteractEntityEvent e) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        PEPlayer clickedPlayer = getPEPlayer(e.getRightClicked().getName());
-        if (clickedPlayer != null) {
-            if (player.isPrisoner() && clickedPlayer.isPrisoner() && player.isSneaking()) {
-                Prisoner sender = (Prisoner) player;
-                Prisoner target = (Prisoner) clickedPlayer;
-
-                if (sender.hasBeenRequestedBy(target) && sender.isStillValidRequest()) {
-                    sender.clearRequest();
-                    target.clearRequest();
-                    new TradeMenu(target, sender);
-                    return;
-                }
-
-                target.sendRequest(sender);
-
-                String senderName = sender.getName();
-                String targetName = target.getName();
-
-                MessageLanguageManager senderMessages = MessageLanguageManager.getInstanceByPlayer(senderName);
-                BukkitMessageSender.sendChatMessage(sender, senderMessages.getTradeRequestSentMessage(targetName));
-
-                int time = ConfigManager.getInstance().getTradeRequestTimeout();
-                MessageLanguageManager targetMessages = MessageLanguageManager.getInstanceByPlayer(targetName);
-                BukkitMessageSender.sendChatMessage(
-                        target,
-                        targetMessages.getTradeRequestReceivedMessage(senderName, time)
-                );
-
-                return;
-            }
-        }
-
-        Item item = player.getItemAt(itemSlot);
-        if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
-        }
     }
 
 //	########################################
