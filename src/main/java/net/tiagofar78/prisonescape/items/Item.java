@@ -58,7 +58,13 @@ public abstract class Item {
             lore = new ArrayList<>();
         }
 
-        List<String> itemPropertiesLore = messages.getItemPropertiesLore(isMetalic(), isIllegal());
+        int price = 0;
+        if (isBuyable()) {
+            Buyable buyableItem = (Buyable) this;
+            price = buyableItem.getPrice();
+        }
+
+        List<String> itemPropertiesLore = messages.getItemPropertiesLore(isMetalic(), isIllegal(), price);
         if (itemPropertiesLore.size() > 0) {
             lore.add("");
             lore.addAll(itemPropertiesLore);
