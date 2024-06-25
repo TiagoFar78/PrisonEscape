@@ -23,10 +23,12 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public abstract class PEPlayer {
 
+    private static final int INTERACT_EVENT_COOLDOWN_TICKS = 5;
     private static final int TICKS_PER_SECOND = 20;
     private static final String WANTED_TEAM_NAME = "Wanted";
 
@@ -40,6 +42,7 @@ public abstract class PEPlayer {
     private Kit _currentKit;
     private long _lastDrankPotionTime;
     private int _secondsLeft;
+    private Hashtable<String, Long> _eventCooldown;
 
     private ScoreboardData _scoreboardData;
     private Clickable _openedMenu;
@@ -50,6 +53,7 @@ public abstract class PEPlayer {
         _inventory = createInventory();
         _lastDrankPotionTime = -1;
         _secondsLeft = 0;
+        _eventCooldown = new Hashtable<>();
         _canMove = true;
 
         _scoreboardData = createScoreboardData();
@@ -305,6 +309,28 @@ public abstract class PEPlayer {
 
     private int convertToSeconds(long miliseconds) {
         return (int) (miliseconds / 1000);
+    }
+
+//  #########################################
+//  #               Cooldowns               #
+//  #########################################
+
+    public void executedEvent(String eventName) {
+        _eventCooldown.put(eventName, System.currentTimeMillis());
+    }
+
+    public boolean isOnCooldown(String eventName) {
+        Long lastExecutionTime = _eventCooldown.get(eventName);
+        if (lastExecutionTime == null) {
+            return false;
+        }
+
+        long timeSinceLastExecution = System.currentTimeMillis() - lastExecutionTime;
+        return milisecondsToTicks(timeSinceLastExecution) < INTERACT_EVENT_COOLDOWN_TICKS;
+    }
+
+    private int milisecondsToTicks(long miliseconds) {
+        return (int) (miliseconds / (1000 / TICKS_PER_SECOND));
     }
 
 //  ########################################

@@ -2,35 +2,21 @@ package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
-import net.tiagofar78.prisonescape.bukkit.BukkitSoundBoard;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.phases.Disabled;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Helicopter;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
-import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
-import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
-import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
-import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.SearchItem;
-import net.tiagofar78.prisonescape.items.ToolItem;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisonerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.ClickReturnAction;
-import net.tiagofar78.prisonescape.menus.Clickable;
 import net.tiagofar78.prisonescape.menus.Shop;
 import net.tiagofar78.prisonescape.menus.TradeMenu;
 
@@ -38,14 +24,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,6 +71,10 @@ public class PEGame {
         _bossBar = Bukkit.createBossBar(mapName, BarColor.YELLOW, BarStyle.SOLID);
 
         startWaitingPhase();
+    }
+
+    public Phase getCurrentPhase() {
+        return _phase;
     }
 
     public PrisonBuilding getPrison() {
@@ -259,6 +245,10 @@ public class PEGame {
 
     public PETeam<Guard> getGuardsTeam() {
         return _policeTeam;
+    }
+
+    public List<PEPlayer> getPlayersOnLobby() {
+        return _playersOnLobby;
     }
 
 //	########################################
@@ -557,125 +547,6 @@ public class PEGame {
 //	#                Events                #
 //	########################################
 
-    public void playerMove(String playerName, Location loc, PlayerMoveEvent e) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        if (!_phase.hasGameStarted() || _phase.hasGameEnded()) {
-            return;
-        }
-
-        if (!player.canMove()) {
-            e.setCancelled(true);
-            return;
-        }
-
-        for (SoundDetector soundDetector : _prison.getSoundDetectors()) {
-            soundDetector.playerMoved(player, loc);
-        }
-
-        if (!isPrisoner(player)) {
-            return;
-        }
-
-        Prisoner prisoner = (Prisoner) player;
-
-        if (prisoner.hasEscaped()) {
-            return;
-        }
-
-        _prison.checkIfWalkedOverTrap(loc, player);
-
-        if (_prison.isOutsidePrison(loc)) {
-            playerEscaped(prisoner);
-        }
-
-        if (_prison.isInRestrictedArea(loc)) {
-            prisoner.enteredRestrictedArea();
-        } else if (prisoner.isInRestrictedArea()) {
-            prisoner.leftRestrictedArea();
-        }
-
-        if (_prison.checkIfWalkedOverMetalDetector(loc)) {
-            playerWalkedOverMetalDetector(playerName, loc);
-        }
-    }
-
-    private void playerWalkedOverMetalDetector(String playerName, Location loc) {
-        PEPlayer player = getPlayerOnPrisonersTeam(playerName);
-        if (player == null) {
-            return;
-        }
-        if (player.hasMetalItems()) {
-            BukkitSoundBoard.playMetalDetectorSound(loc);
-        }
-    }
-
-    public int playerInteract(String playerName, Location blockLocation, int itemSlot, PlayerInteractEvent e) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return -1;
-        }
-
-        Item item = player.getItemAt(itemSlot);
-
-        if (blockLocation != null) {
-            int vaultIndex = _prison.getVaultIndex(blockLocation);
-            if (vaultIndex != -1) {
-                playerOpenVault(player, vaultIndex, item);
-                return 0;
-            }
-
-            Chest chest = _prison.getChest(blockLocation);
-            if (chest != null) {
-                playerOpenChest(player, chest);
-                return 0;
-            }
-
-            WallCrack crack = _prison.getWallCrack(blockLocation);
-            if (crack != null) {
-                int returnCode = playerFixWallCrack(player, crack);
-                if (returnCode == 0) {
-                    return 0;
-                }
-            }
-
-            Helicopter helicopter = _prison.getHelicopter(blockLocation);
-            if (helicopter != null) {
-                helicopter.click(player, _prison.getHelicopterExitLocation(), _prison.getHelicopterJoinLocation());
-                return 0;
-            }
-
-            Location destination = _prison.getSecretPassageDestinationLocation(blockLocation, isPrisoner(player));
-            if (destination != null) {
-                BukkitTeleporter.teleport(player, destination);
-                return 0;
-            }
-
-            Door door = _prison.getDoor(blockLocation);
-            if (door != null) {
-                int index = player.convertToInventoryIndex(itemSlot);
-                playerInteractWithDoor(player, index, item, door, blockLocation);
-                return 0;
-            }
-
-            Obstacle obstacle = _prison.getObstacle(blockLocation);
-            if (obstacle != null) {
-                if (obstacleTookDamage(player, obstacle, item) == 0) {
-                    return 0;
-                }
-            }
-        }
-
-        if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
-        }
-
-        return 0;
-    }
-
     public void playerInteractWithPlayer(String playerName, int itemSlot, PlayerInteractEntityEvent e) {
         PEPlayer player = getPEPlayer(playerName);
         if (player == null) {
@@ -718,69 +589,6 @@ public class PEGame {
         if (item.isFunctional()) {
             ((FunctionalItem) item).use(e);
         }
-    }
-
-    public void playerCloseMenu(String playerName) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        player.closeMenu();
-    }
-
-    public ClickReturnAction playerClickMenu(String playerName, int slot, boolean isPlayerInv, ClickType type) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return ClickReturnAction.IGNORE;
-        }
-
-        Clickable menu = player.getOpenedMenu();
-        if (menu == null) {
-            return ClickReturnAction.NOTHING;
-        }
-
-        return menu.click(player, slot, isPlayerInv, type);
-    }
-
-    public void playerSneak(String playerName) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        if (!player.isGuard()) {
-            return;
-        }
-
-        Guard guard = (Guard) player;
-        if (guard.isWatchingCamera()) {
-            guard.stoppedWatchingCamera();
-        }
-    }
-
-    public void sendTeamOnlyMessage(String senderName, String message) {
-        PEPlayer player = getPEPlayer(senderName);
-        if (player == null) {
-            return;
-        }
-
-        if (isPrisoner(player)) {
-            sendMessageToPrisonersTeam(senderName, message);
-        } else if (isGuard(player)) {
-            sendMessageToPoliceTeam(senderName, message);
-        }
-    }
-
-    public void sendGeneralMessage(String senderName, String message) {
-        for (PEPlayer player : _playersOnLobby) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getGeneralMessage(senderName, message));
-        }
-    }
-
-    public void explosion(List<Block> explodedBlocks) {
-        _prison.removeExplodedBlocks(explodedBlocks);
     }
 
 //	########################################
@@ -885,83 +693,6 @@ public class PEGame {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
-    }
-
-    private void playerOpenVault(PEPlayer player, int vaultIndex, Item item) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-
-        Vault vault = _prison.getVault(vaultIndex);
-
-        if (isGuard(player)) {
-            if (!(item instanceof SearchItem)) {
-                BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
-                return;
-            }
-
-            policeSearchVault((Guard) player, vault, messages);
-            return;
-        }
-
-        if (_prisonersTeam.getPlayerIndex(player) != vaultIndex) {
-            BukkitMessageSender.sendChatMessage(player, messages.getPrisonerOtherVaultMessage());
-            return;
-        }
-
-        player.openMenu(vault);
-    }
-
-    /**
-     * @return 0 if success<br>
-     *         -1 if cannot drop that item
-     */
-    public int playerDropItem(String playerName, int slot) {
-        PEPlayer player = getPEPlayer(playerName);
-
-        int return_code = player.removeItem(slot);
-        if (return_code == -1) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-            BukkitMessageSender.sendChatMessage(player, messages.getCannotDropThatItemMessage());
-        }
-
-        return return_code;
-    }
-
-    private void policeSearchVault(Guard guard, Vault vault, MessageLanguageManager messagesPolice) {
-        Prisoner vaultOwner = vault.getOwner();
-        MessageLanguageManager messagesPrisoner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
-
-        int returnCode = vault.search();
-        if (returnCode == 1) {
-            setWanted(vaultOwner, guard);
-
-            BukkitMessageSender.sendChatMessage(
-                    guard,
-                    messagesPolice.getPoliceFoundIllegalItemsMessage(vaultOwner.getName())
-            );
-            BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisoner.getPrisonerFoundIllegalItemsMessage());
-        } else if (returnCode == 0) {
-            BukkitMessageSender.sendChatMessage(guard, messagesPolice.getPoliceNoIllegalItemsFoundMessage());
-            BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisoner.getPrisonerNoIllegalItemsFoundMessage());
-            guard.usedSearch();
-        }
-
-        return;
-    }
-
-    private void playerOpenChest(PEPlayer player, Chest chest) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-
-        if (isGuard(player)) {
-            BukkitMessageSender.sendChatMessage(player, messages.getPoliceCanNotOpenChestMessage());
-            return;
-        }
-
-        if (chest.isOpened()) {
-            BukkitMessageSender.sendChatMessage(player, messages.getChestAlreadyOpenedMessage());
-            return;
-        }
-
-        player.openMenu(chest);
     }
 
     public void playerDrankEnergyDrink(String playerName, int eneryDrinkIndex) {
@@ -1073,7 +804,7 @@ public class PEGame {
         }
     }
 
-    private void setWanted(Prisoner prisoner, PEPlayer guard) {
+    public void setWanted(Prisoner prisoner, PEPlayer guard) {
         prisoner.setWanted();
 
         String prisonerName = prisoner.getName();
@@ -1094,73 +825,8 @@ public class PEGame {
         }
     }
 
-    public void playerInteractWithDoor(
-            PEPlayer player,
-            int inventoryIndex,
-            Item itemHeld,
-            Door door,
-            Location doorLocation
-    ) {
-        ClickDoorReturnAction returnAction = door.click(player, itemHeld);
-
-        if (returnAction == ClickDoorReturnAction.CLOSE_DOOR) {
-            door.close(doorLocation);
-            return;
-        }
-
-        if (returnAction == ClickDoorReturnAction.OPEN_DOOR) {
-            door.open(doorLocation);
-            player.removeItem(inventoryIndex);
-            player.updateInventory();
-        }
-    }
-
     public void placeBomb(Location location) {
         _prison.placeBomb(location);
-    }
-
-    public int playerFixWallCrack(PEPlayer player, WallCrack crack) {
-        if (!isGuard(player)) {
-            return -1;
-        }
-
-        int returnCode = crack.fixCrack();
-        if (returnCode == -1) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getCanOnlyFixHolesMessage());
-        }
-
-        return 0;
-    }
-
-    public int obstacleTookDamage(PEPlayer player, Obstacle obstacle, Item item) {
-        if (isGuard(player)) {
-            if (obstacle instanceof Regenerable) {
-                ((Regenerable) obstacle).regenerate();
-                return 0;
-            }
-
-            return -1;
-        }
-
-        if (!item.isTool()) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, obstacle.getEffectiveToolMessage(messages));
-            return 0;
-        }
-
-        double returnCode = obstacle.takeDamage((ToolItem) item);
-        if (returnCode == 0) {
-            obstacle.removeFromWorld();
-        } else if (returnCode == -1) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, obstacle.getEffectiveToolMessage(messages));
-            return 0;
-        }
-
-        player.updateInventory();
-
-        return 0;
     }
 
 //	########################################
@@ -1175,20 +841,6 @@ public class PEGame {
         }
 
         return null;
-    }
-
-    private void sendMessageToPoliceTeam(String senderName, String message) {
-        for (PEPlayer player : _policeTeam.getMembers()) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPoliceTeamMessage(senderName, message));
-        }
-    }
-
-    private void sendMessageToPrisonersTeam(String senderName, String message) {
-        for (PEPlayer player : _prisonersTeam.getMembers()) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPrisonerTeamMessage(senderName, message));
-        }
     }
 
     private void distributePlayersPerTeam() {
