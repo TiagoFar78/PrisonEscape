@@ -3,6 +3,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding.placeables;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
+import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 
@@ -14,6 +15,8 @@ import org.bukkit.entity.Player;
 
 public class Camera {
 
+    private static final int WATCH_CAMERA_DELAY = 3;
+
     private NPC _camera;
 
     public Camera(Location location) {
@@ -23,7 +26,15 @@ public class Camera {
     public void addWatcher(Guard player) {
         Player bukkitPlayer = Bukkit.getPlayer(player.getName());
         bukkitPlayer.setGameMode(GameMode.SPECTATOR);
-        bukkitPlayer.setSpectatorTarget(_camera.getEntity());
+
+        bukkitPlayer.teleport(_camera.getStoredLocation());
+        Bukkit.getScheduler().runTaskLater(PrisonEscape.getPrisonEscape(), new Runnable() {
+
+            @Override
+            public void run() {
+                bukkitPlayer.setSpectatorTarget(_camera.getEntity());
+            }
+        }, WATCH_CAMERA_DELAY);
     }
 
     public void delete() {

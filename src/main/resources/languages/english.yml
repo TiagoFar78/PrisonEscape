@@ -207,6 +207,7 @@ Messages:
     CannotPlaceTrap: "&cYou cannot place a trap there"
     NoCamerasPlaced: "&cThere aren't cameras placed. Buy some from the shop."
     SneakToLeaveCamera: "&eSneak to leave the camera"
+    CantJoinCameraSneaking: "&cYou cannot view cameras while sneaking."
     SoundDetectorPlaced: "&aSound detector placed sucessfully. Check if there are players walking by in the sidebar."
     InvalidSoundDetectorLoc: "&cSound detector can not be placed here. &eTry placing it on directly on the ground."
     TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
