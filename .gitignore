@@ -32,3 +32,4 @@ TestServer/plugins/*
 !TestServer/plugins/TF_PrisonEscape/
 .vscode/*
 TestServer/crash-reports/
+TestServer/map-color-cache.dat
