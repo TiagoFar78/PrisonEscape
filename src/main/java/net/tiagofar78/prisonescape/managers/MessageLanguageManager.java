@@ -77,6 +77,10 @@ public class MessageLanguageManager {
 
     private String _sbDisplayName;
     private String _sideBarLastLine;
+    private String _sideBarRegionLine;
+    private String _sideBarRestrictedRegionLine;
+    private String _sideBarDefaultRegionName;
+    private String _sideBarWaitingRegionName;
     private String _guardSideBarBalanceLine;
     private String _guardSideBarSoundDetectorLine;
 
@@ -246,6 +250,10 @@ public class MessageLanguageManager {
         String scoreboardPath = "Scoreboard.";
         _sbDisplayName = createMessage(messages.getString(scoreboardPath + "DisplayName"));
         _sideBarLastLine = createMessage(messages.getString(scoreboardPath + "LastLine"));
+        _sideBarRegionLine = createMessage(messages.getString(scoreboardPath + "RegionLine"));
+        _sideBarRestrictedRegionLine = createMessage(messages.getString(scoreboardPath + "RestrictedRegionLine"));
+        _sideBarDefaultRegionName = createMessage(messages.getString(scoreboardPath + "DefaultRegionName"));
+        _sideBarWaitingRegionName = createMessage(messages.getString(scoreboardPath + "WaitingRegionName"));
         _guardSideBarBalanceLine = createMessage(messages.getString(scoreboardPath + "GuardSideBar.BalanceLine"));
         _guardSideBarSoundDetectorLine = createMessage(
                 messages.getString(scoreboardPath + "GuardSideBar.SoundDectorLine")
@@ -452,6 +460,22 @@ public class MessageLanguageManager {
 
     public String getSideBarLastLine() {
         return _sideBarLastLine;
+    }
+
+    public String getSideBarRegionLine(String region) {
+        return _sideBarRegionLine.replace("{REGION}", region);
+    }
+
+    public String getSideBarRestrictedRegionLine(String region) {
+        return _sideBarRestrictedRegionLine.replace("{REGION}", region);
+    }
+
+    public String getSideBarDefaultRegionName() {
+        return _sideBarDefaultRegionName;
+    }
+
+    public String getSideBarWaitingRegionName() {
+        return _sideBarWaitingRegionName;
     }
 
     public String getGuardSideBarBalanceLine(int balance) {

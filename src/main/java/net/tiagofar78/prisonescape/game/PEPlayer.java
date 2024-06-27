@@ -1,5 +1,7 @@
 package net.tiagofar78.prisonescape.game;
 
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.ToolItem;
@@ -28,6 +30,7 @@ import java.util.List;
 
 public abstract class PEPlayer {
 
+    private static final int REGION_LINE_INDEX = 0;
     private static final int INTERACT_EVENT_COOLDOWN_TICKS = 5;
     private static final int TICKS_PER_SECOND = 20;
     private static final String WANTED_TEAM_NAME = "Wanted";
@@ -43,6 +46,7 @@ public abstract class PEPlayer {
     private long _lastDrankPotionTime;
     private int _secondsLeft;
     private Hashtable<String, Long> _eventCooldown;
+    private Region _currentRegion;
 
     private ScoreboardData _scoreboardData;
     private Clickable _openedMenu;
@@ -55,6 +59,7 @@ public abstract class PEPlayer {
         _secondsLeft = 0;
         _eventCooldown = new Hashtable<>();
         _canMove = true;
+        _currentRegion = null;
 
         _scoreboardData = createScoreboardData();
         setScoreboard(_scoreboardData.getScoreboard());
@@ -291,6 +296,18 @@ public abstract class PEPlayer {
     }
 
 //  ########################################
+//  #                Region                #
+//  ########################################
+
+    public Region getRegion() {
+        return _currentRegion;
+    }
+
+    public void setRegion(Region region) {
+        _currentRegion = region;
+    }
+
+//  ########################################
 //  #             Energy Drink             #
 //  ########################################
 
@@ -355,6 +372,26 @@ public abstract class PEPlayer {
         return sbData;
     }
 
+    protected List<String> buildBaseSideBar(int emptyLines, List<Integer> linesIndexes, List<String> linesContents) {
+        List<String> baseSideBar = new ArrayList<>();
+
+        for (int i = 0; i < emptyLines; i++) {
+            baseSideBar.add("§" + i);
+        }
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+
+        for (int i = 0; i < linesIndexes.size(); i++) {
+            baseSideBar.add(linesIndexes.get(i), linesContents.get(i));
+        }
+
+        String regionLine = messages.getSideBarRegionLine(messages.getSideBarWaitingRegionName());
+        baseSideBar.add(REGION_LINE_INDEX, regionLine);
+        baseSideBar.add(messages.getSideBarLastLine());
+
+        return baseSideBar;
+    }
+
     public void setScoreboard(Scoreboard scoreboard) {
         Player player = Bukkit.getPlayer(getName());
         if (player != null && player.isOnline()) {
@@ -396,6 +433,20 @@ public abstract class PEPlayer {
         Scoreboard sb = getScoreboardData().getScoreboard();
         sb.getTeam(WANTED_TEAM_NAME).removeEntry(playerName);
         sb.getTeam(prisonerTeamName).addEntry(playerName);
+    }
+
+    public void updateRegionLine(PrisonBuilding prison, DayPeriod dayPeriod) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+
+        String regionName = _currentRegion == null ? null : _currentRegion.getName();
+        if (regionName == null) {
+            regionName = messages.getSideBarDefaultRegionName();
+        }
+
+        String line = prison.isRestrictedArea(_currentRegion, dayPeriod)
+                ? messages.getSideBarRestrictedRegionLine(regionName)
+                : messages.getSideBarRegionLine(regionName);
+        getScoreboardData().updateLine(REGION_LINE_INDEX, line);
     }
 
 //  ########################################

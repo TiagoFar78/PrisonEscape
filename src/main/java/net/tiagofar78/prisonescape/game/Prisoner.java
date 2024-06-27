@@ -1,6 +1,10 @@
 package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Prisoner extends PEPlayer {
 
@@ -79,10 +83,6 @@ public class Prisoner extends PEPlayer {
         _isWanted = false;
     }
 
-    public boolean isInRestrictedArea() {
-        return _inRestrictedArea;
-    }
-
     public void enteredRestrictedArea() {
         _inRestrictedArea = true;
     }
@@ -93,6 +93,26 @@ public class Prisoner extends PEPlayer {
 
     public boolean canBeArrested() {
         return _isWanted || _inRestrictedArea;
+    }
+
+//  ########################################
+//  #              Scoreboard              #
+//  ########################################
+
+    @Override
+    public ScoreboardData createScoreboardData() {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
+
+        ScoreboardData sbData = super.createScoreboardData();
+
+        List<Integer> linesIndexes = new ArrayList<>();
+        List<String> linesContents = new ArrayList<>();
+
+        int emptyLines = 1;
+        List<String> baseSideBar = buildBaseSideBar(emptyLines, linesIndexes, linesContents);
+        sbData.createSideBar(messages.getScoreboardDisplayName(), baseSideBar);
+
+        return sbData;
     }
 
 }
