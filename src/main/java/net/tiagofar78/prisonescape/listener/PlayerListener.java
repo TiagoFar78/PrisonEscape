@@ -1,7 +1,6 @@
 package net.tiagofar78.prisonescape.listener;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
-import net.tiagofar78.prisonescape.bukkit.BukkitSoundBoard;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
@@ -136,9 +135,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if (prison.checkIfWalkedOverMetalDetector(locTo)) {
-            playerWalkedOverMetalDetector(prisoner, locTo);
-        }
+        prison.checkIfWalkedOverMetalDetector(player, locTo, locFrom);
     }
 
     private boolean isInSameBlock(Location loc1, Location loc2) {
@@ -148,12 +145,6 @@ public class PlayerListener implements Listener {
 
     private boolean isSameRegion(Region r1, Region r2) {
         return (r1 == null && r2 == null) || (r2 != null && r2.equals(r1));
-    }
-
-    private void playerWalkedOverMetalDetector(Prisoner prisoner, Location loc) {
-        if (prisoner.hasMetalItems()) {
-            BukkitSoundBoard.playMetalDetectorSound(loc);
-        }
     }
 
 //  ########################################
