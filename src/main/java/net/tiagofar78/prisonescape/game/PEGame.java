@@ -9,8 +9,6 @@ import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
-import net.tiagofar78.prisonescape.items.FunctionalItem;
-import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisonerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
@@ -18,7 +16,6 @@ import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.Shop;
-import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,7 +24,6 @@ import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +34,7 @@ public class PEGame {
     private static final int TICKS_PER_SECOND = 20;
     private static final String POLICE_TEAM_NAME = "Guards";
     private static final String PRISONERS_TEAM_NAME = "Prisoners";
-    private static final String CELLS_REGION_NAME = "Cells";
+    public static final String CELLS_REGION_NAME = "Cells";
 
     private Settings _settings;
 
@@ -79,6 +75,10 @@ public class PEGame {
 
     public PrisonBuilding getPrison() {
         return _prison;
+    }
+
+    public DayPeriod getPeriod() {
+        return _dayPeriod;
     }
 
 //	#########################################
@@ -361,6 +361,7 @@ public class PEGame {
             teleportPrisonerToSpawnPoint(player);
             player.setBossBar(_bossBar);
             player.updateScoreaboardTeams();
+            player.updateRegionLine(_prison, DayPeriod.DAY);
         }
 
         for (Guard player : _policeTeam.getMembers()) {
@@ -370,6 +371,7 @@ public class PEGame {
             teleportPoliceToSpawnPoint(player);
             player.setBossBar(_bossBar);
             player.updateScoreaboardTeams();
+            player.updateRegionLine(_prison, DayPeriod.DAY);
         }
 
         _prison.addVaults(_prisonersTeam.getMembers());
@@ -459,6 +461,8 @@ public class PEGame {
             String title = messages.getNewDayTitleMessage(_currentDay);
             String subtitle = messages.getNewDaySubtitleMessage();
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
+
+            player.updateRegionLine(_prison, _dayPeriod);
         }
 
         runDayTimer(_settings.getDayDuration(), _settings.getDayDuration());
@@ -507,6 +511,8 @@ public class PEGame {
             String title = messages.getNightTitleMessage();
             String subtitle = messages.getNightSubtitleMessage();
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
+
+            player.updateRegionLine(_prison, _dayPeriod);
         }
 
         runNightTimer(_settings.getNightDuration(), _settings.getNightDuration());
@@ -541,54 +547,6 @@ public class PEGame {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
         _bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
-    }
-
-//	########################################
-//	#                Events                #
-//	########################################
-
-    public void playerInteractWithPlayer(String playerName, int itemSlot, PlayerInteractEntityEvent e) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        PEPlayer clickedPlayer = getPEPlayer(e.getRightClicked().getName());
-        if (clickedPlayer != null) {
-            if (player.isPrisoner() && clickedPlayer.isPrisoner() && player.isSneaking()) {
-                Prisoner sender = (Prisoner) player;
-                Prisoner target = (Prisoner) clickedPlayer;
-
-                if (sender.hasBeenRequestedBy(target) && sender.isStillValidRequest()) {
-                    sender.clearRequest();
-                    target.clearRequest();
-                    new TradeMenu(target, sender);
-                    return;
-                }
-
-                target.sendRequest(sender);
-
-                String senderName = sender.getName();
-                String targetName = target.getName();
-
-                MessageLanguageManager senderMessages = MessageLanguageManager.getInstanceByPlayer(senderName);
-                BukkitMessageSender.sendChatMessage(sender, senderMessages.getTradeRequestSentMessage(targetName));
-
-                int time = ConfigManager.getInstance().getTradeRequestTimeout();
-                MessageLanguageManager targetMessages = MessageLanguageManager.getInstanceByPlayer(targetName);
-                BukkitMessageSender.sendChatMessage(
-                        target,
-                        targetMessages.getTradeRequestReceivedMessage(senderName, time)
-                );
-
-                return;
-            }
-        }
-
-        Item item = player.getItemAt(itemSlot);
-        if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
-        }
     }
 
 //	########################################
@@ -755,9 +713,7 @@ public class PEGame {
         Prisoner prisoner = (Prisoner) playerPrisoner;
         Guard guard = (Guard) playerGuard;
 
-        String regionName = _prison.getRegionName(prisoner.getLocation());
-        boolean isOutsideCell = regionName == null || !regionName.equals(CELLS_REGION_NAME);
-        if (prisoner.canBeArrested() || (_dayPeriod == DayPeriod.NIGHT && isOutsideCell)) {
+        if (prisoner.canBeArrested()) {
             arrestPlayer(prisoner, guard);
         } else {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
