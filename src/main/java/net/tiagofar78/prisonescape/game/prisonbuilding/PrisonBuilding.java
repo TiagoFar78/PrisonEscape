@@ -2,6 +2,8 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.game.DayPeriod;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.CellDoor;
@@ -217,34 +219,36 @@ public class PrisonBuilding {
 //  #                Regions                #
 //  #########################################
 
-    public String getRegionName(Location location) {
+    public Region getRegion(Location location) {
         for (Region region : _regions) {
             if (region.contains(location)) {
-                return region.getName();
+                return region;
             }
         }
 
         return null;
     }
 
-    public boolean hasCellPhoneCoverage(Location location) {
-        for (Region region : _regions) {
-            if (region.contains(location)) {
-                return region.canCallHelicopter();
-            }
-        }
-
-        return true;
+    public String getRegionName(Location location) {
+        return getRegionName(getRegion(location));
     }
 
-    public boolean isInRestrictedArea(Location loc) {
-        for (Region region : _regions) {
-            if (region.contains(loc)) {
-                return region.isRestricted();
-            }
-        }
+    public String getRegionName(Region region) {
+        return region == null ? null : region.getName();
+    }
 
-        return true;
+    public boolean hasCellPhoneCoverage(Location location) {
+        Region region = getRegion(location);
+        return region == null ? true : region.canCallHelicopter();
+    }
+
+    public boolean isInRestrictedArea(Location location, DayPeriod dayPeriod) {
+        return isRestrictedArea(getRegion(location), dayPeriod);
+    }
+
+    public boolean isRestrictedArea(Region region, DayPeriod dayPeriod) {
+        boolean isOutsideCell = region == null || !region.getName().equals(PEGame.CELLS_REGION_NAME);
+        return region == null || region.isRestricted() || (dayPeriod == DayPeriod.NIGHT && isOutsideCell);
     }
 
 //	#########################################
