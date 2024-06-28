@@ -1268,51 +1268,51 @@ Regions:
     IsRestricted: true
     "1":
       UpperCorner:
-        X: 0
+        X: -1
         Y: 105
-        Z: 35
+        Z: 34
       LowerCorner:
         X: -10
         Y: 100
-        Z: 23
+        Z: 24
     "2":
       UpperCorner:
         X: 0
         Y: 105
-        Z: 49
+        Z: 48
       LowerCorner:
         X: -10
         Y: 99
         Z: 35
     "3":
       UpperCorner:
-        X: 26
+        X: 24
         Y: 105
-        Z: -28
+        Z: -30
       LowerCorner:
-        X: 12
+        X: 13
         Y: 99
         Z: -41
   Yard:
     IsRestricted: false
     "1":
       UpperCorner:
-        X: -16
+        X: -17
         Y: 103
-        Z: 43
+        Z: 42
       LowerCorner:
         X: -35
         Y: 100
         Z: 24
     "2":
       UpperCorner:
-        X: -11
+        X: -12
         Y: 103
-        Z: -27
+        Z: -28
       LowerCorner:
         X: -34
         Y: 100
-        Z: -39
+        Z: -38
   Gym:
     IsRestricted: false
     "1":
@@ -1431,7 +1431,7 @@ Regions:
         Z: -26
     "6":
       UpperCorner:
-        X: -28
+        X: -22
         Y: 103
         Z: 0
       LowerCorner:
@@ -1483,6 +1483,30 @@ Regions:
         X: 15
         Y: 100
         Z: -8
+  Roof:
+    IsRestricted: true
+    CutCellPhoneCalls: false
+    "1":
+      UpperCorner:
+        X: -29
+        Y: 117
+        Z: 8
+      LowerCorner:
+        X: -43
+        Y: 100
+        Z: -14
+  Excavation:
+    IsRestricted: true
+    CutCellPhoneCalls: true
+    "1":
+      UpperCorner:
+        X: 46
+        Y: 90
+        Z: 27
+      LowerCorner:
+        X: -68
+        Y: 82
+        Z: -32
 ChestsContents:
   Default: # These are the chest contents by default - DON'T CHANGE THE NAME!
     Bolts: 0.05

@@ -381,12 +381,13 @@ public abstract class PEPlayer {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
 
+        String regionLine = messages.getSideBarRegionLine(messages.getSideBarWaitingRegionName());
+        baseSideBar.add(REGION_LINE_INDEX, regionLine);
+
         for (int i = 0; i < linesIndexes.size(); i++) {
             baseSideBar.add(linesIndexes.get(i), linesContents.get(i));
         }
 
-        String regionLine = messages.getSideBarRegionLine(messages.getSideBarWaitingRegionName());
-        baseSideBar.add(REGION_LINE_INDEX, regionLine);
         baseSideBar.add(messages.getSideBarLastLine());
 
         return baseSideBar;
