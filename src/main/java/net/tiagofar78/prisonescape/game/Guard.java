@@ -97,6 +97,10 @@ public class Guard extends PEPlayer {
         }
     }
 
+    public void increaseTrapLimit() {
+        _numOfTrapsBought--;
+    }
+
 //  #########################################
 //  #                Searches               #
 //  #########################################

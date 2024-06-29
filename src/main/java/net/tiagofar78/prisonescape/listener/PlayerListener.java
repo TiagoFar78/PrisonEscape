@@ -121,7 +121,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        prison.checkIfWalkedOverTrap(locTo, player);
+        prison.checkIfWalkedOverTrap(locTo, player, game.getGuardsTeam().getMembers());
 
         if (prison.isOutsidePrison(locTo)) {
             game.playerEscaped(prisoner);

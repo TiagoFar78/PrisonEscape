@@ -122,6 +122,8 @@ Items:
     Name: "Camera"
   Trap:
     Name: "Trap"
+    Lore:
+    - "&ePlace a trap where you are"
   CellPhone:
     Name: "Cell Phone"
     Lore:
@@ -216,6 +218,7 @@ Messages:
     CameraPlaced: "&aCamera placed successfully. Use your camera viewer to watch what is going on."
     TrapPlaced: "&aTrap placed successfully. Any prisoner that walks through the trap will be stuck momentarily."
     CannotPlaceTrap: "&cYou cannot place a trap there"
+    TrapTriggered: "&eA trap was triggered. Go check it out!"
     NoCamerasPlaced: "&cThere aren't cameras placed. Buy some from the shop."
     SneakToLeaveCamera: "&eSneak to leave the camera"
     CantJoinCameraSneaking: "&cYou cannot view cameras while sneaking."
