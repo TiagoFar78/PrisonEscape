@@ -77,6 +77,10 @@ public class MessageLanguageManager {
 
     private String _sbDisplayName;
     private String _sideBarLastLine;
+    private String _sideBarRegionLine;
+    private String _sideBarRestrictedRegionLine;
+    private String _sideBarDefaultRegionName;
+    private String _sideBarWaitingRegionName;
     private String _guardSideBarBalanceLine;
     private String _guardSideBarSoundDetectorLine;
 
@@ -155,6 +159,7 @@ public class MessageLanguageManager {
     private String _cameraPlacedMessage;
     private String _trapPlacedMessage;
     private String _cannotPlaceTrapMessage;
+    private String _trapTriggeredMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
     private String _cantJoinCameraSneakingMessage;
@@ -246,6 +251,10 @@ public class MessageLanguageManager {
         String scoreboardPath = "Scoreboard.";
         _sbDisplayName = createMessage(messages.getString(scoreboardPath + "DisplayName"));
         _sideBarLastLine = createMessage(messages.getString(scoreboardPath + "LastLine"));
+        _sideBarRegionLine = createMessage(messages.getString(scoreboardPath + "RegionLine"));
+        _sideBarRestrictedRegionLine = createMessage(messages.getString(scoreboardPath + "RestrictedRegionLine"));
+        _sideBarDefaultRegionName = createMessage(messages.getString(scoreboardPath + "DefaultRegionName"));
+        _sideBarWaitingRegionName = createMessage(messages.getString(scoreboardPath + "WaitingRegionName"));
         _guardSideBarBalanceLine = createMessage(messages.getString(scoreboardPath + "GuardSideBar.BalanceLine"));
         _guardSideBarSoundDetectorLine = createMessage(
                 messages.getString(scoreboardPath + "GuardSideBar.SoundDectorLine")
@@ -335,6 +344,7 @@ public class MessageLanguageManager {
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
         _trapPlacedMessage = createMessage(messages.getString(warningPath + "TrapPlaced"));
         _cannotPlaceTrapMessage = createMessage(messages.getString(warningPath + "CannotPlaceTrap"));
+        _trapTriggeredMessage = createMessage(messages.getString(warningPath + "TrapTriggered"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _cantJoinCameraSneakingMessage = createMessage(messages.getString(warningPath + "CantJoinCameraSneaking"));
@@ -452,6 +462,22 @@ public class MessageLanguageManager {
 
     public String getSideBarLastLine() {
         return _sideBarLastLine;
+    }
+
+    public String getSideBarRegionLine(String region) {
+        return _sideBarRegionLine.replace("{REGION}", region);
+    }
+
+    public String getSideBarRestrictedRegionLine(String region) {
+        return _sideBarRestrictedRegionLine.replace("{REGION}", region);
+    }
+
+    public String getSideBarDefaultRegionName() {
+        return _sideBarDefaultRegionName;
+    }
+
+    public String getSideBarWaitingRegionName() {
+        return _sideBarWaitingRegionName;
     }
 
     public String getGuardSideBarBalanceLine(int balance) {
@@ -708,6 +734,10 @@ public class MessageLanguageManager {
 
     public String getCannotPlaceTrapMessage() {
         return _cannotPlaceTrapMessage;
+    }
+
+    public String getTrapTriggeredMessage() {
+        return _trapTriggeredMessage;
     }
 
     public String getNoCamerasPlacedMessage() {

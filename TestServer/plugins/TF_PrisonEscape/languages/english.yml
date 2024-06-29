@@ -9,6 +9,10 @@ BossBar:
 Scoreboard:
   DisplayName: "&6&lPrison Escape"
   LastLine: "&eTest Server"
+  RegionLine: "&8\u2662 &f{REGION}"
+  RestrictedRegionLine: "&8\u2662 &c{REGION}"
+  DefaultRegionName: "Prison"
+  WaitingRegionName: "Waiting Room"
   GuardSideBar:
     BalanceLine: "&fBalance: &a{BALANCE}"
     SoundDectorLine: "&fSound Detectors:   "
@@ -118,12 +122,21 @@ Items:
     Name: "Camera"
   Trap:
     Name: "Trap"
+    Lore:
+    - "&ePlace a trap where you are"
   CellPhone:
     Name: "Cell Phone"
     Lore:
     - "&eCalls an escape helicopter to the roof"
   CraftingMenu:
     Name: "Crafting Menu"
+  Trade:
+    Name: "Trade"
+    Lore:
+    - "&eClick on some player using"
+    - "&ethis to open a trade menu"
+  Map:
+    Name: "Prison Map"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -205,6 +218,7 @@ Messages:
     CameraPlaced: "&aCamera placed successfully. Use your camera viewer to watch what is going on."
     TrapPlaced: "&aTrap placed successfully. Any prisoner that walks through the trap will be stuck momentarily."
     CannotPlaceTrap: "&cYou cannot place a trap there"
+    TrapTriggered: "&eA trap was triggered. Go check it out!"
     NoCamerasPlaced: "&cThere aren't cameras placed. Buy some from the shop."
     SneakToLeaveCamera: "&eSneak to leave the camera"
     CantJoinCameraSneaking: "&cYou cannot view cameras while sneaking."
@@ -212,7 +226,7 @@ Messages:
     InvalidSoundDetectorLoc: "&cSound detector can not be placed here. &eTry placing it on directly on the ground."
     TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
     TradeRequestSent: "&eTrade request sent to &b{PLAYER}&e."
-    TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
+    TradeRequestReceived: "&eYou received a trade request. Use trade item on &b{PLAYER} &eto accept. You have &b{TIME} seconds"
     CaughtInATrap: "&eYou have been caught in a trap. You can move again in &b{TIME} seconds"
     CanMoveFreely: "&eYou can now move freely"
     CraftingItemsMissing: "&cYou are missing some items required to craft that item."

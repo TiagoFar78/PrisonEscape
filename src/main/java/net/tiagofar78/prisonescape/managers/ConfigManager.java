@@ -100,7 +100,7 @@ public class ConfigManager {
     private Location _mazeUpperCornerLocation;
     private List<List<Location>> _fencesLocations;
     private List<Location> _ventsLocations;
-    private List<Location> _metalDetectorLocations;
+    private List<List<Location>> _metalDetectorLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -186,7 +186,7 @@ public class ConfigManager {
         _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation", world);
         _fencesLocations = createLocationPairList(config, "Fences", world);
         _ventsLocations = createLocationList(config, "Vents", world);
-        _metalDetectorLocations = createLocationList(config, "MetalDetectors", world);
+        _metalDetectorLocations = createLocationPairList(config, "MetalDetectors", world);
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -604,8 +604,8 @@ public class ConfigManager {
         return createLocationsListCopy(_ventsLocations);
     }
 
-    public List<Location> getMetalDetectorLocations() {
-        return createLocationsListCopy(_metalDetectorLocations);
+    public List<List<Location>> getMetalDetectorLocations() {
+        return createLocationsPairListCopy(_metalDetectorLocations);
     }
 
     public List<ItemProbability> getChestContents(String regionName) {
