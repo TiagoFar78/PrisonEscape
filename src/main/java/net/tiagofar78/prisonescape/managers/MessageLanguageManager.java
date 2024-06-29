@@ -735,7 +735,7 @@ public class MessageLanguageManager {
     public String getCannotPlaceTrapMessage() {
         return _cannotPlaceTrapMessage;
     }
-    
+
     public String getTrapTriggeredMessage() {
         return _trapTriggeredMessage;
     }
