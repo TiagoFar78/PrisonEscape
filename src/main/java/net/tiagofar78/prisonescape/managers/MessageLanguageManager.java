@@ -181,6 +181,7 @@ public class MessageLanguageManager {
     private String _dirtRequirementsMessage;
     private String _ventsRequirementsMessage;
     private String _fenceRequirementsMessage;
+    private String _blindnessAppliedMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -366,6 +367,7 @@ public class MessageLanguageManager {
         _dirtRequirementsMessage = createMessage(messages.getString(warningPath + "DirtRequirements"));
         _ventsRequirementsMessage = createMessage(messages.getString(warningPath + "VentsRequirements"));
         _fenceRequirementsMessage = createMessage(messages.getString(warningPath + "FencesRequirements"));
+        _blindnessAppliedMessage = createMessage(messages.getString(warningPath + "BlindnessAffectedGuards"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -822,6 +824,10 @@ public class MessageLanguageManager {
 
     public String getFencesRequirementsMessage() {
         return _fenceRequirementsMessage;
+    }
+
+    public String getBlindnessAppliedMessage(int guards) {
+        return _blindnessAppliedMessage.replace("{GUARDS}", Integer.toString(guards));
     }
 
 //	########################################

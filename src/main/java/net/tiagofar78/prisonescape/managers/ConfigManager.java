@@ -58,6 +58,8 @@ public class ConfigManager {
     private int _helicopterDepartureDelay;
     private int _radarDuration;
     private int _trapDuration;
+    private int _blindingDistance;
+    private int _blindnessSeconds;
     private double _soundDetectorRange;
     private int _tradeRequestTimeout;
 
@@ -143,6 +145,8 @@ public class ConfigManager {
         _helicopterDepartureDelay = config.getInt("HelicopterDepartureDelay");
         _radarDuration = config.getInt("RadarDuration");
         _trapDuration = config.getInt("TrapDuration");
+        _blindingDistance = config.getInt("BlindingDistance");
+        _blindnessSeconds = config.getInt("BlindnessSeconds");
         _soundDetectorRange = config.getDouble("SoundDetectorRange");
         _tradeRequestTimeout = config.getInt("TradeRequestTimeout");
 
@@ -453,6 +457,14 @@ public class ConfigManager {
 
     public int getTrapDuration() {
         return _trapDuration;
+    }
+
+    public int getBlindingDistance() {
+        return _blindingDistance;
+    }
+
+    public int getBlindnessSeconds() {
+        return _blindnessSeconds;
     }
 
     public int getTradeRequestTimeout() {

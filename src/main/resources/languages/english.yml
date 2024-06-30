@@ -137,6 +137,10 @@ Items:
     - "&ethis to open a trade menu"
   Map:
     Name: "Prison Map"
+  Lantern:
+    Name: "Lantern"
+    Lore:
+    - "&eBlind all nearby guards for a while"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -240,6 +244,7 @@ Messages:
     DirtRequirements: "&cYou need to use a shovel to break dirt."
     VentsRequirements: "&cYou need to use a &fPickaxe &cto break vents."
     FencesRequirements: "&cYou need to use a &fWire Cutter &cto break fences."
+    BlindnessAffectedGuards: "&b{GUARDS} &enearby guards are blind for a while"
   Announcements:
     GameStarting:
     - "&6==================================="

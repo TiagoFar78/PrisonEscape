@@ -35,6 +35,8 @@ HelicopterDepartureDelay: 5
 SoundDetectorRange: 2.5
 RadarDuration: 10
 TrapDuration: 10
+BlindingDistance: 10
+BlindnessSeconds: 5
 TradeRequestTimeout: 15
 AvailableLanguages:
 - "english"
