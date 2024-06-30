@@ -58,6 +58,8 @@ public class ConfigManager {
     private int _helicopterDepartureDelay;
     private int _radarDuration;
     private int _trapDuration;
+    private int _blindingDistance;
+    private int _blindnessSeconds;
     private double _soundDetectorRange;
     private int _tradeRequestTimeout;
 
@@ -100,7 +102,7 @@ public class ConfigManager {
     private Location _mazeUpperCornerLocation;
     private List<List<Location>> _fencesLocations;
     private List<Location> _ventsLocations;
-    private List<Location> _metalDetectorLocations;
+    private List<List<Location>> _metalDetectorLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -143,6 +145,8 @@ public class ConfigManager {
         _helicopterDepartureDelay = config.getInt("HelicopterDepartureDelay");
         _radarDuration = config.getInt("RadarDuration");
         _trapDuration = config.getInt("TrapDuration");
+        _blindingDistance = config.getInt("BlindingDistance");
+        _blindnessSeconds = config.getInt("BlindnessSeconds");
         _soundDetectorRange = config.getDouble("SoundDetectorRange");
         _tradeRequestTimeout = config.getInt("TradeRequestTimeout");
 
@@ -186,7 +190,7 @@ public class ConfigManager {
         _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation", world);
         _fencesLocations = createLocationPairList(config, "Fences", world);
         _ventsLocations = createLocationList(config, "Vents", world);
-        _metalDetectorLocations = createLocationList(config, "MetalDetectors", world);
+        _metalDetectorLocations = createLocationPairList(config, "MetalDetectors", world);
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -455,6 +459,14 @@ public class ConfigManager {
         return _trapDuration;
     }
 
+    public int getBlindingDistance() {
+        return _blindingDistance;
+    }
+
+    public int getBlindnessSeconds() {
+        return _blindnessSeconds;
+    }
+
     public int getTradeRequestTimeout() {
         return _tradeRequestTimeout;
     }
@@ -604,8 +616,8 @@ public class ConfigManager {
         return createLocationsListCopy(_ventsLocations);
     }
 
-    public List<Location> getMetalDetectorLocations() {
-        return createLocationsListCopy(_metalDetectorLocations);
+    public List<List<Location>> getMetalDetectorLocations() {
+        return createLocationsPairListCopy(_metalDetectorLocations);
     }
 
     public List<ItemProbability> getChestContents(String regionName) {
