@@ -12,6 +12,7 @@ import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -20,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Chest implements Clickable {
 
@@ -32,16 +32,19 @@ public class Chest implements Clickable {
             1 * 9 + 5,
             1 * 9 + 6};
 
+
+    private List<Location> _locations;
     private List<Item> _contents;
     private List<ItemProbability> _itemsProbability;
     private boolean _isOpened;
 
-    public Chest(String regionName) {
+    public Chest(List<Location> locations, String regionName) {
         ConfigManager config = ConfigManager.getInstance();
 
-        this._contents = createContentsList();
-        this._itemsProbability = config.getChestContents(regionName);
-        this._isOpened = false;
+        _locations = locations;
+        _contents = createContentsList();
+        _itemsProbability = config.getChestContents(regionName);
+        _isOpened = false;
     }
 
     private List<Item> createContentsList() {
@@ -54,6 +57,10 @@ public class Chest implements Clickable {
         return list;
     }
 
+    public boolean isIn(Location location) {
+        return _locations.contains(location);
+    }
+
     public boolean isOpened() {
         return _isOpened;
     }
@@ -64,22 +71,8 @@ public class Chest implements Clickable {
 
     public void reload() {
         for (int i = 0; i < CONTENTS_SIZE; i++) {
-            _contents.set(i, getRandomItem());
+            _contents.set(i, ItemFactory.getRandomItem(_itemsProbability));
         }
-    }
-
-    private Item getRandomItem() {
-        double randomValue = new Random().nextDouble();
-
-        double cumulativeWeight = 0;
-        for (ItemProbability itemProbability : _itemsProbability) {
-            cumulativeWeight += itemProbability.getProbability();
-            if (randomValue < cumulativeWeight) {
-                return ItemFactory.createItem(itemProbability.getItemName());
-            }
-        }
-
-        return new NullItem();
     }
 
     @Override

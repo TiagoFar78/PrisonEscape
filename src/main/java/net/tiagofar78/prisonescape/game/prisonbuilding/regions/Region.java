@@ -36,4 +36,9 @@ public abstract class Region implements Locatable {
     @Override
     public abstract boolean contains(Location loc);
 
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Region && _name.equals(((Region) o).getName());
+    }
+
 }

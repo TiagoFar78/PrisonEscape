@@ -35,6 +35,8 @@ HelicopterDepartureDelay: 5
 SoundDetectorRange: 2.5
 RadarDuration: 10
 TrapDuration: 10
+BlindingDistance: 10
+BlindnessSeconds: 5
 TradeRequestTimeout: 15
 AvailableLanguages:
 - "english"
@@ -44,6 +46,9 @@ TeamChatPrefix: "t "
 CameraSkinSignature: "mFtID5cHIjABQMnKzhsy3BEFDDq32QHaJisjaECoLwzhx8dnJxxskA73/Z9DdMBeHlI43+Tdb6bO983K60Pex1f8ncvHFfYMLe1FK44GEpQlkLVnon+iRow5jBxhouicVvSKW578f4k1xo18ml/3gIn78SqJV+2uzVQ23mnFmmUM67JMp7F0i6mwohkNEWaiFdNQGgZbWsL58C0ojzj49ll/ZXGHXc/Jtt4oARGZLaJbICEAzJDQg6BnkquOPpnJUfQ00nk49gyWxo2ID6pI2tSQtGsXv2Apzt1WQxOFnrjVMbWzJYcXRzY2eAZPTGXrkcpms+/CFzk8BRzeSDZ6Q4W98M+3OyIdqoeWQcFFl8Iin5uS95+jBu84wQBr3XLiHw3heePPTX5xLbsGpZEnotXsxSTP6cd30mlPavX+53JXp8nz0ZBCtnkjSPoyVTJ2AJi9uSMPDMJLUU5CbHTUXqH3bhlrZnzrKySynvhn8UhqOnTY1X/13RIadmFajnu6Y3YiaSTPyRCoNdq8oXdhewD9YuzW/OH7A502lRIxoeiZgQLra3o3qBp9+fdFh/cHnc+6rShtr+nzMu17v9Iht+aNIiWZrCYw2eTKQT/EoTnNIL3DA2YuU3KyMZ904nKaeFjGq5TCPY/E8RZjBeJ25Hlbu+sZXJoD4Fl4lW559bo="
 CameraSkinTexture: "ewogICJ0aW1lc3RhbXAiIDogMTYwMjg4NDU0Mjg3MCwKICAicHJvZmlsZUlkIiA6ICIyMWUzNjdkNzI1Y2Y0ZTNiYjI2OTJjNGEzMDBhNGRlYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJHZXlzZXJNQyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85OTZhN2I4NjI3Nzg4NzU3MGI5ODI5NzM3NDAzNmE5ZjQ5ZmZjMzBjNmMxYTlmNTFhYWU5NDcyOWU5M2Y5N2FkIgogICAgfQogIH0KfQ=="
 WorldName: "PrisonEscape"
+PackageItemProbabilities:
+  Bolts: 0.3
+  DuctTape: 0.01
 ReferenceBlock:
   X: 0
   Y: 0
@@ -131,9 +136,10 @@ VaultsLocations:
     Z: 0
 ChestsLocations:
   "1":
-    X: 0
-    Y: 0
-    Z: 0
+    "1":
+      X: 0
+      Y: 0
+      Z: 0
 GoldenDoorsLocations:
   "1":
     X: 0
@@ -225,6 +231,11 @@ Vents:
     Z: 0
 MetalDetectors:
   "1":
-    X: 0
-    Y: 0
-    Z: 0
+    UpperCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0
+    LowerCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0

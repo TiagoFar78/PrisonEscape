@@ -11,6 +11,7 @@ import net.tiagofar78.prisonescape.items.DoorCodeItem;
 import net.tiagofar78.prisonescape.items.GoldenKeyItem;
 import net.tiagofar78.prisonescape.items.GrayKeyItem;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.LanternItem;
 import net.tiagofar78.prisonescape.items.MetalPlateItem;
 import net.tiagofar78.prisonescape.items.MetalShovelItem;
 import net.tiagofar78.prisonescape.items.MetalSpoonItem;
@@ -47,7 +48,8 @@ public class CraftingMenu implements Clickable {
             18 + 3,
             18 + 4,
             18 + 5,
-            18 + 6};
+            18 + 6,
+            18 + 7};
 
     private Item _selectedItem;
 
@@ -221,7 +223,8 @@ public class CraftingMenu implements Clickable {
                 new AntenaItem(),
                 new CellPhoneItem(),
                 new WireCutterItem(false),
-                new WrenchItem(false)};
+                new WrenchItem(false),
+                new LanternItem()};
 
         return items;
     }
