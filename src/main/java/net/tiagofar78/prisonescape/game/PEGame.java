@@ -4,11 +4,13 @@ import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
+import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.phases.Disabled;
 import net.tiagofar78.prisonescape.game.phases.Finished;
 import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisonerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
@@ -465,6 +467,8 @@ public class PEGame {
             player.updateRegionLine(_prison, _dayPeriod);
         }
 
+        givePackagesToFugitives();
+
         runDayTimer(_settings.getDayDuration(), _settings.getDayDuration());
     }
 
@@ -552,6 +556,16 @@ public class PEGame {
 //	########################################
 //	#            Events Results            #
 //	########################################
+
+    private void givePackagesToFugitives() {
+        List<ItemProbability> itemProbabilities = ConfigManager.getInstance().getPackageItemProbabilities();
+
+        for (Prisoner prisoner : _prisonersTeam.getMembers()) {
+            if (prisoner.hasEscaped()) {
+                prisoner.giveItem(ItemFactory.getRandomItem(itemProbabilities));
+            }
+        }
+    }
 
     public void playerEscaped(Prisoner player) {
         player.escaped();
