@@ -49,7 +49,7 @@ public class PrisonBuilding {
 
     private List<Vault> _vaults;
 
-    private Hashtable<Location, Chest> _chests;
+    private List<Chest> _chests;
     private Hashtable<Location, Door> _doors;
     private List<CellDoor> _cellDoors;
     private Wall _wall;
@@ -96,13 +96,13 @@ public class PrisonBuilding {
 
         _vaults = new ArrayList<>();
 
-        _chests = new Hashtable<>();
-        for (Location loc : config.getChestsLocations()) {
-            String regionName = getRegionName(loc);
+        _chests = new ArrayList<>();
+        for (List<Location> locs : config.getChestsLocations()) {
+            String regionName = getRegionName(locs.get(0));
             if (regionName == null) {
                 regionName = "Default";
             }
-            _chests.put(loc.add(reference), new Chest(regionName));
+            _chests.add(new Chest(locs, regionName));
         }
 
         _doors = new Hashtable<>();
@@ -290,13 +290,19 @@ public class PrisonBuilding {
 //  #########################################
 
     public void reloadChests() {
-        for (Chest chest : _chests.values()) {
+        for (Chest chest : _chests) {
             chest.reload();
         }
     }
 
     public Chest getChest(Location location) {
-        return _chests.get(location);
+        for (Chest chest : _chests) {
+            if (chest.isIn(location)) {
+                return chest;
+            }
+        }
+
+        return null;
     }
 
 //  #########################################

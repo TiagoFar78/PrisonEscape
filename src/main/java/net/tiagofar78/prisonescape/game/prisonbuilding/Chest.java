@@ -12,6 +12,7 @@ import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -32,16 +33,19 @@ public class Chest implements Clickable {
             1 * 9 + 5,
             1 * 9 + 6};
 
+
+    private List<Location> _locations;
     private List<Item> _contents;
     private List<ItemProbability> _itemsProbability;
     private boolean _isOpened;
 
-    public Chest(String regionName) {
+    public Chest(List<Location> locations, String regionName) {
         ConfigManager config = ConfigManager.getInstance();
 
-        this._contents = createContentsList();
-        this._itemsProbability = config.getChestContents(regionName);
-        this._isOpened = false;
+        _locations = locations;
+        _contents = createContentsList();
+        _itemsProbability = config.getChestContents(regionName);
+        _isOpened = false;
     }
 
     private List<Item> createContentsList() {
@@ -52,6 +56,10 @@ public class Chest implements Clickable {
         }
 
         return list;
+    }
+
+    public boolean isIn(Location location) {
+        return _locations.contains(location);
     }
 
     public boolean isOpened() {
