@@ -58,6 +58,8 @@ public class ConfigManager {
     private int _helicopterDepartureDelay;
     private int _radarDuration;
     private int _trapDuration;
+    private int _blindingDistance;
+    private int _blindnessSeconds;
     private double _soundDetectorRange;
     private int _tradeRequestTimeout;
 
@@ -89,7 +91,7 @@ public class ConfigManager {
     private Hashtable<Location, Location> _policeSecretPassageLocations;
     private List<Location> _vaultsLocations;
     private String _vaultsDirection;
-    private List<Location> _chestsLocations;
+    private List<List<Location>> _chestsLocations;
     private List<Location> _goldenDoorsLocations;
     private List<Location> _grayDoorsLocations;
     private List<Location> _codeDoorsLocations;
@@ -100,7 +102,7 @@ public class ConfigManager {
     private Location _mazeUpperCornerLocation;
     private List<List<Location>> _fencesLocations;
     private List<Location> _ventsLocations;
-    private List<Location> _metalDetectorLocations;
+    private List<List<Location>> _metalDetectorLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
 
@@ -143,6 +145,8 @@ public class ConfigManager {
         _helicopterDepartureDelay = config.getInt("HelicopterDepartureDelay");
         _radarDuration = config.getInt("RadarDuration");
         _trapDuration = config.getInt("TrapDuration");
+        _blindingDistance = config.getInt("BlindingDistance");
+        _blindnessSeconds = config.getInt("BlindnessSeconds");
         _soundDetectorRange = config.getDouble("SoundDetectorRange");
         _tradeRequestTimeout = config.getInt("TradeRequestTimeout");
 
@@ -175,7 +179,7 @@ public class ConfigManager {
         _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation", world);
         _vaultsLocations = createLocationList(config, "VaultsLocations", world);
         _vaultsDirection = config.getString("VaultsDirection");
-        _chestsLocations = createLocationList(config, "ChestsLocations", world);
+        _chestsLocations = createLocationListList(config, "ChestsLocations", world);
         _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations", world);
         _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations", world);
         _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations", world);
@@ -186,7 +190,7 @@ public class ConfigManager {
         _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation", world);
         _fencesLocations = createLocationPairList(config, "Fences", world);
         _ventsLocations = createLocationList(config, "Vents", world);
-        _metalDetectorLocations = createLocationList(config, "MetalDetectors", world);
+        _metalDetectorLocations = createLocationPairList(config, "MetalDetectors", world);
 
         _regionsChestContents = createRegionsChestContentsMap(config);
 
@@ -213,6 +217,20 @@ public class ConfigManager {
 
         for (String key : filteredKeys) {
             list.add(createLocation(config, key, world));
+        }
+
+        return list;
+    }
+
+    private List<List<Location>> createLocationListList(YamlConfiguration config, String path, World world) {
+        List<List<Location>> list = new ArrayList<>();
+
+        List<String> filteredKeys = config.getKeys(true).stream().filter(
+                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
+        ).toList();
+
+        for (String key : filteredKeys) {
+            list.add(createLocationList(config, key, world));
         }
 
         return list;
@@ -455,6 +473,14 @@ public class ConfigManager {
         return _trapDuration;
     }
 
+    public int getBlindingDistance() {
+        return _blindingDistance;
+    }
+
+    public int getBlindnessSeconds() {
+        return _blindnessSeconds;
+    }
+
     public int getTradeRequestTimeout() {
         return _tradeRequestTimeout;
     }
@@ -560,8 +586,8 @@ public class ConfigManager {
         return _vaultsDirection;
     }
 
-    public List<Location> getChestsLocations() {
-        return createLocationsListCopy(_chestsLocations);
+    public List<List<Location>> getChestsLocations() {
+        return createLocationsPairListCopy(_chestsLocations);
     }
 
     public List<Location> getGoldenDoorsLocations() {
@@ -604,8 +630,8 @@ public class ConfigManager {
         return createLocationsListCopy(_ventsLocations);
     }
 
-    public List<Location> getMetalDetectorLocations() {
-        return createLocationsListCopy(_metalDetectorLocations);
+    public List<List<Location>> getMetalDetectorLocations() {
+        return createLocationsPairListCopy(_metalDetectorLocations);
     }
 
     public List<ItemProbability> getChestContents(String regionName) {
@@ -646,9 +672,7 @@ public class ConfigManager {
         return list;
     }
 
-    private List<List<Location>> createLocationsPairListCopy(
-            List<List<Location>> locationPairs
-    ) {
+    private List<List<Location>> createLocationsPairListCopy(List<List<Location>> locationPairs) {
         List<List<Location>> list = new ArrayList<>();
 
         for (List<Location> locationPair : locationPairs) {
@@ -658,9 +682,7 @@ public class ConfigManager {
         return list;
     }
 
-    private Hashtable<Location, Location> createLocationsMapCopy(
-            Hashtable<Location, Location> locations
-    ) {
+    private Hashtable<Location, Location> createLocationsMapCopy(Hashtable<Location, Location> locations) {
         Hashtable<Location, Location> map = new Hashtable<>();
 
         for (Entry<Location, Location> entry : locations.entrySet()) {
