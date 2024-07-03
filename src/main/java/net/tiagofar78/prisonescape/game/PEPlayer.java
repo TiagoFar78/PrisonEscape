@@ -361,6 +361,8 @@ public abstract class PEPlayer {
     public ScoreboardData createScoreboardData() {
         ScoreboardData sbData = new ScoreboardData();
 
+        registerTeam(sbData, PEGame.WAITING_TEAM_NAME, ChatColor.GRAY);
+
         String guardsTeamName = GameManager.getGame().getGuardsTeam().getName();
         registerTeam(sbData, guardsTeamName, ChatColor.BLUE);
 
@@ -422,6 +424,16 @@ public abstract class PEPlayer {
         for (PEPlayer player : team.getMembers()) {
             sbTeam.addEntry(player.getName());
         }
+    }
+
+    public void addScoreboardTeamMember(String playerName, String currentTeamName) {
+        Scoreboard sb = getScoreboardData().getScoreboard();
+        Team previousTeam = sb.getEntryTeam(playerName);
+        if (previousTeam != null) {
+            previousTeam.removeEntry(playerName);
+        }
+
+        sb.getTeam(currentTeamName).addEntry(playerName);
     }
 
     public void addScoreboardWantedTeamMember(String prisonerTeamName, String playerName) {
