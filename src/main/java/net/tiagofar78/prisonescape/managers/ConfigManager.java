@@ -354,21 +354,10 @@ public class ConfigManager {
                 key -> key.startsWith(path + ".") && key.lastIndexOf(".") == path.length()
         ).toList();
 
-        System.out.println("keys:");
-        for (String a : paths) {
-            System.out.println("- " + a);
-        }
-
         for (String itemPath : paths) {
-            System.out.println("ultimo: " + itemPath);
             String itemName = itemPath.substring(itemPath.lastIndexOf(".") + 1);
             double probability = config.getDouble(itemPath);
             itemsProbabilities.add(new ItemProbability(itemName, probability));
-        }
-
-        System.out.println("Guardados: ");
-        for (ItemProbability a : itemsProbabilities) {
-            System.out.println("- " + a.getItemName());
         }
 
         return itemsProbabilities;
