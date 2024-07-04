@@ -51,4 +51,14 @@ public class PETeam<T extends PEPlayer> {
         return _players.get(index);
     }
 
+    public T getMember(String playerName) {
+        for (T player : _players) {
+            if (player.getName().equals(playerName)) {
+                return player;
+            }
+        }
+
+        return null;
+    }
+
 }

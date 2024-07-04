@@ -18,7 +18,7 @@ import java.util.List;
 public class Guard extends PEPlayer {
 
     private static final int BALANCE_LINE_INDEX = 2;
-    private static final int SOUND_DETECTORS_FIRST_LINE_INDEX = 3;
+    private static final int SOUND_DETECTORS_FIRST_LINE_INDEX = 4;
     private static final int INITIAL_SEARCHES = 1;
 
     private int _balance;
