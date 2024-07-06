@@ -1,12 +1,15 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class SearchItem extends FunctionalItem implements Buyable {
@@ -29,16 +32,38 @@ public class SearchItem extends FunctionalItem implements Buyable {
     @Override
     public void use(PlayerInteractEntityEvent e) {
         PEGame game = GameManager.getGame();
-        if (game == null) {
+        if (game.getCurrentPhase().isClockStopped()) {
             return;
         }
 
-        Entity prisioner = e.getRightClicked();
-        if (!(prisioner instanceof Player)) {
+        String guardName = e.getPlayer().getName();
+        String prisonerName = e.getRightClicked().getName();
+
+        PEPlayer playerPrisoner = game.getPEPlayer(prisonerName);
+        if (!playerPrisoner.isPrisoner()) {
             return;
         }
 
-        game.policeInspectedPrisoner(e.getPlayer().getName(), prisioner.getName());
+        Guard guard = (Guard) game.getPEPlayer(guardName);
+        MessageLanguageManager guardMessages = MessageLanguageManager.getInstanceByPlayer(guardName);
+        if (guard.countSearches() == 0) {
+            BukkitMessageSender.sendChatMessage(guardName, guardMessages.getNoSearchesMessage());
+            return;
+        }
+
+        Prisoner prisoner = (Prisoner) playerPrisoner;
+        if (prisoner.isWanted()) {
+            BukkitMessageSender.sendChatMessage(guardName, guardMessages.getAlreadyWantedPlayerMessage());
+        } else if (prisoner.hasIllegalItems()) {
+            game.setWanted(prisoner, guard);
+        } else {
+            MessageLanguageManager prisonerMessages = MessageLanguageManager.getInstanceByPlayer(prisonerName);
+            BukkitMessageSender.sendChatMessage(prisonerName, prisonerMessages.getPrisonerInspectedMessage());
+
+            BukkitMessageSender.sendChatMessage(guardName, guardMessages.getPoliceInspectedMessage(prisonerName));
+
+            guard.usedSearch();
+        }
     }
 
     @Override

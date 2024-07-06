@@ -1,6 +1,12 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,10 +35,30 @@ public class CellPhoneItem extends FunctionalItem implements Craftable {
 
     @Override
     public void use(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        Location loc = player.getLocation();
+        Player bukkitPlayer = e.getPlayer();
+        Location location = bukkitPlayer.getLocation();
+        String playerName = bukkitPlayer.getName();
 
-        GameManager.getGame().playerCalledHelicopter(player.getName(), loc, player.getInventory().getHeldItemSlot());
+        PEGame game = GameManager.getGame();
+
+        PEPlayer player = game.getPEPlayer(playerName);
+
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+
+        PrisonBuilding prison = game.getPrison();
+        if (!prison.hasCellPhoneCoverage(location)) {
+            BukkitMessageSender.sendChatMessage(player, messages.getNoCellPhoneCoverageMessage());
+            return;
+        }
+
+        int helicopterSpawnDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
+        BukkitMessageSender.sendChatMessage(player, messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
+
+        int itemSlot = bukkitPlayer.getInventory().getHeldItemSlot();
+        player.removeItem(itemSlot);
+        player.updateInventory();
+
+        prison.callHelicopter();
     }
 
     @Override

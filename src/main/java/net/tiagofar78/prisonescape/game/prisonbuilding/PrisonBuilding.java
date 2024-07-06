@@ -327,10 +327,6 @@ public class PrisonBuilding {
         _wall.crackedBlocksExploded(crackedBlocksLocations);
     }
 
-    public void placeBomb(Location location) {
-        BukkitWorldEditor.placeTNT(location);
-    }
-
     public WallCrack getWallCrack(Location location) {
         return _wall.getAffectedCrack(location);
     }

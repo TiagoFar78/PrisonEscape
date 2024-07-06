@@ -43,8 +43,7 @@ public class ItemFactory {
             new CameraItem(),
             new SoundDetectorItem(),
             new RadarItem(),
-            new OpenCamerasItem(),
-            new MissionsItem()};
+            new OpenCamerasItem()};
 
     public static Item createItem(String name) {
         for (Item item : items) {

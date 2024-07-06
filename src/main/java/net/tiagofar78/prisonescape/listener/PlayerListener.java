@@ -160,6 +160,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (!(e.getRightClicked() instanceof Player)) {
+            return;
+        }
+
         PEPlayer player = game.getPEPlayer(e.getPlayer().getName());
         if (player == null) {
             return;
@@ -195,6 +199,10 @@ public class PlayerListener implements Listener {
                 e.setCancelled(true);
                 break;
             }
+        }
+
+        if (!(e.getEntity() instanceof Player)) {
+            return;
         }
 
         Player pAttacker = (Player) eAttacker;

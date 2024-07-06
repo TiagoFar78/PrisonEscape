@@ -18,7 +18,6 @@ import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.Shop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -473,6 +472,12 @@ public class PEGame {
 
             player.updateRegionLine(_prison, _dayPeriod);
         }
+        
+        for (Prisoner prisoner : _prisonersTeam.getMembers()) {
+            if (!_prison.isRestrictedArea(prisoner.getRegion(), _dayPeriod)) {
+                prisoner.leftRestrictedArea();
+            }
+        }
 
         givePackagesToFugitives();
 
@@ -524,6 +529,12 @@ public class PEGame {
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
 
             player.updateRegionLine(_prison, _dayPeriod);
+        }
+        
+        for (Prisoner prisoner : _prisonersTeam.getMembers()) {
+            if (_prison.isRestrictedArea(prisoner.getRegion(), _dayPeriod)) {
+                prisoner.enteredRestrictedArea();
+            }
         }
 
         runNightTimer(_settings.getNightDuration(), _settings.getNightDuration());
@@ -588,7 +599,7 @@ public class PEGame {
         }
     }
 
-    private void arrestPlayer(Prisoner arrested, Guard arrester) {
+    public void arrestPlayer(Prisoner arrested, Guard arrester) {
         teleportToSolitary(arrested);
         arrested.clearInventory();
 
@@ -632,12 +643,6 @@ public class PEGame {
         }, TICKS_PER_SECOND);
     }
 
-    public void playerRemovedTeamPreference(String playerName) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-        String message = messages.getRemovedTeamPreferenceMessage();
-        updateTeamPreference(playerName, message, TeamPreference.RANDOM, WAITING_TEAM_NAME);
-    }
-
     public void updateTeamPreference(String playerName, String message, TeamPreference teamPref, String teamName) {
         PEPlayer player = getPEPlayer(playerName);
 
@@ -652,114 +657,6 @@ public class PEGame {
     private void updatePreferenceTabListDisplay(String playerName, String teamName) {
         for (PEPlayer playerOnLobby : _playersOnLobby) {
             playerOnLobby.addScoreboardTeamMember(playerName, teamName);
-        }
-
-    }
-
-    public void playerDrankEnergyDrink(String playerName, int eneryDrinkIndex) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        ConfigManager config = ConfigManager.getInstance();
-
-        player.giveEnergyDrinkEffect(config.getSpeedDuration(), config.getSpeedLevel());
-
-        int contentIndex = player.convertToInventoryIndex(eneryDrinkIndex);
-        player.removeItem(contentIndex);
-    }
-
-    public void playerCalledHelicopter(String playerName, Location location, int itemSlot) {
-        PEPlayer player = getPEPlayer(playerName);
-
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-
-        if (!_prison.hasCellPhoneCoverage(location)) {
-            BukkitMessageSender.sendChatMessage(player, messages.getNoCellPhoneCoverageMessage());
-            return;
-        }
-
-        int helicopterSpawnDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
-        BukkitMessageSender.sendChatMessage(player, messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
-        player.removeItem(itemSlot);
-        player.updateInventory();
-
-        _prison.callHelicopter();
-    }
-
-    public void policeOpenShop(String playerName) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        Shop shop = new Shop();
-        player.openMenu(shop);
-    }
-
-    public void policeHandcuffedPrisoner(String policeName, String prisonerName) {
-        PEPlayer playerGuard = getPEPlayer(policeName);
-        PEPlayer playerPrisoner = getPEPlayer(prisonerName);
-        if (playerGuard == null || playerPrisoner == null) {
-            return;
-        }
-
-        if (_phase.isClockStopped()) {
-            return;
-        }
-
-        if (!isPrisoner(playerPrisoner) || !isGuard(playerGuard)) {
-            return;
-        }
-
-        Prisoner prisoner = (Prisoner) playerPrisoner;
-        Guard guard = (Guard) playerGuard;
-
-        if (prisoner.canBeArrested()) {
-            arrestPlayer(prisoner, guard);
-        } else {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, messages.getNotWantedPlayerMessage());
-        }
-    }
-
-    public void policeInspectedPrisoner(String policeName, String prisonerName) {
-        PEPlayer playerGuard = getPEPlayer(policeName);
-        PEPlayer playerPrisoner = getPEPlayer(prisonerName);
-        if (playerGuard == null || playerPrisoner == null) {
-            return;
-        }
-
-        if (_phase.isClockStopped()) {
-            return;
-        }
-
-        if (!isPrisoner(playerPrisoner) || !isGuard(playerGuard)) {
-            return;
-        }
-
-        Guard guard = (Guard) playerGuard;
-        if (guard.countSearches() == 0) {
-            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getNoSearchesMessage());
-            return;
-        }
-
-        Prisoner prisoner = (Prisoner) playerPrisoner;
-        if (prisoner.isWanted()) {
-            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getAlreadyWantedPlayerMessage());
-        } else if (prisoner.hasIllegalItems()) {
-            setWanted(prisoner, playerGuard);
-        } else {
-            MessageLanguageManager prisonerMessages = MessageLanguageManager.getInstanceByPlayer(prisonerName);
-            BukkitMessageSender.sendChatMessage(prisonerName, prisonerMessages.getPrisonerInspectedMessage());
-
-            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisonerName));
-
-            guard.usedSearch();
         }
     }
 
@@ -782,10 +679,6 @@ public class PEGame {
         for (PEPlayer playerOnLobby : _playersOnLobby) {
             playerOnLobby.removeScoreboardWantedTeamMember(PRISONERS_TEAM_NAME, prisonerName);
         }
-    }
-
-    public void placeBomb(Location location) {
-        _prison.placeBomb(location);
     }
 
 //	########################################
