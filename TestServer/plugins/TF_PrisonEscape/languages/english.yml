@@ -124,6 +124,11 @@ Items:
     - "&eCalls an escape helicopter to the roof"
   CraftingMenu:
     Name: "Crafting Menu"
+  Trade:
+    Name: "Trade"
+    Lore:
+    - "&eClick on some player using"
+    - "&ethis to open a trade menu"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
@@ -212,7 +217,7 @@ Messages:
     InvalidSoundDetectorLoc: "&cSound detector can not be placed here. &eTry placing it on directly on the ground."
     TradeAlreadyAccepted: "&aYou already accepted the trade, wait for your friend to accept."
     TradeRequestSent: "&eTrade request sent to &b{PLAYER}&e."
-    TradeRequestReceived: "&eYou received a trade request. Shift+Click &b{PLAYER} &eto accept. You have &b{TIME} seconds"
+    TradeRequestReceived: "&eYou received a trade request. Use trade item on &b{PLAYER} &eto accept. You have &b{TIME} seconds"
     CaughtInATrap: "&eYou have been caught in a trap. You can move again in &b{TIME} seconds"
     CanMoveFreely: "&eYou can now move freely"
     CraftingItemsMissing: "&cYou are missing some items required to craft that item."

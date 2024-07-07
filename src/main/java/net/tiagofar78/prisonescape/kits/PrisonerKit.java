@@ -3,6 +3,7 @@ package net.tiagofar78.prisonescape.kits;
 import net.tiagofar78.prisonescape.items.CraftingMenuItem;
 import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.TradeItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Color;
@@ -16,6 +17,7 @@ public class PrisonerKit extends Kit {
 
     private static final int FIRST_GLASS_ITEM_INDEX = 4;
     private static final int LAST_GLASS_ITEM_INDEX = 35;
+    private static final int TRADE_ITEM_INDEX = 7;
     private static final int CRAFTING_MENU_INDEX = 8;
 
     private static final int CHESTPLATE_INDEX = 38;
@@ -32,6 +34,7 @@ public class PrisonerKit extends Kit {
         }
 
         items.put(CRAFTING_MENU_INDEX, new CraftingMenuItem());
+        items.put(TRADE_ITEM_INDEX, new TradeItem());
 
         return items;
     }

@@ -27,7 +27,6 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
-import net.tiagofar78.prisonescape.menus.TradeMenu;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -154,38 +153,6 @@ public class PlayerListener implements Listener {
             return;
         }
         player.executedEvent(INTERACT_WITH_PLAYER_EVENT_NAME);
-
-        PEPlayer clickedPlayer = game.getPEPlayer(e.getRightClicked().getName());
-        if (clickedPlayer != null) {
-            if (player.isPrisoner() && clickedPlayer.isPrisoner() && player.isSneaking()) {
-                Prisoner sender = (Prisoner) player;
-                Prisoner target = (Prisoner) clickedPlayer;
-
-                if (sender.hasBeenRequestedBy(target) && sender.isStillValidRequest()) {
-                    sender.clearRequest();
-                    target.clearRequest();
-                    new TradeMenu(target, sender);
-                    return;
-                }
-
-                target.sendRequest(sender);
-
-                String senderName = sender.getName();
-                String targetName = target.getName();
-
-                MessageLanguageManager senderMessages = MessageLanguageManager.getInstanceByPlayer(senderName);
-                BukkitMessageSender.sendChatMessage(sender, senderMessages.getTradeRequestSentMessage(targetName));
-
-                int time = ConfigManager.getInstance().getTradeRequestTimeout();
-                MessageLanguageManager targetMessages = MessageLanguageManager.getInstanceByPlayer(targetName);
-                BukkitMessageSender.sendChatMessage(
-                        target,
-                        targetMessages.getTradeRequestReceivedMessage(senderName, time)
-                );
-
-                return;
-            }
-        }
 
         Item item = player.getItemAt(e.getPlayer().getInventory().getHeldItemSlot());
         if (item.isFunctional()) {
