@@ -34,8 +34,9 @@ import java.util.List;
 public class PEGame {
 
     private static final int TICKS_PER_SECOND = 20;
-    private static final String POLICE_TEAM_NAME = "Guards";
-    private static final String PRISONERS_TEAM_NAME = "Prisoners";
+    public static final String GUARDS_TEAM_NAME = "Guards";
+    public static final String PRISONERS_TEAM_NAME = "Prisoners";
+    public static final String WAITING_TEAM_NAME = "Waiting";
     public static final String CELLS_REGION_NAME = "Cells";
 
     private Settings _settings;
@@ -61,7 +62,7 @@ public class PEGame {
         _prison = new PrisonBuilding(referenceBlock);
 
         _playersOnLobby = new ArrayList<>();
-        _policeTeam = new PETeam<Guard>(POLICE_TEAM_NAME);
+        _policeTeam = new PETeam<Guard>(GUARDS_TEAM_NAME);
         _prisonersTeam = new PETeam<Prisoner>(PRISONERS_TEAM_NAME);
 
         _hasDoorCode = false;
@@ -117,6 +118,8 @@ public class PEGame {
         int maxPlayers = config.getMaxPlayers();
         int playerNumber = _playersOnLobby.size();
         for (PEPlayer playerOnLobby : _playersOnLobby) {
+            updatePreferenceTabListDisplay(playerName, WAITING_TEAM_NAME);
+
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
             BukkitMessageSender.sendChatMessage(
                     playerOnLobby,
@@ -625,46 +628,28 @@ public class PEGame {
         }, TICKS_PER_SECOND);
     }
 
-    public void playerSelectPrisonersTeam(String playerName) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        WaitingPlayer waitingPlayer = (WaitingPlayer) player;
-
-        waitingPlayer.setPreference(TeamPreference.PRISIONERS);
-
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-        BukkitMessageSender.sendChatMessage(player, messages.getSelectedPrisonersTeamMessage());
-    }
-
-    public void playerSelectPoliceTeam(String playerName) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        WaitingPlayer waitingPlayer = (WaitingPlayer) player;
-
-        waitingPlayer.setPreference(TeamPreference.POLICE);
-
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-        BukkitMessageSender.sendChatMessage(player, messages.getSelectedPoliceTeamMessage());
-    }
-
     public void playerRemovedTeamPreference(String playerName) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+        String message = messages.getRemovedTeamPreferenceMessage();
+        updateTeamPreference(playerName, message, TeamPreference.RANDOM, WAITING_TEAM_NAME);
+    }
+
+    public void updateTeamPreference(String playerName, String message, TeamPreference teamPref, String teamName) {
         PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
 
         WaitingPlayer waitingPlayer = (WaitingPlayer) player;
+        waitingPlayer.setPreference(teamPref);
 
-        waitingPlayer.setPreference(TeamPreference.RANDOM);
+        BukkitMessageSender.sendChatMessage(player, message);
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-        BukkitMessageSender.sendChatMessage(player, messages.getRemovedTeamPreferenceMessage());
+        updatePreferenceTabListDisplay(playerName, teamName);
+    }
+
+    private void updatePreferenceTabListDisplay(String playerName, String teamName) {
+        for (PEPlayer playerOnLobby : _playersOnLobby) {
+            playerOnLobby.addScoreboardTeamMember(playerName, teamName);
+        }
+
     }
 
     public void playerDrankEnergyDrink(String playerName, int eneryDrinkIndex) {
