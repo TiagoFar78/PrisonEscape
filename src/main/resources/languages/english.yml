@@ -10,7 +10,7 @@ Scoreboard:
   DisplayName: "&6&lPrison Escape"
   LastLine: "&eTest Server"
   RegionLine: "&8\u2662 &f{REGION}"
-  RestrictedRegionLine: "&8\u2662 &c{REGION}"
+  RestrictedRegionLine: "&8\u2662 &c{REGION} \u26A0"
   DefaultRegionName: "Prison"
   WaitingRegionName: "Waiting Room"
   GuardSideBar:
@@ -274,7 +274,7 @@ Messages:
     NewDayTitle: "&aDay &a{DAYNUMBER}"
     NewDaySubtitle: "&fThe sun has risen"
     NightTitle: "&4Nightfall approaches"
-    NightSubtitle: "&fPlan your escape"
+    NightSubtitle: "&fPrisoners must return to their cells"
     JoinedGame: "&a{PLAYER} joined the game. {PLAYERNUMBER}/{MAXPLAYERS}"
     LeftGame: "&a{PLAYER} left the game. {PLAYERNUMBER}/{MAXPLAYERS}"
     RejoinedGame: "&a{PLAYER} rejoined game. {PLAYERNUMBER}/{MAXPLAYERS}"
