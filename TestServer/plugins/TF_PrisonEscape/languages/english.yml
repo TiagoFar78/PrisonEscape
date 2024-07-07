@@ -129,6 +129,8 @@ Items:
     Lore:
     - "&eClick on some player using"
     - "&ethis to open a trade menu"
+  Map:
+    Name: "Prison Map"
 ItemsProperties:
   Metalic: "&8Metalic"
   Illegal: "&cIllegal"
