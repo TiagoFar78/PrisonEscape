@@ -11,6 +11,7 @@ import net.tiagofar78.prisonescape.game.phases.Phase;
 import net.tiagofar78.prisonescape.game.phases.Waiting;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.items.ItemFactory;
+import net.tiagofar78.prisonescape.kits.Kit;
 import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisonerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
@@ -145,15 +146,16 @@ public class PEGame {
             return -2;
         }
 
-        PEPlayer player = getPlayerOnPoliceTeam(playerName);
+        PEPlayer player = _prisonersTeam.getMember(playerName);
         if (player != null) {
-            teleportPoliceToSpawnPoint(player);
+            addPrisonerToStartedGame(player, _dayPeriod);
         } else {
-            player = getPlayerOnPrisonersTeam(playerName);
-            if (player == null) {
+            player = _policeTeam.getMember(playerName);
+            if (player != null) {
+                addGuardToStartedGame(player, _dayPeriod);
+            } else {
                 return -3;
             }
-            teleportPrisonerToSpawnPoint(player);
         }
 
         _playersOnLobby.add(player);
@@ -190,7 +192,7 @@ public class PEGame {
             }
         }
 
-        teleportToLeavingLocation(player);
+        removePlayerFromGame(player);
 
         ConfigManager config = ConfigManager.getInstance();
         int maxPlayers = config.getMaxPlayers();
@@ -214,26 +216,6 @@ public class PEGame {
         }
 
         return false;
-    }
-
-    private PEPlayer getPlayerOnPoliceTeam(String playerName) {
-        for (int i = 0; i < _policeTeam.getSize(); i++) {
-            if (_policeTeam.getMember(i).getName().equals(playerName)) {
-                return _policeTeam.getMember(i);
-            }
-        }
-
-        return null;
-    }
-
-    private PEPlayer getPlayerOnPrisonersTeam(String playerName) {
-        for (int i = 0; i < _prisonersTeam.getSize(); i++) {
-            if (_prisonersTeam.getMember(i).getName().equals(playerName)) {
-                return _prisonersTeam.getMember(i);
-            }
-        }
-
-        return null;
     }
 
     public boolean isGuard(PEPlayer player) {
@@ -362,27 +344,50 @@ public class PEGame {
         for (Prisoner player : _prisonersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPrisonerGameStartedMessage());
-            player.setKit(new PrisonerKit());
-            teleportPrisonerToSpawnPoint(player);
-            player.setBossBar(_bossBar);
-            player.updateScoreaboardTeams();
-            player.updateRegionLine(_prison, DayPeriod.DAY);
+
+            addPrisonerToStartedGame(player, DayPeriod.DAY);
         }
 
         for (Guard player : _policeTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
-            player.setKit(new PoliceKit());
-            teleportPoliceToSpawnPoint(player);
-            player.setBossBar(_bossBar);
-            player.updateScoreaboardTeams();
-            player.updateRegionLine(_prison, DayPeriod.DAY);
+
+            addGuardToStartedGame(player, DayPeriod.DAY);
         }
 
         _prison.addVaults(_prisonersTeam.getMembers());
         _prison.putRandomCracks();
 
         startDay();
+    }
+
+    private void addPrisonerToStartedGame(PEPlayer player, DayPeriod dayPeriod) {
+        int playerIndex = _prisonersTeam.getPlayerIndex(player);
+        Location loc = _prison.getPlayerCellLocation(playerIndex);
+        addPlayerToStartedGame(player, new PrisonerKit(), loc, DayPeriod.DAY);
+    }
+
+    private void addGuardToStartedGame(PEPlayer player, DayPeriod dayPeriod) {
+        int playerIndex = _policeTeam.getPlayerIndex(player);
+        Location loc = _prison.getPoliceSpawnLocation(playerIndex);
+
+        addPlayerToStartedGame(player, new PoliceKit(), loc, dayPeriod);
+    }
+
+    private void addPlayerToStartedGame(PEPlayer player, Kit kit, Location location, DayPeriod dayPeriod) {
+        player.setKit(kit);
+        player.setBossBar(_bossBar);
+        player.updateScoreaboardTeams();
+        player.setScoreboard(player.getScoreboardData().getScoreboard());
+        player.updateRegionLine(_prison, dayPeriod);
+        BukkitTeleporter.teleport(player, location);
+        player.updateInventory();
+    }
+
+    private void removePlayerFromGame(PEPlayer player) {
+        player.removeScoreboard();
+        _bossBar.removePlayer(player.getBukkitPlayer());
+        teleportToLeavingLocation(player);
     }
 
     private void startFinishedPhase(PETeam<? extends PEPlayer> winnerTeam) {
@@ -428,8 +433,7 @@ public class PEGame {
         _phase = new Disabled();
 
         for (PEPlayer player : _playersOnLobby) {
-            teleportToLeavingLocation(player);
-            player.removeScoreboard();
+            removePlayerFromGame(player);
         }
 
         _prison.deleteVaults();
@@ -685,7 +689,7 @@ public class PEGame {
     }
 
     public void policeOpenShop(String playerName) {
-        PEPlayer player = getPlayerOnPoliceTeam(playerName);
+        PEPlayer player = getPEPlayer(playerName);
         if (player == null) {
             return;
         }
@@ -852,11 +856,6 @@ public class PEGame {
 //	#########################################
 //	#               Locations               #
 //	#########################################
-
-    private void teleportPoliceToSpawnPoint(PEPlayer player) {
-        int playerIndex = _policeTeam.getPlayerIndex(player);
-        BukkitTeleporter.teleport(player, _prison.getPoliceSpawnLocation(playerIndex));
-    }
 
     private void teleportPrisonerToSpawnPoint(PEPlayer player) {
         int playerIndex = _prisonersTeam.getPlayerIndex(player);

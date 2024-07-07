@@ -412,11 +412,19 @@ public abstract class PEPlayer {
     }
 
     public void updateScoreaboardTeams() {
-        PETeam<Guard> guardsTeam = GameManager.getGame().getGuardsTeam();
+        PEGame game = GameManager.getGame();
+
+        PETeam<Guard> guardsTeam = game.getGuardsTeam();
         addScoreboardTeamMembers(guardsTeam);
 
-        PETeam<Prisoner> prisonersTeam = GameManager.getGame().getPrisonerTeam();
-        addScoreboardTeamMembers(prisonersTeam);
+        PETeam<Prisoner> prisonersTeam = game.getPrisonerTeam();
+        for (Prisoner prisoner : prisonersTeam.getMembers()) {
+            if (prisoner.isWanted()) {
+                addScoreboardTeamMember(prisoner.getName(), WANTED_TEAM_NAME);
+            } else {
+                addScoreboardTeamMember(prisoner.getName(), prisonersTeam.getName());
+            }
+        }
     }
 
     private void addScoreboardTeamMembers(PETeam<? extends PEPlayer> team) {
@@ -466,7 +474,7 @@ public abstract class PEPlayer {
 //  #                Bukkit                #
 //  ########################################
 
-    private Player getBukkitPlayer() {
+    public Player getBukkitPlayer() {
         Player player = Bukkit.getPlayer(getName());
 
         if (player == null || !player.isOnline()) {
