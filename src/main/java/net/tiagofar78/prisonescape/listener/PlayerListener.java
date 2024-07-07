@@ -18,6 +18,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
 import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
 import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.items.FunctionalItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -33,6 +34,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -49,6 +51,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -61,12 +64,20 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
+        onPlayerMove(e.getPlayer().getName(), e.getTo(), e.getFrom(), e);
+    }
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent e) {
+        onPlayerMove(e.getPlayer().getName(), e.getTo(), e.getFrom(), e);
+    }
+
+    private void onPlayerMove(String playerName, Location locTo, Location locFrom, Cancellable e) {
         PEGame game = GameManager.getGame();
         if (game == null) {
             return;
         }
 
-        String playerName = e.getPlayer().getName();
         PEPlayer player = game.getPEPlayer(playerName);
         if (player == null) {
             return;
@@ -77,8 +88,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        Location locTo = e.getTo();
-        if (isInSameBlock(e.getFrom(), locTo)) {
+        if (isInSameBlock(locFrom, locTo)) {
             return;
         }
 
@@ -90,6 +100,16 @@ public class PlayerListener implements Listener {
         PrisonBuilding prison = game.getPrison();
         for (SoundDetector soundDetector : prison.getSoundDetectors()) {
             soundDetector.playerMoved(player, locTo);
+        }
+
+        boolean changedRegion = false;
+        Region region = prison.getRegion(locTo);
+        Region currentRegion = player.getRegion();
+        if (!isSameRegion(region, currentRegion)) {
+            player.setRegion(region);
+            player.updateRegionLine(prison, game.getPeriod());
+
+            changedRegion = true;
         }
 
         if (!game.isPrisoner(player)) {
@@ -108,10 +128,12 @@ public class PlayerListener implements Listener {
             game.playerEscaped(prisoner);
         }
 
-        if (prison.isInRestrictedArea(locTo)) {
-            prisoner.enteredRestrictedArea();
-        } else if (prisoner.isInRestrictedArea()) {
-            prisoner.leftRestrictedArea();
+        if (changedRegion) {
+            if (prison.isInRestrictedArea(locTo, game.getPeriod())) {
+                prisoner.enteredRestrictedArea();
+            } else {
+                prisoner.leftRestrictedArea();
+            }
         }
 
         if (prison.checkIfWalkedOverMetalDetector(locTo)) {
@@ -122,6 +144,10 @@ public class PlayerListener implements Listener {
     private boolean isInSameBlock(Location loc1, Location loc2) {
         return loc1.getBlockX() == loc2.getBlockX() && loc1.getBlockY() == loc2.getBlockY() &&
                 loc1.getBlockZ() == loc2.getBlockZ();
+    }
+
+    private boolean isSameRegion(Region r1, Region r2) {
+        return (r1 == null && r2 == null) || (r2 != null && r2.equals(r1));
     }
 
     private void playerWalkedOverMetalDetector(Prisoner prisoner, Location loc) {

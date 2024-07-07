@@ -9,6 +9,10 @@ BossBar:
 Scoreboard:
   DisplayName: "&6&lPrison Escape"
   LastLine: "&eTest Server"
+  RegionLine: "&8\u2662 &f{REGION}"
+  RestrictedRegionLine: "&8\u2662 &c{REGION}"
+  DefaultRegionName: "Prison"
+  WaitingRegionName: "Waiting Room"
   GuardSideBar:
     BalanceLine: "&fBalance: &a{BALANCE}"
     SoundDectorLine: "&fSound Detectors:   "

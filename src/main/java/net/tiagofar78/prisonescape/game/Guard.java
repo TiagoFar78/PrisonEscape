@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Guard extends PEPlayer {
 
-    private static final int BALANCE_LINE_INDEX = 1;
+    private static final int BALANCE_LINE_INDEX = 2;
     private static final int SOUND_DETECTORS_FIRST_LINE_INDEX = 3;
     private static final int INITIAL_SEARCHES = 1;
 
@@ -143,27 +143,18 @@ public class Guard extends PEPlayer {
 
         ScoreboardData sbData = super.createScoreboardData();
 
+        List<Integer> linesIndexes = new ArrayList<>();
+        List<String> linesContents = new ArrayList<>();
+
         String balanceLine = messages.getGuardSideBarBalanceLine(getBalance());
-        String lastLine = messages.getSideBarLastLine();
-        List<String> baseSideBar = buildBaseSideBar(balanceLine, lastLine);
+        linesIndexes.add(BALANCE_LINE_INDEX);
+        linesContents.add(balanceLine);
+
+        int emptyLines = 2;
+        List<String> baseSideBar = buildBaseSideBar(emptyLines, linesIndexes, linesContents);
         sbData.createSideBar(messages.getScoreboardDisplayName(), baseSideBar);
 
         return sbData;
-    }
-
-    private List<String> buildBaseSideBar(String balanceLine, String lastLine) {
-        List<String> baseSideBar = new ArrayList<>();
-
-        int emptyLines = 2;
-        for (int i = 0; i < emptyLines; i++) {
-            baseSideBar.add("§" + i);
-        }
-
-        baseSideBar.add(BALANCE_LINE_INDEX, balanceLine);
-
-        baseSideBar.add(lastLine);
-
-        return baseSideBar;
     }
 
     private void updateBalanceLine() {

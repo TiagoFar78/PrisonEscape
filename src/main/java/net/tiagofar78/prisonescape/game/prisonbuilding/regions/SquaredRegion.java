@@ -37,13 +37,13 @@ public class SquaredRegion extends Region {
 
     @Override
     public boolean contains(Location loc) {
-        int x = loc.getBlockX();
-        int y = loc.getBlockY();
-        int z = loc.getBlockZ();
+        double x = loc.getX();
+        double y = loc.getY();
+        double z = loc.getZ();
 
-        boolean isXBetweenBoundaries = _upperCornerLocation.getX() >= x && _lowerCornerLocation.getX() <= x;
-        boolean isYBetweenBoundaries = _upperCornerLocation.getY() >= y && _lowerCornerLocation.getY() <= y;
-        boolean isZBetweenBoundaries = _upperCornerLocation.getZ() >= z && _lowerCornerLocation.getZ() <= z;
+        boolean isXBetweenBoundaries = _upperCornerLocation.getX() + 1.5 >= x && _lowerCornerLocation.getX() - 0.5 <= x;
+        boolean isYBetweenBoundaries = _upperCornerLocation.getY() + 1.5 >= y && _lowerCornerLocation.getY() - 0.5 <= y;
+        boolean isZBetweenBoundaries = _upperCornerLocation.getZ() + 1.5 >= z && _lowerCornerLocation.getZ() - 0.5 <= z;
 
         return isXBetweenBoundaries && isYBetweenBoundaries && isZBetweenBoundaries;
     }
