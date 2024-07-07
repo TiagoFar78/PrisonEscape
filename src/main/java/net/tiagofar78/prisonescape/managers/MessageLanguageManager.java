@@ -159,6 +159,7 @@ public class MessageLanguageManager {
     private String _cameraPlacedMessage;
     private String _trapPlacedMessage;
     private String _cannotPlaceTrapMessage;
+    private String _trapTriggeredMessage;
     private String _noCamerasPlacedMessage;
     private String _sneakToLeaveCameraMessage;
     private String _cantJoinCameraSneakingMessage;
@@ -343,6 +344,7 @@ public class MessageLanguageManager {
         _cameraPlacedMessage = createMessage(messages.getString(warningPath + "CameraPlaced"));
         _trapPlacedMessage = createMessage(messages.getString(warningPath + "TrapPlaced"));
         _cannotPlaceTrapMessage = createMessage(messages.getString(warningPath + "CannotPlaceTrap"));
+        _trapTriggeredMessage = createMessage(messages.getString(warningPath + "TrapTriggered"));
         _noCamerasPlacedMessage = createMessage(messages.getString(warningPath + "NoCamerasPlaced"));
         _sneakToLeaveCameraMessage = createMessage(messages.getString(warningPath + "SneakToLeaveCamera"));
         _cantJoinCameraSneakingMessage = createMessage(messages.getString(warningPath + "CantJoinCameraSneaking"));
@@ -732,6 +734,10 @@ public class MessageLanguageManager {
 
     public String getCannotPlaceTrapMessage() {
         return _cannotPlaceTrapMessage;
+    }
+
+    public String getTrapTriggeredMessage() {
+        return _trapTriggeredMessage;
     }
 
     public String getNoCamerasPlacedMessage() {

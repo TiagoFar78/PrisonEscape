@@ -3,6 +3,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.game.DayPeriod;
+import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
@@ -432,17 +433,13 @@ public class PrisonBuilding {
         return _traps;
     }
 
-    public int addTrap(Location location) {
-        Trap trap = new Trap(location);
-        if (!trap.wasPlaced()) {
-            return 1;
-        }
-
-        _traps.add(new Trap(location));
+    public int addTrap(Guard player, Location location) {
+        Trap trap = new Trap(player, location);
+        _traps.add(trap);
         return 0;
     }
 
-    public void checkIfWalkedOverTrap(Location location, PEPlayer player) {
+    public void checkIfWalkedOverTrap(Location location, PEPlayer player, List<Guard> guards) {
         int locX = location.getBlockX();
         int locY = location.getBlockY();
         int locZ = location.getBlockZ();
@@ -454,7 +451,7 @@ public class PrisonBuilding {
             int trapZ = trapLocation.getBlockZ();
 
             if (trapX == locX && (trapY - 1 <= locY || locY <= trapY) && trapZ == locZ) {
-                trap.triggerTrap(player);
+                trap.triggerTrap(guards, player);
                 _traps.remove(trap);
                 break;
             }
