@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
-import org.bukkit.entity.TNTPrimed;
 
 public class BukkitWorldEditor {
 
@@ -34,7 +33,6 @@ public class BukkitWorldEditor {
 
     private static final Material DEFAULT_BLOCK = Material.STONE_BRICKS;
     public static final Material CRACKED_BLOCK = Material.CRACKED_STONE_BRICKS;
-    private static final int EXPLOSION_TICKS = 20 * 4;
 
     public static void buildWall(Location loc1, Location loc2) {
         int lowerX;
@@ -90,10 +88,6 @@ public class BukkitWorldEditor {
 
     public static void removeWallBlock(Location location) {
         PEResources.getWorld().getBlockAt(location).setType(Material.AIR);
-    }
-
-    public static void placeTNT(Location location) {
-        ((TNTPrimed) PEResources.getWorld().spawn(location, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
     }
 
 //  ########################################

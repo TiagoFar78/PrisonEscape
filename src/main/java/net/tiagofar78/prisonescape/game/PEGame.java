@@ -5,10 +5,11 @@ import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
-import net.tiagofar78.prisonescape.game.phases.Disabled;
-import net.tiagofar78.prisonescape.game.phases.Finished;
+import net.tiagofar78.prisonescape.game.phases.DisabledPhase;
+import net.tiagofar78.prisonescape.game.phases.FinishedPhase;
+import net.tiagofar78.prisonescape.game.phases.OngoingPhase;
 import net.tiagofar78.prisonescape.game.phases.Phase;
-import net.tiagofar78.prisonescape.game.phases.Waiting;
+import net.tiagofar78.prisonescape.game.phases.WaitingPhase;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.items.ItemFactory;
 import net.tiagofar78.prisonescape.kits.Kit;
@@ -16,9 +17,7 @@ import net.tiagofar78.prisonescape.kits.PoliceKit;
 import net.tiagofar78.prisonescape.kits.PrisonerKit;
 import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.Shop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,7 +28,6 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class PEGame {
@@ -70,7 +68,7 @@ public class PEGame {
 
         _bossBar = Bukkit.createBossBar(mapName, BarColor.YELLOW, BarStyle.SOLID);
 
-        startWaitingPhase();
+        startNextPhase(new WaitingPhase());
     }
 
     public Phase getCurrentPhase() {
@@ -83,6 +81,10 @@ public class PEGame {
 
     public DayPeriod getPeriod() {
         return _dayPeriod;
+    }
+
+    public BossBar getBossBar() {
+        return _bossBar;
     }
 
 //	#########################################
@@ -238,139 +240,19 @@ public class PEGame {
         return _playersOnLobby;
     }
 
-//	########################################
-//	#              Admin zone              #
-//	########################################
-
-    /**
-     * @return 0 if successful<br>
-     *         -1 if already started ongoing phase
-     */
-    public int forceStart() {
-        if (_phase.hasGameStarted()) {
-            return -1;
-        }
-
-        startOngoingPhase();
-        return 0;
+    public void setPlayersOnLobby(List<PEPlayer> playersOnLobby) {
+        _playersOnLobby = playersOnLobby;
     }
 
-    public void forceStop() {
-        _phase = new Finished();
-        disableGame();
-    }
-
-    /**
-     * @return 0 if successful<br>
-     *         -1 if not in finished phase
-     */
-    public int stop() {
-        if (!_phase.hasGameEnded()) {
-            return -1;
-        }
-
-        disableGame();
-        return 0;
-    }
-
-//	########################################
-//	#                Phases                #
-//	########################################
-
-    private void startWaitingPhase() {
-        _phase = new Waiting();
-
-        _prison.raiseWall();
-
-        ConfigManager config = ConfigManager.getInstance();
-
-        runWaitingPhaseScheduler(config.getWaitingPhaseDuration(), true);
-    }
-
-    private void runWaitingPhaseScheduler(int remainingSeconds, boolean isFirst) {
-        ConfigManager config = ConfigManager.getInstance();
-
-        BukkitScheduler.runSchedulerLater(new Runnable() {
-
-            @Override
-            public void run() {
-                if (_phase.hasGameStarted()) {
-                    return;
-                }
-
-                if (remainingSeconds == 0) {
-                    if (_playersOnLobby.size() >= config.getMinimumPlayers()) {
-                        startOngoingPhase();
-                        return;
-                    }
-
-                    for (PEPlayer player : _playersOnLobby) {
-                        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-                        BukkitMessageSender.sendChatMessage(player, messages.getGameCancelledFewPlayersMessage());
-                    }
-
-                    disableGame();
-                    return;
-                }
-
-                if (remainingSeconds % config.getDelayBetweenAnnouncements() == 0) {
-                    List<String> playersNames = BukkitMessageSender.getOnlinePlayersNames();
-                    for (String playerName : playersNames) {
-                        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-
-                        List<String> announcement = messages.getGameStartingAnnouncementMessage(
-                                remainingSeconds,
-                                _playersOnLobby.size()
-                        );
-                        BukkitMessageSender.sendChatMessage(playerName, announcement);
-                    }
-                }
-
-                int fullLobbyWaitDuration = config.getFullLobbyWaitDuration();
-                if (_playersOnLobby.size() == config.getMaxPlayers() && remainingSeconds > fullLobbyWaitDuration) {
-                    runWaitingPhaseScheduler(fullLobbyWaitDuration, false);
-                }
-
-                runWaitingPhaseScheduler(remainingSeconds - 1, false);
-            }
-        }, isFirst ? 0 : 1 * TICKS_PER_SECOND);
-    }
-
-    private void startOngoingPhase() {
-        distributePlayersPerTeam();
-
-        _phase = _phase.next();
-
-        for (Prisoner player : _prisonersTeam.getMembers()) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPrisonerGameStartedMessage());
-
-            addPrisonerToStartedGame(player, DayPeriod.DAY);
-        }
-
-        for (Guard player : _policeTeam.getMembers()) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
-
-            addGuardToStartedGame(player, DayPeriod.DAY);
-        }
-
-        _prison.addVaults(_prisonersTeam.getMembers());
-        _prison.putRandomCracks();
-
-        startDay();
-    }
-
-    private void addPrisonerToStartedGame(PEPlayer player, DayPeriod dayPeriod) {
+    public void addPrisonerToStartedGame(PEPlayer player, DayPeriod dayPeriod) {
         int playerIndex = _prisonersTeam.getPlayerIndex(player);
         Location loc = _prison.getPlayerCellLocation(playerIndex);
         addPlayerToStartedGame(player, new PrisonerKit(), loc, DayPeriod.DAY);
     }
 
-    private void addGuardToStartedGame(PEPlayer player, DayPeriod dayPeriod) {
+    public void addGuardToStartedGame(PEPlayer player, DayPeriod dayPeriod) {
         int playerIndex = _policeTeam.getPlayerIndex(player);
         Location loc = _prison.getPoliceSpawnLocation(playerIndex);
-
         addPlayerToStartedGame(player, new PoliceKit(), loc, dayPeriod);
     }
 
@@ -384,75 +266,64 @@ public class PEGame {
         player.updateInventory();
     }
 
-    private void removePlayerFromGame(PEPlayer player) {
+    public void removePlayerFromGame(PEPlayer player) {
         player.removeScoreboard();
         _bossBar.removePlayer(player.getBukkitPlayer());
         teleportToLeavingLocation(player);
     }
 
-    private void startFinishedPhase(PETeam<? extends PEPlayer> winnerTeam) {
-        _phase = _phase.next();
+//	########################################
+//	#              Admin zone              #
+//	########################################
 
-        boolean prisonersWon = winnerTeam.getName().equals(_prisonersTeam.getName());
-        int playersInPrison = (int) _prisonersTeam.getMembers().stream().filter(p -> p.isImprisioned()).count();
-
-        for (PEPlayer player : _playersOnLobby) {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-
-            String title;
-            String subtitle;
-            if (prisonersWon) {
-                title = messages.getPrisonersWonTitle();
-                subtitle = messages.getPrisonersWonSubtitle();
-            } else {
-                title = messages.getPoliceWonTitle();
-                subtitle = messages.getPoliceWonSubtitle(playersInPrison);
-            }
-
-            List<String> resultMessage = messages.getGameResultMessage(winnerTeam.isOnTeam(player));
-
-            BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
-            BukkitMessageSender.sendChatMessage(player, resultMessage);
+    /**
+     * @return 0 if successful<br>
+     *         -1 if already started ongoing phase
+     */
+    public int forceStart() {
+        if (_phase.hasGameStarted()) {
+            return -1;
         }
 
-        int finishedPhaseDuration = ConfigManager.getInstance().getFinishedPhaseDuration();
-        BukkitScheduler.runSchedulerLater(new Runnable() {
-
-            @Override
-            public void run() {
-                disableGame();
-            }
-        }, finishedPhaseDuration * TICKS_PER_SECOND);
+        startNextPhase(new OngoingPhase());
+        return 0;
     }
 
-    private void disableGame() {
-        if (_phase.isGameDisabled()) {
-            return;
-        }
-
-        _phase = new Disabled();
-
-        for (PEPlayer player : _playersOnLobby) {
-            removePlayerFromGame(player);
-        }
-
-        _prison.deleteVaults();
-        _prison.deletePlaceables();
-
-        _bossBar.removeAll();
-
-        GameManager.removeGame();
+    public void forceStop() {
+        startNextPhase(new DisabledPhase());
     }
 
-    private void updateBossBarClock(int totalSeconds, int secondsLeft) {
-        _bossBar.setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
+    /**
+     * @return 0 if successful<br>
+     *         -1 if not in finished phase
+     */
+    public int stop() {
+        if (!_phase.hasGameEnded()) {
+            return -1;
+        }
+
+        startNextPhase(new DisabledPhase());
+        return 0;
+    }
+
+//	########################################
+//	#                Phases                #
+//	########################################
+
+    public void startNextPhase() {
+        startNextPhase(_phase.next());
+    }
+
+    public void startNextPhase(Phase phase) {
+        _phase = phase;
+        _phase.start(this);
     }
 
 //	########################################
 //	#                 Time                 #
 //	########################################
 
-    private void startDay() {
+    public void startDay() {
         if (_phase.isClockStopped()) {
             return;
         }
@@ -472,6 +343,12 @@ public class PEGame {
             BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
 
             player.updateRegionLine(_prison, _dayPeriod);
+        }
+
+        for (Prisoner prisoner : _prisonersTeam.getMembers()) {
+            if (!_prison.isRestrictedArea(prisoner.getRegion(), _dayPeriod)) {
+                prisoner.leftRestrictedArea();
+            }
         }
 
         givePackagesToFugitives();
@@ -526,6 +403,12 @@ public class PEGame {
             player.updateRegionLine(_prison, _dayPeriod);
         }
 
+        for (Prisoner prisoner : _prisonersTeam.getMembers()) {
+            if (_prison.isRestrictedArea(prisoner.getRegion(), _dayPeriod)) {
+                prisoner.enteredRestrictedArea();
+            }
+        }
+
         runNightTimer(_settings.getNightDuration(), _settings.getNightDuration());
     }
 
@@ -542,7 +425,7 @@ public class PEGame {
             public void run() {
                 if (secondsLeft == 0) {
                     if (_currentDay == _settings.getDays()) {
-                        startFinishedPhase(_policeTeam);
+                        startNextPhase(new FinishedPhase(_policeTeam));
                     } else {
                         startDay();
                     }
@@ -558,6 +441,10 @@ public class PEGame {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
         _bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
+    }
+
+    private void updateBossBarClock(int totalSeconds, int secondsLeft) {
+        _bossBar.setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
     }
 
 //	########################################
@@ -584,11 +471,11 @@ public class PEGame {
         }
 
         if (_prisonersTeam.getMembers().stream().filter(p -> p.isImprisioned()).count() == 0) {
-            startFinishedPhase(_prisonersTeam);
+            startNextPhase(new FinishedPhase(_prisonersTeam));
         }
     }
 
-    private void arrestPlayer(Prisoner arrested, Guard arrester) {
+    public void arrestPlayer(Prisoner arrested, Guard arrester) {
         teleportToSolitary(arrested);
         arrested.clearInventory();
 
@@ -632,12 +519,6 @@ public class PEGame {
         }, TICKS_PER_SECOND);
     }
 
-    public void playerRemovedTeamPreference(String playerName) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-        String message = messages.getRemovedTeamPreferenceMessage();
-        updateTeamPreference(playerName, message, TeamPreference.RANDOM, WAITING_TEAM_NAME);
-    }
-
     public void updateTeamPreference(String playerName, String message, TeamPreference teamPref, String teamName) {
         PEPlayer player = getPEPlayer(playerName);
 
@@ -652,114 +533,6 @@ public class PEGame {
     private void updatePreferenceTabListDisplay(String playerName, String teamName) {
         for (PEPlayer playerOnLobby : _playersOnLobby) {
             playerOnLobby.addScoreboardTeamMember(playerName, teamName);
-        }
-
-    }
-
-    public void playerDrankEnergyDrink(String playerName, int eneryDrinkIndex) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        ConfigManager config = ConfigManager.getInstance();
-
-        player.giveEnergyDrinkEffect(config.getSpeedDuration(), config.getSpeedLevel());
-
-        int contentIndex = player.convertToInventoryIndex(eneryDrinkIndex);
-        player.removeItem(contentIndex);
-    }
-
-    public void playerCalledHelicopter(String playerName, Location location, int itemSlot) {
-        PEPlayer player = getPEPlayer(playerName);
-
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-
-        if (!_prison.hasCellPhoneCoverage(location)) {
-            BukkitMessageSender.sendChatMessage(player, messages.getNoCellPhoneCoverageMessage());
-            return;
-        }
-
-        int helicopterSpawnDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
-        BukkitMessageSender.sendChatMessage(player, messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
-        player.removeItem(itemSlot);
-        player.updateInventory();
-
-        _prison.callHelicopter();
-    }
-
-    public void policeOpenShop(String playerName) {
-        PEPlayer player = getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
-        Shop shop = new Shop();
-        player.openMenu(shop);
-    }
-
-    public void policeHandcuffedPrisoner(String policeName, String prisonerName) {
-        PEPlayer playerGuard = getPEPlayer(policeName);
-        PEPlayer playerPrisoner = getPEPlayer(prisonerName);
-        if (playerGuard == null || playerPrisoner == null) {
-            return;
-        }
-
-        if (_phase.isClockStopped()) {
-            return;
-        }
-
-        if (!isPrisoner(playerPrisoner) || !isGuard(playerGuard)) {
-            return;
-        }
-
-        Prisoner prisoner = (Prisoner) playerPrisoner;
-        Guard guard = (Guard) playerGuard;
-
-        if (prisoner.canBeArrested()) {
-            arrestPlayer(prisoner, guard);
-        } else {
-            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, messages.getNotWantedPlayerMessage());
-        }
-    }
-
-    public void policeInspectedPrisoner(String policeName, String prisonerName) {
-        PEPlayer playerGuard = getPEPlayer(policeName);
-        PEPlayer playerPrisoner = getPEPlayer(prisonerName);
-        if (playerGuard == null || playerPrisoner == null) {
-            return;
-        }
-
-        if (_phase.isClockStopped()) {
-            return;
-        }
-
-        if (!isPrisoner(playerPrisoner) || !isGuard(playerGuard)) {
-            return;
-        }
-
-        Guard guard = (Guard) playerGuard;
-        if (guard.countSearches() == 0) {
-            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getNoSearchesMessage());
-            return;
-        }
-
-        Prisoner prisoner = (Prisoner) playerPrisoner;
-        if (prisoner.isWanted()) {
-            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getAlreadyWantedPlayerMessage());
-        } else if (prisoner.hasIllegalItems()) {
-            setWanted(prisoner, playerGuard);
-        } else {
-            MessageLanguageManager prisonerMessages = MessageLanguageManager.getInstanceByPlayer(prisonerName);
-            BukkitMessageSender.sendChatMessage(prisonerName, prisonerMessages.getPrisonerInspectedMessage());
-
-            MessageLanguageManager policeMessages = MessageLanguageManager.getInstanceByPlayer(policeName);
-            BukkitMessageSender.sendChatMessage(policeName, policeMessages.getPoliceInspectedMessage(prisonerName));
-
-            guard.usedSearch();
         }
     }
 
@@ -784,10 +557,6 @@ public class PEGame {
         }
     }
 
-    public void placeBomb(Location location) {
-        _prison.placeBomb(location);
-    }
-
 //	########################################
 //	#                 Util                 #
 //	########################################
@@ -800,57 +569,6 @@ public class PEGame {
         }
 
         return null;
-    }
-
-    private void distributePlayersPerTeam() {
-        int numberOfPlayers = _playersOnLobby.size();
-        int requiredPrisoners = (int) Math.round(
-                numberOfPlayers * ConfigManager.getInstance().getPrisonerRatio()
-        );
-        int requiredOfficers = (int) Math.round(
-                numberOfPlayers * ConfigManager.getInstance().getOfficerRatio()
-        );
-
-        Collections.shuffle(_playersOnLobby);
-        List<PEPlayer> remainingPlayers = new ArrayList<>();
-
-        List<PEPlayer> newLobbyPlayers = new ArrayList<>();
-
-        for (PEPlayer player : _playersOnLobby) {
-            WaitingPlayer waitingPlayer = (WaitingPlayer) player;
-
-            TeamPreference preference = waitingPlayer.getPreference();
-
-            if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
-                Guard guard = new Guard(player.getName());
-                _policeTeam.addMember(guard);
-                newLobbyPlayers.add(guard);
-                requiredOfficers--;
-            } else if (preference == TeamPreference.PRISIONERS && requiredPrisoners != 0) {
-                Prisoner prisoner = new Prisoner(player.getName());
-                _prisonersTeam.addMember(prisoner);
-                newLobbyPlayers.add(prisoner);
-                requiredPrisoners--;
-            } else {
-                remainingPlayers.add(player);
-            }
-        }
-
-        for (PEPlayer player : remainingPlayers) {
-            if (requiredPrisoners != 0) {
-                Prisoner prisoner = new Prisoner(player.getName());
-                _prisonersTeam.addMember(prisoner);
-                newLobbyPlayers.add(prisoner);
-                requiredPrisoners--;
-            } else {
-                Guard guard = new Guard(player.getName());
-                _policeTeam.addMember(guard);
-                newLobbyPlayers.add(guard);
-                requiredOfficers--;
-            }
-        }
-
-        _playersOnLobby = newLobbyPlayers;
     }
 
 //	#########################################
