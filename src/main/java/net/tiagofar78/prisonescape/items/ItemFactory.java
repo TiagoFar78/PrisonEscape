@@ -1,5 +1,10 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+
+import java.util.List;
+import java.util.Random;
+
 public class ItemFactory {
 
     private static Item[] items = {
@@ -58,6 +63,20 @@ public class ItemFactory {
             e.printStackTrace();
             return new NullItem();
         }
+    }
+
+    public static Item getRandomItem(List<ItemProbability> itemsProbability) {
+        double randomValue = new Random().nextDouble();
+
+        double cumulativeWeight = 0;
+        for (ItemProbability itemProbability : itemsProbability) {
+            cumulativeWeight += itemProbability.getProbability();
+            if (randomValue < cumulativeWeight) {
+                return ItemFactory.createItem(itemProbability.getItemName());
+            }
+        }
+
+        return new NullItem();
     }
 
 }

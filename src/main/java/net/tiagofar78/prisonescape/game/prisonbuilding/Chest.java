@@ -21,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Chest implements Clickable {
 
@@ -72,22 +71,8 @@ public class Chest implements Clickable {
 
     public void reload() {
         for (int i = 0; i < CONTENTS_SIZE; i++) {
-            _contents.set(i, getRandomItem());
+            _contents.set(i, ItemFactory.getRandomItem(_itemsProbability));
         }
-    }
-
-    private Item getRandomItem() {
-        double randomValue = new Random().nextDouble();
-
-        double cumulativeWeight = 0;
-        for (ItemProbability itemProbability : _itemsProbability) {
-            cumulativeWeight += itemProbability.getProbability();
-            if (randomValue < cumulativeWeight) {
-                return ItemFactory.createItem(itemProbability.getItemName());
-            }
-        }
-
-        return new NullItem();
     }
 
     @Override

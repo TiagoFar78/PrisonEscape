@@ -105,6 +105,7 @@ public class ConfigManager {
     private List<List<Location>> _metalDetectorLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
+    private List<ItemProbability> _packagesItemProbabilities;
 
     private double _commonItemsProbability;
     private double _rareItemsProbability;
@@ -193,6 +194,7 @@ public class ConfigManager {
         _metalDetectorLocations = createLocationPairList(config, "MetalDetectors", world);
 
         _regionsChestContents = createRegionsChestContentsMap(config);
+        _packagesItemProbabilities = createItemProbabilitiesList(config, "PackageItemProbabilities");
 
         _commonItemsProbability = config.getDouble("CommonItemsProbability");
         _rareItemsProbability = config.getDouble("RareItemsProbability");
@@ -343,6 +345,22 @@ public class ConfigManager {
         }
 
         return map;
+    }
+
+    private List<ItemProbability> createItemProbabilitiesList(YamlConfiguration config, String path) {
+        List<ItemProbability> itemsProbabilities = new ArrayList<>();
+
+        List<String> paths = config.getKeys(true).stream().filter(
+                key -> key.startsWith(path + ".") && key.lastIndexOf(".") == path.length()
+        ).toList();
+
+        for (String itemPath : paths) {
+            String itemName = itemPath.substring(itemPath.lastIndexOf(".") + 1);
+            double probability = config.getDouble(itemPath);
+            itemsProbabilities.add(new ItemProbability(itemName, probability));
+        }
+
+        return itemsProbabilities;
     }
 
     public Double getPrisonerRatio() {
@@ -640,6 +658,10 @@ public class ConfigManager {
         }
 
         return createItemProbabilityListCopy(_regionsChestContents.get(regionName));
+    }
+
+    public List<ItemProbability> getPackageItemProbabilities() {
+        return createItemProbabilityListCopy(_packagesItemProbabilities);
     }
 
     public double getCommonItemsProbability() {
