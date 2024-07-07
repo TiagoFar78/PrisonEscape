@@ -557,7 +557,7 @@ public abstract class PEPlayer {
             return;
         }
 
-        player.playSound(player, sound, volume, 0.5f);
+        player.playSound(player, sound, volume, 10f);
     }
 
     public boolean isSneaking() {

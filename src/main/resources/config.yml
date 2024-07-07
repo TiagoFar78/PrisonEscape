@@ -225,6 +225,11 @@ Vents:
     Z: 0
 MetalDetectors:
   "1":
-    X: 0
-    Y: 0
-    Z: 0
+    UpperCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0
+    LowerCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0

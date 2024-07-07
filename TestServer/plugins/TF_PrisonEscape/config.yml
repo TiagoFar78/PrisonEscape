@@ -1941,50 +1941,56 @@ Vents:
     Z: 1
 MetalDetectors:
   "1":
-    X: -8
-    Y: 100
-    Z: -20
+    UpperCornerLocation:
+      X: -7
+      Y: 103
+      Z: -20
+    LowerCornerLocation:
+      X: -10
+      Y: 99
+      Z: -20
   "2":
-    X: -9
-    Y: 100
-    Z: -20
+    UpperCornerLocation:
+      X: -21
+      Y: 103
+      Z: -26
+    LowerCornerLocation:
+      X: -24
+      Y: 99
+      Z: -26
   "3":
-    X: -27
-    Y: 100
-    Z: -1
-  "4": 
-    X: -27
-    Y: 100
-    Z: -2
-  "5": 
-    X: -38
-    Y: 100
-    Z: 15
-  "6": 
-    X: -39
-    Y: 100
-    Z: 15
-  "7":
-    X: -27
-    Y: 100
-    Z: 22
-  "8":
-    X: -28
-    Y: 100
-    Z: 22
-  "9":
-    X: 20
-    Y: 100
-    Z: 7
-  "10":
-    X: 21
-    Y: 100
-    Z: 7
-  "11":
-    X: -22
-    Y: 100
-    Z: -26
-  "12":
-    X: -23
-    Y: 100
-    Z: -26
+    UpperCornerLocation:
+      X: -27
+      Y: 103
+      Z: 0
+    LowerCornerLocation:
+      X: -27
+      Y: 99
+      Z: -3
+  "4":
+    UpperCornerLocation:
+      X: -37
+      Y: 103
+      Z: 15
+    LowerCornerLocation:
+      X: -40
+      Y: 99
+      Z: 15
+  "5":
+    UpperCornerLocation:
+      X: -26
+      Y: 103
+      Z: 22
+    LowerCornerLocation:
+      X: -29
+      Y: 99
+      Z: 22
+  "6":
+    UpperCornerLocation:
+      X: 22
+      Y: 103
+      Z: 7
+    LowerCornerLocation:
+      X: 19
+      Y: 99
+      Z: 7
