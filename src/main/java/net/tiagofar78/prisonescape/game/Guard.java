@@ -1,37 +1,46 @@
 package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
-import net.tiagofar78.prisonescape.items.CameraItem;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.SoundDetectorItem;
+import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.missions.Mission;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 
 public class Guard extends PEPlayer {
 
     private static final int BALANCE_LINE_INDEX = 2;
     private static final int SOUND_DETECTORS_FIRST_LINE_INDEX = 4;
-    private static final int INITIAL_SEARCHES = 1;
 
     private int _balance;
+    private List<Mission> _missions;
 
-    private int _numOfCamerasBought = 0;
-    private int _numOfSensorsBought = 0;
-    private int _numOfTrapsBought = 0;
-    private int _searchesAmount = INITIAL_SEARCHES;
+    private Hashtable<String, Integer> _itemsBought;
 
     private Location _locationBeforeWatchingCameras = null;
 
     public Guard(String name) {
         super(name);
+
+        _missions = new ArrayList<>();
+
+        _itemsBought = new Hashtable<>();
+
+        SearchItem search = new SearchItem();
+        giveItem(search);
+        updateItemCount(search);
 
         increaseBalance(ConfigManager.getInstance().getStartingBalance());
     }
@@ -59,15 +68,15 @@ public class Guard extends PEPlayer {
         updateBalanceLine();
     }
 
-    public int buyItem(Item item, int price, boolean isGivableItem) {
-        if (!canBuyItem(item)) {
+    public int buyItem(Item item, int price) {
+        if (!canBuyItem((Buyable) item)) {
             return -1;
         }
         if (price > _balance) {
             return -2;
         }
 
-        if (isGivableItem && giveItem(item) == -1) {
+        if (giveItem(item) == -1) {
             return -3;
         }
 
@@ -76,46 +85,63 @@ public class Guard extends PEPlayer {
         return 0;
     }
 
-    private boolean canBuyItem(Item item) {
-        if (item instanceof TrapItem && _numOfTrapsBought >= ((TrapItem) item).getLimit()) {
-            return false;
-        } else if (item instanceof CameraItem && _numOfCamerasBought >= ((CameraItem) item).getLimit()) {
-            return false;
-        } else if (item instanceof SoundDetectorItem && _numOfSensorsBought >= ((SoundDetectorItem) item).getLimit()) {
-            return false;
+    private boolean canBuyItem(Buyable item) {
+        int limit = item.getLimit();
+        if (limit < 0) {
+            return true;
         }
-        return true;
+
+        return _itemsBought.get(item.getClass().getSimpleName()) < item.getLimit();
+    }
+
+    private void updateItemCount(String itemName, int amount) {
+        Integer currentCount = _itemsBought.get(itemName);
+        if (currentCount == null) {
+            currentCount = 0;
+        }
+
+        _itemsBought.put(itemName, currentCount + amount);
     }
 
     private void updateItemCount(Item item) {
-        if (item instanceof TrapItem) {
-            _numOfTrapsBought++;
-        } else if (item instanceof CameraItem) {
-            _numOfCamerasBought++;
-        } else if (item instanceof SoundDetectorItem) {
-            _numOfSensorsBought++;
-        }
+        updateItemCount(item.getClass().getSimpleName(), 1);
     }
 
     public void increaseTrapLimit() {
-        _numOfTrapsBought--;
-    }
-
-//  #########################################
-//  #                Searches               #
-//  #########################################
-
-    public int countSearches() {
-        return _searchesAmount;
+        updateItemCount(TrapItem.class.getSimpleName(), -1);
     }
 
     public void usedSearch() {
-        _searchesAmount--;
+        updateItemCount(SearchItem.class.getSimpleName(), -1);
+    }
+
+//  ########################################
+//  #                Mission               #
+//  ########################################
+
+    public List<Mission> getMissions() {
+        return _missions;
+    }
+
+    public void resetMissions(PrisonBuilding prison) {
+        _missions.clear();
+
+        ConfigManager config = ConfigManager.getInstance();
+        int missions = config.getMissionsPerDay();
+        List<String> missionsRegionsNames = config.getMissionsRegions();
+        Random random = new Random();
+
+        for (int i = 0; i < missions; i++) {
+            int randomMissionRegion = random.nextInt(missionsRegionsNames.size());
+            _missions.add(Mission.getRandomMission(prison.getRegion(missionsRegionsNames.get(randomMissionRegion))));
+            missionsRegionsNames.remove(randomMissionRegion);
+        }
+
         getKit().update(getName());
     }
 
-    public void boughtSearch() {
-        _searchesAmount++;
+    public void removeMission(int index) {
+        _missions.remove(index);
         getKit().update(getName());
     }
 

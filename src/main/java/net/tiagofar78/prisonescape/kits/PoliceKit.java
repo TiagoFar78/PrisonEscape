@@ -1,12 +1,13 @@
 package net.tiagofar78.prisonescape.kits;
 
 import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.HandcuffsItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.MapItem;
+import net.tiagofar78.prisonescape.items.MissionsItem;
 import net.tiagofar78.prisonescape.items.OpenCamerasItem;
-import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.ShopItem;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -14,6 +15,7 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -26,8 +28,8 @@ public class PoliceKit extends Kit {
     private static final int FIRST_GLASS_ITEM_INDEX = 9;
     private static final int LAST_GLASS_ITEM_INDEX = 35;
 
-    private static final int SEARCH_ITEM_INDEX = 4;
-    private static final int HANDCUFF_ITEM_INDEX = 5;
+    private static final int HANDCUFF_ITEM_INDEX = 4;
+    private static final int MISSIONS_ITEM_INDEX = 5;
     private static final int CAMERA_ITEM_INDEX = 6;
     private static final int MAP_ITEM_INDEX = 7;
     private static final int SHOP_ITEM_INDEX = 8;
@@ -45,8 +47,8 @@ public class PoliceKit extends Kit {
             items.put(i, glass);
         }
 
-        items.put(SEARCH_ITEM_INDEX, new SearchItem());
         items.put(HANDCUFF_ITEM_INDEX, new HandcuffsItem());
+        items.put(MISSIONS_ITEM_INDEX, new MissionsItem());
         items.put(CAMERA_ITEM_INDEX, new OpenCamerasItem());
         items.put(MAP_ITEM_INDEX, new MapItem());
         items.put(SHOP_ITEM_INDEX, new ShopItem());
@@ -86,13 +88,19 @@ public class PoliceKit extends Kit {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
-        int searchesAmount = ((Guard) GameManager.getGame().getPEPlayer(playerName)).countSearches();
-        ItemStack searchItem = getItemAt(SEARCH_ITEM_INDEX).toItemStack(messages);
-        searchItem.setAmount(searchesAmount);
+        PEGame game = GameManager.getGame();
+        Guard guard = (Guard) game.getPEPlayer(playerName);
+
+        ItemStack missionsBook = getItemAt(MISSIONS_ITEM_INDEX).toItemStack(messages);
+        if (guard.getMissions().size() > 0) {
+            missionsBook.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        } else {
+            missionsBook.removeEnchantment(Enchantment.DURABILITY);
+        }
 
         Inventory inv = bukkitPlayer.getInventory();
         inv.setItem(CAMERA_ITEM_INDEX, getItemAt(CAMERA_ITEM_INDEX).toItemStack(messages));
-        inv.setItem(SEARCH_ITEM_INDEX, searchItem);
+        inv.setItem(MISSIONS_ITEM_INDEX, missionsBook);
     }
 
 }

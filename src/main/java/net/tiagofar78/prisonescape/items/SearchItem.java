@@ -10,6 +10,8 @@ import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class SearchItem extends FunctionalItem implements Buyable {
@@ -29,15 +31,11 @@ public class SearchItem extends FunctionalItem implements Buyable {
         return Material.SPYGLASS;
     }
 
-    @Override
-    public void use(PlayerInteractEntityEvent e) {
+    private void use(String guardName, String prisonerName, int heldItemSlot) {
         PEGame game = GameManager.getGame();
         if (game.getCurrentPhase().isClockStopped()) {
             return;
         }
-
-        String guardName = e.getPlayer().getName();
-        String prisonerName = e.getRightClicked().getName();
 
         PEPlayer playerPrisoner = game.getPEPlayer(prisonerName);
         if (!playerPrisoner.isPrisoner()) {
@@ -46,10 +44,6 @@ public class SearchItem extends FunctionalItem implements Buyable {
 
         Guard guard = (Guard) game.getPEPlayer(guardName);
         MessageLanguageManager guardMessages = MessageLanguageManager.getInstanceByPlayer(guardName);
-        if (guard.countSearches() == 0) {
-            BukkitMessageSender.sendChatMessage(guardName, guardMessages.getNoSearchesMessage());
-            return;
-        }
 
         Prisoner prisoner = (Prisoner) playerPrisoner;
         if (prisoner.isWanted()) {
@@ -63,7 +57,21 @@ public class SearchItem extends FunctionalItem implements Buyable {
             BukkitMessageSender.sendChatMessage(guardName, guardMessages.getPoliceInspectedMessage(prisonerName));
 
             guard.usedSearch();
+            guard.removeItem(heldItemSlot);
         }
+
+    }
+
+    @Override
+    public void use(PlayerInteractEntityEvent e) {
+        Player player = e.getPlayer();
+        use(player.getName(), e.getRightClicked().getName(), player.getInventory().getHeldItemSlot());
+    }
+
+    @Override
+    public void use(EntityDamageByEntityEvent e) {
+        Player player = (Player) e.getDamager();
+        use(player.getName(), e.getEntity().getName(), player.getInventory().getHeldItemSlot());
     }
 
     @Override

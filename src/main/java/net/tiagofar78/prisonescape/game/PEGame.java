@@ -351,6 +351,10 @@ public class PEGame {
             }
         }
 
+        for (Guard guard : _policeTeam.getMembers()) {
+            guard.resetMissions(_prison);
+        }
+
         givePackagesToFugitives();
 
         runDayTimer(_settings.getDayDuration(), _settings.getDayDuration());

@@ -38,6 +38,8 @@ TrapDuration: 10
 BlindingDistance: 10
 BlindnessSeconds: 5
 TradeRequestTimeout: 15
+MissionsPerDay: 3
+MissionMoneyReward: 10
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
@@ -183,6 +185,9 @@ Regions:
         X: 0
         Y: 0
         Z: 0
+MissionsRegions:
+- "RegionName1"
+- "RegionName2"
 ChestsContents:
   RegionName:
     Item1Name: 0.25

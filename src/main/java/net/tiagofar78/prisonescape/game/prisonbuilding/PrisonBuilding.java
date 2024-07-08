@@ -230,6 +230,16 @@ public class PrisonBuilding {
         return null;
     }
 
+    public Region getRegion(String name) {
+        for (Region region : _regions) {
+            if (region.getName().equals(name)) {
+                return region;
+            }
+        }
+
+        return null;
+    }
+
     public String getRegionName(Location location) {
         return getRegionName(getRegion(location));
     }

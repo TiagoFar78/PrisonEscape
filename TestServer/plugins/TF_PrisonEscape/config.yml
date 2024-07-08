@@ -1,5 +1,5 @@
-PrisonersRatio: 0.73
-PoliceRatio: 0.27
+PrisonersRatio: 0.27
+PoliceRatio: 0.73
 MinPlayers: 1
 MaxPlayers: 11
 SecondsInSolitary: 30
@@ -36,6 +36,8 @@ TrapDuration: 10
 BlindingDistance: 10
 BlindnessSeconds: 5
 TradeRequestTimeout: 15
+MissionsPerDay: 3
+MissionMoneyReward: 10
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
@@ -1722,6 +1724,13 @@ Regions:
         X: -68
         Y: 82
         Z: -32
+MissionsRegions:
+- "Office"
+- "Yard"
+- "Gym"
+- "FoodHall"
+- "Toilets"
+- "Visitations"
 ChestsContents:
   Default: # These are the chest contents by default - DON'T CHANGE THE NAME!
     Bolts: 0.05
