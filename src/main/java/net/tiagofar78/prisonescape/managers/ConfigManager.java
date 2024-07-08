@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.managers;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 
 import org.bukkit.Bukkit;
@@ -16,12 +17,12 @@ import java.util.Map.Entry;
 
 public class ConfigManager {
 
-    public static boolean load() {
-        // Just needs to enter this class to initialize static values
-        return true;
-    }
+    private static ConfigManager instance;
 
-    private static ConfigManager instance = new ConfigManager();
+    public static boolean load() {
+        instance = new ConfigManager();
+        return instance.isValid();
+    }
 
     public static ConfigManager getInstance() {
         return instance;
@@ -62,6 +63,8 @@ public class ConfigManager {
     private int _blindnessSeconds;
     private double _soundDetectorRange;
     private int _tradeRequestTimeout;
+    private int _missionsPerDay;
+    private int _missionMoneyReward;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -78,6 +81,7 @@ public class ConfigManager {
     private Location _prisonUpperCornerLocation;
     private Location _prisonLowerCornerLocation;
     private List<SquaredRegion> _regions;
+    private List<String> _missionsRegions;
     private List<Location> _prisonersSpawnLocation;
     private List<Location> _policeSpawnLocation;
     private Location _solitaryLocation;
@@ -150,6 +154,8 @@ public class ConfigManager {
         _blindnessSeconds = config.getInt("BlindnessSeconds");
         _soundDetectorRange = config.getDouble("SoundDetectorRange");
         _tradeRequestTimeout = config.getInt("TradeRequestTimeout");
+        _missionsPerDay = config.getInt("MissionsPerDay");
+        _missionMoneyReward = config.getInt("MissionMoneyReward");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -167,6 +173,7 @@ public class ConfigManager {
         _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation", world);
         _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation", world);
         _regions = createRegionsList(config, world);
+        _missionsRegions = config.getStringList("MissionsRegions");
         _prisonersSpawnLocation = createLocationList(config, "PrisonersSpawnLocations", world);
         _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations", world);
         _solitaryLocation = createLocation(config, "SolitaryLocation", world);
@@ -503,6 +510,14 @@ public class ConfigManager {
         return _tradeRequestTimeout;
     }
 
+    public int getMissionsPerDay() {
+        return _missionsPerDay;
+    }
+
+    public int getMissionsMoneyReward() {
+        return _missionMoneyReward;
+    }
+
     public List<String> getAvailableLanguages() {
         return new ArrayList<>(_availableLanguages);
     }
@@ -550,6 +565,10 @@ public class ConfigManager {
 
     public List<SquaredRegion> getRegions() {
         return createRegionsListCopy(_regions);
+    }
+
+    public List<String> getMissionsRegions() {
+        return new ArrayList<>(_missionsRegions);
     }
 
     public List<Location> getPrisonersSpawnLocations() {
@@ -742,6 +761,31 @@ public class ConfigManager {
         }
 
         return list;
+    }
+
+//  ########################################
+//  #               Is Valid               #
+//  ########################################
+
+    private boolean isValid() {
+        return areMissionsRegionsValid();
+    }
+
+    private boolean areMissionsRegionsValid() {
+        for (String regionName : _missionsRegions) {
+            boolean regionExists = false;
+            for (Region region : _regions) {
+                if (region.getName().equals(regionName)) {
+                    regionExists = true;
+                }
+            }
+
+            if (!regionExists) {
+                throw new IllegalArgumentException("There is no region named " + regionName);
+            }
+        }
+
+        return true;
     }
 
 }

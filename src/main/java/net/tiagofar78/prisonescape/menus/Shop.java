@@ -63,9 +63,7 @@ public class Shop implements Clickable {
         Buyable buyableItem = (Buyable) item;
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
-        boolean isGivableItem = !(item instanceof SearchItem);
-
-        int returnCode = guard.buyItem(item, buyableItem.getPrice(), isGivableItem);
+        int returnCode = guard.buyItem(item, buyableItem.getPrice());
         if (returnCode == -1) {
             BukkitMessageSender.sendChatMessage(player, messages.getReachedItemLimitMessage());
             return ClickReturnAction.NOTHING;
@@ -75,10 +73,6 @@ public class Shop implements Clickable {
         } else if (returnCode == -3) {
             BukkitMessageSender.sendChatMessage(player, messages.getFullInventoryMessage());
             return ClickReturnAction.NOTHING;
-        }
-
-        if (!isGivableItem) {
-            guard.boughtSearch();
         }
 
         BukkitMessageSender.sendChatMessage(player, messages.getSuccessfullyBoughtItemMessage(guard.getBalance()));

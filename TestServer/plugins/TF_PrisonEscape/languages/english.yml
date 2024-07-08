@@ -99,8 +99,6 @@ Items:
     Name: " "
   Missions:
     Name: "Missions Book"
-    Lore:
-    - "&4COMING SOON"
   OpenCameras:
     Name: "Cameras"
     Lore:
@@ -210,7 +208,6 @@ Messages:
     NotWantedPlayer: "&cYou can only send to solitary wanted players."
     AlreadyWantedPlayer: "&cThat player is wanted already. Use your handcuffs!"
     PrisonerInspected: "&aA police inspected your inventory, but no illegal items were found."
-    NoSearches: "&cYou haven't any search available. Buy some more in the shop."
     PoliceInspected: "&a{PLAYER} don't have any illegal items."
     CanOnlyFixHoles: "&cYou can only fix holes, not cracked blocks."
     ReachedItemLimit: "&cSorry, you've already reached the maximum limit for this item."
@@ -245,6 +242,10 @@ Messages:
     VentsRequirements: "&cYou need to use a &fPickaxe &cto break vents."
     FencesRequirements: "&cYou need to use a &fWire Cutter &cto break fences."
     BlindnessAffectedGuards: "&b{GUARDS} &enearby guards are blind for a while"
+    CompletedMission: "&aYou completed a mission and received {REWARD} coins."
+    AllMissionsCompleted: "&cYou completed all your missions. More will come tomorrow."
+    GoToMissionLocation: "&eIn order to complete your missions use the book in these locations:"
+    MissionLocationLine: "&f- {REGION}"
   Announcements:
     GameStarting:
     - "&6==================================="

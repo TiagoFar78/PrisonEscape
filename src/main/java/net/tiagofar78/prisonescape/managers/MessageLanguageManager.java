@@ -148,7 +148,6 @@ public class MessageLanguageManager {
     private String _alreadyWantedPlayerMessage;
     private String _policeInspectedMessage;
     private String _prisonerInspectedMessage;
-    private String _noSearchesMessage;
     private String _canOnlyFixHolesMessage;
     private String _reachedItemLimitMessage;
     private String _notEnoughMoneyMessage;
@@ -182,6 +181,10 @@ public class MessageLanguageManager {
     private String _ventsRequirementsMessage;
     private String _fenceRequirementsMessage;
     private String _blindnessAppliedMessage;
+    private String _completedMissionMessage;
+    private String _allMissionsCompletedMessage;
+    private String _goToMissionLocationsMessage;
+    private String _missionLocationLineMessage;
 
 //	########################################
 //	#             Announcements            #
@@ -334,7 +337,6 @@ public class MessageLanguageManager {
         _alreadyWantedPlayerMessage = createMessage(messages.getString(warningPath + "AlreadyWantedPlayer"));
         _policeInspectedMessage = createMessage(messages.getString(warningPath + "PoliceInspected"));
         _prisonerInspectedMessage = createMessage(messages.getString(warningPath + "PrisonerInspected"));
-        _noSearchesMessage = createMessage(messages.getString(warningPath + "NoSearches"));
         _canOnlyFixHolesMessage = createMessage(messages.getString(warningPath + "CanOnlyFixHoles"));
         _reachedItemLimitMessage = createMessage(messages.getString(warningPath + "ReachedItemLimit"));
         _notEnoughMoneyMessage = createMessage(messages.getString(warningPath + "NotEnoughMoney"));
@@ -368,6 +370,10 @@ public class MessageLanguageManager {
         _ventsRequirementsMessage = createMessage(messages.getString(warningPath + "VentsRequirements"));
         _fenceRequirementsMessage = createMessage(messages.getString(warningPath + "FencesRequirements"));
         _blindnessAppliedMessage = createMessage(messages.getString(warningPath + "BlindnessAffectedGuards"));
+        _completedMissionMessage = createMessage(messages.getString(warningPath + "CompletedMission"));
+        _allMissionsCompletedMessage = createMessage(messages.getString(warningPath + "AllMissionsCompleted"));
+        _goToMissionLocationsMessage = createMessage(messages.getString(warningPath + "GoToMissionLocation"));
+        _missionLocationLineMessage = createMessage(messages.getString(warningPath + "MissionLocationLine"));
 
         String announcementPath = messagePath + "Announcements.";
         _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
@@ -694,10 +700,6 @@ public class MessageLanguageManager {
         return _prisonerInspectedMessage;
     }
 
-    public String getNoSearchesMessage() {
-        return _noSearchesMessage;
-    }
-
     public String getCanOnlyFixHolesMessage() {
         return _canOnlyFixHolesMessage;
     }
@@ -828,6 +830,22 @@ public class MessageLanguageManager {
 
     public String getBlindnessAppliedMessage(int guards) {
         return _blindnessAppliedMessage.replace("{GUARDS}", Integer.toString(guards));
+    }
+
+    public String getCompletedMissionMessage(int reward) {
+        return _completedMissionMessage.replace("{REWARD}", Integer.toString(reward));
+    }
+
+    public String getAllMissionsCompletedMessage() {
+        return _allMissionsCompletedMessage;
+    }
+
+    public String getGoToMissionLocationsMessage() {
+        return _goToMissionLocationsMessage;
+    }
+
+    public String getMissionLocationLineMessage(String regionName) {
+        return _missionLocationLineMessage.replace("{REGION}", regionName);
     }
 
 //	########################################
