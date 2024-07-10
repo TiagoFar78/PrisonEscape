@@ -46,7 +46,7 @@ public class MissionsItem extends FunctionalItem {
         Location loc = guard.getLocation();
         for (int i = 0; i < missions.size(); i++) {
             Mission mission = missions.get(i);
-            if (mission.getRegion().contains(loc)) {
+            if (mission.getRegionName().equals(game.getPrison().getRegionName(loc))) {
                 mission.start(guard, i);
                 return;
             }
@@ -54,7 +54,7 @@ public class MissionsItem extends FunctionalItem {
 
         BukkitMessageSender.sendChatMessage(guard, messages.getGoToMissionLocationsMessage());
         for (Mission mission : missions) {
-            String regionName = mission.getRegion().getName();
+            String regionName = mission.getRegionName();
             BukkitMessageSender.sendChatMessage(guard, messages.getMissionLocationLineMessage(regionName));
         }
     }

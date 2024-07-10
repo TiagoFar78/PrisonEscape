@@ -2,24 +2,23 @@ package net.tiagofar78.prisonescape.missions;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public abstract class Mission {
 
-    public static Mission getRandomMission(Region region) {
-        return null; // TODO add missions
+    public static Mission getRandomMission(String regionName) {
+        return new ColorConnectMission(regionName);
     }
 
-    private Region _region;
+    private String _regionName;
 
-    public Mission(Region region) {
-        _region = region;
+    public Mission(String regionName) {
+        _regionName = regionName;
     }
 
-    public Region getRegion() {
-        return _region;
+    public String getRegionName() {
+        return _regionName;
     }
 
     public abstract void start(Guard guard, int missionIndex);

@@ -1,7 +1,6 @@
 package net.tiagofar78.prisonescape.game;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -123,7 +122,7 @@ public class Guard extends PEPlayer {
         return _missions;
     }
 
-    public void resetMissions(PrisonBuilding prison) {
+    public void resetMissions() {
         _missions.clear();
 
         ConfigManager config = ConfigManager.getInstance();
@@ -133,7 +132,7 @@ public class Guard extends PEPlayer {
 
         for (int i = 0; i < missions; i++) {
             int randomMissionRegion = random.nextInt(missionsRegionsNames.size());
-            _missions.add(Mission.getRandomMission(prison.getRegion(missionsRegionsNames.get(randomMissionRegion))));
+            _missions.add(Mission.getRandomMission(missionsRegionsNames.get(randomMissionRegion)));
             missionsRegionsNames.remove(randomMissionRegion);
         }
 

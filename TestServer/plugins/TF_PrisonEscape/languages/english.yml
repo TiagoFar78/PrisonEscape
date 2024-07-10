@@ -182,6 +182,8 @@ Inventory:
       Name: "&cMissing crafting items"
     ConfirmCraftWool:
       Name: "&aConfirm"
+  ColorConnect:
+    Title: "&8Connect all colors"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
