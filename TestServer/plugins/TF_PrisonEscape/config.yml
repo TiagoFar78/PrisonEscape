@@ -1,5 +1,5 @@
-PrisonersRatio: 0.27
-PoliceRatio: 0.73
+PrisonersRatio: 0.73
+PoliceRatio: 0.27
 MinPlayers: 1
 MaxPlayers: 11
 SecondsInSolitary: 30
@@ -8,7 +8,7 @@ DayDuration: 120
 NightDuration: 60
 SpeedDuration: 15
 SpeedLevel: 2
-StartingBalance: 100
+StartingBalance: 0
 TrapLimit: 2
 SensorLimit: 2
 RadarLimit: -1

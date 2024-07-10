@@ -352,7 +352,7 @@ public class PEGame {
         }
 
         for (Guard guard : _policeTeam.getMembers()) {
-            guard.resetMissions(_prison);
+            guard.resetMissions();
         }
 
         givePackagesToFugitives();

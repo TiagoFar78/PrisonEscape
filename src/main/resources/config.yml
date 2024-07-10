@@ -8,7 +8,7 @@ DayDuration: 120
 NightDuration: 60
 SpeedDuration: 15
 SpeedLevel: 2
-StartingBalance: 100
+StartingBalance: 0
 TrapLimit: 2
 SensorLimit: 2
 RadarLimit: -1

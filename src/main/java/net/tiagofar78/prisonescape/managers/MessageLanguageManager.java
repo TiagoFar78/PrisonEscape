@@ -113,6 +113,7 @@ public class MessageLanguageManager {
     private String _craftingMenuTitle;
     private String _missingItemsWoolName;
     private String _confirmCraftWoolName;
+    private String _colorConnectTitle;
 
 //	########################################
 //	#                 Chat                 #
@@ -302,6 +303,7 @@ public class MessageLanguageManager {
         _craftingMenuTitle = createMessage(messages.getString("Inventory.Crafting.Title"));
         _missingItemsWoolName = createMessage(messages.getString("Inventory.Crafting.MissingItemsWool.Name"));
         _confirmCraftWoolName = createMessage(messages.getString("Inventory.Crafting.ConfirmCraftWool.Name"));
+        _colorConnectTitle = createMessage(messages.getString("Inventory.ColorConnect.Title"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -590,6 +592,10 @@ public class MessageLanguageManager {
 
     public String getConfirmCraftWoolName() {
         return _confirmCraftWoolName;
+    }
+
+    public String getColorConnectTitle() {
+        return _colorConnectTitle;
     }
 
 //	########################################
