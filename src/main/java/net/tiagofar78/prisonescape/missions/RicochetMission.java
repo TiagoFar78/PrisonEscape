@@ -1,8 +1,10 @@
 package net.tiagofar78.prisonescape.missions;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.function.Predicate;
+import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.ClickReturnAction;
+import net.tiagofar78.prisonescape.menus.Clickable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,11 +13,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.ClickReturnAction;
-import net.tiagofar78.prisonescape.menus.Clickable;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.function.Predicate;
 
 public class RicochetMission extends Mission implements Clickable {
 
