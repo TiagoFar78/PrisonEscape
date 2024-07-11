@@ -114,6 +114,12 @@ public class MessageLanguageManager {
     private String _missingItemsWoolName;
     private String _confirmCraftWoolName;
     private String _colorConnectTitle;
+    private String _ricochetTitle;
+    private String _ricochetFlagItemName;
+    private String _ricochetLeftItemName;
+    private String _ricochetRightItemName;
+    private String _ricochetUpItemName;
+    private String _ricochetDownItemName;
 
 //	########################################
 //	#                 Chat                 #
@@ -304,6 +310,12 @@ public class MessageLanguageManager {
         _missingItemsWoolName = createMessage(messages.getString("Inventory.Crafting.MissingItemsWool.Name"));
         _confirmCraftWoolName = createMessage(messages.getString("Inventory.Crafting.ConfirmCraftWool.Name"));
         _colorConnectTitle = createMessage(messages.getString("Inventory.ColorConnect.Title"));
+        _ricochetTitle = createMessage(messages.getString("Inventory.Ricochet.Title"));
+        _ricochetFlagItemName = createMessage(messages.getString("Inventory.Ricochet.FlagItem.Name"));
+        _ricochetLeftItemName = createMessage(messages.getString("Inventory.Ricochet.LeftItem.Name"));
+        _ricochetRightItemName = createMessage(messages.getString("Inventory.Ricochet.RightItem.Name"));
+        _ricochetUpItemName = createMessage(messages.getString("Inventory.Ricochet.UpItem.Name"));
+        _ricochetDownItemName = createMessage(messages.getString("Inventory.Ricochet.DownItem.Name"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -596,6 +608,30 @@ public class MessageLanguageManager {
 
     public String getColorConnectTitle() {
         return _colorConnectTitle;
+    }
+
+    public String getRicochetTitle() {
+        return _ricochetTitle;
+    }
+
+    public String getRicochetFlagItemName() {
+        return _ricochetFlagItemName;
+    }
+
+    public String getRicochetLeftItemName() {
+        return _ricochetLeftItemName;
+    }
+
+    public String getRicochetRightItemName() {
+        return _ricochetRightItemName;
+    }
+
+    public String getRicochetUpItemName() {
+        return _ricochetUpItemName;
+    }
+
+    public String getRicochetDownItemName() {
+        return _ricochetDownItemName;
     }
 
 //	########################################

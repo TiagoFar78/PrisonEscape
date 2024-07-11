@@ -184,6 +184,18 @@ Inventory:
       Name: "&aConfirm"
   ColorConnect:
     Title: "&8Connect all colors"
+  Ricochet:
+    Title: "&8Reach the flag"
+    FlagItem:
+      Name: "&cFlag"
+    LeftItem:
+      Name: "&fLeft"
+    RightItem:
+      Name: "&fRight"
+    UpItem:
+      Name: "&fUp"
+    DownItem:
+      Name: "&fDown"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"

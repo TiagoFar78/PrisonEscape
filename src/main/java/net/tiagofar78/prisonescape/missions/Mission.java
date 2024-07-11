@@ -5,10 +5,14 @@ import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
+import java.util.Random;
+
 public abstract class Mission {
 
     public static Mission getRandomMission(String regionName) {
-        return new ColorConnectMission(regionName);
+        Mission[] missions = {new ColorConnectMission(regionName), new RicochetMission(regionName)};
+        Random random = new Random();
+        return missions[random.nextInt(missions.length)];
     }
 
     private String _regionName;
