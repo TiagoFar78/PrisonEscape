@@ -68,7 +68,7 @@ public class DifferencesMission extends Mission implements Clickable {
     private int _missionIndex;
 
     private DifferencesGame _game;
-    private List<Integer> _alreadyFoundDifferences;
+    private int _lastFoundSlot;
 
     public DifferencesMission(String regionName) {
         super(regionName);
@@ -81,7 +81,6 @@ public class DifferencesMission extends Mission implements Clickable {
 
         int differences = ConfigManager.getInstance().getDifferencesAmount();
         _game = new DifferencesGame(differences);
-        _alreadyFoundDifferences = new ArrayList<>();
 
         _guard.openMenu(this);
     }
@@ -95,8 +94,6 @@ public class DifferencesMission extends Mission implements Clickable {
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
 
         buildBaseInventory(inv);
-
-        placeAlreadyFoundDifferences(inv);
 
         List<Material> materialsLeft = placeRandomItems(inv);
         placeDifferences(inv, differentGameSlots, materialsLeft);
@@ -138,10 +135,9 @@ public class DifferencesMission extends Mission implements Clickable {
 
     private void placeAlreadyFoundDifferences(Inventory inv) {
         ItemStack item = createNamelessItem(Material.RED_STAINED_GLASS_PANE);
-        for (int slot : _alreadyFoundDifferences) {
-            inv.setItem(slot, item);
-            inv.setItem(slot + SIDES_DIFFERENCE, item);
-        }
+        
+        inv.setItem(_lastFoundSlot, item);
+        inv.setItem(_lastFoundSlot + SIDES_DIFFERENCE, item);
     }
 
     private void placeDifferences(Inventory inv, List<Integer> differentSlots, List<Material> materials) {
@@ -188,7 +184,7 @@ public class DifferencesMission extends Mission implements Clickable {
             if (slot % 9 >= SIDES_DIFFERENCE) {
                 slot -= SIDES_DIFFERENCE;
             }
-            _alreadyFoundDifferences.add(slot);
+            _lastFoundSlot = slot;
             player.updateView();
         }
 
