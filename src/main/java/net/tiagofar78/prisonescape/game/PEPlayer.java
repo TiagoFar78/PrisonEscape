@@ -265,6 +265,12 @@ public abstract class PEPlayer {
         }
     }
 
+    public void updateViewTitle(String title) {
+        if (_openedMenu != null) {
+            getBukkitPlayer().getOpenInventory().setTitle(title);
+        }
+    }
+
 //  ########################################
 //  #                 Menu                 #
 //  ########################################
