@@ -13,7 +13,8 @@ public abstract class Mission {
         Mission[] missions = {
                 new ColorConnectMission(regionName),
                 new RicochetMission(regionName),
-                new DifferencesMission(regionName)};
+                new DifferencesMission(regionName),
+                new SortMission(regionName)};
 
         Random random = new Random();
         return missions[random.nextInt(missions.length)];
