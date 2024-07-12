@@ -198,6 +198,8 @@ Inventory:
       Name: "&fDown"
   Differences:
     Title: "Spot the differences {CURRENT}/{TOTAL}"
+  Sort:
+    Title: "Sort the flowers. Correct: {CORRECT}"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
