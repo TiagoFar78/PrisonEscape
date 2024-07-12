@@ -135,7 +135,7 @@ public class DifferencesMission extends Mission implements Clickable {
 
     private void placeAlreadyFoundDifferences(Inventory inv) {
         ItemStack item = createNamelessItem(Material.RED_STAINED_GLASS_PANE);
-        
+
         inv.setItem(_lastFoundSlot, item);
         inv.setItem(_lastFoundSlot + SIDES_DIFFERENCE, item);
     }
