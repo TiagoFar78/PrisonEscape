@@ -196,6 +196,8 @@ Inventory:
       Name: "&fUp"
     DownItem:
       Name: "&fDown"
+  Differences:
+    Title: "Spot the differences {CURRENT}/{TOTAL}"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"

@@ -65,6 +65,7 @@ public class ConfigManager {
     private int _tradeRequestTimeout;
     private int _missionsPerDay;
     private int _missionMoneyReward;
+    private int _differencesAmount;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -156,6 +157,7 @@ public class ConfigManager {
         _tradeRequestTimeout = config.getInt("TradeRequestTimeout");
         _missionsPerDay = config.getInt("MissionsPerDay");
         _missionMoneyReward = config.getInt("MissionMoneyReward");
+        _differencesAmount = config.getInt("DifferencesAmount");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -516,6 +518,10 @@ public class ConfigManager {
 
     public int getMissionsMoneyReward() {
         return _missionMoneyReward;
+    }
+
+    public int getDifferencesAmount() {
+        return _differencesAmount;
     }
 
     public List<String> getAvailableLanguages() {

@@ -120,6 +120,7 @@ public class MessageLanguageManager {
     private String _ricochetRightItemName;
     private String _ricochetUpItemName;
     private String _ricochetDownItemName;
+    private String _differencesTitle;
 
 //	########################################
 //	#                 Chat                 #
@@ -316,6 +317,7 @@ public class MessageLanguageManager {
         _ricochetRightItemName = createMessage(messages.getString("Inventory.Ricochet.RightItem.Name"));
         _ricochetUpItemName = createMessage(messages.getString("Inventory.Ricochet.UpItem.Name"));
         _ricochetDownItemName = createMessage(messages.getString("Inventory.Ricochet.DownItem.Name"));
+        _differencesTitle = createMessage(messages.getString("Inventory.Differences.Title"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -632,6 +634,12 @@ public class MessageLanguageManager {
 
     public String getRicochetDownItemName() {
         return _ricochetDownItemName;
+    }
+
+    public String getDifferencesTitle(int current, int total) {
+        String sCurrent = Integer.toString(current);
+        String sTotal = Integer.toString(total);
+        return _differencesTitle.replace("{CURRENT}", sCurrent).replace("{TOTAL}", sTotal);
     }
 
 //	########################################

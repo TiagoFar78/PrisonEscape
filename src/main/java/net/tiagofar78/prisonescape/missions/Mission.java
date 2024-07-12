@@ -10,7 +10,11 @@ import java.util.Random;
 public abstract class Mission {
 
     public static Mission getRandomMission(String regionName) {
-        Mission[] missions = {new ColorConnectMission(regionName), new RicochetMission(regionName)};
+        Mission[] missions = {
+                new ColorConnectMission(regionName),
+                new RicochetMission(regionName),
+                new DifferencesMission(regionName)};
+
         Random random = new Random();
         return missions[random.nextInt(missions.length)];
     }
