@@ -41,6 +41,7 @@ TradeRequestTimeout: 15
 MissionsPerDay: 3
 MissionMoneyReward: 10
 DifferencesAmount: 3
+SequenceSize: 5
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"

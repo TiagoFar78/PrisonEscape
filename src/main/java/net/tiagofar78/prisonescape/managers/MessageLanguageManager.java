@@ -122,6 +122,7 @@ public class MessageLanguageManager {
     private String _ricochetDownItemName;
     private String _differencesTitle;
     private String _sortTitle;
+    private String _sequenceTitle;
 
 //	########################################
 //	#                 Chat                 #
@@ -320,6 +321,7 @@ public class MessageLanguageManager {
         _ricochetDownItemName = createMessage(messages.getString("Inventory.Ricochet.DownItem.Name"));
         _differencesTitle = createMessage(messages.getString("Inventory.Differences.Title"));
         _sortTitle = createMessage(messages.getString("Inventory.Sort.Title"));
+        _sequenceTitle = createMessage(messages.getString("Inventory.Sequence.Title"));
 
         String messagePath = "Messages.";
         _generalMessage = createMessage(messages.getString(messagePath + "GeneralMessage"));
@@ -646,6 +648,10 @@ public class MessageLanguageManager {
 
     public String getSortTitle(String correct) {
         return _sortTitle.replace("{CORRECT}", correct);
+    }
+
+    public String getSequenceTitle() {
+        return _sequenceTitle;
     }
 
 //	########################################

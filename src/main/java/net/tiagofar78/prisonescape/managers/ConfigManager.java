@@ -66,6 +66,7 @@ public class ConfigManager {
     private int _missionsPerDay;
     private int _missionMoneyReward;
     private int _differencesAmount;
+    private int _sequenceSize;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -158,6 +159,7 @@ public class ConfigManager {
         _missionsPerDay = config.getInt("MissionsPerDay");
         _missionMoneyReward = config.getInt("MissionMoneyReward");
         _differencesAmount = config.getInt("DifferencesAmount");
+        _sequenceSize = config.getInt("SequenceSize");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -522,6 +524,10 @@ public class ConfigManager {
 
     public int getDifferencesAmount() {
         return _differencesAmount;
+    }
+
+    public int getSequenceSize() {
+        return _sequenceSize;
     }
 
     public List<String> getAvailableLanguages() {
