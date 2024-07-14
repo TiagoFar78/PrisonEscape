@@ -14,7 +14,8 @@ public abstract class Mission {
                 new ColorConnectMission(regionName),
                 new RicochetMission(regionName),
                 new DifferencesMission(regionName),
-                new SortMission(regionName)};
+                new SortMission(regionName),
+                new SequenceMission(regionName)};
 
         Random random = new Random();
         return missions[random.nextInt(missions.length)];

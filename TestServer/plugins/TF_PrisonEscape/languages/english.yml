@@ -200,6 +200,8 @@ Inventory:
     Title: "Spot the differences {CURRENT}/{TOTAL}"
   Sort:
     Title: "Sort the flowers. Correct: {CORRECT}"
+  Sequence:
+    Title: "Remember the sequence"
 Messages:
   GeneralMessage: "&8[GENERAL] <{PLAYER}> &f{MESSAGE}"
   PoliceTeamMessage: "&9[TEAM] <{PLAYER}> &f{MESSAGE}"
