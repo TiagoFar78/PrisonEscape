@@ -7,7 +7,6 @@ import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.CameraItem;
 import net.tiagofar78.prisonescape.items.EnergyDrinkItem;
 import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.items.RadarItem;
 import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.SoundDetectorItem;
@@ -17,6 +16,8 @@ import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,22 +45,22 @@ public class Shop implements Clickable {
 
     @Override
     public ClickReturnAction click(PEPlayer player, int slot, boolean isPlayerInv, ClickType type) {
-        Guard guard = (Guard) player;
-
         if (isPlayerInv) {
             return ClickReturnAction.NOTHING;
         }
+
+        Guard guard = (Guard) player;
+
         int index = convertToIndex(slot);
         if (index == -1) {
             return ClickReturnAction.NOTHING;
         }
+
         Item item = _contents.get(index);
-        if (item instanceof NullItem) {
+        if (!item.isBuyable()) {
             return ClickReturnAction.NOTHING;
         }
-        if (!(item.isBuyable())) {
-            return ClickReturnAction.NOTHING;
-        }
+
         Buyable buyableItem = (Buyable) item;
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
@@ -81,16 +82,35 @@ public class Shop implements Clickable {
 
     @Override
     public Inventory toInventory(MessageLanguageManager messages) {
-        Inventory shopMenu = Bukkit.createInventory(null, 9, "Buy Menu");
+        Inventory shopMenu = Bukkit.createInventory(null, 9, messages.getShopMenuTitle());
 
-        shopMenu.setItem(0, new EnergyDrinkItem().toItemStack(messages));
-        shopMenu.setItem(1, new TrapItem().toItemStack(messages));
-        shopMenu.setItem(2, new SoundDetectorItem().toItemStack(messages));
-        shopMenu.setItem(3, new CameraItem().toItemStack(messages));
-        shopMenu.setItem(4, new RadarItem().toItemStack(messages));
-        shopMenu.setItem(5, new SearchItem().toItemStack(messages));
+        shopMenu.setItem(0, createShopItem(new EnergyDrinkItem(), messages));
+        shopMenu.setItem(1, createShopItem(new TrapItem(), messages));
+        shopMenu.setItem(2, createShopItem(new SoundDetectorItem(), messages));
+        shopMenu.setItem(3, createShopItem(new CameraItem(), messages));
+        shopMenu.setItem(4, createShopItem(new RadarItem(), messages));
+        shopMenu.setItem(5, createShopItem(new SearchItem(), messages));
 
         return shopMenu;
+    }
+
+    private <T extends Item & Buyable> ItemStack createShopItem(T item, MessageLanguageManager messages) {
+        ItemStack shopItem = item.toItemStack(messages);
+        ItemMeta meta = shopItem.getItemMeta();
+        List<String> lore = meta.getLore();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+
+        lore.add("");
+        lore.add(messages.getShopItemsPriceLine(item.getPrice()));
+        if (item.getLimit() != -1) {
+            lore.add(messages.getShopItemsLimitLine(item.getLimit()));
+        }
+        meta.setLore(lore);
+        shopItem.setItemMeta(meta);
+
+        return shopItem;
     }
 
     private int convertToIndex(int slot) {

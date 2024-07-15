@@ -182,6 +182,11 @@ Inventory:
       Name: "&cMissing crafting items"
     ConfirmCraftWool:
       Name: "&aConfirm"
+  Shop:
+    Title: "Buy menu"
+    Item:
+      PriceLine: "&fPrice: {PRICE}"
+      LimitLine: "&fLimit: {LIMIT}"
   ColorConnect:
     Title: "&8Connect all colors"
   Ricochet:
