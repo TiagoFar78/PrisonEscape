@@ -113,6 +113,9 @@ public class MessageLanguageManager {
     private String _craftingMenuTitle;
     private String _missingItemsWoolName;
     private String _confirmCraftWoolName;
+    private String _shopMenuTitle;
+    private String _shopItemsPriceLine;
+    private String _shopItemsLimitLine;
     private String _colorConnectTitle;
     private String _ricochetTitle;
     private String _ricochetFlagItemName;
@@ -312,6 +315,9 @@ public class MessageLanguageManager {
         _craftingMenuTitle = createMessage(messages.getString("Inventory.Crafting.Title"));
         _missingItemsWoolName = createMessage(messages.getString("Inventory.Crafting.MissingItemsWool.Name"));
         _confirmCraftWoolName = createMessage(messages.getString("Inventory.Crafting.ConfirmCraftWool.Name"));
+        _shopMenuTitle = createMessage(messages.getString("Inventory.Shop.Title"));
+        _shopItemsPriceLine = createMessage(messages.getString("Inventory.Shop.Item.PriceLine"));
+        _shopItemsLimitLine = createMessage(messages.getString("Inventory.Shop.Item.LimitLine"));
         _colorConnectTitle = createMessage(messages.getString("Inventory.ColorConnect.Title"));
         _ricochetTitle = createMessage(messages.getString("Inventory.Ricochet.Title"));
         _ricochetFlagItemName = createMessage(messages.getString("Inventory.Ricochet.FlagItem.Name"));
@@ -610,6 +616,18 @@ public class MessageLanguageManager {
 
     public String getConfirmCraftWoolName() {
         return _confirmCraftWoolName;
+    }
+
+    public String getShopMenuTitle() {
+        return _shopMenuTitle;
+    }
+
+    public String getShopItemsPriceLine(int price) {
+        return _shopItemsPriceLine.replace("{PRICE}", Integer.toString(price));
+    }
+
+    public String getShopItemsLimitLine(int limit) {
+        return _shopItemsLimitLine.replace("{LIMIT}", Integer.toString(limit));
     }
 
     public String getColorConnectTitle() {
