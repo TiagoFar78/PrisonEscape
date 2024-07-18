@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitItems;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Material;
@@ -42,6 +43,11 @@ public abstract class Item {
 
     public List<String> getLore(MessageLanguageManager messages) {
         return messages.getItemLore(getConfigName());
+    }
+
+    public ItemStack toItemStack(PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+        return toItemStack(messages);
     }
 
     public ItemStack toItemStack(MessageLanguageManager messages) {
