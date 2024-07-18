@@ -532,6 +532,7 @@ public class PEGame {
         BukkitMessageSender.sendChatMessage(player, message);
 
         updatePreferenceTabListDisplay(playerName, teamName);
+        player.getKit().update(playerName);
     }
 
     private void updatePreferenceTabListDisplay(String playerName, String teamName) {
