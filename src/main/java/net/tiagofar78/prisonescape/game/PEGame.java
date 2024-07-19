@@ -38,8 +38,6 @@ public class PEGame {
     public static final String WAITING_TEAM_NAME = "Waiting";
     public static final String CELLS_REGION_NAME = "Cells";
 
-    private Settings _settings;
-
     private int _currentDay;
     private DayPeriod _dayPeriod;
     private PrisonBuilding _prison;
@@ -55,8 +53,6 @@ public class PEGame {
     private BossBar _bossBar;
 
     public PEGame(String mapName, Location referenceBlock) {
-        _settings = new Settings();
-
         _currentDay = 0;
         _prison = new PrisonBuilding(referenceBlock);
 
@@ -357,7 +353,9 @@ public class PEGame {
 
         givePackagesToFugitives();
 
-        runDayTimer(_settings.getDayDuration(), _settings.getDayDuration());
+        ConfigManager config = ConfigManager.getInstance();
+        int dayDuration = config.getDayDuration();
+        runDayTimer(dayDuration, dayDuration);
     }
 
     private void runDayTimer(int totalSeconds, int secondsLeft) {
@@ -413,7 +411,9 @@ public class PEGame {
             }
         }
 
-        runNightTimer(_settings.getNightDuration(), _settings.getNightDuration());
+        ConfigManager config = ConfigManager.getInstance();
+        int nightDuration = config.getNightDuration();
+        runNightTimer(nightDuration, nightDuration);
     }
 
     private void runNightTimer(int totalSeconds, int secondsLeft) {
@@ -428,7 +428,7 @@ public class PEGame {
             @Override
             public void run() {
                 if (secondsLeft == 0) {
-                    if (_currentDay == _settings.getDays()) {
+                    if (_currentDay == ConfigManager.getInstance().getDaysAmount()) {
                         startNextPhase(new FinishedPhase(_policeTeam));
                     } else {
                         startDay();
@@ -489,7 +489,8 @@ public class PEGame {
             BukkitMessageSender.sendChatMessage(player.getName(), announcement);
         }
 
-        runArrestTimer(_settings.getSecondsInSolitary(), arrested);
+        int secondsInSolitary = ConfigManager.getInstance().getSecondsInSolitary();
+        runArrestTimer(secondsInSolitary, arrested);
     }
 
     private void runArrestTimer(int secondsLeft, Prisoner arrested) {
