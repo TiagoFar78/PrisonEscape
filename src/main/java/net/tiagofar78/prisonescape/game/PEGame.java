@@ -480,6 +480,7 @@ public class PEGame {
     }
 
     public void arrestPlayer(Prisoner arrested, Guard arrester) {
+        arrested.allowMovement();
         teleportToSolitary(arrested);
         arrested.clearInventory();
 
