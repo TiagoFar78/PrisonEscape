@@ -46,6 +46,10 @@ public class SearchItem extends FunctionalItem implements Buyable {
         MessageLanguageManager guardMessages = MessageLanguageManager.getInstanceByPlayer(guardName);
 
         Prisoner prisoner = (Prisoner) playerPrisoner;
+        if (prisoner.hasEscaped()) {
+            return;
+        }
+
         if (prisoner.isWanted()) {
             BukkitMessageSender.sendChatMessage(guardName, guardMessages.getAlreadyWantedPlayerMessage());
         } else if (prisoner.hasIllegalItems()) {

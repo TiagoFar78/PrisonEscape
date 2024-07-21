@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 public class Camera {
 
-    private static final int WATCH_CAMERA_DELAY = 3;
+    private static final int WATCH_CAMERA_DELAY = 10;
 
     private NPC _camera;
 

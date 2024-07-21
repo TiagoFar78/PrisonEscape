@@ -90,7 +90,12 @@ public class Guard extends PEPlayer {
             return true;
         }
 
-        return _itemsBought.get(item.getClass().getSimpleName()) < item.getLimit();
+        Integer bought = _itemsBought.get(item.getClass().getSimpleName());
+        if (bought == null) {
+            bought = 0;
+        }
+
+        return bought < item.getLimit();
     }
 
     private void updateItemCount(String itemName, int amount) {

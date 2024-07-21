@@ -264,7 +264,7 @@ public class PEGame {
 
     public void removePlayerFromGame(PEPlayer player) {
         player.removeScoreboard();
-        _bossBar.removePlayer(player.getBukkitPlayer());
+        player.removeBossBar(_bossBar);
         teleportToLeavingLocation(player);
     }
 
@@ -480,6 +480,7 @@ public class PEGame {
     }
 
     public void arrestPlayer(Prisoner arrested, Guard arrester) {
+        arrested.allowMovement();
         teleportToSolitary(arrested);
         arrested.clearInventory();
 

@@ -457,12 +457,7 @@ public class PrisonBuilding {
         int locZ = location.getBlockZ();
 
         for (Trap trap : _traps) {
-            Location trapLocation = trap.getLocation();
-            int trapX = trapLocation.getBlockX();
-            int trapY = trapLocation.getBlockY();
-            int trapZ = trapLocation.getBlockZ();
-
-            if (trapX == locX && (trapY - 1 <= locY || locY <= trapY) && trapZ == locZ) {
+            if (trap.isOnTrap(locX, locY, locZ)) {
                 trap.triggerTrap(guards, player);
                 _traps.remove(trap);
                 break;
