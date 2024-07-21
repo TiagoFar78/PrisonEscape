@@ -513,6 +513,13 @@ public abstract class PEPlayer {
         }
     }
 
+    public void removeBossBar(BossBar bossBar) {
+        Player player = getBukkitPlayer();
+        if (player != null) {
+            bossBar.removePlayer(player);
+        }
+    }
+
     public void setEffect(PotionEffectType effect, int seconds, int level) {
         Player player = Bukkit.getPlayer(getName());
         if (player == null || !player.isOnline()) {
