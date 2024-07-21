@@ -294,7 +294,8 @@ public class PlayerListener implements Listener {
 
         int vaultIndex = prison.getVaultIndex(blockLocation);
         if (vaultIndex != -1) {
-            interactWithVault(game, player, prison, vaultIndex, item);
+            int index = player.convertToInventoryIndex(itemSlot);
+            interactWithVault(game, player, prison, vaultIndex, item, index);
             return false;
         }
 
@@ -336,7 +337,14 @@ public class PlayerListener implements Listener {
         return true;
     }
 
-    private void interactWithVault(PEGame game, PEPlayer player, PrisonBuilding prison, int vaultIndex, Item item) {
+    private void interactWithVault(
+            PEGame game,
+            PEPlayer player,
+            PrisonBuilding prison,
+            int vaultIndex,
+            Item item,
+            int index
+    ) {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
         Vault vault = prison.getVault(vaultIndex);
@@ -347,7 +355,7 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            policeSearchVault(game, (Guard) player, vault, messages);
+            policeSearchVault(game, (Guard) player, vault, messages, index);
             return;
         }
 
@@ -359,7 +367,13 @@ public class PlayerListener implements Listener {
         player.openMenu(vault);
     }
 
-    private void policeSearchVault(PEGame game, Guard guard, Vault vault, MessageLanguageManager messagesPolice) {
+    private void policeSearchVault(
+            PEGame game,
+            Guard guard,
+            Vault vault,
+            MessageLanguageManager messagesPolice,
+            int index
+    ) {
         Prisoner vaultOwner = vault.getOwner();
         MessageLanguageManager messagesPrisoner = MessageLanguageManager.getInstanceByPlayer(vaultOwner.getName());
 
@@ -376,6 +390,7 @@ public class PlayerListener implements Listener {
             BukkitMessageSender.sendChatMessage(guard, messagesPolice.getPoliceNoIllegalItemsFoundMessage());
             BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisoner.getPrisonerNoIllegalItemsFoundMessage());
             guard.usedSearch();
+            guard.removeItemIndex(index);
         }
 
         return;

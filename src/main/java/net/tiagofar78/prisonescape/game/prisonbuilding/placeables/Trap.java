@@ -136,12 +136,12 @@ public class Trap {
             }
         }, trapDuration * TICKS_PER_SECOND);
     }
-    
+
     public boolean isOnTrap(int x, int y, int z) {
         int trapX = _location.getBlockX();
         int trapY = _location.getBlockY();
         int trapZ = _location.getBlockZ();
-        
+
         return trapX == x && (trapY - 1 <= y && y <= trapY + 1) && trapZ == z;
     }
 

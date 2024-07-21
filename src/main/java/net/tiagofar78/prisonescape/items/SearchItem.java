@@ -49,7 +49,7 @@ public class SearchItem extends FunctionalItem implements Buyable {
         if (prisoner.hasEscaped()) {
             return;
         }
-        
+
         if (prisoner.isWanted()) {
             BukkitMessageSender.sendChatMessage(guardName, guardMessages.getAlreadyWantedPlayerMessage());
         } else if (prisoner.hasIllegalItems()) {

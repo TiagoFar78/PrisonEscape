@@ -44,7 +44,7 @@ public class HandcuffsItem extends FunctionalItem {
         if (prisoner.hasEscaped()) {
             return;
         }
-        
+
         Guard guard = (Guard) game.getPEPlayer(guardName);
 
         if (prisoner.canBeArrested()) {
