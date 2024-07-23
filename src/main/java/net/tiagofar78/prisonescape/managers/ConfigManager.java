@@ -4,6 +4,7 @@ import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
+import net.tiagofar78.prisonescape.missions.SortMission;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -67,6 +68,7 @@ public class ConfigManager {
     private int _missionMoneyReward;
     private int _differencesAmount;
     private int _sequenceSize;
+    private int _sortSize;
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
@@ -160,6 +162,7 @@ public class ConfigManager {
         _missionMoneyReward = config.getInt("MissionMoneyReward");
         _differencesAmount = config.getInt("DifferencesAmount");
         _sequenceSize = config.getInt("SequenceSize");
+        _sortSize = config.getInt("SortSize");
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
@@ -530,6 +533,10 @@ public class ConfigManager {
         return _sequenceSize;
     }
 
+    public int getSortSize() {
+        return _sortSize;
+    }
+
     public List<String> getAvailableLanguages() {
         return new ArrayList<>(_availableLanguages);
     }
@@ -780,7 +787,7 @@ public class ConfigManager {
 //  ########################################
 
     private boolean isValid() {
-        return areMissionsRegionsValid();
+        return areMissionsRegionsValid() && isSortMissionSizeValid();
     }
 
     private boolean areMissionsRegionsValid() {
@@ -795,6 +802,14 @@ public class ConfigManager {
             if (!regionExists) {
                 throw new IllegalArgumentException("There is no region named " + regionName);
             }
+        }
+
+        return true;
+    }
+
+    private boolean isSortMissionSizeValid() {
+        if (2 <= _sortSize && _sortSize <= SortMission.ITEMS.length) {
+            throw new IllegalArgumentException("Sort size must be between 3 and " + SortMission.ITEMS.length);
         }
 
         return true;

@@ -664,8 +664,8 @@ public class MessageLanguageManager {
         return _differencesTitle.replace("{CURRENT}", sCurrent).replace("{TOTAL}", sTotal);
     }
 
-    public String getSortTitle(String correct) {
-        return _sortTitle.replace("{CORRECT}", correct);
+    public String getSortTitle(int correct) {
+        return _sortTitle.replace("{CORRECT}", Integer.toString(correct));
     }
 
     public String getSequenceTitle() {
@@ -673,7 +673,7 @@ public class MessageLanguageManager {
     }
 
 //	########################################
-//	#                Chat                #
+//	#                 Chat                 #
 //	########################################
 
     public String getGeneralMessage(String playerName, String message) {
