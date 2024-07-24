@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.missions;
 
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
@@ -18,16 +19,18 @@ import java.util.Random;
 
 public class SortMission extends Mission implements Clickable {
 
-    private static final Material[] ITEMS = {
+    public static final Material[] ITEMS = {
             Material.DANDELION,
             Material.POPPY,
             Material.BLUE_ORCHID,
             Material.ALLIUM,
             Material.AZURE_BLUET,
             Material.WHITE_TULIP,
-            Material.ORANGE_TULIP};
+            Material.ORANGE_TULIP,
+            Material.OXEYE_DAISY,
+            Material.CORNFLOWER};
     private static final int TEMP_SLOT = 9 * 1 + 4;
-    private static final int ITEMS_FIRST_SLOT = 9 * 3 + 4 - ITEMS.length / 2;
+    private static final int CENTER_SLOT = 9 * 3 + 4;
 
     private Guard _guard;
     private int _missionIndex;
@@ -46,14 +49,14 @@ public class SortMission extends Mission implements Clickable {
         _guard = guard;
         _missionIndex = missionIndex;
 
-        _game = new SortGame(ITEMS.length);
+        _game = new SortGame(ConfigManager.getInstance().getSortSize());
 
         _guard.openMenu(this);
     }
 
     @Override
     public Inventory toInventory(MessageLanguageManager messages) {
-        String title = messages.getSortTitle("");
+        String title = messages.getSortTitle(_game.countCorrect());
         int lines = 5;
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
 
@@ -68,10 +71,11 @@ public class SortMission extends Mission implements Clickable {
             inv.setItem(i, glass);
         }
 
+        int size = ConfigManager.getInstance().getSortSize();
         inv.setItem(TEMP_SLOT, null);
-        for (int i = 0; i < ITEMS.length; i++) {
+        for (int i = 0; i < size; i++) {
             ItemStack item = new ItemStack(ITEMS[i]);
-            inv.setItem(ITEMS_FIRST_SLOT + i, item);
+            inv.setItem(toInventorySlot(i), item);
         }
     }
 
@@ -92,8 +96,8 @@ public class SortMission extends Mission implements Clickable {
             return ClickReturnAction.NOTHING;
         }
 
-        int index = slot - ITEMS_FIRST_SLOT;
-        if (index < 0 || index >= ITEMS.length) {
+        int index = toGameIndex(slot);
+        if (index == -1) {
             return ClickReturnAction.NOTHING;
         }
 
@@ -116,7 +120,7 @@ public class SortMission extends Mission implements Clickable {
         int correctPositions = _game.countCorrect();
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
-        player.updateViewTitle(messages.getSortTitle(Integer.toString(correctPositions)));
+        player.updateViewTitle(messages.getSortTitle(correctPositions));
         _swapFunction = (inv) -> swapBetweenSlots(inv);
         player.updateView();
         _tempItemIndex = -1;
@@ -131,19 +135,41 @@ public class SortMission extends Mission implements Clickable {
 
     private void swapWithTemp(Inventory inv) {
         ItemStack tempItem = inv.getItem(TEMP_SLOT);
-        ItemStack item1 = inv.getItem(ITEMS_FIRST_SLOT + _tempItemIndex);
+        ItemStack item1 = inv.getItem(toInventorySlot(_tempItemIndex));
 
-        inv.setItem(ITEMS_FIRST_SLOT + _tempItemIndex, tempItem);
+        inv.setItem(toInventorySlot(_tempItemIndex), tempItem);
         inv.setItem(TEMP_SLOT, item1);
     }
 
     private void swapBetweenSlots(Inventory inv) {
         ItemStack item1 = inv.getItem(TEMP_SLOT);
-        ItemStack item2 = inv.getItem(ITEMS_FIRST_SLOT + _itemToSwapIndex);
+        ItemStack item2 = inv.getItem(toInventorySlot(_itemToSwapIndex));
 
         inv.setItem(TEMP_SLOT, null);
-        inv.setItem(ITEMS_FIRST_SLOT + _tempItemIndex, item2);
-        inv.setItem(ITEMS_FIRST_SLOT + _itemToSwapIndex, item1);
+        inv.setItem(toInventorySlot(_tempItemIndex), item2);
+        inv.setItem(toInventorySlot(_itemToSwapIndex), item1);
+    }
+
+    private int toInventorySlot(int index) {
+        int size = ConfigManager.getInstance().getSortSize();
+        int slot = CENTER_SLOT - size / 2 + index;
+
+        return size % 2 == 0 && index >= size / 2 ? slot + 1 : slot;
+    }
+
+    private int toGameIndex(int slot) {
+        int size = ConfigManager.getInstance().getSortSize();
+        if (size % 2 == 0) {
+            if (slot == CENTER_SLOT) {
+                return -1;
+            } else if (slot > CENTER_SLOT) {
+                slot -= 1;
+            }
+        }
+
+        int index = slot - (CENTER_SLOT - size / 2);
+
+        return index < 0 || index >= size ? -1 : index;
     }
 
     private class SortGame {

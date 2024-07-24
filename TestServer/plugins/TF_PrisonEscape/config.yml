@@ -40,6 +40,7 @@ MissionsPerDay: 3
 MissionMoneyReward: 10
 DifferencesAmount: 3
 SequenceSize: 5
+SortSize: 5 # must be below 10 and bigger than 2
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
