@@ -808,7 +808,7 @@ public class ConfigManager {
     }
 
     private boolean isSortMissionSizeValid() {
-        if (2 <= _sortSize && _sortSize <= SortMission.ITEMS.length) {
+        if (_sortSize <= 2 || _sortSize >= SortMission.ITEMS.length) {
             throw new IllegalArgumentException("Sort size must be between 3 and " + SortMission.ITEMS.length);
         }
 
