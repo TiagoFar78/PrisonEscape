@@ -19,12 +19,10 @@ import net.tiagofar78.prisonescape.kits.TeamSelectorKit;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
 import java.util.ArrayList;
@@ -50,8 +48,6 @@ public class PEGame {
 
     private boolean _hasDoorCode;
 
-    private BossBar _bossBar;
-
     public PEGame(String mapName, Location referenceBlock) {
         _currentDay = 0;
         _prison = new PrisonBuilding(referenceBlock);
@@ -61,8 +57,6 @@ public class PEGame {
         _prisonersTeam = new PETeam<Prisoner>(PRISONERS_TEAM_NAME);
 
         _hasDoorCode = false;
-
-        _bossBar = Bukkit.createBossBar(mapName, BarColor.YELLOW, BarStyle.SOLID);
 
         startNextPhase(new WaitingPhase());
     }
@@ -77,10 +71,6 @@ public class PEGame {
 
     public DayPeriod getPeriod() {
         return _dayPeriod;
-    }
-
-    public BossBar getBossBar() {
-        return _bossBar;
     }
 
 //	#########################################
@@ -254,7 +244,7 @@ public class PEGame {
 
     private void addPlayerToStartedGame(PEPlayer player, Kit kit, Location location, DayPeriod dayPeriod) {
         player.setKit(kit);
-        player.setBossBar(_bossBar);
+        player.updateBossBar();
         player.updateScoreaboardTeams();
         player.setScoreboard(player.getScoreboardData().getScoreboard());
         player.updateRegionLine(_prison, dayPeriod);
@@ -264,7 +254,7 @@ public class PEGame {
 
     public void removePlayerFromGame(PEPlayer player) {
         player.removeScoreboard();
-        player.removeBossBar(_bossBar);
+        player.removeBossBar();
         teleportToLeavingLocation(player);
     }
 
@@ -379,10 +369,13 @@ public class PEGame {
     }
 
     private void setDayTimeBossBar() {
-        _bossBar.setColor(BarColor.YELLOW);
+        for (PEPlayer playerOnLobby : _playersOnLobby) {
+            BossBar bossBar = playerOnLobby.getBossBar();
+            bossBar.setColor(BarColor.YELLOW);
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
-        _bossBar.setTitle(messages.getBossBarDayTitle(_currentDay));
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
+            bossBar.setTitle(messages.getBossBarDayTitle(_currentDay));
+        }
     }
 
     private void startNight() {
@@ -441,14 +434,19 @@ public class PEGame {
     }
 
     private void setNightTimeBossBar() {
-        _bossBar.setColor(BarColor.BLUE);
+        for (PEPlayer playerOnLobby : _playersOnLobby) {
+            BossBar bossBar = playerOnLobby.getBossBar();
+            bossBar.setColor(BarColor.BLUE);
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstance("english");
-        _bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
+            bossBar.setTitle(messages.getBossBarNightTitle(_currentDay));
+        }
     }
 
     private void updateBossBarClock(int totalSeconds, int secondsLeft) {
-        _bossBar.setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
+        for (PEPlayer playerOnLobby : _playersOnLobby) {
+            playerOnLobby.getBossBar().setProgress((double) (totalSeconds - secondsLeft) / (double) totalSeconds);
+        }
     }
 
 //	########################################

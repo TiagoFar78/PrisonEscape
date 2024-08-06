@@ -15,6 +15,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -47,6 +49,7 @@ public abstract class PEPlayer {
     private int _secondsLeft;
     private Hashtable<String, Long> _eventCooldown;
     private Region _currentRegion;
+    private BossBar _bossBar;
 
     private ScoreboardData _scoreboardData;
     private Clickable _openedMenu;
@@ -60,6 +63,7 @@ public abstract class PEPlayer {
         _eventCooldown = new Hashtable<>();
         _canMove = true;
         _currentRegion = null;
+        _bossBar = Bukkit.createBossBar(null, BarColor.YELLOW, BarStyle.SOLID);
 
         _scoreboardData = createScoreboardData();
         setScoreboard(_scoreboardData.getScoreboard());
@@ -89,6 +93,10 @@ public abstract class PEPlayer {
 
     public String getName() {
         return _name;
+    }
+
+    public BossBar getBossBar() {
+        return _bossBar;
     }
 
 //  ########################################
@@ -506,17 +514,17 @@ public abstract class PEPlayer {
         }
     }
 
-    public void setBossBar(BossBar bossBar) {
+    public void updateBossBar() {
         Player player = getBukkitPlayer();
         if (player != null) {
-            bossBar.addPlayer(player);
+            _bossBar.addPlayer(player);
         }
     }
 
-    public void removeBossBar(BossBar bossBar) {
+    public void removeBossBar() {
         Player player = getBukkitPlayer();
         if (player != null) {
-            bossBar.removePlayer(player);
+            _bossBar.removePlayer(player);
         }
     }
 
