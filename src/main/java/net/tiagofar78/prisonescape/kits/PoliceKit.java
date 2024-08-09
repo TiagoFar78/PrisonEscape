@@ -2,7 +2,6 @@ package net.tiagofar78.prisonescape.kits;
 
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.HandcuffsItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.MapItem;
@@ -42,11 +41,6 @@ public class PoliceKit extends Kit {
     protected Hashtable<Integer, Item> getContents() {
         Hashtable<Integer, Item> items = new Hashtable<>();
 
-        Item glass = new GlassItem();
-        for (int i = FIRST_GLASS_ITEM_INDEX; i <= LAST_GLASS_ITEM_INDEX; i++) {
-            items.put(i, glass);
-        }
-
         items.put(HANDCUFF_ITEM_INDEX, new HandcuffsItem());
         items.put(MISSIONS_ITEM_INDEX, new MissionsItem());
         items.put(CAMERA_ITEM_INDEX, new OpenCamerasItem());
@@ -59,6 +53,11 @@ public class PoliceKit extends Kit {
     @Override
     public Hashtable<Integer, ItemStack> getVisualContents(MessageLanguageManager messages) {
         Hashtable<Integer, ItemStack> items = new Hashtable<>();
+
+        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        for (int i = FIRST_GLASS_ITEM_INDEX; i <= LAST_GLASS_ITEM_INDEX; i++) {
+            items.put(i, glass);
+        }
 
         String uniformName = messages.getPrisonerUniformName();
 
