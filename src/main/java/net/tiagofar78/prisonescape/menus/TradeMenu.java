@@ -3,7 +3,6 @@ package net.tiagofar78.prisonescape.menus;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
-import net.tiagofar78.prisonescape.items.GlassItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -198,14 +197,14 @@ public class TradeMenu implements Clickable {
     }
 
     private void placeGlasses(Inventory inv, int lines, MessageLanguageManager messages) {
-        Item glass = new GlassItem();
+        ItemStack glass = createStatusItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         for (int line = 0; line < lines; line++) {
             for (int col = 0; col < 4; col++) {
-                inv.setItem(line * 9 + col, glass.toItemStack(messages));
+                inv.setItem(line * 9 + col, glass);
             }
 
             for (int col = 5; col < 9; col++) {
-                inv.setItem(line * 9 + col, glass.toItemStack(messages));
+                inv.setItem(line * 9 + col, glass);
             }
         }
 
