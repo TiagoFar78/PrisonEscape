@@ -509,7 +509,7 @@ PrisonersSecretPassagesLocation:
       Y: 83
       Z: 20
     Value:
-      X: 20
+      X: 25
       Y: 82
       Z: 20
   "41":
@@ -592,7 +592,7 @@ PrisonersSecretPassagesLocation:
     Value:
       X: -25
       Y: 82
-      Z: -25
+      Z: 20
   "50":
     Key:
       X: -22
@@ -601,7 +601,7 @@ PrisonersSecretPassagesLocation:
     Value:
       X: -25
       Y: 82
-      Z: -25
+      Z: 20
   "51":
     Key:
       X: -23
