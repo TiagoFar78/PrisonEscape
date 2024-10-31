@@ -32,12 +32,12 @@ public abstract class Kit {
         Inventory inv = bukkitPlayer.getInventory();
         inv.clear();
 
-        for (Entry<Integer, Item> entry : getContents().entrySet()) {
-            inv.setItem(entry.getKey(), entry.getValue().toItemStack(messages));
-        }
-
         for (Entry<Integer, ItemStack> entry : getVisualContents(messages).entrySet()) {
             inv.setItem(entry.getKey(), entry.getValue());
+        }
+
+        for (Entry<Integer, Item> entry : getContents().entrySet()) {
+            inv.setItem(entry.getKey(), entry.getValue().toItemStack(messages));
         }
     }
 
