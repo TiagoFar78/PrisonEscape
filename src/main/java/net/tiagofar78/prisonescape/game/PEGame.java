@@ -253,9 +253,11 @@ public class PEGame {
     }
 
     public void removePlayerFromGame(PEPlayer player) {
+        player.closeMenu();
         player.removeScoreboard();
         player.removeBossBar();
         teleportToLeavingLocation(player);
+        player.getBukkitPlayer().getInventory().clear();
     }
 
 //	########################################
