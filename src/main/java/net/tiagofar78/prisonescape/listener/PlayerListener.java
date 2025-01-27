@@ -483,12 +483,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PEPlayer player = game.getPEPlayer(e.getPlayer().getName());
-        if (player == null) {
-            return;
-        }
-
-        player.closeMenu();
+        game.playerLeft(e.getPlayer().getName());
     }
 
 //  #########################################
