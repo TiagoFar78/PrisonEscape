@@ -190,6 +190,7 @@ public class MessageLanguageManager {
     private String _grayDoorRequirementsMessage;
     private String _goldenDoorRequirementsMessage;
     private String _codeDoorRequirementsMessage;
+    private String _doorCodeAlreadyKnownMessage;
     private String _dirtRequirementsMessage;
     private String _ventsRequirementsMessage;
     private String _fenceRequirementsMessage;
@@ -392,6 +393,7 @@ public class MessageLanguageManager {
         _grayDoorRequirementsMessage = createMessage(messages.getString(warningPath + "GrayDoorRequirements"));
         _goldenDoorRequirementsMessage = createMessage(messages.getString(warningPath + "GoldenDoorRequirements"));
         _codeDoorRequirementsMessage = createMessage(messages.getString(warningPath + "CodeDoorRequirements"));
+        _doorCodeAlreadyKnownMessage = createMessage(messages.getString(warningPath + "DoorCodeAlreadyKnown"));
         _dirtRequirementsMessage = createMessage(messages.getString(warningPath + "DirtRequirements"));
         _ventsRequirementsMessage = createMessage(messages.getString(warningPath + "VentsRequirements"));
         _fenceRequirementsMessage = createMessage(messages.getString(warningPath + "FencesRequirements"));
@@ -894,6 +896,10 @@ public class MessageLanguageManager {
 
     public String getCodeDoorRequirementsMessage() {
         return _codeDoorRequirementsMessage;
+    }
+
+    public String getDoorCodeAlreadyKnownMessage() {
+        return _doorCodeAlreadyKnownMessage;
     }
 
     public String getDirtRequirementsMessage() {

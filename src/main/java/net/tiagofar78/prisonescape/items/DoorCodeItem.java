@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -33,10 +34,18 @@ public class DoorCodeItem extends FunctionalItem implements Craftable {
     public void use(PlayerInteractEvent e) {
         PEGame game = GameManager.getGame();
 
+        String playerName = e.getPlayer().getName();
+        PEPlayer player = game.getPEPlayer(playerName);
+
+        if (game.playersHaveDoorCode()) {
+            MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+            BukkitMessageSender.sendChatMessage(player, messages.getDoorCodeAlreadyKnownMessage());
+            return;
+        }
+
         game.findDoorCode();
 
-        String playerName = e.getPlayer().getName();
-        game.getPEPlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
+        player.removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         for (Prisoner prisoner : game.getPrisonerTeam().getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(prisoner.getName());
