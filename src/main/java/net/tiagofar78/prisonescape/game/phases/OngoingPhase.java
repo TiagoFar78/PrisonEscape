@@ -90,12 +90,12 @@ public class OngoingPhase extends Phase {
             TeamPreference preference = waitingPlayer.getPreference();
 
             if (preference == TeamPreference.POLICE && requiredOfficers != 0) {
-                Guard guard = new Guard(player.getName());
+                Guard guard = new Guard(game, player.getName());
                 guardsTeam.addMember(guard);
                 newLobbyPlayers.add(guard);
                 requiredOfficers--;
             } else if (preference == TeamPreference.PRISIONERS && requiredPrisoners != 0) {
-                Prisoner prisoner = new Prisoner(player.getName());
+                Prisoner prisoner = new Prisoner(game, player.getName());
                 prisonersTeam.addMember(prisoner);
                 newLobbyPlayers.add(prisoner);
                 requiredPrisoners--;
@@ -106,12 +106,12 @@ public class OngoingPhase extends Phase {
 
         for (PEPlayer player : remainingPlayers) {
             if (requiredPrisoners != 0) {
-                Prisoner prisoner = new Prisoner(player.getName());
+                Prisoner prisoner = new Prisoner(game, player.getName());
                 prisonersTeam.addMember(prisoner);
                 newLobbyPlayers.add(prisoner);
                 requiredPrisoners--;
             } else {
-                Guard guard = new Guard(player.getName());
+                Guard guard = new Guard(game, player.getName());
                 guardsTeam.addMember(guard);
                 newLobbyPlayers.add(guard);
                 requiredOfficers--;

@@ -1,12 +1,11 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.managers.GameManager;
-import net.tiagofar78.prisonescape.menus.Shop;
-
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.menus.Shop;
 
 public class ShopItem extends FunctionalItem {
 
@@ -31,9 +30,7 @@ public class ShopItem extends FunctionalItem {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
-        PEGame game = GameManager.getGame();
-        PEPlayer player = game.getPEPlayer(e.getPlayer().getName());
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
         player.openMenu(new Shop());
     }
 }

@@ -1,17 +1,16 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.game.Prisoner;
-import net.tiagofar78.prisonescape.managers.GameManager;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.Prisoner;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public class DoorCodeItem extends FunctionalItem implements Craftable {
 
@@ -31,11 +30,8 @@ public class DoorCodeItem extends FunctionalItem implements Craftable {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
-        PEGame game = GameManager.getGame();
-
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
         String playerName = e.getPlayer().getName();
-        PEPlayer player = game.getPEPlayer(playerName);
 
         if (game.playersHaveDoorCode()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
@@ -44,7 +40,6 @@ public class DoorCodeItem extends FunctionalItem implements Craftable {
         }
 
         game.findDoorCode();
-
         player.removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         for (Prisoner prisoner : game.getPrisonerTeam().getMembers()) {

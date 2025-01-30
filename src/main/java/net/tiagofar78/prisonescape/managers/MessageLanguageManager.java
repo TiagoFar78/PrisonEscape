@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessageLanguageManager {
 
@@ -139,10 +140,10 @@ public class MessageLanguageManager {
 //	#               Warnings               #
 //	########################################
 
-    private String _successfullyStartedGameMessage;
     private String _successfullyForceStartedGameMessage;
     private String _successfullyForceStoppedGameMessage;
-    private String _successfullyStoppedGameMessage;
+    private String _activeGamesMessage;
+    private String _noActiveGamesMessage;
     private String _selectedPrisonersTeamMessage;
     private String _selectedPoliceTeamMessage;
     private String _removedTeamPreferenceMessage;
@@ -230,30 +231,25 @@ public class MessageLanguageManager {
 
     private String _notAllowedMessage;
     private String _onlyPlayersCanUseThisCommandMessage;
-
+    private String _maxGamesReachedMessage;
     private String _gameAlreadyStartedMessage;
-    private String _gameNotStartedYetMessage;
-    private String _gameAlreadyOngoingMessage;
-    private String _gameHasNotStartedUseJoinInsteadMessage;
     private String _gameIsNotInFinishedPhaseMessage;
-    private String _lobbyIsFullMessage;
-
     private String _playerAlreadyJoinedMessage;
     private String _playerNotOnLobbyMessage;
     private String _playerWasNeverInGameMessage;
+    private String _noGameWithThatIdMessage;
+    private String _gameAlreadyOngoingMessage;
 
 //	########################################
 //	#                Usages                #
 //	########################################
 
     private List<String> _usageMessage;
-    private String _startCommandUsage;
     private String _forceStartCommandUsage;
     private String _joinCommandUsage;
     private String _leaveCommandUsage;
     private String _forceStopCommandUsage;
     private String _rejoinCommandUsage;
-    private String _stopCommandUsage;
 
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PEResources.getYamlLanguage(language);
@@ -336,10 +332,10 @@ public class MessageLanguageManager {
         _prisonerTeamMessage = createMessage(messages.getString(messagePath + "PrisonerTeamMessage"));
 
         String warningPath = messagePath + "Warnings.";
-        _successfullyStartedGameMessage = createMessage(messages.getString(warningPath + "StartedGame"));
         _successfullyForceStartedGameMessage = createMessage(messages.getString(warningPath + "ForceStartedGame"));
         _successfullyForceStoppedGameMessage = createMessage(messages.getString(warningPath + "ForceStoppedGame"));
-        _successfullyStoppedGameMessage = createMessage(messages.getString(warningPath + "StoppedGame"));
+        _activeGamesMessage = createMessage(messages.getString(warningPath + "ActiveGames"));
+        _noActiveGamesMessage = createMessage(messages.getString(warningPath + "NoActiveGames"));
         _selectedPrisonersTeamMessage = createMessage(messages.getString(warningPath + "SelectedPrisonersTeam"));
         _selectedPoliceTeamMessage = createMessage(messages.getString(warningPath + "SelectedPoliceTeam"));
         _removedTeamPreferenceMessage = createMessage(messages.getString(warningPath + "SelectedRandomTeam"));
@@ -429,25 +425,22 @@ public class MessageLanguageManager {
         String errorPath = messagePath + "Errors.";
         _notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
         _onlyPlayersCanUseThisCommandMessage = createMessage(messages.getString(errorPath + "CommandForPlayers"));
+        _maxGamesReachedMessage = createMessage(messages.getString(errorPath + "MaxGamesReached"));
         _gameAlreadyStartedMessage = createMessage(messages.getString(errorPath + "GameAlreadyStarted"));
-        _gameNotStartedYetMessage = createMessage(messages.getString(errorPath + "GameNotStartedYet"));
-        _gameAlreadyOngoingMessage = createMessage(messages.getString(errorPath + "GameAlreadyOngoing"));
-        _gameHasNotStartedUseJoinInsteadMessage = createMessage(messages.getString(errorPath + "GameIsStillWaiting"));
         _gameIsNotInFinishedPhaseMessage = createMessage(messages.getString(errorPath + "GameIsNotFinished"));
-        _lobbyIsFullMessage = createMessage(messages.getString(errorPath + "LobbyIsFull"));
         _playerAlreadyJoinedMessage = createMessage(messages.getString(errorPath + "AlreadyJoined"));
         _playerNotOnLobbyMessage = createMessage(messages.getString(errorPath + "NotOnLobby"));
         _playerWasNeverInGameMessage = createMessage(messages.getString(errorPath + "NeverInGame"));
+        _noGameWithThatIdMessage = createMessage(messages.getString(errorPath + "NoGameWithThatId"));
+        _gameAlreadyOngoingMessage = createMessage(messages.getString(errorPath + "GameAlreadyOngoing"));
 
         String usagePath = messagePath + "Usages.";
         _usageMessage = createMessage(messages.getStringList(usagePath + "General"));
-        _startCommandUsage = createMessage(messages.getString(usagePath + "Start"));
         _forceStartCommandUsage = createMessage(messages.getString(usagePath + "ForceStart"));
         _forceStopCommandUsage = createMessage(messages.getString(usagePath + "ForceStop"));
         _joinCommandUsage = createMessage(messages.getString(usagePath + "Join"));
         _leaveCommandUsage = createMessage(messages.getString(usagePath + "Leave"));
         _rejoinCommandUsage = createMessage(messages.getString(usagePath + "Rejoin"));
-        _stopCommandUsage = createMessage(messages.getString(usagePath + "Stop"));
     }
 
     private String createMessage(String rawMessage) {
@@ -694,10 +687,6 @@ public class MessageLanguageManager {
 //	#               Warnings               #
 //	########################################
 
-    public String getSuccessfullyStartedGameMessage() {
-        return _successfullyStartedGameMessage;
-    }
-
     public String getSuccessfullyForceStartedGameMessage() {
         return _successfullyForceStartedGameMessage;
     }
@@ -706,8 +695,13 @@ public class MessageLanguageManager {
         return _successfullyForceStoppedGameMessage;
     }
 
-    public String getSuccessfullyStoppedGameMessage() {
-        return _successfullyStoppedGameMessage;
+    public String getActiveGamesMessage(List<Integer> ids) {
+        if (ids == null || ids.size() == 0) {
+            return _noActiveGamesMessage;
+        }
+        
+        String idsString = ids.stream().map(String::valueOf).collect(Collectors.joining(", "));
+        return _activeGamesMessage.replace("{IDS}", idsString);
     }
 
     public String getSelectedPrisonersTeamMessage() {
@@ -1046,28 +1040,16 @@ public class MessageLanguageManager {
         return _onlyPlayersCanUseThisCommandMessage;
     }
 
+    public String getMaxGamesReachedMessage() {
+        return _maxGamesReachedMessage;
+    }
+
     public String getGameAlreadyStartedMessage() {
         return _gameAlreadyStartedMessage;
     }
 
-    public String getGameNotStartedYetMessage() {
-        return _gameNotStartedYetMessage;
-    }
-
-    public String getGameAlreadyOngoingMessage() {
-        return _gameAlreadyOngoingMessage;
-    }
-
-    public String getGameHasNotStartedUseJoinInsteadMessage() {
-        return _gameHasNotStartedUseJoinInsteadMessage;
-    }
-
     public String getGameHasNotFinishedMessage() {
         return _gameIsNotInFinishedPhaseMessage;
-    }
-
-    public String getLobbyIsFullMessage() {
-        return _lobbyIsFullMessage;
     }
 
     public String getPlayerAlreadyJoinedMessage() {
@@ -1082,16 +1064,20 @@ public class MessageLanguageManager {
         return _playerWasNeverInGameMessage;
     }
 
+    public String getNoGameWithThatIdMessage(int id) {
+        return _noGameWithThatIdMessage.replace("{ID}", Integer.toString(id));
+    }
+
+    public String getGameAlreadyOngoingMessage() {
+        return _gameAlreadyOngoingMessage;
+    }
+
 //	########################################
 //	#                Usages                #
 //	########################################
 
     public List<String> getUsage() {
         return new ArrayList<>(_usageMessage);
-    }
-
-    public String getStartCommandUsage() {
-        return _startCommandUsage;
     }
 
     public String getForceStartCommandUsage() {
@@ -1112,10 +1098,6 @@ public class MessageLanguageManager {
 
     public String getRejoinCommandUsage() {
         return _rejoinCommandUsage;
-    }
-
-    public String getStopCommandUsage() {
-        return _stopCommandUsage;
     }
 
 }

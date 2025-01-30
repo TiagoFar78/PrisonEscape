@@ -1,3 +1,4 @@
+MaxSimultaneousGames: 4
 PrisonersRatio: 0.73
 PoliceRatio: 0.27
 MinPlayers: 1

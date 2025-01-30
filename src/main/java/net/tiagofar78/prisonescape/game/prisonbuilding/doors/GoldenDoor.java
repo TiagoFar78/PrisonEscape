@@ -1,14 +1,13 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.doors;
 
+import org.bukkit.Location;
+
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.GoldenKeyItem;
 import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-
-import org.bukkit.Location;
 
 public class GoldenDoor extends Door {
 
@@ -17,7 +16,7 @@ public class GoldenDoor extends Door {
     }
 
     public ClickDoorReturnAction click(PEPlayer player, Item itemHeld) {
-        PEGame game = GameManager.getGame();
+        PEGame game = player.getGame();
         boolean isOpened = isOpened();
 
         if (game.isGuard(player))

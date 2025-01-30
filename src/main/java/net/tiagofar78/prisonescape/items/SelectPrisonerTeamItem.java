@@ -1,16 +1,15 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.game.TeamPreference;
-import net.tiagofar78.prisonescape.game.WaitingPlayer;
-import net.tiagofar78.prisonescape.managers.GameManager;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.TeamPreference;
+import net.tiagofar78.prisonescape.game.WaitingPlayer;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public class SelectPrisonerTeamItem extends FunctionalItem {
 
@@ -44,8 +43,7 @@ public class SelectPrisonerTeamItem extends FunctionalItem {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
-        PEGame game = GameManager.getGame();
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
         String playerName = e.getPlayer().getName();
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);

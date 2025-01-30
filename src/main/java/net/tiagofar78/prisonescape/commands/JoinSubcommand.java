@@ -28,25 +28,22 @@ public class JoinSubcommand implements PrisonEscapeSubcommandExecutor {
             sender.sendMessage(messages.getJoinCommandUsage());
             return false;
         }
-
-        PEGame game = GameManager.getGame();
-        if (game == null) {
-            sender.sendMessage(messages.getGameNotStartedYetMessage());
-            return true;
-        }
-
-        int returnCode = game.playerJoin(sender.getName());
-        if (returnCode == -1) {
+        
+        String playerName = sender.getName();
+        
+        if (GameManager.getPlayerInGame(playerName) != null) {
             sender.sendMessage(messages.getPlayerAlreadyJoinedMessage());
             return true;
-        } else if (returnCode == -2) {
-            sender.sendMessage(messages.getGameAlreadyOngoingMessage());
-            return true;
-        } else if (returnCode == -3) {
-            sender.sendMessage(messages.getLobbyIsFullMessage());
-            return true;
         }
 
+        
+        PEGame game = GameManager.getJoinableGame();
+        if (game == null) {
+            sender.sendMessage(messages.getMaxGamesReachedMessage());
+            return true;
+        }
+        
+        game.playerJoin(playerName);
         return true;
     }
 

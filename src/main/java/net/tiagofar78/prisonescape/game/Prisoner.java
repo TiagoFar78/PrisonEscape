@@ -15,8 +15,8 @@ public class Prisoner extends PEPlayer {
     private PEPlayer _tradeRequestTarget;
     private long _tradeRequestTime;
 
-    public Prisoner(String name) {
-        super(name);
+    public Prisoner(PEGame game, String name) {
+        super(game, name);
         _hasEscaped = false;
         _isWanted = false;
         _inRestrictedArea = false;

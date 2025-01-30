@@ -1,18 +1,17 @@
 package net.tiagofar78.prisonescape.items;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class SearchItem extends FunctionalItem implements Buyable {
 
@@ -31,8 +30,7 @@ public class SearchItem extends FunctionalItem implements Buyable {
         return Material.SPYGLASS;
     }
 
-    private void use(String guardName, String prisonerName, int heldItemSlot) {
-        PEGame game = GameManager.getGame();
+    private void use(PEGame game, PEPlayer player, String prisonerName, int heldItemSlot) {
         if (game.getCurrentPhase().isClockStopped()) {
             return;
         }
@@ -42,7 +40,8 @@ public class SearchItem extends FunctionalItem implements Buyable {
             return;
         }
 
-        Guard guard = (Guard) game.getPEPlayer(guardName);
+        Guard guard = (Guard) player;
+        String guardName = guard.getName();
         MessageLanguageManager guardMessages = MessageLanguageManager.getInstanceByPlayer(guardName);
 
         Prisoner prisoner = (Prisoner) playerPrisoner;
@@ -67,15 +66,15 @@ public class SearchItem extends FunctionalItem implements Buyable {
     }
 
     @Override
-    public void use(PlayerInteractEntityEvent e) {
+    public void use(PEGame game, PEPlayer guard, PlayerInteractEntityEvent e) {
         Player player = e.getPlayer();
-        use(player.getName(), e.getRightClicked().getName(), player.getInventory().getHeldItemSlot());
+        use(game, guard, e.getRightClicked().getName(), player.getInventory().getHeldItemSlot());
     }
 
     @Override
-    public void use(EntityDamageByEntityEvent e) {
+    public void use(PEGame game, PEPlayer guard, EntityDamageByEntityEvent e) {
         Player player = (Player) e.getDamager();
-        use(player.getName(), e.getEntity().getName(), player.getInventory().getHeldItemSlot());
+        use(game, guard, e.getEntity().getName(), player.getInventory().getHeldItemSlot());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.commands;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
+import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -18,15 +19,37 @@ public class ForceStopSubcommand implements PrisonEscapeSubcommandExecutor {
             return true;
         }
 
-        if (args.length != 0) {
+        String playerName = sender.getName();
+        PEGame game;
+        
+        if (args.length == 0) {
+            PlayerInGame playerInGame = GameManager.getPlayerInGame(playerName);
+            if (playerInGame == null) {
+                sender.sendMessage(messages.getPlayerNotOnLobbyMessage());
+                return true;
+            }
+            
+            game = playerInGame.getGame();
+        }
+        else if (args.length == 1) {
+            int gameId;
+            try {
+                gameId = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(messages.getForceStartCommandUsage());
+                return true;
+            }
+            
+            game = GameManager.getGame(gameId);
+            if (game == null) {
+                sender.sendMessage(messages.getNoGameWithThatIdMessage(gameId));
+                sender.sendMessage(messages.getActiveGamesMessage(GameManager.getGamesIds()));
+                return true;
+            }
+        }
+        else {
             sender.sendMessage(messages.getForceStopCommandUsage());
             return false;
-        }
-
-        PEGame game = GameManager.getGame();
-        if (game == null) {
-            sender.sendMessage(messages.getGameNotStartedYetMessage());
-            return true;
         }
 
         game.forceStop();

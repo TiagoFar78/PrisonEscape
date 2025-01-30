@@ -1,33 +1,5 @@
 package net.tiagofar78.prisonescape.listener;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
-import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
-import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.game.Prisoner;
-import net.tiagofar78.prisonescape.game.phases.Phase;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Helicopter;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
-import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
-import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
-import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
-import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
-import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
-import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
-import net.tiagofar78.prisonescape.items.FunctionalItem;
-import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.SearchItem;
-import net.tiagofar78.prisonescape.items.ToolItem;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.ClickReturnAction;
-import net.tiagofar78.prisonescape.menus.Clickable;
-
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -55,6 +27,35 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
+import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
+import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.Prisoner;
+import net.tiagofar78.prisonescape.game.phases.Phase;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Chest;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Helicopter;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Obstacle;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Regenerable;
+import net.tiagofar78.prisonescape.game.prisonbuilding.Vault;
+import net.tiagofar78.prisonescape.game.prisonbuilding.WallCrack;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.ClickDoorReturnAction;
+import net.tiagofar78.prisonescape.game.prisonbuilding.doors.Door;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
+import net.tiagofar78.prisonescape.items.FunctionalItem;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.SearchItem;
+import net.tiagofar78.prisonescape.items.ToolItem;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.ClickReturnAction;
+import net.tiagofar78.prisonescape.menus.Clickable;
+
 public class PlayerListener implements Listener {
 
 //  ########################################
@@ -72,15 +73,13 @@ public class PlayerListener implements Listener {
     }
 
     private void onPlayerMove(String playerName, Location locTo, Location locFrom, Cancellable e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(playerName);
+        if (playerInGame == null) {
             return;
         }
 
-        PEPlayer player = game.getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
+        PEGame game = playerInGame.getGame();
+        PEPlayer player = playerInGame.getPlayer();
 
         Phase phase = game.getCurrentPhase();
         if (!phase.hasGameStarted() || phase.hasGameEnded()) {
@@ -155,8 +154,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractWithPlayer(PlayerInteractEntityEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getPlayer().getName());
+        if (playerInGame == null) {
             return;
         }
 
@@ -164,10 +163,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PEPlayer player = game.getPEPlayer(e.getPlayer().getName());
-        if (player == null) {
-            return;
-        }
+        PEPlayer player = playerInGame.getPlayer();
 
         if (player.isOnCooldown(INTERACT_WITH_PLAYER_EVENT_NAME)) {
             e.setCancelled(true);
@@ -177,14 +173,14 @@ public class PlayerListener implements Listener {
 
         Item item = player.getItemAt(e.getPlayer().getInventory().getHeldItemSlot());
         if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
+            ((FunctionalItem) item).use(playerInGame.getGame(), player, e);
         }
     }
 
     @EventHandler(ignoreCancelled = false)
     public void onPlayerCombat(EntityDamageByEntityEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getDamager().getName());
+        if (playerInGame == null) {
             return;
         }
 
@@ -194,8 +190,8 @@ public class PlayerListener implements Listener {
         }
 
         EntityType type = e.getEntity().getType();
-        for (EntityType mobType : WorldListener.ALLOWED_MOBS) {
-            if (mobType == type) {
+        for (EntityType eType : WorldListener.ALLOWED_ENTITIES) {
+            if (eType == type) {
                 e.setCancelled(true);
                 break;
             }
@@ -205,12 +201,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        Player pAttacker = (Player) eAttacker;
-
-        PEPlayer player = game.getPEPlayer(pAttacker.getName());
-        if (player == null) {
-            return;
-        }
+        PEPlayer player = playerInGame.getPlayer();
 
         if (player.isOnCooldown(INTERACT_WITH_PLAYER_EVENT_NAME)) {
             e.setCancelled(true);
@@ -218,10 +209,11 @@ public class PlayerListener implements Listener {
         }
         player.executedEvent(INTERACT_WITH_PLAYER_EVENT_NAME);
 
+        Player pAttacker = (Player) eAttacker;
         Item item = player.getItemAt(pAttacker.getInventory().getHeldItemSlot());
 
         if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
+            ((FunctionalItem) item).use(playerInGame.getGame(), player, e);
         }
     }
 
@@ -231,15 +223,13 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void playerInteractWithPrison(PlayerInteractEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getPlayer().getName());
+        if (playerInGame == null) {
             return;
         }
 
-        PEPlayer player = game.getPEPlayer(e.getPlayer().getName());
-        if (player == null) {
-            return;
-        }
+        PEGame game = playerInGame.getGame();
+        PEPlayer player = playerInGame.getPlayer();
 
         if (e.getAction() == Action.PHYSICAL) {
             return;
@@ -278,7 +268,7 @@ public class PlayerListener implements Listener {
 
         Item item = player.getItemAt(slot);
         if (item.isFunctional()) {
-            ((FunctionalItem) item).use(e);
+            ((FunctionalItem) item).use(game, player, e);
             return true;
         }
 
@@ -478,12 +468,14 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void playerLeave(PlayerQuitEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        String playerName = e.getPlayer().getName();
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(playerName);
+        if (playerInGame == null) {
             return;
         }
 
-        game.playerLeft(e.getPlayer().getName());
+        PEGame game = playerInGame.getGame();
+        game.playerLeft(playerName);
     }
 
 //  #########################################
@@ -492,8 +484,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void playerCloseInventory(InventoryCloseEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getPlayer().getName());
+        if (playerInGame == null) {
             return;
         }
 
@@ -501,27 +493,21 @@ public class PlayerListener implements Listener {
         if (invType == InventoryType.CRAFTING || invType == InventoryType.CREATIVE) {
             return;
         }
-
-        PEPlayer player = game.getPEPlayer(e.getPlayer().getName());
-        if (player == null) {
-            return;
-        }
+        
+        PEPlayer player = playerInGame.getPlayer();
 
         player.closeMenu();
     }
 
     @EventHandler
     public void playerClickInventory(InventoryClickEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        Player player = (Player) e.getWhoClicked();
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(player.getName());
+        if (playerInGame == null) {
             return;
         }
 
-        Player player = (Player) e.getWhoClicked();
-        PEPlayer pePlayer = game.getPEPlayer(player.getName());
-        if (pePlayer == null) {
-            return;
-        }
+        PEPlayer pePlayer = playerInGame.getPlayer();
 
         if (e.getClickedInventory() == null) {
             return;
@@ -571,16 +557,12 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerSneak(PlayerToggleSneakEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getPlayer().getName());
+        if (playerInGame == null) {
             return;
         }
 
-        PEPlayer player = game.getPEPlayer(e.getPlayer().getName());
-        if (player == null) {
-            return;
-        }
-
+        PEPlayer player = playerInGame.getPlayer();
         if (!player.isGuard()) {
             return;
         }
@@ -597,17 +579,12 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getPlayer().getName());
+        if (playerInGame == null) {
             return;
         }
 
-        String playerName = e.getPlayer().getName();
-        PEPlayer player = game.getPEPlayer(playerName);
-        if (player == null) {
-            return;
-        }
-
+        PEPlayer player = playerInGame.getPlayer();
         int slot = e.getPlayer().getInventory().getHeldItemSlot();
 
         if (!dropItem(player, slot)) {
@@ -637,16 +614,14 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        String senderName = e.getPlayer().getName();
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(senderName);
+        if (playerInGame == null) {
             return;
         }
 
-        String senderName = e.getPlayer().getName();
-        PEPlayer player = game.getPEPlayer(senderName);
-        if (player == null) {
-            return;
-        }
+        PEGame game = playerInGame.getGame();
+        PEPlayer player = playerInGame.getPlayer();
 
         String teamChatPrefix = ConfigManager.getInstance().getTeamChatPrefix();
         String message = e.getMessage();

@@ -29,6 +29,7 @@ public class ConfigManager {
         return instance;
     }
 
+    private int _maxGames;
     private double _prisonerRatio;
     private double _officerRatio;
     private int _minimumPlayers;
@@ -123,6 +124,7 @@ public class ConfigManager {
     public ConfigManager() {
         YamlConfiguration config = PEResources.getYamlConfiguration();
 
+        _maxGames = config.getInt("MaxSimultaneousGames");
         _prisonerRatio = config.getDouble("PrisonersRatio");
         _officerRatio = config.getDouble("PoliceRatio");
         _minimumPlayers = config.getInt("MinPlayers");
@@ -375,6 +377,10 @@ public class ConfigManager {
         }
 
         return itemsProbabilities;
+    }
+    
+    public int getMaxGames() {
+        return _maxGames;
     }
 
     public Double getPrisonerRatio() {

@@ -1,5 +1,7 @@
 package net.tiagofar78.prisonescape.game.phases;
 
+import java.util.List;
+
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.game.PEGame;
@@ -7,10 +9,7 @@ import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.PETeam;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-
-import java.util.List;
 
 public class FinishedPhase extends Phase {
 
@@ -19,7 +18,7 @@ public class FinishedPhase extends Phase {
     private PETeam<? extends PEPlayer> _winnerTeam;
 
     public FinishedPhase() {
-        this(GameManager.getGame().getGuardsTeam());
+        _winnerTeam = null;
     }
 
     public FinishedPhase(PETeam<? extends PEPlayer> winnerTeam) {
@@ -53,6 +52,10 @@ public class FinishedPhase extends Phase {
 
     @Override
     public void start(PEGame game) {
+        if (_winnerTeam == null) {
+            _winnerTeam = game.getGuardsTeam();
+        }
+        
         PETeam<Prisoner> prisonersTeam = game.getPrisonerTeam();
 
         boolean prisonersWon = _winnerTeam.getName().equals(prisonersTeam.getName());

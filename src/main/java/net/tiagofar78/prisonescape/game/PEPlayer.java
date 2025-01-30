@@ -1,14 +1,8 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
-import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
-import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.NullItem;
-import net.tiagofar78.prisonescape.items.ToolItem;
-import net.tiagofar78.prisonescape.kits.Kit;
-import net.tiagofar78.prisonescape.managers.GameManager;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.Clickable;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,9 +20,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.NullItem;
+import net.tiagofar78.prisonescape.items.ToolItem;
+import net.tiagofar78.prisonescape.kits.Kit;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.Clickable;
 
 public abstract class PEPlayer {
 
@@ -40,6 +39,7 @@ public abstract class PEPlayer {
     private static final int INVENTORY_SIZE = 4;
     private static final int[] INVENTORY_INDEXES = {0, 1, 2, 3};
 
+    private PEGame _game;
     private String _name;
     private boolean _isOnline;
     private boolean _canMove;
@@ -54,7 +54,8 @@ public abstract class PEPlayer {
     private ScoreboardData _scoreboardData;
     private Clickable _openedMenu;
 
-    public PEPlayer(String name) {
+    public PEPlayer(PEGame game, String name) {
+        _game = game;
         _name = name;
         _isOnline = true;
         _inventory = createInventory();
@@ -67,6 +68,10 @@ public abstract class PEPlayer {
 
         _scoreboardData = createScoreboardData();
         setScoreboard(_scoreboardData.getScoreboard());
+    }
+    
+    public PEGame getGame() {
+        return _game;
     }
 
     public boolean isPrisoner() {
@@ -376,13 +381,8 @@ public abstract class PEPlayer {
         ScoreboardData sbData = new ScoreboardData();
 
         registerTeam(sbData, PEGame.WAITING_TEAM_NAME, ChatColor.GRAY);
-
-        String guardsTeamName = GameManager.getGame().getGuardsTeam().getName();
-        registerTeam(sbData, guardsTeamName, ChatColor.BLUE);
-
-        String prisonersTeamName = GameManager.getGame().getPrisonerTeam().getName();
-        registerTeam(sbData, prisonersTeamName, ChatColor.GOLD);
-
+        registerTeam(sbData, PEGame.GUARDS_TEAM_NAME, ChatColor.BLUE);
+        registerTeam(sbData, PEGame.PRISONERS_TEAM_NAME, ChatColor.GOLD);
         registerTeam(sbData, WANTED_TEAM_NAME, ChatColor.RED);
 
         return sbData;
@@ -426,12 +426,10 @@ public abstract class PEPlayer {
     }
 
     public void updateScoreaboardTeams() {
-        PEGame game = GameManager.getGame();
-
-        PETeam<Guard> guardsTeam = game.getGuardsTeam();
+        PETeam<Guard> guardsTeam = _game.getGuardsTeam();
         addScoreboardTeamMembers(guardsTeam);
 
-        PETeam<Prisoner> prisonersTeam = game.getPrisonerTeam();
+        PETeam<Prisoner> prisonersTeam = _game.getPrisonerTeam();
         for (Prisoner prisoner : prisonersTeam.getMembers()) {
             if (prisoner.isWanted()) {
                 addScoreboardTeamMember(prisoner.getName(), WANTED_TEAM_NAME);

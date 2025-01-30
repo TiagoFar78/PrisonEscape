@@ -1,16 +1,11 @@
 package net.tiagofar78.prisonescape.bukkit;
 
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.managers.GameManager;
+import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 public class BukkitItems {
 
@@ -37,29 +32,6 @@ public class BukkitItems {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
         item.setItemMeta(meta);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static ItemStack getEventItem(PlayerInteractEvent e) {
-        return getEventItem(e.getPlayer().getItemInHand());
-    }
-
-    @SuppressWarnings("deprecation")
-    public static ItemStack getEventItem(PlayerInteractEntityEvent e) {
-        return getEventItem(e.getPlayer().getItemInHand());
-    }
-
-    private static ItemStack getEventItem(ItemStack item) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
-            return null;
-        }
-
-        if (item == null || item.getType() == Material.AIR) {
-            return null;
-        }
-
-        return item;
     }
 
 }

@@ -1,15 +1,16 @@
 package net.tiagofar78.prisonescape.kits;
 
-import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import java.util.Hashtable;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Hashtable;
-import java.util.Map.Entry;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 public abstract class Kit {
 
@@ -41,7 +42,7 @@ public abstract class Kit {
         }
     }
 
-    public void update(String playerName) {
+    public void update(PEPlayer player) {
         // Nothing
     }
 

@@ -1,16 +1,15 @@
 package net.tiagofar78.prisonescape.items;
 
+import org.bukkit.Material;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-
-import org.bukkit.Material;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class HandcuffsItem extends FunctionalItem {
 
@@ -29,8 +28,7 @@ public class HandcuffsItem extends FunctionalItem {
         return Material.IRON_BARS;
     }
 
-    private void onInteract(String guardName, String prisonerName) {
-        PEGame game = GameManager.getGame();
+    private void onInteract(PEGame game, PEPlayer guard, String prisonerName) {
         if (game.getCurrentPhase().isClockStopped()) {
             return;
         }
@@ -45,24 +43,23 @@ public class HandcuffsItem extends FunctionalItem {
             return;
         }
 
-        Guard guard = (Guard) game.getPEPlayer(guardName);
-
         if (prisoner.canBeArrested()) {
-            game.arrestPlayer(prisoner, guard);
+            game.arrestPlayer(prisoner, (Guard) guard);
         } else {
+            String guardName = guard.getName();
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(guardName);
             BukkitMessageSender.sendChatMessage(guardName, messages.getNotWantedPlayerMessage());
         }
     }
 
     @Override
-    public void use(PlayerInteractEntityEvent e) {
-        onInteract(e.getPlayer().getName(), e.getRightClicked().getName());
+    public void use(PEGame game, PEPlayer player, PlayerInteractEntityEvent e) {
+        onInteract(game, player, e.getRightClicked().getName());
     }
 
     @Override
-    public void use(EntityDamageByEntityEvent e) {
-        onInteract(e.getDamager().getName(), e.getEntity().getName());
+    public void use(PEGame game, PEPlayer player, EntityDamageByEntityEvent e) {
+        onInteract(game, player, e.getEntity().getName());
     }
 
 }

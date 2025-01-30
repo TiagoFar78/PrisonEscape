@@ -11,12 +11,10 @@ import java.util.Arrays;
 
 public class PrisonEscapeCommand implements CommandExecutor {
 
-    private static final String START_COMMAND = "start";
     private static final String FORCE_START_COMMAND = "forcestart";
     private static final String JOIN_COMMAND = "join";
     private static final String LEAVE_COMMAND = "leave";
     private static final String REJOIN_COMMAND = "rejoin";
-    private static final String STOP_COMMAND = "stop";
     private static final String FORCE_STOP_COMMAND = "forcestop";
 
     @Override
@@ -32,9 +30,6 @@ public class PrisonEscapeCommand implements CommandExecutor {
         PrisonEscapeSubcommandExecutor executor = null;
 
         switch (subcommand) {
-            case START_COMMAND:
-                executor = new StartSubcommand();
-                break;
             case FORCE_START_COMMAND:
                 executor = new ForceStartSubcommand();
                 break;
@@ -46,9 +41,6 @@ public class PrisonEscapeCommand implements CommandExecutor {
                 break;
             case REJOIN_COMMAND:
                 executor = new RejoinSubcommand();
-                break;
-            case STOP_COMMAND:
-                executor = new StopSubcommand();
                 break;
             case FORCE_STOP_COMMAND:
                 executor = new ForceStopSubcommand();

@@ -1,14 +1,10 @@
 package net.tiagofar78.prisonescape.listener;
 
-import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
-
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -20,13 +16,20 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import net.tiagofar78.prisonescape.PrisonEscape;
+import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
+
 public class WorldListener implements Listener {
 
-    public static final EntityType[] ALLOWED_MOBS = {
+    public static final EntityType[] ALLOWED_ENTITIES = {
             EntityType.PRIMED_TNT,
             EntityType.PAINTING,
             EntityType.ARMOR_STAND,
-            EntityType.ITEM_FRAME};
+            EntityType.ITEM_FRAME
+        };
 
     @EventHandler
     public void onPlayerLoseHealth(EntityDamageEvent e) {
@@ -61,9 +64,9 @@ public class WorldListener implements Listener {
             return;
         }
 
-        EntityType mob = e.getEntityType();
-        for (EntityType allowedMob : ALLOWED_MOBS) {
-            if (mob == allowedMob) {
+        EntityType eType = e.getEntityType();
+        for (EntityType allowedEntity : ALLOWED_ENTITIES) {
+            if (eType == allowedEntity) {
                 return;
             }
         }
@@ -75,7 +78,8 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (GameManager.getGame() == null && e.getPlayer().hasPermission(PrisonEscape.ADMIN_PERMISSION)) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getPlayer().getName());
+        if (playerInGame == null && e.getPlayer().hasPermission(PrisonEscape.ADMIN_PERMISSION)) {
             return;
         }
 
@@ -86,7 +90,8 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (GameManager.getGame() == null && e.getPlayer().hasPermission(PrisonEscape.ADMIN_PERMISSION)) {
+        PlayerInGame playerInGame = GameManager.getPlayerInGame(e.getPlayer().getName());
+        if (playerInGame == null && e.getPlayer().hasPermission(PrisonEscape.ADMIN_PERMISSION)) {
             return;
         }
 
@@ -98,8 +103,8 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onBlockHangingBreak(HangingBreakEvent e) {
         EntityType type = e.getEntity().getType();
-        for (EntityType mobType : ALLOWED_MOBS) {
-            if (mobType == type) {
+        for (EntityType eType : ALLOWED_ENTITIES) {
+            if (eType == type) {
                 e.setCancelled(true);
                 break;
             }
@@ -108,13 +113,16 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onExplosion(EntityExplodeEvent e) {
-        if (!e.getEntity().getWorld().getName().equals(ConfigManager.getInstance().getWorldName())) {
+        Entity entity = e.getEntity();
+        String worldName = ConfigManager.getInstance().getWorldName();
+        if (!entity.getWorld().getName().equals(worldName) || entity.getType() != EntityType.PRIMED_TNT) {
             return;
         }
 
         e.setCancelled(true);
-
-        PEGame game = GameManager.getGame();
+        
+        TNTPrimed bomb = (TNTPrimed) entity;
+        PEGame game = GameManager.getGamePlayerWas(bomb.getSource().getName());
         if (game == null) {
             return;
         }
