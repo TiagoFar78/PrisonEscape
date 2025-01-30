@@ -250,6 +250,7 @@ public class MessageLanguageManager {
     private String _leaveCommandUsage;
     private String _forceStopCommandUsage;
     private String _rejoinCommandUsage;
+    private String _listCommandUsage;
 
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PEResources.getYamlLanguage(language);
@@ -441,6 +442,7 @@ public class MessageLanguageManager {
         _joinCommandUsage = createMessage(messages.getString(usagePath + "Join"));
         _leaveCommandUsage = createMessage(messages.getString(usagePath + "Leave"));
         _rejoinCommandUsage = createMessage(messages.getString(usagePath + "Rejoin"));
+        _listCommandUsage = createMessage(messages.getString(usagePath + "List"));
     }
 
     private String createMessage(String rawMessage) {
@@ -1098,6 +1100,10 @@ public class MessageLanguageManager {
 
     public String getRejoinCommandUsage() {
         return _rejoinCommandUsage;
+    }
+
+    public String getListCommandUsage() {
+        return _listCommandUsage;
     }
 
 }
