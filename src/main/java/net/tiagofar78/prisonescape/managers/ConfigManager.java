@@ -177,7 +177,7 @@ public class ConfigManager {
         _worldName = config.getString("WorldName");
         World world = Bukkit.getWorld(_worldName);
         _referenceBlock = createLocation(config, "ReferenceBlock", world);
-        _leavingLocation = createLocation(config, "LeavingLocation", world);
+        _leavingLocation = createLocation(config, "LeavingLocation");
         _waitingLocation = createLocation(config, "WaitingLocation", world);
         _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation", world);
         _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation", world);
@@ -216,6 +216,11 @@ public class ConfigManager {
         _rareItemsProbability = config.getDouble("RareItemsProbability");
 
         _chestSize = config.getInt("ChestSize");
+    }
+    
+    private Location createLocation(YamlConfiguration config, String path) {
+        String worldName = config.getString(path + ".World");
+        return createLocation(config, path, Bukkit.getWorld(worldName));
     }
 
     private Location createLocation(YamlConfiguration config, String path, World world) {

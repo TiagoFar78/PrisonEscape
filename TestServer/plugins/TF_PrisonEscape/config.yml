@@ -57,14 +57,15 @@ PackageItemProbabilities:
   PlasticShovel: 0.1
   WireCutter: 0.1
   Wrench: 0.1
+LeavingLocation:
+  World: PrisonEscapeWorld
+  X: 6
+  Y: 67
+  Z: -16
 ReferenceBlock:
   X: 0
   Y: 0
   Z: 0
-LeavingLocation:
-  X: 6
-  Y: 67
-  Z: -16
 WaitingLocation:
   X: 12
   Y: 100
