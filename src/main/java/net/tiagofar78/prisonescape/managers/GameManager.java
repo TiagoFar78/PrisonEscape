@@ -3,14 +3,20 @@ package net.tiagofar78.prisonescape.managers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+
 import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 
 public class GameManager {
 
+    private static final int MAPS_DISTANCE = 1000;
+    private static final int MAPS_Y_CORD = 0;
+    
     private static int currentId = 0;
-    private static List<PEGame> games = new ArrayList<>();
+    private static PEGame[] games = new PEGame[ConfigManager.getInstance().getMaxGames()];
     
     public static PEGame getGame(int id) {
         for (PEGame game : games) {
@@ -74,25 +80,39 @@ public class GameManager {
      * @return a PEGame instance if successful<br>
      *         null if the max number of simultaneous games was reached
      */
-    @SuppressWarnings("deprecation")
     public static PEGame startNewGame() {
-        ConfigManager config = ConfigManager.getInstance();
-        int maxGames = config.getMaxGames();
-        if (games.size() >= maxGames) {
+        int freeSlot = getFreeSlot();
+        if (freeSlot == -1) {
             return null;
         }
 
-        PEGame game = new PEGame(currentId, null, config.getReferenceBlock());
-        games.add(game);
+        int mapIndex = 0;
+        PEGame game = new PEGame(currentId, null, getReferenceBlock(freeSlot, mapIndex));
+        games[freeSlot] = game;
         currentId++;
 
         return game;
     }
+    
+    private static int getFreeSlot() {
+        for (int i = 0; i < games.length; i++) {
+            if (games[i] == null) {
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+    
+    private static Location getReferenceBlock(int gameIndex, int mapIndex) {
+        String worldName = ConfigManager.getInstance().getWorldName();
+        return new Location(Bukkit.getWorld(worldName), mapIndex * MAPS_DISTANCE, MAPS_Y_CORD, gameIndex * MAPS_DISTANCE);
+    }
 
     public static void removeGame(int id) {
-        for (int i = 0; i < games.size(); i++) {
-            if (games.get(i).getId() == id) {
-                games.remove(i);
+        for (int i = 0; i < games.length; i++) {
+            if (games[i] != null && games[i].getId() == id) {
+                games[i] = null;
             }
         }
     }

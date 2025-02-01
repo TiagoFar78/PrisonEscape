@@ -80,7 +80,6 @@ public class ConfigManager {
     private String _cameraSkinTexture;
 
     private String _worldName;
-    private Location _referenceBlock;
     private Location _leavingLocation;
     private Location _waitingLocation;
     private Location _prisonUpperCornerLocation;
@@ -176,7 +175,6 @@ public class ConfigManager {
 
         _worldName = config.getString("WorldName");
         World world = Bukkit.getWorld(_worldName);
-        _referenceBlock = createLocation(config, "ReferenceBlock", world);
         _leavingLocation = createLocation(config, "LeavingLocation");
         _waitingLocation = createLocation(config, "WaitingLocation", world);
         _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation", world);
@@ -570,11 +568,6 @@ public class ConfigManager {
 
     public String getWorldName() {
         return _worldName;
-    }
-
-    @Deprecated
-    public Location getReferenceBlock() {
-        return createLocationCopy(_referenceBlock);
     }
 
     public Location getLeavingLocation() {
