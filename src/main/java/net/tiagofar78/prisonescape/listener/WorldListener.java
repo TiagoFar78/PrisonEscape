@@ -1,5 +1,11 @@
 package net.tiagofar78.prisonescape.listener;
 
+import net.tiagofar78.prisonescape.PrisonEscape;
+import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.GameManager;
+
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -16,12 +22,6 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
-import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
-
 public class WorldListener implements Listener {
 
     public static final EntityType[] ALLOWED_ENTITIES = {
@@ -29,7 +29,7 @@ public class WorldListener implements Listener {
             EntityType.PAINTING,
             EntityType.ARMOR_STAND,
             EntityType.ITEM_FRAME
-        };
+    };
 
     @EventHandler
     public void onPlayerLoseHealth(EntityDamageEvent e) {
@@ -120,7 +120,7 @@ public class WorldListener implements Listener {
         }
 
         e.setCancelled(true);
-        
+
         TNTPrimed bomb = (TNTPrimed) entity;
         PEGame game = GameManager.getGamePlayerWas(bomb.getSource().getName());
         if (game == null) {

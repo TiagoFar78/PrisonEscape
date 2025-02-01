@@ -1,8 +1,13 @@
 package net.tiagofar78.prisonescape.game;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
+import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.NullItem;
+import net.tiagofar78.prisonescape.items.ToolItem;
+import net.tiagofar78.prisonescape.kits.Kit;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.menus.Clickable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,14 +25,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
-import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
-import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.NullItem;
-import net.tiagofar78.prisonescape.items.ToolItem;
-import net.tiagofar78.prisonescape.kits.Kit;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
-import net.tiagofar78.prisonescape.menus.Clickable;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 public abstract class PEPlayer {
 
@@ -69,7 +69,7 @@ public abstract class PEPlayer {
         _scoreboardData = createScoreboardData();
         setScoreboard(_scoreboardData.getScoreboard());
     }
-    
+
     public PEGame getGame() {
         return _game;
     }

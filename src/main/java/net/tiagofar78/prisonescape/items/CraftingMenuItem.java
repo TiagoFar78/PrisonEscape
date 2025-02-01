@@ -1,11 +1,11 @@
 package net.tiagofar78.prisonescape.items;
 
-import org.bukkit.Material;
-import org.bukkit.event.player.PlayerInteractEvent;
-
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.menus.CraftingMenu;
+
+import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class CraftingMenuItem extends FunctionalItem {
 

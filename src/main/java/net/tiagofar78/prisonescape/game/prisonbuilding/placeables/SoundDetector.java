@@ -1,8 +1,10 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.placeables;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import net.tiagofar78.prisonescape.PrisonEscape;
+import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.managers.ConfigManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -11,11 +13,9 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 
-import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class SoundDetector {
 

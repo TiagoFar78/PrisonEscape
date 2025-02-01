@@ -1,17 +1,17 @@
 package net.tiagofar78.prisonescape.kits;
 
-import java.util.Hashtable;
+import net.tiagofar78.prisonescape.items.CraftingMenuItem;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.MapItem;
+import net.tiagofar78.prisonescape.items.TradeItem;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import net.tiagofar78.prisonescape.items.CraftingMenuItem;
-import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.MapItem;
-import net.tiagofar78.prisonescape.items.TradeItem;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import java.util.Hashtable;
 
 public class PrisonerKit extends Kit {
 

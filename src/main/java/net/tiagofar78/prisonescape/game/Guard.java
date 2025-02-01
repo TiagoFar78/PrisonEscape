@@ -1,13 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-
 import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.Item;
@@ -16,6 +8,14 @@ import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.missions.Mission;
+
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Random;
 
 public class Guard extends PEPlayer {
 

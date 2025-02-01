@@ -1,15 +1,15 @@
 package net.tiagofar78.prisonescape.items;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.TeamPreference;
 import net.tiagofar78.prisonescape.game.WaitingPlayer;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class SelectPoliceTeamItem extends FunctionalItem {
 

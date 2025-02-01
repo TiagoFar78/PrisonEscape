@@ -21,17 +21,16 @@ public class ForceStopSubcommand implements PrisonEscapeSubcommandExecutor {
 
         String playerName = sender.getName();
         PEGame game;
-        
+
         if (args.length == 0) {
             PlayerInGame playerInGame = GameManager.getPlayerInGame(playerName);
             if (playerInGame == null) {
                 sender.sendMessage(messages.getPlayerNotOnLobbyMessage());
                 return true;
             }
-            
+
             game = playerInGame.getGame();
-        }
-        else if (args.length == 1) {
+        } else if (args.length == 1) {
             int gameId;
             try {
                 gameId = Integer.parseInt(args[0]);
@@ -39,15 +38,14 @@ public class ForceStopSubcommand implements PrisonEscapeSubcommandExecutor {
                 sender.sendMessage(messages.getForceStartCommandUsage());
                 return true;
             }
-            
+
             game = GameManager.getGame(gameId);
             if (game == null) {
                 sender.sendMessage(messages.getNoGameWithThatIdMessage(gameId));
                 sender.sendMessage(messages.getActiveGamesMessage(GameManager.getGamesIds()));
                 return true;
             }
-        }
-        else {
+        } else {
             sender.sendMessage(messages.getForceStopCommandUsage());
             return false;
         }

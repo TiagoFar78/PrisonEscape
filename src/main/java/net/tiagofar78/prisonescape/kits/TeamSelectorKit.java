@@ -1,17 +1,17 @@
 package net.tiagofar78.prisonescape.kits;
 
-import java.util.Hashtable;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
+import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
+import net.tiagofar78.prisonescape.items.SelectPrisonerTeamItem;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
-import net.tiagofar78.prisonescape.items.SelectPoliceTeamItem;
-import net.tiagofar78.prisonescape.items.SelectPrisonerTeamItem;
+import java.util.Hashtable;
 
 public class TeamSelectorKit extends Kit {
 

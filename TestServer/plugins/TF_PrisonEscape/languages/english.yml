@@ -214,7 +214,7 @@ Messages:
   Warnings:
     ForceStartedGame: "&aSucessfully skipped waiting phase."
     ForceStoppedGame: "&aSucessfully cancelled the game."
-    ActiveGames: "&eCurrently, these are the open games: {IDS}"
+    ActiveGames: "&eCurrently, these are the ids of open games: {IDS}"
     NoActiveGames: "&cThere aren't any active games right now."
     SelectedPrisonersTeam: "&aYou set &6Prisoners &ateam as your prefered."
     SelectedPoliceTeam: "&aYou set &9Police &ateam as your prefered."
@@ -273,12 +273,7 @@ Messages:
     GoToMissionLocation: "&eIn order to complete your missions use the book in these locations:"
     MissionLocationLine: "&f- {REGION}"
   Announcements:
-    GameStarting:
-    - "&6==================================="
-    - "&6The Game will start in &f{SECONDS} &6seconds"
-    - "&6To join use &f/PrisonEscape join"
-    - "&6There are already &f{PLAYERS} &6waiting"
-    - "&6==================================="
+    GameStarting: "&eThe game is starting in &b{SECONDS} &eseconds."
     PrisonerArrested: "&4Prisoner &f{PLAYER} &4has been sent to solitary"
     PrisonerFreedOfSolitary: "&aYou will leave solitary soon"
     PrisonersWonTitle: "&l&6PRISIONERS WON"
@@ -319,8 +314,8 @@ Messages:
   Usages:
     General:
     - "Usage:"
-    - "/PrisonEscape ForceStart - to skip waiting phase"
-    - "/PrisonEscape ForceStop - to cancel game"
+    - "/PrisonEscape ForceStart [GameId] - to skip waiting phase"
+    - "/PrisonEscape ForceStop [GameId] - to cancel game"
     - "/PrisonEscape List - to check all current games"
     - "/PrisonEscape Join - to join the game"
     - "/PrisonEscape Leave - to leave the game"
@@ -328,8 +323,8 @@ Messages:
     - ""
     - "Note: commands are case insensitive and /PrisonEscape can be replaced by /PE"
     - ""
-    ForceStart: "/PrisonEscape ForceStart - to skip waiting phase"
-    ForceStop: "/PrisonEscape ForceStop - to cancel game"
+    ForceStart: "/PrisonEscape ForceStart [GameId] - to skip waiting phase"
+    ForceStop: "/PrisonEscape ForceStop [GameId] - to cancel game"
     List: "/PrisonEscape List - to check all current games"
     Join: "/PrisonEscape Join - to join the game"
     Leave: "/PrisonEscape Leave - to leave the game"

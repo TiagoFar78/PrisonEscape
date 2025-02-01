@@ -1,6 +1,11 @@
 package net.tiagofar78.prisonescape.items;
 
-import java.util.List;
+import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Camera;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,12 +13,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
-import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Camera;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import java.util.List;
 
 public class OpenCamerasItem extends FunctionalItem {
 

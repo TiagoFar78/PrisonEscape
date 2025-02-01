@@ -62,10 +62,6 @@ LeavingLocation:
   X: 6
   Y: 67
   Z: -16
-ReferenceBlock:
-  X: 0
-  Y: 0
-  Z: 0
 WaitingLocation:
   X: 12
   Y: 100

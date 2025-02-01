@@ -1,16 +1,16 @@
 package net.tiagofar78.prisonescape.kits;
 
-import java.util.Hashtable;
-import java.util.Map.Entry;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.items.Item;
+import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import net.tiagofar78.prisonescape.game.PEPlayer;
-import net.tiagofar78.prisonescape.items.Item;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import java.util.Hashtable;
+import java.util.Map.Entry;
 
 public abstract class Kit {
 

@@ -28,21 +28,21 @@ public class JoinSubcommand implements PrisonEscapeSubcommandExecutor {
             sender.sendMessage(messages.getJoinCommandUsage());
             return false;
         }
-        
+
         String playerName = sender.getName();
-        
+
         if (GameManager.getPlayerInGame(playerName) != null) {
             sender.sendMessage(messages.getPlayerAlreadyJoinedMessage());
             return true;
         }
 
-        
+
         PEGame game = GameManager.getJoinableGame();
         if (game == null) {
             sender.sendMessage(messages.getMaxGamesReachedMessage());
             return true;
         }
-        
+
         game.playerJoin(playerName);
         return true;
     }

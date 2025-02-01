@@ -215,7 +215,7 @@ public class ConfigManager {
 
         _chestSize = config.getInt("ChestSize");
     }
-    
+
     private Location createLocation(YamlConfiguration config, String path) {
         String worldName = config.getString(path + ".World");
         return createLocation(config, path, Bukkit.getWorld(worldName));
@@ -381,7 +381,7 @@ public class ConfigManager {
 
         return itemsProbabilities;
     }
-    
+
     public int getMaxGames() {
         return _maxGames;
     }

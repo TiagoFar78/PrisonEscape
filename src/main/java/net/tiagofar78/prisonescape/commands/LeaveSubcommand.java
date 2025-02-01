@@ -1,12 +1,12 @@
 package net.tiagofar78.prisonescape.commands;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class LeaveSubcommand implements PrisonEscapeSubcommandExecutor {
 

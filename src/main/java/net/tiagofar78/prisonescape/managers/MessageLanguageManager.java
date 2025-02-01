@@ -205,7 +205,7 @@ public class MessageLanguageManager {
 //	#             Announcements            #
 //	########################################
 
-    private List<String> _gameStartingAnnouncementMessage;
+    private String _gameStartingAnnouncementMessage;
     private String _prisonerArrested;
     private String _prisonerFreedOfSolitary;
     private String _prisonersWonTitle;
@@ -401,7 +401,7 @@ public class MessageLanguageManager {
         _missionLocationLineMessage = createMessage(messages.getString(warningPath + "MissionLocationLine"));
 
         String announcementPath = messagePath + "Announcements.";
-        _gameStartingAnnouncementMessage = createMessage(messages.getStringList(announcementPath + "GameStarting"));
+        _gameStartingAnnouncementMessage = createMessage(messages.getString(announcementPath + "GameStarting"));
         _prisonerArrested = createMessage(messages.getString(announcementPath + "PrisonerArrested"));
         _prisonerFreedOfSolitary = createMessage(messages.getString(announcementPath + "PrisonerFreedOfSolitary"));
         _prisonersWonTitle = createMessage(messages.getString(announcementPath + "PrisonersWonTitle"));
@@ -701,7 +701,7 @@ public class MessageLanguageManager {
         if (ids == null || ids.size() == 0) {
             return _noActiveGamesMessage;
         }
-        
+
         String idsString = ids.stream().map(String::valueOf).collect(Collectors.joining(", "));
         return _activeGamesMessage.replace("{IDS}", idsString);
     }
@@ -934,20 +934,8 @@ public class MessageLanguageManager {
 //	#             Announcements            #
 //	########################################
 
-    public List<String> getGameStartingAnnouncementMessage(int remainingTime, int playersOnLobby) {
-        List<String> message = new ArrayList<>(_gameStartingAnnouncementMessage);
-
-        for (int i = 0; i < message.size(); i++) {
-            message.set(
-                    i,
-                    message.get(i).replace("{SECONDS}", Integer.toString(remainingTime)).replace(
-                            "{PLAYERS}",
-                            Integer.toString(playersOnLobby)
-                    )
-            );
-        }
-
-        return message;
+    public String getGameStartingAnnouncementMessage(int remainingTime) {
+        return _gameStartingAnnouncementMessage.replace("{SECONDS}", Integer.toString(remainingTime));
     }
 
     public String getPrisonerArrested(String playerName) {

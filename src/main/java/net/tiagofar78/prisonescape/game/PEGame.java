@@ -37,7 +37,7 @@ public class PEGame {
     public static final String CELLS_REGION_NAME = "Cells";
 
     private int _id;
-    
+
     private int _currentDay;
     private DayPeriod _dayPeriod;
     private PrisonBuilding _prison;
@@ -52,7 +52,7 @@ public class PEGame {
 
     public PEGame(int id, String mapName, Location referenceBlock) {
         _id = id;
-        
+
         _currentDay = 0;
         _prison = new PrisonBuilding(this, referenceBlock);
 
@@ -64,7 +64,7 @@ public class PEGame {
 
         startNextPhase(new WaitingPhase());
     }
-    
+
     public int getId() {
         return _id;
     }
