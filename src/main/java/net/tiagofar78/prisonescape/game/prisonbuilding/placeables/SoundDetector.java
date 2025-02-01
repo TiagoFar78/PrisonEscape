@@ -5,7 +5,6 @@ import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -23,6 +22,7 @@ public class SoundDetector {
     private static final int CIRCLE_SEGMENTS = 32;
     private static final int UPDATE_TICKS_DELAY = 3;
 
+    private PEGame _game;
     private int _index;
     private boolean _isWorking;
     private Location _location;
@@ -31,7 +31,8 @@ public class SoundDetector {
     private Random _random;
     private int _updateId;
 
-    public SoundDetector(int index, Location location) {
+    public SoundDetector(PEGame game, int index, Location location) {
+        _game = game;
         _index = index;
         _isWorking = true;
         _location = location;
@@ -43,10 +44,9 @@ public class SoundDetector {
         createOnWorld();
         createPerimeterParticles();
 
-        PEGame game = GameManager.getGame();
         List<Guard> guards = game.getGuardsTeam().getMembers();
         for (Guard guard : guards) {
-            guard.addSoundDetectorLine(calculateValue());
+            guard.addSoundDetectorLine(game.getPrison().getSoundDetectors().size(), calculateValue());
         }
     }
 
@@ -133,12 +133,11 @@ public class SoundDetector {
     }
 
     private void updateAudioLevelMeters(int value, int updateId) {
-        PEGame game = GameManager.getGame();
-        if (game == null) {
+        if (_game.getCurrentPhase().hasGameEnded()) {
             return;
         }
 
-        List<Guard> guards = game.getGuardsTeam().getMembers();
+        List<Guard> guards = _game.getGuardsTeam().getMembers();
         for (Guard guard : guards) {
             guard.updateSoundDetectorValue(_index, addRandomNoise(value));
         }

@@ -1,3 +1,4 @@
+MaxSimultaneousGames: 4
 PrisonersRatio: 0.73
 PoliceRatio: 0.27
 MinPlayers: 1
@@ -56,11 +57,8 @@ PackageItemProbabilities:
   PlasticShovel: 0.1
   WireCutter: 0.1
   Wrench: 0.1
-ReferenceBlock:
-  X: 0
-  Y: 0
-  Z: 0
 LeavingLocation:
+  World: PrisonEscapeWorld
   X: 6
   Y: 67
   Z: -16

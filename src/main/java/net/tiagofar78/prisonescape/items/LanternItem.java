@@ -3,8 +3,8 @@ package net.tiagofar78.prisonescape.items;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
@@ -34,7 +34,7 @@ public class LanternItem extends FunctionalItem implements Craftable {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
+    public void use(PEGame game, PEPlayer peplayer, PlayerInteractEvent e) {
         Player player = e.getPlayer();
         String playerName = player.getName();
 
@@ -44,7 +44,6 @@ public class LanternItem extends FunctionalItem implements Craftable {
         int blindingDistanceSquared = (int) Math.pow(config.getBlindingDistance(), 2);
         int blindnessSeconds = config.getBlindnessSeconds();
 
-        PEGame game = GameManager.getGame();
         int affectedGuards = 0;
         for (Guard guard : game.getGuardsTeam().getMembers()) {
             if (guard.getLocation().distanceSquared(loc) <= blindingDistanceSquared) {

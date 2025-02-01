@@ -1,13 +1,12 @@
 package net.tiagofar78.prisonescape.commands;
 
 import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.command.CommandSender;
 
-public class StopSubcommand implements PrisonEscapeSubcommandExecutor {
+public class ListSubcommand implements PrisonEscapeSubcommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, String[] args) {
@@ -19,23 +18,11 @@ public class StopSubcommand implements PrisonEscapeSubcommandExecutor {
         }
 
         if (args.length != 0) {
-            sender.sendMessage(messages.getStopCommandUsage());
+            sender.sendMessage(messages.getListCommandUsage());
             return false;
         }
 
-        PEGame game = GameManager.getGame();
-        if (game == null) {
-            sender.sendMessage(messages.getGameNotStartedYetMessage());
-            return true;
-        }
-
-        int returnCode = game.stop();
-        if (returnCode == -1) {
-            sender.sendMessage(messages.getGameHasNotFinishedMessage());
-            return true;
-        }
-
-        sender.sendMessage(messages.getSuccessfullyStoppedGameMessage());
+        sender.sendMessage(messages.getActiveGamesMessage(GameManager.getGamesIds()));
         return true;
     }
 

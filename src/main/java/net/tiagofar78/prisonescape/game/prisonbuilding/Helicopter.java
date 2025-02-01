@@ -25,7 +25,6 @@ import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,12 +40,14 @@ public class Helicopter {
     private static final String HELICOPTER_SCHEM_NAME = "helicopter.schem";
     private static final int TICKS_PER_SECOND = 20;
 
+    private PEGame _game;
     private Location _upperLocation;
     private Location _lowerLocation;
     private List<Prisoner> _players = new ArrayList<>();
     private boolean _isOnGround = false;
 
-    protected Helicopter(Location upperLocation, Location lowerLocation) {
+    protected Helicopter(PEGame game, Location upperLocation, Location lowerLocation) {
+        _game = game;
         _upperLocation = upperLocation;
         _lowerLocation = lowerLocation;
     }
@@ -104,9 +105,8 @@ public class Helicopter {
     public void departed() {
         destroyHelicopter();
 
-        PEGame game = GameManager.getGame();
         for (Prisoner player : _players) {
-            game.playerEscaped(player);
+            _game.playerEscaped(player);
         }
 
         _players.clear();

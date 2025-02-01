@@ -3,8 +3,8 @@ package net.tiagofar78.prisonescape.items;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Camera;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
@@ -42,9 +42,8 @@ public class OpenCamerasItem extends FunctionalItem {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
         String playerName = e.getPlayer().getName();
-        PEGame game = GameManager.getGame();
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
@@ -54,12 +53,12 @@ public class OpenCamerasItem extends FunctionalItem {
             return;
         }
 
-        Guard guard = (Guard) game.getPEPlayer(playerName);
+        Guard guard = (Guard) player;
 
         Action action = e.getAction();
         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
             _currentCameraIndex = _currentCameraIndex + 1 == cameras.size() ? 0 : _currentCameraIndex + 1;
-            guard.getKit().update(playerName);
+            guard.getKit().update(guard);
         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
             if (guard.isSneaking()) {
                 BukkitMessageSender.sendChatMessage(guard, messages.getCantJoinCameraSneakingMessage());

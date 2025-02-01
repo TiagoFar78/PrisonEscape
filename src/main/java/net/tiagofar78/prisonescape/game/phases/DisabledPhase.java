@@ -42,7 +42,7 @@ public class DisabledPhase extends Phase {
         prison.deleteVaults();
         prison.deletePlaceables();
 
-        GameManager.removeGame();
+        GameManager.removeGame(game.getId());
     }
 
 }

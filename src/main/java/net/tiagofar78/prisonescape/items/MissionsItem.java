@@ -3,7 +3,7 @@ package net.tiagofar78.prisonescape.items;
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.missions.Mission;
 
@@ -31,9 +31,8 @@ public class MissionsItem extends FunctionalItem {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
-        PEGame game = GameManager.getGame();
-        Guard guard = (Guard) game.getPEPlayer(e.getPlayer().getName());
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
+        Guard guard = (Guard) player;
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(guard.getName());
 

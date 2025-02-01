@@ -1,3 +1,4 @@
+MaxSimultaneousGames: 4
 PrisonersRatio: 0.73
 PoliceRatio: 0.27
 MinPlayers: 3
@@ -54,11 +55,8 @@ WorldName: "PrisonEscape"
 PackageItemProbabilities:
   Bolts: 0.3
   DuctTape: 0.01
-ReferenceBlock:
-  X: 0
-  Y: 0
-  Z: 0
 LeavingLocation:
+  World: PrisonEscapeLobby
   X: 0
   Y: 0
   Z: 0

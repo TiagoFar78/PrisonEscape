@@ -1,5 +1,8 @@
 package net.tiagofar78.prisonescape.items;
 
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -11,15 +14,15 @@ public abstract class FunctionalItem extends Item {
         return true;
     }
 
-    public void use(PlayerInteractEvent e) {
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
         // Do nothing, is is only useful so children classes can Override the method they want
     }
 
-    public void use(PlayerInteractEntityEvent e) {
+    public void use(PEGame game, PEPlayer player, PlayerInteractEntityEvent e) {
         // Do nothing, is is only useful so children classes can Override the method they want
     }
 
-    public void use(EntityDamageByEntityEvent e) {
+    public void use(PEGame game, PEPlayer player, EntityDamageByEntityEvent e) {
         // Do nothing, is is only useful so children classes can Override the method they want
     }
 }

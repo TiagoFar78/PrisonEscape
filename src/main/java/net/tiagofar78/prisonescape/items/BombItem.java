@@ -2,7 +2,7 @@ package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.game.PEGame;
-import net.tiagofar78.prisonescape.managers.GameManager;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,38 +35,29 @@ public class BombItem extends FunctionalItem implements Craftable {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
+    public void use(PEGame game, PEPlayer peplayer, PlayerInteractEvent e) {
         Block block = e.getClickedBlock();
         if (block == null) {
             return;
         }
 
-        PEGame game = GameManager.getGame();
         Location blockLoc = getPlacedBlockLocation(block.getLocation(), e.getBlockFace());
 
-        ((TNTPrimed) PEResources.getWorld().spawn(blockLoc, TNTPrimed.class)).setFuseTicks(EXPLOSION_TICKS);
+        TNTPrimed bomb = (TNTPrimed) PEResources.getWorld().spawn(blockLoc, TNTPrimed.class);
+        bomb.setFuseTicks(EXPLOSION_TICKS);
 
         Player player = e.getPlayer();
+        bomb.setSource(player);
+
         game.getPEPlayer(player.getName()).removeItem(player.getInventory().getHeldItemSlot());
     }
 
     private Location getPlacedBlockLocation(Location blockLocation, BlockFace face) {
-        switch (face) {
-            case UP:
-                return blockLocation.add(0, 1, 0);
-            case DOWN:
-                return blockLocation.add(0, -1, 0);
-            case NORTH:
-                return blockLocation.add(0, 0, -1);
-            case SOUTH:
-                return blockLocation.add(0, 0, 1);
-            case EAST:
-                return blockLocation.add(1, 0, 0);
-            case WEST:
-                return blockLocation.add(-1, 0, 0);
-            default:
-                return null;
+        if (face.isCartesian()) {
+            return blockLocation.add(face.getModX(), face.getModY(), face.getModZ());
         }
+
+        return null;
     }
 
     @Override

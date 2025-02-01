@@ -1,9 +1,9 @@
 package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -44,11 +44,8 @@ public class RadarItem extends FunctionalItem implements Buyable {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
-        PEGame game = GameManager.getGame();
-
-        String playerName = e.getPlayer().getName();
-        game.getPEPlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
+        player.removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         ConfigManager config = ConfigManager.getInstance();
         int effectDuration = config.getRadarDuration();

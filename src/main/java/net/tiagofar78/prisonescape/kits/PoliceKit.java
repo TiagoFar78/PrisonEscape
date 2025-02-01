@@ -1,14 +1,13 @@
 package net.tiagofar78.prisonescape.kits;
 
 import net.tiagofar78.prisonescape.game.Guard;
-import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.HandcuffsItem;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.MapItem;
 import net.tiagofar78.prisonescape.items.MissionsItem;
 import net.tiagofar78.prisonescape.items.OpenCamerasItem;
 import net.tiagofar78.prisonescape.items.ShopItem;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
@@ -79,7 +78,9 @@ public class PoliceKit extends Kit {
     }
 
     @Override
-    public void update(String playerName) {
+    public void update(PEPlayer player) {
+        String playerName = player.getName();
+
         Player bukkitPlayer = Bukkit.getPlayer(playerName);
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
@@ -87,10 +88,8 @@ public class PoliceKit extends Kit {
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
-        PEGame game = GameManager.getGame();
-        Guard guard = (Guard) game.getPEPlayer(playerName);
-
         ItemStack missionsBook = getItemAt(MISSIONS_ITEM_INDEX).toItemStack(messages);
+        Guard guard = (Guard) player;
         if (guard.getMissions().size() > 0) {
             missionsBook.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         } else {

@@ -9,8 +9,8 @@ public class WaitingPlayer extends PEPlayer {
 
     private TeamPreference _preference;
 
-    public WaitingPlayer(String name) {
-        super(name);
+    public WaitingPlayer(PEGame game, String name) {
+        super(game, name);
         _preference = TeamPreference.RANDOM;
     }
 

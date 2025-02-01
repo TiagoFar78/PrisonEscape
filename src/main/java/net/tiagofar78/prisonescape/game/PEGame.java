@@ -36,6 +36,8 @@ public class PEGame {
     public static final String WAITING_TEAM_NAME = "Waiting";
     public static final String CELLS_REGION_NAME = "Cells";
 
+    private int _id;
+
     private int _currentDay;
     private DayPeriod _dayPeriod;
     private PrisonBuilding _prison;
@@ -48,9 +50,11 @@ public class PEGame {
 
     private boolean _hasDoorCode;
 
-    public PEGame(String mapName, Location referenceBlock) {
+    public PEGame(int id, String mapName, Location referenceBlock) {
+        _id = id;
+
         _currentDay = 0;
-        _prison = new PrisonBuilding(referenceBlock);
+        _prison = new PrisonBuilding(this, referenceBlock);
 
         _playersOnLobby = new ArrayList<>();
         _policeTeam = new PETeam<Guard>(GUARDS_TEAM_NAME);
@@ -59,6 +63,10 @@ public class PEGame {
         _hasDoorCode = false;
 
         startNextPhase(new WaitingPhase());
+    }
+
+    public int getId() {
+        return _id;
     }
 
     public Phase getCurrentPhase() {
@@ -97,7 +105,7 @@ public class PEGame {
             return -3;
         }
 
-        PEPlayer player = new WaitingPlayer(playerName);
+        PEPlayer player = new WaitingPlayer(this, playerName);
         _playersOnLobby.add(player);
 
         BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
@@ -279,19 +287,6 @@ public class PEGame {
 
     public void forceStop() {
         startNextPhase(new DisabledPhase());
-    }
-
-    /**
-     * @return 0 if successful<br>
-     *         -1 if not in finished phase
-     */
-    public int stop() {
-        if (!_phase.hasGameEnded()) {
-            return -1;
-        }
-
-        startNextPhase(new DisabledPhase());
-        return 0;
     }
 
 //	########################################
@@ -534,7 +529,7 @@ public class PEGame {
         BukkitMessageSender.sendChatMessage(player, message);
 
         updatePreferenceTabListDisplay(playerName, teamName);
-        player.getKit().update(playerName);
+        player.getKit().update(waitingPlayer);
     }
 
     private void updatePreferenceTabListDisplay(String playerName, String teamName) {

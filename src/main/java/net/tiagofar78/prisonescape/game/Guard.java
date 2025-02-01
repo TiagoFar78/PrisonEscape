@@ -6,7 +6,6 @@ import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
 import net.tiagofar78.prisonescape.items.TrapItem;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.missions.Mission;
 
@@ -30,8 +29,8 @@ public class Guard extends PEPlayer {
 
     private Location _locationBeforeWatchingCameras = null;
 
-    public Guard(String name) {
-        super(name);
+    public Guard(PEGame game, String name) {
+        super(game, name);
 
         _missions = new ArrayList<>();
 
@@ -141,12 +140,12 @@ public class Guard extends PEPlayer {
             missionsRegionsNames.remove(randomMissionRegion);
         }
 
-        getKit().update(getName());
+        getKit().update(this);
     }
 
     public void removeMission(int index) {
         _missions.remove(index);
-        getKit().update(getName());
+        getKit().update(this);
     }
 
 //  ########################################
@@ -197,8 +196,7 @@ public class Guard extends PEPlayer {
         getScoreboardData().updateLine(BALANCE_LINE_INDEX, balanceLine);
     }
 
-    public void addSoundDetectorLine(int value) {
-        int soundDetectorsAmount = GameManager.getGame().getPrison().countSoundDetectors();
+    public void addSoundDetectorLine(int soundDetectorsAmount, int value) {
         if (soundDetectorsAmount == 0) {
             String emptyLine = "§a";
             getScoreboardData().addLine(SOUND_DETECTORS_FIRST_LINE_INDEX, emptyLine);

@@ -29,6 +29,7 @@ public class ConfigManager {
         return instance;
     }
 
+    private int _maxGames;
     private double _prisonerRatio;
     private double _officerRatio;
     private int _minimumPlayers;
@@ -79,7 +80,6 @@ public class ConfigManager {
     private String _cameraSkinTexture;
 
     private String _worldName;
-    private Location _referenceBlock;
     private Location _leavingLocation;
     private Location _waitingLocation;
     private Location _prisonUpperCornerLocation;
@@ -123,6 +123,7 @@ public class ConfigManager {
     public ConfigManager() {
         YamlConfiguration config = PEResources.getYamlConfiguration();
 
+        _maxGames = config.getInt("MaxSimultaneousGames");
         _prisonerRatio = config.getDouble("PrisonersRatio");
         _officerRatio = config.getDouble("PoliceRatio");
         _minimumPlayers = config.getInt("MinPlayers");
@@ -174,8 +175,7 @@ public class ConfigManager {
 
         _worldName = config.getString("WorldName");
         World world = Bukkit.getWorld(_worldName);
-        _referenceBlock = createLocation(config, "ReferenceBlock", world);
-        _leavingLocation = createLocation(config, "LeavingLocation", world);
+        _leavingLocation = createLocation(config, "LeavingLocation");
         _waitingLocation = createLocation(config, "WaitingLocation", world);
         _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation", world);
         _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation", world);
@@ -214,6 +214,11 @@ public class ConfigManager {
         _rareItemsProbability = config.getDouble("RareItemsProbability");
 
         _chestSize = config.getInt("ChestSize");
+    }
+
+    private Location createLocation(YamlConfiguration config, String path) {
+        String worldName = config.getString(path + ".World");
+        return createLocation(config, path, Bukkit.getWorld(worldName));
     }
 
     private Location createLocation(YamlConfiguration config, String path, World world) {
@@ -375,6 +380,10 @@ public class ConfigManager {
         }
 
         return itemsProbabilities;
+    }
+
+    public int getMaxGames() {
+        return _maxGames;
     }
 
     public Double getPrisonerRatio() {
@@ -559,11 +568,6 @@ public class ConfigManager {
 
     public String getWorldName() {
         return _worldName;
-    }
-
-    @Deprecated
-    public Location getReferenceBlock() {
-        return createLocationCopy(_referenceBlock);
     }
 
     public Location getLeavingLocation() {

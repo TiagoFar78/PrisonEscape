@@ -5,7 +5,6 @@ import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
@@ -34,14 +33,10 @@ public class CellPhoneItem extends FunctionalItem implements Craftable {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
         Player bukkitPlayer = e.getPlayer();
         Location location = bukkitPlayer.getLocation();
         String playerName = bukkitPlayer.getName();
-
-        PEGame game = GameManager.getGame();
-
-        PEPlayer player = game.getPEPlayer(playerName);
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 

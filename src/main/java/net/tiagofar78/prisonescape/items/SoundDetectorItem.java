@@ -2,8 +2,8 @@ package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
-import net.tiagofar78.prisonescape.managers.GameManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Location;
@@ -43,7 +43,7 @@ public class SoundDetectorItem extends FunctionalItem implements Buyable {
     }
 
     @Override
-    public void use(PlayerInteractEvent e) {
+    public void use(PEGame game, PEPlayer player, PlayerInteractEvent e) {
         String playerName = e.getPlayer().getName();
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
 
@@ -53,10 +53,8 @@ public class SoundDetectorItem extends FunctionalItem implements Buyable {
             return;
         }
 
-        PEGame game = GameManager.getGame();
         game.getPrison().addSoundDetector(loc);
-
-        game.getPEPlayer(playerName).removeItem(e.getPlayer().getInventory().getHeldItemSlot());
+        player.removeItem(e.getPlayer().getInventory().getHeldItemSlot());
 
         BukkitMessageSender.sendChatMessage(playerName, messages.getSoundDetectorPlacedMessage());
     }

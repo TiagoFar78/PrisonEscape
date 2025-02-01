@@ -31,6 +31,7 @@ public class PrisonBuilding {
 
     private static final String PRISON_REGION_NAME = "PRISON";
 
+    private PEGame _game;
     private Location _reference;
 
     private Location _waitingLobbyLocation;
@@ -67,9 +68,10 @@ public class PrisonBuilding {
 //  #              Constructor              #
 //  #########################################
 
-    public PrisonBuilding(Location reference) {
+    public PrisonBuilding(PEGame game, Location reference) {
         ConfigManager config = ConfigManager.getInstance();
 
+        _game = game;
         _reference = reference;
 
         Location prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
@@ -159,7 +161,7 @@ public class PrisonBuilding {
 
         Location helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
         Location helicopterLowerLocation = config.getHelicopterLowerLocation().add(reference);
-        _helicopter = new Helicopter(helicopterUpperLocation, helicopterLowerLocation);
+        _helicopter = new Helicopter(_game, helicopterUpperLocation, helicopterLowerLocation);
         _helicopter.departed();
 
         _cameras = new ArrayList<>();
@@ -424,7 +426,7 @@ public class PrisonBuilding {
     }
 
     public void addSoundDetector(Location location) {
-        _soundDetectors.add(new SoundDetector(_soundDetectors.size(), location));
+        _soundDetectors.add(new SoundDetector(_game, _soundDetectors.size(), location));
     }
 
     public List<SoundDetector> getSoundDetectors() {

@@ -75,15 +75,13 @@ public class WaitingPhase extends Phase {
                 }
 
                 if (remainingSeconds % config.getDelayBetweenAnnouncements() == 0) {
-                    List<String> playersNames = BukkitMessageSender.getOnlinePlayersNames();
-                    for (String playerName : playersNames) {
+                    for (PEPlayer player : playersOnLobby) {
+                        String playerName = player.getName();
                         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-
-                        List<String> announcement = messages.getGameStartingAnnouncementMessage(
-                                remainingSeconds,
-                                playersOnLobby.size()
+                        BukkitMessageSender.sendChatMessage(
+                                playerName,
+                                messages.getGameStartingAnnouncementMessage(remainingSeconds)
                         );
-                        BukkitMessageSender.sendChatMessage(playerName, announcement);
                     }
                 }
 
