@@ -6,8 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class PEResources {
 
@@ -45,6 +47,45 @@ public class PEResources {
         return new File(
                 PrisonEscape.getPrisonEscape().getDataFolder() + File.separator + "languages",
                 language + ".yml"
+        );
+    }
+
+//  ########################################
+//  #                 Maps                 #
+//  ########################################
+
+    public static YamlConfiguration getYamlMap(String map) {
+        return YamlConfiguration.loadConfiguration(mapFile(map));
+    }
+
+    private static File mapFile(String map) {
+        return new File(
+                PrisonEscape.getPrisonEscape().getDataFolder() + File.separator + "maps",
+                map + ".yml"
+        );
+    }
+
+    public static BufferedImage getMapImage(String map) {
+        File imageFile = mapImageFile(map);
+        if (!imageFile.exists()) {
+            throw new IllegalArgumentException(
+                    "Could not find map image. Add an image named " + map + ".png to the maps folder."
+            );
+        }
+
+        try {
+            return ImageIO.read(imageFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static File mapImageFile(String map) {
+        return new File(
+                PrisonEscape.getPrisonEscape().getDataFolder() + File.separator + "maps",
+                map + ".png"
         );
     }
 

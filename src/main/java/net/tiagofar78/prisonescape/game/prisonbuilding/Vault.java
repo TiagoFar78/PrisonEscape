@@ -5,7 +5,7 @@ import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MapManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
@@ -37,6 +37,8 @@ public class Vault implements Clickable {
     private static final int HIDDEN_ITEM_INDEX = 9 * 4 + 4;
     private static final int[] TEMP_ITEMS_INDEXES = {9 + 7, 9 * 2 + 7, 9 * 3 + 7, 9 * 4 + 7};
 
+    private MapManager _map;
+
     private List<Item> _nonHiddenContents;
     private List<Item> _hiddenContents;
     private List<Item> _tempContents;
@@ -45,7 +47,9 @@ public class Vault implements Clickable {
 
     private Location _location;
 
-    public Vault(Prisoner owner, Location location) {
+    public Vault(Prisoner owner, Location location, MapManager map) {
+        _map = map;
+
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
         _tempContents = createContentsList(TEMP_SIZE);
@@ -346,10 +350,8 @@ public class Vault implements Clickable {
     }
 
     private void rotate(Block block) {
-        ConfigManager config = ConfigManager.getInstance();
-
         Directional rotatable = (Directional) block.getBlockData();
-        rotatable.setFacing(BlockFace.valueOf(config.getVaultsDirection()));
+        rotatable.setFacing(BlockFace.valueOf(_map.getVaultsDirection()));
         block.setBlockData(rotatable);
     }
 

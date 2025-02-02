@@ -41,10 +41,18 @@ public class GameManager {
     }
 
     public static PEGame getJoinableGame() {
-        return getJoinableGame(1);
+        return getJoinableGame(1, null);
     }
 
     public static PEGame getJoinableGame(int partySize) {
+        return getJoinableGame(partySize, null);
+    }
+
+    public static PEGame getJoinableGame(String mapName) {
+        return getJoinableGame(1, mapName);
+    }
+
+    public static PEGame getJoinableGame(int partySize, String mapName) {
         int maxPlayers = ConfigManager.getInstance().getMaxPlayers();
 
         for (PEGame game : games) {
@@ -54,7 +62,7 @@ public class GameManager {
             }
         }
 
-        return startNewGame();
+        return startNewGame(mapName);
     }
 
     public static PlayerInGame getPlayerInGame(String playerName) {
@@ -87,14 +95,21 @@ public class GameManager {
      * @return a PEGame instance if successful<br>
      *         null if the max number of simultaneous games was reached
      */
-    private static PEGame startNewGame() {
+    private static PEGame startNewGame(String mapName) {
         int freeSlot = getFreeSlot();
         if (freeSlot == -1) {
             return null;
         }
 
+        List<String> availableMaps = ConfigManager.getInstance().getAvailableMaps();
         int mapIndex = 0;
-        PEGame game = new PEGame(currentId, null, getReferenceBlock(freeSlot, mapIndex));
+        for (; mapIndex < availableMaps.size(); mapIndex++) {
+            if (availableMaps.get(mapIndex).equals(mapName)) {
+                break;
+            }
+        }
+
+        PEGame game = new PEGame(currentId, mapName, getReferenceBlock(freeSlot, mapIndex));
         games[freeSlot] = game;
         currentId++;
 

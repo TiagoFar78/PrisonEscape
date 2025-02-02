@@ -2,19 +2,15 @@ package net.tiagofar78.prisonescape.managers;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
-import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
-import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
 import net.tiagofar78.prisonescape.missions.SortMission;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map.Entry;
 
 public class ConfigManager {
 
@@ -73,6 +69,7 @@ public class ConfigManager {
 
     private List<String> _availableLanguages;
     private String _defaultLanguage;
+    private List<String> _availableMaps;
 
     private String _teamChatPrefix;
 
@@ -81,36 +78,8 @@ public class ConfigManager {
 
     private String _worldName;
     private Location _leavingLocation;
-    private Location _waitingLocation;
-    private Location _prisonUpperCornerLocation;
-    private Location _prisonLowerCornerLocation;
-    private List<SquaredRegion> _regions;
     private List<String> _missionsRegions;
-    private List<Location> _prisonersSpawnLocation;
-    private List<Location> _policeSpawnLocation;
-    private Location _solitaryLocation;
-    private Location _solitaryExitLocation;
-    private Location _helicopterExitLocation;
-    private Location _helicopterJoinLocation;
-    private Location _helicopterUpperLocation;
-    private Location _helicopterLowerLocation;
-    private Location _afterEscapeLocation;
-    private Hashtable<Location, Location> _prisonersSecretPassageLocations;
-    private Hashtable<Location, Location> _policeSecretPassageLocations;
-    private List<Location> _vaultsLocations;
-    private String _vaultsDirection;
-    private List<List<Location>> _chestsLocations;
-    private List<Location> _goldenDoorsLocations;
-    private List<Location> _grayDoorsLocations;
-    private List<Location> _codeDoorsLocations;
-    private List<Location> _cellDoorsLocations;
-    private List<Location> _wallCornersLocations;
     private List<List<String>> _wallCrackFormats;
-    private List<String> _mazeFormat;
-    private Location _mazeUpperCornerLocation;
-    private List<List<Location>> _fencesLocations;
-    private List<Location> _ventsLocations;
-    private List<List<Location>> _metalDetectorLocations;
 
     private Hashtable<String, List<ItemProbability>> _regionsChestContents;
     private List<ItemProbability> _packagesItemProbabilities;
@@ -167,6 +136,7 @@ public class ConfigManager {
 
         _availableLanguages = config.getStringList("AvailableLanguages");
         _defaultLanguage = config.getString("DefaultLanguage");
+        _availableMaps = config.getStringList("AvailableMaps");
 
         _teamChatPrefix = config.getString("TeamChatPrefix");
 
@@ -174,38 +144,9 @@ public class ConfigManager {
         _cameraSkinTexture = config.getString("CameraSkinTexture");
 
         _worldName = config.getString("WorldName");
-        World world = Bukkit.getWorld(_worldName);
         _leavingLocation = createLocation(config, "LeavingLocation");
-        _waitingLocation = createLocation(config, "WaitingLocation", world);
-        _prisonUpperCornerLocation = createLocation(config, "PrisonTopLeftCornerLocation", world);
-        _prisonLowerCornerLocation = createLocation(config, "PrisonBottomRightCornerLocation", world);
-        _regions = createRegionsList(config, world);
         _missionsRegions = config.getStringList("MissionsRegions");
-        _prisonersSpawnLocation = createLocationList(config, "PrisonersSpawnLocations", world);
-        _policeSpawnLocation = createLocationList(config, "PoliceSpawnLocations", world);
-        _solitaryLocation = createLocation(config, "SolitaryLocation", world);
-        _solitaryExitLocation = createLocation(config, "SolitaryExitLocation", world);
-        _helicopterExitLocation = createLocation(config, "Helicopter.ExitLocation", world);
-        _helicopterJoinLocation = createLocation(config, "Helicopter.JoinLocation", world);
-        _helicopterUpperLocation = createLocation(config, "Helicopter.UpperLocation", world);
-        _helicopterLowerLocation = createLocation(config, "Helicopter.LowerLocation", world);
-        _afterEscapeLocation = createLocation(config, "AfterEscapeLocation", world);
-        _prisonersSecretPassageLocations = createLocationsMap(config, "PrisonersSecretPassagesLocation", world);
-        _policeSecretPassageLocations = createLocationsMap(config, "PoliceSecretPassagesLocation", world);
-        _vaultsLocations = createLocationList(config, "VaultsLocations", world);
-        _vaultsDirection = config.getString("VaultsDirection");
-        _chestsLocations = createLocationListList(config, "ChestsLocations", world);
-        _goldenDoorsLocations = createLocationList(config, "GoldenDoorsLocations", world);
-        _grayDoorsLocations = createLocationList(config, "GrayDoorsLocations", world);
-        _codeDoorsLocations = createLocationList(config, "CodeDoorsLocations", world);
-        _cellDoorsLocations = createLocationList(config, "CellDoorsLocations", world);
-        _wallCornersLocations = createLocationList(config, "WallCorners", world);
         _wallCrackFormats = createStringListList(config, "WallCrackFormats");
-        _mazeFormat = config.getStringList("Maze.Format");
-        _mazeUpperCornerLocation = createLocation(config, "Maze.UpperCornerLocation", world);
-        _fencesLocations = createLocationPairList(config, "Fences", world);
-        _ventsLocations = createLocationList(config, "Vents", world);
-        _metalDetectorLocations = createLocationPairList(config, "MetalDetectors", world);
 
         _regionsChestContents = createRegionsChestContentsMap(config);
         _packagesItemProbabilities = createItemProbabilitiesList(config, "PackageItemProbabilities");
@@ -218,60 +159,11 @@ public class ConfigManager {
 
     private Location createLocation(YamlConfiguration config, String path) {
         String worldName = config.getString(path + ".World");
-        return createLocation(config, path, Bukkit.getWorld(worldName));
-    }
-
-    private Location createLocation(YamlConfiguration config, String path, World world) {
         int x = config.getInt(path + ".X");
         int y = config.getInt(path + ".Y");
         int z = config.getInt(path + ".Z");
 
-        return new Location(world, x, y, z);
-    }
-
-    private List<Location> createLocationList(YamlConfiguration config, String path, World world) {
-        List<Location> list = new ArrayList<>();
-
-        List<String> filteredKeys = config.getKeys(true).stream().filter(
-                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
-        ).toList();
-
-        for (String key : filteredKeys) {
-            list.add(createLocation(config, key, world));
-        }
-
-        return list;
-    }
-
-    private List<List<Location>> createLocationListList(YamlConfiguration config, String path, World world) {
-        List<List<Location>> list = new ArrayList<>();
-
-        List<String> filteredKeys = config.getKeys(true).stream().filter(
-                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
-        ).toList();
-
-        for (String key : filteredKeys) {
-            list.add(createLocationList(config, key, world));
-        }
-
-        return list;
-    }
-
-    private List<List<Location>> createLocationPairList(YamlConfiguration config, String path, World world) {
-        List<List<Location>> list = new ArrayList<>();
-
-        List<String> filteredKeys = config.getKeys(true).stream().filter(
-                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
-        ).toList();
-
-        for (String key : filteredKeys) {
-            List<Location> pair = new ArrayList<>();
-            pair.add(createLocation(config, key + ".UpperCornerLocation", world));
-            pair.add(createLocation(config, key + ".LowerCornerLocation", world));
-            list.add(pair);
-        }
-
-        return list;
+        return new Location(Bukkit.getWorld(worldName), x, y, z);
     }
 
     private List<List<String>> createStringListList(YamlConfiguration config, String path) {
@@ -283,58 +175,6 @@ public class ConfigManager {
 
         for (String key : filteredKeys) {
             list.add(config.getStringList(key));
-        }
-
-        return list;
-    }
-
-    private Hashtable<Location, Location> createLocationsMap(YamlConfiguration config, String path, World world) {
-        Hashtable<Location, Location> map = new Hashtable<>();
-
-        List<String> filteredKeys = config.getKeys(true).stream().filter(
-                key -> key.startsWith(path) && key.lastIndexOf(".") == path.length()
-        ).toList();
-
-        for (String key : filteredKeys) {
-            map.put(createLocation(config, key + ".Key", world), createLocation(config, key + ".Value", world));
-        }
-
-        return map;
-    }
-
-    private List<SquaredRegion> createRegionsList(YamlConfiguration config, World world) {
-        List<SquaredRegion> list = new ArrayList<>();
-
-        String regionsPath = "Regions";
-
-        List<String> regionsNamesPaths = config.getKeys(true).stream().filter(
-                key -> key.startsWith(regionsPath) && key.lastIndexOf(".") == regionsPath.length()
-        ).toList();
-
-        for (String regionNamePath : regionsNamesPaths) {
-            String name = regionNamePath.substring(regionsPath.length() + 1);
-            boolean isRestricted = config.getBoolean(regionNamePath + ".IsRestricted");
-            boolean cutCellPhoneCalls = config.getBoolean(regionNamePath + ".CutCellPhoneCalls");
-
-            List<String> regionsPaths = config.getKeys(true).stream().filter(
-                    key -> key.startsWith(regionNamePath + ".") && key.lastIndexOf(".") == regionNamePath.length() &&
-                            !key.contains("IsRestricted") && !key.contains("HasCellPhoneCoverage")
-            ).toList();
-
-            for (String regionPath : regionsPaths) {
-                Location upperCornerLocation = createLocation(config, regionPath + ".UpperCorner", world);
-                Location lowerCornerLocation = createLocation(config, regionPath + ".LowerCorner", world);
-
-                list.add(
-                        new SquaredRegion(
-                                name,
-                                isRestricted,
-                                !cutCellPhoneCalls,
-                                upperCornerLocation,
-                                lowerCornerLocation
-                        )
-                );
-            }
         }
 
         return list;
@@ -554,6 +394,10 @@ public class ConfigManager {
         return _defaultLanguage;
     }
 
+    public List<String> getAvailableMaps() {
+        return new ArrayList<>(_availableMaps);
+    }
+
     public String getTeamChatPrefix() {
         return _teamChatPrefix;
     }
@@ -574,124 +418,12 @@ public class ConfigManager {
         return createLocationCopy(_leavingLocation);
     }
 
-    public Location getWaitingLobbyLocation() {
-        return createLocationCopy(_waitingLocation);
-    }
-
-    public Location getPrisonUpperCornerLocation() {
-        return createLocationCopy(_prisonUpperCornerLocation);
-    }
-
-    public Location getPrisonLowerCornerLocation() {
-        return createLocationCopy(_prisonLowerCornerLocation);
-    }
-
-    public List<SquaredRegion> getRegions() {
-        return createRegionsListCopy(_regions);
-    }
-
     public List<String> getMissionsRegions() {
         return new ArrayList<>(_missionsRegions);
     }
 
-    public List<Location> getPrisonersSpawnLocations() {
-        return createLocationsListCopy(_prisonersSpawnLocation);
-    }
-
-    public List<Location> getPoliceSpawnLocations() {
-        return createLocationsListCopy(_policeSpawnLocation);
-    }
-
-    public Location getSolitaryLocation() {
-        return createLocationCopy(_solitaryLocation);
-    }
-
-    public Location getSolitaryExitLocation() {
-        return createLocationCopy(_solitaryExitLocation);
-    }
-
-    public Location getHelicopterExitLocation() {
-        return createLocationCopy(_helicopterExitLocation);
-    }
-
-    public Location getHelicopterJoinLocation() {
-        return createLocationCopy(_helicopterJoinLocation);
-    }
-
-    public Location getHelicopterUpperLocation() {
-        return createLocationCopy(_helicopterUpperLocation);
-    }
-
-    public Location getHelicopterLowerLocation() {
-        return createLocationCopy(_helicopterLowerLocation);
-    }
-
-    public Location getAfterEscapeLocation() {
-        return createLocationCopy(_afterEscapeLocation);
-    }
-
-    public Hashtable<Location, Location> getPrisonersSecretPassageLocations() {
-        return createLocationsMapCopy(_prisonersSecretPassageLocations);
-    }
-
-    public Hashtable<Location, Location> getPoliceSecretPassageLocations() {
-        return createLocationsMapCopy(_policeSecretPassageLocations);
-    }
-
-    public List<Location> getVaultsLocations() {
-        return createLocationsListCopy(_vaultsLocations);
-    }
-
-    public String getVaultsDirection() {
-        return _vaultsDirection;
-    }
-
-    public List<List<Location>> getChestsLocations() {
-        return createLocationsPairListCopy(_chestsLocations);
-    }
-
-    public List<Location> getGoldenDoorsLocations() {
-        return createLocationsListCopy(_goldenDoorsLocations);
-    }
-
-    public List<Location> getGrayDoorsLocations() {
-        return createLocationsListCopy(_grayDoorsLocations);
-    }
-
-    public List<Location> getCodeDoorsLocations() {
-        return createLocationsListCopy(_codeDoorsLocations);
-    }
-
-    public List<Location> getCellDoorsLocations() {
-        return createLocationsListCopy(_cellDoorsLocations);
-    }
-
-    public List<Location> getWallCornersLocations() {
-        return createLocationsListCopy(_wallCornersLocations);
-    }
-
     public List<List<String>> getWallCrackFormats() {
         return createStringListListCopy(_wallCrackFormats);
-    }
-
-    public List<String> getMazeFormat() {
-        return new ArrayList<>(_mazeFormat);
-    }
-
-    public Location getMazeUpperCornerLocation() {
-        return createLocationCopy(_mazeUpperCornerLocation);
-    }
-
-    public List<List<Location>> getFencesLocations() {
-        return createLocationsPairListCopy(_fencesLocations);
-    }
-
-    public List<Location> getVentsLocations() {
-        return createLocationsListCopy(_ventsLocations);
-    }
-
-    public List<List<Location>> getMetalDetectorLocations() {
-        return createLocationsPairListCopy(_metalDetectorLocations);
     }
 
     public List<ItemProbability> getChestContents(String regionName) {
@@ -726,46 +458,6 @@ public class ConfigManager {
         return location.clone();
     }
 
-    private List<Location> createLocationsListCopy(List<Location> locations) {
-        List<Location> list = new ArrayList<>();
-
-        for (Location location : locations) {
-            list.add(createLocationCopy(location));
-        }
-
-        return list;
-    }
-
-    private List<List<Location>> createLocationsPairListCopy(List<List<Location>> locationPairs) {
-        List<List<Location>> list = new ArrayList<>();
-
-        for (List<Location> locationPair : locationPairs) {
-            list.add(createLocationsListCopy(locationPair));
-        }
-
-        return list;
-    }
-
-    private Hashtable<Location, Location> createLocationsMapCopy(Hashtable<Location, Location> locations) {
-        Hashtable<Location, Location> map = new Hashtable<>();
-
-        for (Entry<Location, Location> entry : locations.entrySet()) {
-            map.put(createLocationCopy(entry.getKey()), createLocationCopy(entry.getValue()));
-        }
-
-        return map;
-    }
-
-    private List<SquaredRegion> createRegionsListCopy(List<SquaredRegion> regions) {
-        List<SquaredRegion> list = new ArrayList<>();
-
-        for (SquaredRegion region : regions) {
-            list.add(new SquaredRegion(region));
-        }
-
-        return list;
-    }
-
     private List<ItemProbability> createItemProbabilityListCopy(List<ItemProbability> itemsProbabilities) {
         List<ItemProbability> list = new ArrayList<>();
 
@@ -791,24 +483,7 @@ public class ConfigManager {
 //  ########################################
 
     private boolean isValid() {
-        return areMissionsRegionsValid() && isSortMissionSizeValid();
-    }
-
-    private boolean areMissionsRegionsValid() {
-        for (String regionName : _missionsRegions) {
-            boolean regionExists = false;
-            for (Region region : _regions) {
-                if (region.getName().equals(regionName)) {
-                    regionExists = true;
-                }
-            }
-
-            if (!regionExists) {
-                throw new IllegalArgumentException("There is no region named " + regionName);
-            }
-        }
-
-        return true;
+        return isSortMissionSizeValid();
     }
 
     private boolean isSortMissionSizeValid() {

@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.kits;
 
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SelectNoneTeamItem;
@@ -31,15 +32,15 @@ public class TeamSelectorKit extends Kit {
     }
 
     @Override
-    public void update(PEPlayer player) {
+    public void update(PEGame game, PEPlayer player) {
         Player bukkitPlayer = Bukkit.getPlayer(player.getName());
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
         }
 
-        ItemStack selectPrsionerItem = getItemAt(SELECT_PRISIONER_ITEM_INDEX).toItemStack(player);
-        ItemStack selectGuardItem = getItemAt(SELECT_GUARD_ITEM_INDEX).toItemStack(player);
-        ItemStack selectNoneItem = getItemAt(SELECT_NONE_ITEM_INDEX).toItemStack(player);
+        ItemStack selectPrsionerItem = getItemAt(SELECT_PRISIONER_ITEM_INDEX).toItemStack(game, player);
+        ItemStack selectGuardItem = getItemAt(SELECT_GUARD_ITEM_INDEX).toItemStack(game, player);
+        ItemStack selectNoneItem = getItemAt(SELECT_NONE_ITEM_INDEX).toItemStack(game, player);
 
         Inventory inv = bukkitPlayer.getInventory();
         inv.setItem(SELECT_PRISIONER_ITEM_INDEX, selectPrsionerItem);

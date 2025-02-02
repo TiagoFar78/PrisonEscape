@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.kits;
 
 import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.HandcuffsItem;
 import net.tiagofar78.prisonescape.items.Item;
@@ -78,7 +79,7 @@ public class PoliceKit extends Kit {
     }
 
     @Override
-    public void update(PEPlayer player) {
+    public void update(PEGame game, PEPlayer player) {
         String playerName = player.getName();
 
         Player bukkitPlayer = Bukkit.getPlayer(playerName);

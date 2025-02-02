@@ -4,6 +4,7 @@ import net.tiagofar78.prisonescape.commands.PrisonEscapeCommand;
 import net.tiagofar78.prisonescape.listener.PlayerListener;
 import net.tiagofar78.prisonescape.listener.WorldListener;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MapManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Bukkit;
@@ -49,6 +50,11 @@ public class PrisonEscape extends JavaPlugin {
     private void loadResourcesAndManagers() {
         if (!ConfigManager.load()) {
             Bukkit.getLogger().severe("[TF_PrisonEscape] Could not load config");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
+        if (!MapManager.load()) {
+            Bukkit.getLogger().severe("[TF_PrisonEscape] Could not load maps");
             Bukkit.getPluginManager().disablePlugin(this);
         }
 

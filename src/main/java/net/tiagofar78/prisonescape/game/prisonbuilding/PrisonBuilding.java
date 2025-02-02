@@ -17,7 +17,7 @@ import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.SoundDetector;
 import net.tiagofar78.prisonescape.game.prisonbuilding.placeables.Trap;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.Region;
 import net.tiagofar78.prisonescape.game.prisonbuilding.regions.SquaredRegion;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MapManager;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -33,6 +33,7 @@ public class PrisonBuilding {
 
     private PEGame _game;
     private Location _reference;
+    private MapManager _map;
 
     private Location _waitingLobbyLocation;
     private Region _prison;
@@ -68,38 +69,39 @@ public class PrisonBuilding {
 //  #              Constructor              #
 //  #########################################
 
-    public PrisonBuilding(PEGame game, Location reference) {
-        ConfigManager config = ConfigManager.getInstance();
+    public PrisonBuilding(PEGame game, String mapName, Location reference) {
+        MapManager map = MapManager.getInstance(mapName);
+        _map = map;
 
         _game = game;
         _reference = reference;
 
-        Location prisonUpperCorner = config.getPrisonUpperCornerLocation().add(reference);
-        Location prisonLowerCorner = config.getPrisonLowerCornerLocation().add(reference);
+        Location prisonUpperCorner = map.getPrisonUpperCornerLocation().add(reference);
+        Location prisonLowerCorner = map.getPrisonLowerCornerLocation().add(reference);
         _prison = new SquaredRegion(PRISON_REGION_NAME, false, true, prisonUpperCorner, prisonLowerCorner);
 
-        _regions = createRegionsList(reference, config.getRegions());
+        _regions = createRegionsList(reference, map.getRegions());
 
-        _waitingLobbyLocation = config.getWaitingLobbyLocation().add(reference);
+        _waitingLobbyLocation = map.getWaitingLobbyLocation().add(reference);
 
-        _prisonersSpawnLocations = createLocationsList(reference, config.getPrisonersSpawnLocations());
-        _policeSpawnLocations = createLocationsList(reference, config.getPoliceSpawnLocations());
+        _prisonersSpawnLocations = createLocationsList(reference, map.getPrisonersSpawnLocations());
+        _policeSpawnLocations = createLocationsList(reference, map.getPoliceSpawnLocations());
 
-        _solitaryLocation = config.getSolitaryLocation().add(reference);
-        _solitaryExitLocation = config.getSolitaryExitLocation().add(reference);
+        _solitaryLocation = map.getSolitaryLocation().add(reference);
+        _solitaryExitLocation = map.getSolitaryExitLocation().add(reference);
 
-        _helicopterExitLocation = config.getHelicopterExitLocation().add(reference);
-        _helicopterJoinLocation = config.getHelicopterJoinLocation().add(reference);
+        _helicopterExitLocation = map.getHelicopterExitLocation().add(reference);
+        _helicopterJoinLocation = map.getHelicopterJoinLocation().add(reference);
 
-        _afterEscapeLocation = config.getAfterEscapeLocation().add(reference);
+        _afterEscapeLocation = map.getAfterEscapeLocation().add(reference);
 
-        _prisonersSecretPassageLocations = createLocationsMap(reference, config.getPrisonersSecretPassageLocations());
-        _policeSecretPassageLocations = createLocationsMap(reference, config.getPoliceSecretPassageLocations());
+        _prisonersSecretPassageLocations = createLocationsMap(reference, map.getPrisonersSecretPassageLocations());
+        _policeSecretPassageLocations = createLocationsMap(reference, map.getPoliceSecretPassageLocations());
 
         _vaults = new ArrayList<>();
 
         _chests = new ArrayList<>();
-        for (List<Location> locs : config.getChestsLocations()) {
+        for (List<Location> locs : map.getChestsLocations()) {
             String regionName = getRegionName(locs.get(0));
             if (regionName == null) {
                 regionName = "Default";
@@ -108,19 +110,19 @@ public class PrisonBuilding {
         }
 
         _doors = new Hashtable<>();
-        for (Location loc : config.getGoldenDoorsLocations()) {
+        for (Location loc : map.getGoldenDoorsLocations()) {
             Location referenceLoc = loc.add(reference);
             GoldenDoor goldenDoor = new GoldenDoor(referenceLoc);
             _doors.put(referenceLoc, goldenDoor);
             _doors.put(referenceLoc.clone().add(0, 1, 0), goldenDoor);
         }
-        for (Location loc : config.getGrayDoorsLocations()) {
+        for (Location loc : map.getGrayDoorsLocations()) {
             Location referenceLoc = loc.add(reference);
             GrayDoor grayDoor = new GrayDoor(referenceLoc);
             _doors.put(referenceLoc, grayDoor);
             _doors.put(referenceLoc.clone().add(0, 1, 0), grayDoor);
         }
-        for (Location loc : config.getCodeDoorsLocations()) {
+        for (Location loc : map.getCodeDoorsLocations()) {
             Location referenceLoc = loc.add(reference);
             CodeDoor codeDoor = new CodeDoor(referenceLoc);
             _doors.put(referenceLoc, codeDoor);
@@ -128,39 +130,39 @@ public class PrisonBuilding {
         }
 
         _cellDoors = new ArrayList<CellDoor>();
-        for (Location loc : config.getCellDoorsLocations()) {
+        for (Location loc : map.getCellDoorsLocations()) {
             Location referenceLoc = loc.add(reference);
             CellDoor door = new CellDoor(referenceLoc);
             _cellDoors.add(door);
         }
 
-        _wall = new Wall();
+        _wall = new Wall(map);
 
         _obstacles = new ArrayList<>();
 
         _maze = new Maze();
-        List<Dirt> dirts = _maze.buildMaze(config.getMazeUpperCornerLocation().add(reference), config.getMazeFormat());
+        List<Dirt> dirts = _maze.buildMaze(map.getMazeUpperCornerLocation().add(reference), map.getMazeFormat());
         _obstacles.addAll(dirts);
 
-        for (List<Location> pair : createLocationsPairList(reference, config.getFencesLocations())) {
+        for (List<Location> pair : createLocationsPairList(reference, map.getFencesLocations())) {
             Fence fence = new Fence(pair.get(0), pair.get(1));
             fence.generate();
             _obstacles.add(fence);
         }
 
-        for (Location location : createLocationsList(reference, config.getVentsLocations())) {
+        for (Location location : createLocationsList(reference, map.getVentsLocations())) {
             Vent vent = new Vent(location);
             vent.generate();
             _obstacles.add(vent);
         }
 
         _metalDetectors = new ArrayList<>();
-        for (List<Location> pair : config.getMetalDetectorLocations()) {
+        for (List<Location> pair : map.getMetalDetectorLocations()) {
             _metalDetectors.add(new MetalDetector(pair.get(0), pair.get(1)));
         }
 
-        Location helicopterUpperLocation = config.getHelicopterUpperLocation().add(reference);
-        Location helicopterLowerLocation = config.getHelicopterLowerLocation().add(reference);
+        Location helicopterUpperLocation = map.getHelicopterUpperLocation().add(reference);
+        Location helicopterLowerLocation = map.getHelicopterLowerLocation().add(reference);
         _helicopter = new Helicopter(_game, helicopterUpperLocation, helicopterLowerLocation);
         _helicopter.departed();
 
@@ -269,11 +271,10 @@ public class PrisonBuilding {
 //	#########################################
 
     public void addVaults(List<Prisoner> prisoners) {
-        ConfigManager config = ConfigManager.getInstance();
-        List<Location> vaultsLocations = createLocationsList(_reference, config.getVaultsLocations());
+        List<Location> vaultsLocations = createLocationsList(_reference, _map.getVaultsLocations());
 
         for (int i = 0; i < prisoners.size(); i++) {
-            _vaults.add(new Vault(prisoners.get(i), vaultsLocations.get(i)));
+            _vaults.add(new Vault(prisoners.get(i), vaultsLocations.get(i), _map));
         }
     }
 

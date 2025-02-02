@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MapManager;
 
 import org.bukkit.Location;
 import org.joml.Math;
@@ -19,8 +20,8 @@ public class Wall {
     private List<Location> _cornersLocations;
     private List<WallCrack> _cracks;
 
-    public Wall() {
-        _cornersLocations = ConfigManager.getInstance().getWallCornersLocations();
+    public Wall(MapManager map) {
+        _cornersLocations = map.getWallCornersLocations();
         _cracks = new ArrayList<>();
     }
 

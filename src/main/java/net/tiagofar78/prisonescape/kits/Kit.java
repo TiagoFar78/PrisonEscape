@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.kits;
 
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -42,7 +43,7 @@ public abstract class Kit {
         }
     }
 
-    public void update(PEPlayer player) {
+    public void update(PEGame game, PEPlayer player) {
         // Nothing
     }
 
