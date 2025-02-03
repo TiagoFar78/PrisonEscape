@@ -232,6 +232,7 @@ public class MessageLanguageManager {
     private String _notAllowedMessage;
     private String _onlyPlayersCanUseThisCommandMessage;
     private String _maxGamesReachedMessage;
+    private String _invalidMapNameMessage;
     private String _gameAlreadyStartedMessage;
     private String _gameIsNotInFinishedPhaseMessage;
     private String _playerAlreadyJoinedMessage;
@@ -427,6 +428,7 @@ public class MessageLanguageManager {
         _notAllowedMessage = createMessage(messages.getString(errorPath + "NotAllowed"));
         _onlyPlayersCanUseThisCommandMessage = createMessage(messages.getString(errorPath + "CommandForPlayers"));
         _maxGamesReachedMessage = createMessage(messages.getString(errorPath + "MaxGamesReached"));
+        _invalidMapNameMessage = createMessage(messages.getString(errorPath + "InvalidMapName"));
         _gameAlreadyStartedMessage = createMessage(messages.getString(errorPath + "GameAlreadyStarted"));
         _gameIsNotInFinishedPhaseMessage = createMessage(messages.getString(errorPath + "GameIsNotFinished"));
         _playerAlreadyJoinedMessage = createMessage(messages.getString(errorPath + "AlreadyJoined"));
@@ -1032,6 +1034,10 @@ public class MessageLanguageManager {
 
     public String getMaxGamesReachedMessage() {
         return _maxGamesReachedMessage;
+    }
+
+    public String getInvalidMapNameMessage(String mapName) {
+        return _invalidMapNameMessage.replace("{MAP}", mapName);
     }
 
     public String getGameAlreadyStartedMessage() {

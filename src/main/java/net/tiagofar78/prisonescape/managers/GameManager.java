@@ -1,5 +1,6 @@
 package net.tiagofar78.prisonescape.managers;
 
+import net.tiagofar78.prisonescape.dataobjects.JoinGameReturnCode;
 import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -41,30 +42,42 @@ public class GameManager {
         return ids;
     }
 
-    public static PEGame getJoinableGame() {
-        return getJoinableGame(1, null);
-    }
-
-    public static PEGame getJoinableGame(int partySize) {
-        return getJoinableGame(partySize, null);
-    }
-
-    public static PEGame getJoinableGame(String mapName) {
+    /**
+     *
+     * @return code 0 and a game that already exists<br>
+     *         code 1 and a newly created game<br>
+     *         code 2 and a null game if the max number of simultaneous games was reached<br>
+     *         code 3 and a null game if the map name is invalid
+     */
+    public static JoinGameReturnCode getJoinableGame(String mapName) {
         return getJoinableGame(1, mapName);
     }
 
-    public static PEGame getJoinableGame(int partySize, String mapName) {
-        int maxPlayers = ConfigManager.getInstance().getMaxPlayers();
+    /**
+     *
+     * @return code 0 and a game that already exists<br>
+     *         code 1 and a newly created game<br>
+     *         code 2 and a null game if the max number of simultaneous games was reached<br>
+     *         code 3 and a null game if the map name is invalid
+     */
+    public static JoinGameReturnCode getJoinableGame(int partySize, String mapName) {
+        ConfigManager config = ConfigManager.getInstance();
+        int maxPlayers = config.getMaxPlayers();
+
+        if (mapName != null && !config.getAvailableMaps().contains(mapName)) {
+            return new JoinGameReturnCode(3, null);
+        }
 
         for (PEGame game : games) {
             if (game != null && (mapName == null || game.getMapName().equals(mapName)) &&
                     !game.getCurrentPhase().hasGameStarted() &&
                     game.getPlayersOnLobby().size() + partySize <= maxPlayers) {
-                return game;
+                return new JoinGameReturnCode(0, game);
             }
         }
 
-        return startNewGame(mapName);
+        PEGame game = startNewGame(mapName);
+        return new JoinGameReturnCode(game != null ? 1 : 2, game);
     }
 
     public static PlayerInGame getPlayerInGame(String playerName) {
@@ -114,7 +127,7 @@ public class GameManager {
             }
 
             if (mapIndex == availableMaps.size()) {
-                return null; // TODO change return code to include invalid map names
+                return null;
             }
         }
 
