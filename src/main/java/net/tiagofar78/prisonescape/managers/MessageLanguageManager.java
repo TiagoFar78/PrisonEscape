@@ -142,6 +142,7 @@ public class MessageLanguageManager {
 
     private String _successfullyForceStartedGameMessage;
     private String _successfullyForceStoppedGameMessage;
+    private String _successfullyLoadedMapsMessage;
     private String _activeGamesMessage;
     private String _noActiveGamesMessage;
     private String _selectedPrisonersTeamMessage;
@@ -252,6 +253,7 @@ public class MessageLanguageManager {
     private String _forceStopCommandUsage;
     private String _rejoinCommandUsage;
     private String _listCommandUsage;
+    private String _loadMapsCommandUsage;
 
     private MessageLanguageManager(String language) {
         YamlConfiguration messages = PEResources.getYamlLanguage(language);
@@ -336,6 +338,7 @@ public class MessageLanguageManager {
         String warningPath = messagePath + "Warnings.";
         _successfullyForceStartedGameMessage = createMessage(messages.getString(warningPath + "ForceStartedGame"));
         _successfullyForceStoppedGameMessage = createMessage(messages.getString(warningPath + "ForceStoppedGame"));
+        _successfullyLoadedMapsMessage = createMessage(messages.getString(warningPath + "LoadedMaps"));
         _activeGamesMessage = createMessage(messages.getString(warningPath + "ActiveGames"));
         _noActiveGamesMessage = createMessage(messages.getString(warningPath + "NoActiveGames"));
         _selectedPrisonersTeamMessage = createMessage(messages.getString(warningPath + "SelectedPrisonersTeam"));
@@ -445,6 +448,7 @@ public class MessageLanguageManager {
         _leaveCommandUsage = createMessage(messages.getString(usagePath + "Leave"));
         _rejoinCommandUsage = createMessage(messages.getString(usagePath + "Rejoin"));
         _listCommandUsage = createMessage(messages.getString(usagePath + "List"));
+        _loadMapsCommandUsage = createMessage(messages.getString(usagePath + "LoadMaps"));
     }
 
     private String createMessage(String rawMessage) {
@@ -697,6 +701,10 @@ public class MessageLanguageManager {
 
     public String getSuccessfullyForceStoppedGameMessage() {
         return _successfullyForceStoppedGameMessage;
+    }
+
+    public String getSuccessfullyLoadedMapsMessage() {
+        return _successfullyLoadedMapsMessage;
     }
 
     public String getActiveGamesMessage(List<Integer> ids) {
@@ -1098,6 +1106,10 @@ public class MessageLanguageManager {
 
     public String getListCommandUsage() {
         return _listCommandUsage;
+    }
+
+    public String getLoadMapsCommandUsage() {
+        return _loadMapsCommandUsage;
     }
 
 }

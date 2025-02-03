@@ -214,6 +214,7 @@ Messages:
   Warnings:
     ForceStartedGame: "&aSucessfully skipped waiting phase."
     ForceStoppedGame: "&aSucessfully cancelled the game."
+    LoadedMaps: "&aSucessfully loaded all maps."
     ActiveGames: "&eCurrently, these are the ids of open games: {IDS}"
     NoActiveGames: "&cThere aren't any active games right now."
     SelectedPrisonersTeam: "&aYou set &6Prisoners &ateam as your prefered."
@@ -321,6 +322,7 @@ Messages:
     - "/PrisonEscape Join [MapName] - to join the game"
     - "/PrisonEscape Leave - to leave the game"
     - "/PrisonEscape Rejoin - to rejoin the game"
+    - "/PrisonEscape LoadMaps - to load all maps before games"
     - ""
     - "Note: commands are case insensitive and /PrisonEscape can be replaced by /PE"
     - ""
@@ -330,3 +332,4 @@ Messages:
     Join: "/PrisonEscape Join [MapName] - to join the game"
     Leave: "/PrisonEscape Leave - to leave the game"
     Rejoin: "/PrisonEscape Rejoin - to rejoin the game"
+    LoadMaps: "/PrisonEscape LoadMaps - to load all maps before games"

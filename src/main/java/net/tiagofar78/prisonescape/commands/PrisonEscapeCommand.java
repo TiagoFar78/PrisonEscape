@@ -17,6 +17,7 @@ public class PrisonEscapeCommand implements CommandExecutor {
     private static final String LEAVE_COMMAND = "leave";
     private static final String REJOIN_COMMAND = "rejoin";
     private static final String FORCE_STOP_COMMAND = "forcestop";
+    private static final String LOAD_MAPS_COMMAND = "loadmaps";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -48,6 +49,9 @@ public class PrisonEscapeCommand implements CommandExecutor {
                 break;
             case FORCE_STOP_COMMAND:
                 executor = new ForceStopSubcommand();
+                break;
+            case LOAD_MAPS_COMMAND:
+                executor = new LoadMapsSubcommand();
                 break;
         }
 

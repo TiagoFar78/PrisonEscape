@@ -1,5 +1,21 @@
 package net.tiagofar78.prisonescape.managers;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.World;
+
+import net.tiagofar78.prisonescape.PEResources;
+import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.dataobjects.JoinGameReturnCode;
 import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
 import net.tiagofar78.prisonescape.game.PEGame;
@@ -8,6 +24,9 @@ import net.tiagofar78.prisonescape.game.PEPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -163,6 +182,46 @@ public class GameManager {
             if (games[i] != null && games[i].getId() == id) {
                 games[i] = null;
             }
+        }
+    }
+
+    public static void generateMaps() {
+        ConfigManager config = ConfigManager.getInstance();
+        int maxGames = config.getMaxGames();
+        List<String> maps = config.getAvailableMaps();
+
+        for (int x = 0; x < maps.size(); x++) {
+            for (int z = 0; z < maxGames; z++) {
+                generateMap(x * MAPS_DISTANCE, z * MAPS_DISTANCE, maps.get(x));
+            }
+        }
+    }
+
+    private static void generateMap(int x, int z, String mapName) {
+        File file = new File(
+                PrisonEscape.getPrisonEscape().getDataFolder() + File.separator + "maps",
+                mapName + ".schem"
+        );
+        if (!file.exists()) {
+            throw new IllegalArgumentException("There is no map named " + mapName);
+        }
+
+        ClipboardFormat format = ClipboardFormats.findByFile(file);
+        try {
+
+            ClipboardReader reader = format.getReader(new FileInputStream(file));
+            Clipboard clipboard = reader.read();
+
+            World world = BukkitAdapter.adapt(PEResources.getWorld());
+            EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
+            Operation operation = new ClipboardHolder(clipboard).createPaste(editSession).to(
+                    BlockVector3.at(x, MAPS_Y_CORD, z)
+            ).ignoreAirBlocks(true).copyBiomes(true).build();
+            Operations.complete(operation);
+            editSession.commit();
+            editSession.close();
+        } catch (IOException | WorldEditException e) {
+            e.printStackTrace();
         }
     }
 
