@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.missions;
 
 import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
@@ -57,7 +58,8 @@ public class RicochetMission extends Mission implements Clickable {
     }
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         String title = messages.getRicochetTitle();
         int lines = 6;
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);

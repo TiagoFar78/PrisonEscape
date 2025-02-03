@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.missions;
 
 import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -55,7 +56,8 @@ public class SortMission extends Mission implements Clickable {
     }
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         String title = messages.getSortTitle(_game.countCorrect());
         int lines = 5;
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);

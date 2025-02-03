@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.Item;
@@ -364,19 +365,21 @@ public class Vault implements Clickable {
     }
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
         String title = messages.getVaultTitle();
         int lines = 6;
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
 
         placeGrayGlasses(inv, lines);
-        placeNonHiddenContents(inv, messages);
+        placeNonHiddenContents(inv, game, player);
 
         placeTempIndicatorGlasses(inv, lines, messages);
-        placeTempContents(inv, messages);
+        placeTempContents(inv, game, player);
 
         placeHiddenIndicatorGlasses(inv, lines, messages);
-        placeHiddenContents(inv, messages);
+        placeHiddenContents(inv, game, player);
 
         placeInforTorchItem(inv, messages);
 
@@ -385,28 +388,26 @@ public class Vault implements Clickable {
 
     @Override
     public void updateInventory(Inventory inv, PEPlayer player) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-
-        placeNonHiddenContents(inv, messages);
-        placeHiddenContents(inv, messages);
-        placeTempContents(inv, messages);
+        placeNonHiddenContents(inv, player.getGame(), player);
+        placeHiddenContents(inv, player.getGame(), player);
+        placeTempContents(inv, player.getGame(), player);
     }
 
-    private void placeNonHiddenContents(Inventory inv, MessageLanguageManager messages) {
+    private void placeNonHiddenContents(Inventory inv, PEGame game, PEPlayer player) {
         for (int i = 0; i < _nonHiddenContents.size(); i++) {
-            ItemStack item = _nonHiddenContents.get(i).toItemStack(messages);
+            ItemStack item = _nonHiddenContents.get(i).toItemStack(game, player);
             inv.setItem(NON_HIDDEN_ITEMS_INDEXES[i], item);
         }
     }
 
-    private void placeHiddenContents(Inventory inv, MessageLanguageManager messages) {
-        ItemStack hiddenItem = _hiddenContents.get(0).toItemStack(messages);
+    private void placeHiddenContents(Inventory inv, PEGame game, PEPlayer player) {
+        ItemStack hiddenItem = _hiddenContents.get(0).toItemStack(game, player);
         inv.setItem(HIDDEN_ITEM_INDEX, hiddenItem);
     }
 
-    private void placeTempContents(Inventory inv, MessageLanguageManager messages) {
+    private void placeTempContents(Inventory inv, PEGame game, PEPlayer player) {
         for (int i = 0; i < _tempContents.size(); i++) {
-            ItemStack item = _tempContents.get(i).toItemStack(messages);
+            ItemStack item = _tempContents.get(i).toItemStack(game, player);
             inv.setItem(TEMP_ITEMS_INDEXES[i], item);
         }
     }

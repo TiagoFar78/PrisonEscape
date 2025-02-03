@@ -9,6 +9,7 @@ import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameManager {
 
@@ -56,7 +57,8 @@ public class GameManager {
         int maxPlayers = ConfigManager.getInstance().getMaxPlayers();
 
         for (PEGame game : games) {
-            if (game != null && !game.getCurrentPhase().hasGameStarted() &&
+            if (game != null && (mapName == null || game.getMapName().equals(mapName)) &&
+                    !game.getCurrentPhase().hasGameStarted() &&
                     game.getPlayersOnLobby().size() + partySize <= maxPlayers) {
                 return game;
             }
@@ -101,11 +103,18 @@ public class GameManager {
             return null;
         }
 
-        List<String> availableMaps = ConfigManager.getInstance().getAvailableMaps();
         int mapIndex = 0;
-        for (; mapIndex < availableMaps.size(); mapIndex++) {
-            if (availableMaps.get(mapIndex).equals(mapName)) {
-                break;
+        List<String> availableMaps = ConfigManager.getInstance().getAvailableMaps();
+        if (mapName == null) {
+            mapIndex = new Random().nextInt(availableMaps.size());
+            mapName = availableMaps.get(mapIndex);
+        } else {
+            while (mapIndex < availableMaps.size() && !availableMaps.get(mapIndex).equals(mapName)) {
+                mapIndex++;
+            }
+
+            if (mapIndex == availableMaps.size()) {
+                return null; // TODO change return code to include invalid map names
             }
         }
 

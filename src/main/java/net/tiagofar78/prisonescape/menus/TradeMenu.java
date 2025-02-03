@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.Item;
@@ -185,7 +186,8 @@ public class TradeMenu implements Clickable {
     }
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         int lines = 5;
         String title = messages.getTradeTitle();
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
@@ -251,12 +253,12 @@ public class TradeMenu implements Clickable {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
         for (int i = 0; i < leftOfferedItems.size(); i++) {
-            inv.setItem(OFFERED_ITEMS_SLOTS[i], leftOfferedItems.get(i).toItemStack(messages));
+            inv.setItem(OFFERED_ITEMS_SLOTS[i], leftOfferedItems.get(i).toItemStack(player.getGame(), player));
         }
 
         for (int i = 0; i < rightOfferedItems.size(); i++) {
             int slot = OFFERED_ITEMS_SLOTS[i] + PLAYER_2_OFFERED_ITEMS_SLOTS_DISTANCE;
-            inv.setItem(slot, rightOfferedItems.get(i).toItemStack(messages));
+            inv.setItem(slot, rightOfferedItems.get(i).toItemStack(player.getGame(), player));
         }
 
         if (!isValidTrade()) {

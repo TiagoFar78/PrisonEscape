@@ -59,7 +59,7 @@ public class PoliceKit extends Kit {
             items.put(i, glass);
         }
 
-        String uniformName = messages.getPrisonerUniformName();
+        String uniformName = messages.getGuardUniformName();
 
         items.put(CHESTPLATE_INDEX, createColoredArmor(Material.LEATHER_CHESTPLATE, uniformName));
         items.put(LEGGINGS_INDEX, createColoredArmor(Material.LEATHER_LEGGINGS, uniformName));
@@ -87,9 +87,7 @@ public class PoliceKit extends Kit {
             return;
         }
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-
-        ItemStack missionsBook = getItemAt(MISSIONS_ITEM_INDEX).toItemStack(messages);
+        ItemStack missionsBook = getItemAt(MISSIONS_ITEM_INDEX).toItemStack(game, player);
         Guard guard = (Guard) player;
         if (guard.getMissions().size() > 0) {
             missionsBook.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
@@ -98,7 +96,7 @@ public class PoliceKit extends Kit {
         }
 
         Inventory inv = bukkitPlayer.getInventory();
-        inv.setItem(CAMERA_ITEM_INDEX, getItemAt(CAMERA_ITEM_INDEX).toItemStack(messages));
+        inv.setItem(CAMERA_ITEM_INDEX, getItemAt(CAMERA_ITEM_INDEX).toItemStack(game, player));
         inv.setItem(MISSIONS_ITEM_INDEX, missionsBook);
     }
 

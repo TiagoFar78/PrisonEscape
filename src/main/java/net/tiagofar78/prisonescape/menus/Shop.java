@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.CameraItem;
@@ -81,21 +82,26 @@ public class Shop implements Clickable {
     }
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         Inventory shopMenu = Bukkit.createInventory(null, 9, messages.getShopMenuTitle());
 
-        shopMenu.setItem(0, createShopItem(new EnergyDrinkItem(), messages));
-        shopMenu.setItem(1, createShopItem(new TrapItem(), messages));
-        shopMenu.setItem(2, createShopItem(new SoundDetectorItem(), messages));
-        shopMenu.setItem(3, createShopItem(new CameraItem(), messages));
-        shopMenu.setItem(4, createShopItem(new RadarItem(), messages));
-        shopMenu.setItem(5, createShopItem(new SearchItem(), messages));
+        shopMenu.setItem(0, createShopItem(new EnergyDrinkItem(), player, messages));
+        shopMenu.setItem(1, createShopItem(new TrapItem(), player, messages));
+        shopMenu.setItem(2, createShopItem(new SoundDetectorItem(), player, messages));
+        shopMenu.setItem(3, createShopItem(new CameraItem(), player, messages));
+        shopMenu.setItem(4, createShopItem(new RadarItem(), player, messages));
+        shopMenu.setItem(5, createShopItem(new SearchItem(), player, messages));
 
         return shopMenu;
     }
 
-    private <T extends Item & Buyable> ItemStack createShopItem(T item, MessageLanguageManager messages) {
-        ItemStack shopItem = item.toItemStack(messages);
+    private <T extends Item & Buyable> ItemStack createShopItem(
+            T item,
+            PEPlayer player,
+            MessageLanguageManager messages
+    ) {
+        ItemStack shopItem = item.toItemStack(player.getGame(), player);
         ItemMeta meta = shopItem.getItemMeta();
         List<String> lore = meta.getLore();
         if (lore == null) {

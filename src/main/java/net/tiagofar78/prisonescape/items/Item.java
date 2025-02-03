@@ -51,7 +51,7 @@ public abstract class Item {
         return toItemStack(messages);
     }
 
-    public ItemStack toItemStack(MessageLanguageManager messages) {
+    protected ItemStack toItemStack(MessageLanguageManager messages) {
         ItemStack item = BukkitItems.createItemStack(getMaterial());
         BukkitItems.setName(item, getDisplayName(messages));
         setLore(item, messages);

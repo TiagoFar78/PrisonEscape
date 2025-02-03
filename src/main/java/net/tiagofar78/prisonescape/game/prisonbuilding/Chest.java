@@ -2,6 +2,7 @@ package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.ItemFactory;
@@ -104,7 +105,8 @@ public class Chest implements Clickable {
     }
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
         int lines = 3;
         String title = messages.getContainerName();
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
@@ -116,7 +118,7 @@ public class Chest implements Clickable {
         }
 
         for (int i = 0; i < _contents.size(); i++) {
-            ItemStack item = _contents.get(i).toItemStack(messages);
+            ItemStack item = _contents.get(i).toItemStack(game, player);
             inv.setItem(CHEST_CONTENT_INDEXES[i], item);
         }
 

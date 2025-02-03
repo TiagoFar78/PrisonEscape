@@ -5,7 +5,6 @@ import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,13 +22,13 @@ public abstract class Kit {
         return new Hashtable<Integer, ItemStack>();
     }
 
-    public void give(String playerName) {
-        Player bukkitPlayer = Bukkit.getPlayer(playerName);
+    public void give(PEGame game, PEPlayer player) {
+        Player bukkitPlayer = player.getBukkitPlayer();
         if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
             return;
         }
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
         Inventory inv = bukkitPlayer.getInventory();
         inv.clear();
@@ -39,7 +38,7 @@ public abstract class Kit {
         }
 
         for (Entry<Integer, Item> entry : getContents().entrySet()) {
-            inv.setItem(entry.getKey(), entry.getValue().toItemStack(messages));
+            inv.setItem(entry.getKey(), entry.getValue().toItemStack(game, player));
         }
     }
 
