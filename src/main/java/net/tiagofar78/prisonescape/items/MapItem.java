@@ -1,8 +1,9 @@
 package net.tiagofar78.prisonescape.items;
 
 import net.tiagofar78.prisonescape.PEResources;
-import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
+import net.tiagofar78.prisonescape.game.PEGame;
+import net.tiagofar78.prisonescape.game.PEPlayer;
+import net.tiagofar78.prisonescape.managers.MapManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,31 +15,8 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class MapItem extends Item {
-
-    private static final String IMAGE_NAME = "prison_map.png";
-    private static final BufferedImage IMAGE = createImage();
-
-    private static BufferedImage createImage() {
-        File imageFile = new File(PrisonEscape.getPrisonEscape().getDataFolder(), IMAGE_NAME);
-        if (!imageFile.exists()) {
-            throw new IllegalArgumentException(
-                    "Could not find prison map image. Add a image named " + IMAGE_NAME + " to the plugin folder."
-            );
-        }
-
-        try {
-            return ImageIO.read(imageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     @Override
     public boolean isMetalic() {
@@ -56,8 +34,8 @@ public class MapItem extends Item {
     }
 
     @Override
-    public ItemStack toItemStack(MessageLanguageManager messages) {
-        ItemStack map = super.toItemStack(messages);
+    public ItemStack toItemStack(PEGame game, PEPlayer player) {
+        ItemStack map = super.toItemStack(game, player);
 
         MapMeta mapMeta = (MapMeta) map.getItemMeta();
         MapView view = Bukkit.getServer().createMap(PEResources.getWorld());
@@ -66,7 +44,7 @@ public class MapItem extends Item {
             view.removeRenderer(renderer);
         }
 
-        view.addRenderer(new PrisonRenderer());
+        view.addRenderer(new PrisonRenderer(game));
         mapMeta.setMapView(view);
         map.setItemMeta(mapMeta);
 
@@ -75,9 +53,15 @@ public class MapItem extends Item {
 
     private class PrisonRenderer extends MapRenderer {
 
+        private BufferedImage _image;
+
+        private PrisonRenderer(PEGame game) {
+            _image = MapManager.getInstance(game.getMapName()).getImage();
+        }
+
         @Override
         public void render(MapView map, MapCanvas canvas, Player player) {
-            canvas.drawImage(0, 0, IMAGE);
+            canvas.drawImage(0, 0, _image);
         }
 
     }

@@ -140,12 +140,12 @@ public class Guard extends PEPlayer {
             missionsRegionsNames.remove(randomMissionRegion);
         }
 
-        getKit().update(this);
+        getKit().update(getGame(), this);
     }
 
     public void removeMission(int index) {
         _missions.remove(index);
-        getKit().update(this);
+        getKit().update(getGame(), this);
     }
 
 //  ########################################

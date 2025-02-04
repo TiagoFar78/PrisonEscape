@@ -58,7 +58,7 @@ public class OpenCamerasItem extends FunctionalItem {
         Action action = e.getAction();
         if (action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
             _currentCameraIndex = _currentCameraIndex + 1 == cameras.size() ? 0 : _currentCameraIndex + 1;
-            guard.getKit().update(guard);
+            guard.getKit().update(game, guard);
         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
             if (guard.isSneaking()) {
                 BukkitMessageSender.sendChatMessage(guard, messages.getCantJoinCameraSneakingMessage());

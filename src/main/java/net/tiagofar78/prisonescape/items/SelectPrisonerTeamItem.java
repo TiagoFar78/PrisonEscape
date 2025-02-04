@@ -29,9 +29,9 @@ public class SelectPrisonerTeamItem extends FunctionalItem {
     }
 
     @Override
-    public ItemStack toItemStack(PEPlayer player) {
+    public ItemStack toItemStack(PEGame game, PEPlayer player) {
         WaitingPlayer waitingPlayer = (WaitingPlayer) player;
-        ItemStack item = super.toItemStack(player);
+        ItemStack item = super.toItemStack(game, player);
 
         if (waitingPlayer.getPreference() == TeamPreference.PRISIONERS) {
             item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);

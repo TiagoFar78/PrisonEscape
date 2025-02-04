@@ -1,0 +1,171 @@
+WaitingLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisonTopLeftCornerLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisonBottomRightCornerLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisonersSpawnLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+PoliceSpawnLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+SolitaryLocation:
+  X: 0
+  Y: 0
+  Z: 0
+SolitaryExitLocation:
+  X: 0
+  Y: 0
+  Z: 0
+Helicopter:
+  ExitLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  JoinLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  UpperLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  LowerLocation:
+    X: 0
+    Y: 0
+    Z: 0
+AfterEscapeLocation:
+  X: 0
+  Y: 0
+  Z: 0
+PrisonersSecretPassagesLocation:
+  "1":
+    Key:
+      X: 0
+      Y: 0
+      Z: 0
+    Value:
+      X: 0
+      Y: 0
+      Z: 0
+PoliceSecretPassagesLocation:
+  "1":
+    Key:
+      X: 0
+      Y: 0
+      Z: 0
+    Value:
+      X: 0
+      Y: 0
+      Z: 0
+VaultsDirection: "NORTH"
+VaultsLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+ChestsLocations:
+  "1":
+    "1":
+      X: 0
+      Y: 0
+      Z: 0
+GoldenDoorsLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+GrayDoorsLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+CodeDoorsLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+CellDoorsLocations:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+Regions:
+  Cells: # DO NOT CHANGE THIS REGION NAME
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: 0
+        Y: 0
+        Z: 0
+      LowerCorner:
+        X: 0
+        Y: 0
+        Z: 0  
+  RegionName:
+    IsRestricted: false
+    "1":
+      UpperCorner:
+        X: 0
+        Y: 0
+        Z: 0
+      LowerCorner:
+        X: 0
+        Y: 0
+        Z: 0
+WallCorners:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+Maze:
+  Format:
+  - "E########E"
+  - "##########"
+  - "##########"
+  - "##########"
+  - "###SSSS###"
+  - "##########"
+  - "##########"
+  - "##########"
+  - "E########E"
+  UpperCornerLocation:
+    X: 0
+    Y: 0
+    Z: 0
+Fences:
+  "1":
+    UpperCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0
+    LowerCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0
+Vents:
+  "1":
+    X: 0
+    Y: 0
+    Z: 0
+MetalDetectors:
+  "1":
+    UpperCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0
+    LowerCornerLocation:
+      X: 0
+      Y: 0
+      Z: 0

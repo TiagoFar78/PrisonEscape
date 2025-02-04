@@ -1,6 +1,7 @@
 package net.tiagofar78.prisonescape.menus;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.AntenaItem;
 import net.tiagofar78.prisonescape.items.BombItem;
@@ -54,13 +55,15 @@ public class CraftingMenu implements Clickable {
     private Item _selectedItem;
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
         int lines = 6;
         String title = messages.getCraftingMenuTitle();
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
 
         placeGlasses(inv, lines);
-        placeItems(inv, messages);
+        placeItems(inv, game, player);
 
         return inv;
     }
@@ -84,21 +87,21 @@ public class CraftingMenu implements Clickable {
         return glass;
     }
 
-    private void placeItems(Inventory inv, MessageLanguageManager messages) {
+    private void placeItems(Inventory inv, PEGame game, PEPlayer player) {
         Item[] items = (Item[]) getItems();
 
         for (int i = 0; i < ITEMS_SLOTS.length; i++) {
-            inv.setItem(ITEMS_SLOTS[i], items[i].toItemStack(messages));
+            inv.setItem(ITEMS_SLOTS[i], items[i].toItemStack(game, player));
         }
     }
 
-    private void placeItemsToCraft(Inventory inv, MessageLanguageManager messages) {
+    private void placeItemsToCraft(Inventory inv, PEGame game, PEPlayer player) {
         Craftable selectedItem = (Craftable) _selectedItem;
         List<Item> craftingItems = selectedItem == null ? new ArrayList<>() : selectedItem.getCratingItems();
 
         int i;
         for (i = 0; i < craftingItems.size(); i++) {
-            inv.setItem(CRAFTING_ITEMS_STARTING_SLOT + i, craftingItems.get(i).toItemStack(messages));
+            inv.setItem(CRAFTING_ITEMS_STARTING_SLOT + i, craftingItems.get(i).toItemStack(game, player));
         }
 
         ItemStack glass = createGlass();
@@ -133,7 +136,7 @@ public class CraftingMenu implements Clickable {
     @Override
     public void updateInventory(Inventory inv, PEPlayer player) {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-        placeItemsToCraft(inv, messages);
+        placeItemsToCraft(inv, player.getGame(), player);
         placeConfirmationItem(inv, player, messages);
     }
 

@@ -114,7 +114,7 @@ public abstract class PEPlayer {
 
     public void setKit(Kit kit) {
         _currentKit = kit;
-        kit.give(getName());
+        kit.give(getGame(), this);
     }
 
 //	########################################
@@ -294,8 +294,7 @@ public abstract class PEPlayer {
 
     public void openMenu(Clickable menu) {
         _openedMenu = menu;
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
-        openInventoryView(menu.toInventory(messages));
+        openInventoryView(menu.toInventory(getGame(), this));
     }
 
     public void closeMenu() {
@@ -554,8 +553,7 @@ public abstract class PEPlayer {
             return;
         }
 
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(getName());
-        ItemStack bukkitItem = item.toItemStack(messages);
+        ItemStack bukkitItem = item.toItemStack(getGame(), this);
         bukkitPlayer.getInventory().setItem(INVENTORY_INDEXES[index], bukkitItem);
     }
 

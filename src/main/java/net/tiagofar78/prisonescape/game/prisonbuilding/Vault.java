@@ -1,11 +1,12 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
 import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
+import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.NullItem;
-import net.tiagofar78.prisonescape.managers.ConfigManager;
+import net.tiagofar78.prisonescape.managers.MapManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 import net.tiagofar78.prisonescape.menus.ClickReturnAction;
 import net.tiagofar78.prisonescape.menus.Clickable;
@@ -37,6 +38,8 @@ public class Vault implements Clickable {
     private static final int HIDDEN_ITEM_INDEX = 9 * 4 + 4;
     private static final int[] TEMP_ITEMS_INDEXES = {9 + 7, 9 * 2 + 7, 9 * 3 + 7, 9 * 4 + 7};
 
+    private MapManager _map;
+
     private List<Item> _nonHiddenContents;
     private List<Item> _hiddenContents;
     private List<Item> _tempContents;
@@ -45,7 +48,9 @@ public class Vault implements Clickable {
 
     private Location _location;
 
-    public Vault(Prisoner owner, Location location) {
+    public Vault(Prisoner owner, Location location, MapManager map) {
+        _map = map;
+
         _nonHiddenContents = createContentsList(NON_HIDDEN_SIZE);
         _hiddenContents = createContentsList(HIDDEN_SIZE);
         _tempContents = createContentsList(TEMP_SIZE);
@@ -346,10 +351,8 @@ public class Vault implements Clickable {
     }
 
     private void rotate(Block block) {
-        ConfigManager config = ConfigManager.getInstance();
-
         Directional rotatable = (Directional) block.getBlockData();
-        rotatable.setFacing(BlockFace.valueOf(config.getVaultsDirection()));
+        rotatable.setFacing(BlockFace.valueOf(_map.getVaultsDirection()));
         block.setBlockData(rotatable);
     }
 
@@ -362,19 +365,21 @@ public class Vault implements Clickable {
     }
 
     @Override
-    public Inventory toInventory(MessageLanguageManager messages) {
+    public Inventory toInventory(PEGame game, PEPlayer player) {
+        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
+
         String title = messages.getVaultTitle();
         int lines = 6;
         Inventory inv = Bukkit.createInventory(null, lines * 9, title);
 
         placeGrayGlasses(inv, lines);
-        placeNonHiddenContents(inv, messages);
+        placeNonHiddenContents(inv, game, player);
 
         placeTempIndicatorGlasses(inv, lines, messages);
-        placeTempContents(inv, messages);
+        placeTempContents(inv, game, player);
 
         placeHiddenIndicatorGlasses(inv, lines, messages);
-        placeHiddenContents(inv, messages);
+        placeHiddenContents(inv, game, player);
 
         placeInforTorchItem(inv, messages);
 
@@ -383,28 +388,26 @@ public class Vault implements Clickable {
 
     @Override
     public void updateInventory(Inventory inv, PEPlayer player) {
-        MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-
-        placeNonHiddenContents(inv, messages);
-        placeHiddenContents(inv, messages);
-        placeTempContents(inv, messages);
+        placeNonHiddenContents(inv, player.getGame(), player);
+        placeHiddenContents(inv, player.getGame(), player);
+        placeTempContents(inv, player.getGame(), player);
     }
 
-    private void placeNonHiddenContents(Inventory inv, MessageLanguageManager messages) {
+    private void placeNonHiddenContents(Inventory inv, PEGame game, PEPlayer player) {
         for (int i = 0; i < _nonHiddenContents.size(); i++) {
-            ItemStack item = _nonHiddenContents.get(i).toItemStack(messages);
+            ItemStack item = _nonHiddenContents.get(i).toItemStack(game, player);
             inv.setItem(NON_HIDDEN_ITEMS_INDEXES[i], item);
         }
     }
 
-    private void placeHiddenContents(Inventory inv, MessageLanguageManager messages) {
-        ItemStack hiddenItem = _hiddenContents.get(0).toItemStack(messages);
+    private void placeHiddenContents(Inventory inv, PEGame game, PEPlayer player) {
+        ItemStack hiddenItem = _hiddenContents.get(0).toItemStack(game, player);
         inv.setItem(HIDDEN_ITEM_INDEX, hiddenItem);
     }
 
-    private void placeTempContents(Inventory inv, MessageLanguageManager messages) {
+    private void placeTempContents(Inventory inv, PEGame game, PEPlayer player) {
         for (int i = 0; i < _tempContents.size(); i++) {
-            ItemStack item = _tempContents.get(i).toItemStack(messages);
+            ItemStack item = _tempContents.get(i).toItemStack(game, player);
             inv.setItem(TEMP_ITEMS_INDEXES[i], item);
         }
     }

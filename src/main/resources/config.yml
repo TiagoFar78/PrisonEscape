@@ -47,6 +47,8 @@ SortSize: 5 # must be below 10 and bigger than 2
 AvailableLanguages:
 - "english"
 DefaultLanguage: "english"
+AvailableMaps:
+- "BricksField"
 TeamChatPrefix: "t "
 # Get signature and texture from here: https://mineskin.org/gallery?query=Camera
 CameraSkinSignature: "mFtID5cHIjABQMnKzhsy3BEFDDq32QHaJisjaECoLwzhx8dnJxxskA73/Z9DdMBeHlI43+Tdb6bO983K60Pex1f8ncvHFfYMLe1FK44GEpQlkLVnon+iRow5jBxhouicVvSKW578f4k1xo18ml/3gIn78SqJV+2uzVQ23mnFmmUM67JMp7F0i6mwohkNEWaiFdNQGgZbWsL58C0ojzj49ll/ZXGHXc/Jtt4oARGZLaJbICEAzJDQg6BnkquOPpnJUfQ00nk49gyWxo2ID6pI2tSQtGsXv2Apzt1WQxOFnrjVMbWzJYcXRzY2eAZPTGXrkcpms+/CFzk8BRzeSDZ6Q4W98M+3OyIdqoeWQcFFl8Iin5uS95+jBu84wQBr3XLiHw3heePPTX5xLbsGpZEnotXsxSTP6cd30mlPavX+53JXp8nz0ZBCtnkjSPoyVTJ2AJi9uSMPDMJLUU5CbHTUXqH3bhlrZnzrKySynvhn8UhqOnTY1X/13RIadmFajnu6Y3YiaSTPyRCoNdq8oXdhewD9YuzW/OH7A502lRIxoeiZgQLra3o3qBp9+fdFh/cHnc+6rShtr+nzMu17v9Iht+aNIiWZrCYw2eTKQT/EoTnNIL3DA2YuU3KyMZ904nKaeFjGq5TCPY/E8RZjBeJ25Hlbu+sZXJoD4Fl4lW559bo="
@@ -60,132 +62,6 @@ LeavingLocation:
   X: 0
   Y: 0
   Z: 0
-WaitingLocation:
-  X: 0
-  Y: 0
-  Z: 0
-PrisonTopLeftCornerLocation:
-  X: 0
-  Y: 0
-  Z: 0
-PrisonBottomRightCornerLocation:
-  X: 0
-  Y: 0
-  Z: 0
-PrisonersSpawnLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-PoliceSpawnLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-SolitaryLocation:
-  X: 0
-  Y: 0
-  Z: 0
-SolitaryExitLocation:
-  X: 0
-  Y: 0
-  Z: 0
-Helicopter:
-  ExitLocation:
-    X: 0
-    Y: 0
-    Z: 0
-  JoinLocation:
-    X: 0
-    Y: 0
-    Z: 0
-  UpperLocation:
-    X: 0
-    Y: 0
-    Z: 0
-  LowerLocation:
-    X: 0
-    Y: 0
-    Z: 0
-AfterEscapeLocation:
-  X: 0
-  Y: 0
-  Z: 0
-PrisonersSecretPassagesLocation:
-  "1":
-    Key:
-      X: 0
-      Y: 0
-      Z: 0
-    Value:
-      X: 0
-      Y: 0
-      Z: 0
-PoliceSecretPassagesLocation:
-  "1":
-    Key:
-      X: 0
-      Y: 0
-      Z: 0
-    Value:
-      X: 0
-      Y: 0
-      Z: 0
-VaultsDirection: "NORTH"
-VaultsLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-ChestsLocations:
-  "1":
-    "1":
-      X: 0
-      Y: 0
-      Z: 0
-GoldenDoorsLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-GrayDoorsLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-CodeDoorsLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-CellDoorsLocations:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-Regions:
-  Cells: # DO NOT CHANGE THIS REGION NAME
-    IsRestricted: false
-    "1":
-      UpperCorner:
-        X: 0
-        Y: 0
-        Z: 0
-      LowerCorner:
-        X: 0
-        Y: 0
-        Z: 0  
-  RegionName:
-    IsRestricted: false
-    "1":
-      UpperCorner:
-        X: 0
-        Y: 0
-        Z: 0
-      LowerCorner:
-        X: 0
-        Y: 0
-        Z: 0
 MissionsRegions:
 - "RegionName1"
 - "RegionName2"
@@ -193,11 +69,6 @@ ChestsContents:
   RegionName:
     Item1Name: 0.25
     Item2Name: 0.05
-WallCorners:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
 WallCrackFormats:
   "1":
   - "0###0"
@@ -205,43 +76,3 @@ WallCrackFormats:
   - "#####"
   - "#####"
   - "0###0"
-Maze:
-  Format:
-  - "E########E"
-  - "##########"
-  - "##########"
-  - "##########"
-  - "###SSSS###"
-  - "##########"
-  - "##########"
-  - "##########"
-  - "E########E"
-  UpperCornerLocation:
-    X: 0
-    Y: 0
-    Z: 0
-Fences:
-  "1":
-    UpperCornerLocation:
-      X: 0
-      Y: 0
-      Z: 0
-    LowerCornerLocation:
-      X: 0
-      Y: 0
-      Z: 0
-Vents:
-  "1":
-    X: 0
-    Y: 0
-    Z: 0
-MetalDetectors:
-  "1":
-    UpperCornerLocation:
-      X: 0
-      Y: 0
-      Z: 0
-    LowerCornerLocation:
-      X: 0
-      Y: 0
-      Z: 0

@@ -37,6 +37,7 @@ public class PEGame {
     public static final String CELLS_REGION_NAME = "Cells";
 
     private int _id;
+    private String _mapName;
 
     private int _currentDay;
     private DayPeriod _dayPeriod;
@@ -52,9 +53,10 @@ public class PEGame {
 
     public PEGame(int id, String mapName, Location referenceBlock) {
         _id = id;
+        _mapName = mapName;
 
         _currentDay = 0;
-        _prison = new PrisonBuilding(this, referenceBlock);
+        _prison = new PrisonBuilding(this, mapName, referenceBlock);
 
         _playersOnLobby = new ArrayList<>();
         _policeTeam = new PETeam<Guard>(GUARDS_TEAM_NAME);
@@ -67,6 +69,10 @@ public class PEGame {
 
     public int getId() {
         return _id;
+    }
+
+    public String getMapName() {
+        return _mapName;
     }
 
     public Phase getCurrentPhase() {
@@ -529,7 +535,7 @@ public class PEGame {
         BukkitMessageSender.sendChatMessage(player, message);
 
         updatePreferenceTabListDisplay(playerName, teamName);
-        player.getKit().update(waitingPlayer);
+        player.getKit().update(this, waitingPlayer);
     }
 
     private void updatePreferenceTabListDisplay(String playerName, String teamName) {
