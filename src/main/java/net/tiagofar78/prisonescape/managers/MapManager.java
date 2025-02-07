@@ -68,6 +68,8 @@ public class MapManager {
     private List<List<Location>> _fencesLocations;
     private List<Location> _ventsLocations;
     private List<List<Location>> _metalDetectorLocations;
+    private Location _mapTopLeftCornerLocation;
+    private Location _mapBottomRightCornerLocation;
     private BufferedImage _image;
 
     private MapManager(String mapName) {
@@ -102,6 +104,8 @@ public class MapManager {
         _fencesLocations = createLocationPairList(map, "Fences", world);
         _ventsLocations = createLocationList(map, "Vents", world);
         _metalDetectorLocations = createLocationPairList(map, "MetalDetectors", world);
+        _mapTopLeftCornerLocation = createLocation(map, "Map.TopLeftCornerLocation", world);
+        _mapBottomRightCornerLocation = createLocation(map, "Map.BottomRightCornerLocation", world);
         _image = PEResources.getMapImage(mapName);
     }
 
@@ -320,6 +324,14 @@ public class MapManager {
 
     public List<List<Location>> getMetalDetectorLocations() {
         return createLocationsPairListCopy(_metalDetectorLocations);
+    }
+
+    public Location getMapTopLeftCornerLocation() {
+        return createLocationCopy(_mapTopLeftCornerLocation);
+    }
+
+    public Location getMapBottomRightCornerLocation() {
+        return createLocationCopy(_mapBottomRightCornerLocation);
     }
 
     public BufferedImage getImage() {

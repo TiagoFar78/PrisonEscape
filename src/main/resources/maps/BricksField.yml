@@ -169,3 +169,13 @@ MetalDetectors:
       X: 0
       Y: 0
       Z: 0
+Map:
+  TopLeftCornerLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  BottomRightCornerLocation:
+    X: 0
+    Y: 0
+    Z: 0
+  
