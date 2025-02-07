@@ -80,7 +80,6 @@ public class MapItem extends Item {
                     (double) MAP_SIDE / (double) (mapTopLeftCornerLoc.getBlockZ() - mapBottomRightCornerLoc.getBlockZ());
             int x = (int) ((mapTopLeftCornerLoc.getBlockX() - playerLoc.getBlockX()) * xAjust + LOWER_MAP_COORDINATE);
             int z = (int) ((mapTopLeftCornerLoc.getBlockZ() - playerLoc.getBlockZ()) * yAjust + LOWER_MAP_COORDINATE);
-            System.out.println(player.getFacing());
             MapCursor cursor = cursors.addCursor(z, x, (byte) 0);
             cursor.setType(Type.WHITE_CIRCLE);
             canvas.setCursors(cursors);

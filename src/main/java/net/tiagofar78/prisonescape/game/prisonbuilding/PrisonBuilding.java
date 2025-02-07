@@ -223,7 +223,7 @@ public class PrisonBuilding {
 //  #########################################
 //  #               Reference               #
 //  #########################################
-    
+
     public Location getReference() {
         return _reference;
     }
