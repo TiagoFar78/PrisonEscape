@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.missions;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
@@ -38,7 +37,7 @@ public abstract class Mission {
         int reward = config.getMissionsMoneyReward();
 
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(guard.getName());
-        BukkitMessageSender.sendChatMessage(guard, messages.getCompletedMissionMessage(reward));
+        guard.sendChatMessage(messages.getCompletedMissionMessage(reward));
 
         guard.increaseBalance(reward);
         guard.removeMission(missionIndex);

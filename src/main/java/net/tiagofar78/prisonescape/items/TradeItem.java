@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
@@ -66,12 +65,12 @@ public class TradeItem extends FunctionalItem {
         String targetName = target.getName();
 
         MessageLanguageManager senderMessages = MessageLanguageManager.getInstanceByPlayer(senderName);
-        BukkitMessageSender.sendChatMessage(sender, senderMessages.getTradeRequestSentMessage(targetName));
+        sender.sendChatMessage(senderMessages.getTradeRequestSentMessage(targetName));
 
         int time = ConfigManager.getInstance().getTradeRequestTimeout();
         MessageLanguageManager targetMessages = MessageLanguageManager.getInstanceByPlayer(targetName);
         String tradeRequestReceivedMessage = targetMessages.getTradeRequestReceivedMessage(senderName, time);
-        BukkitMessageSender.sendChatMessage(target, tradeRequestReceivedMessage);
+        target.sendChatMessage(tradeRequestReceivedMessage);
     }
 
 }

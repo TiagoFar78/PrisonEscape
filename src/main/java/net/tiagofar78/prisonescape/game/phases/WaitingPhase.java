@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.phases;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -67,7 +66,7 @@ public class WaitingPhase extends Phase {
 
                     for (PEPlayer player : playersOnLobby) {
                         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-                        BukkitMessageSender.sendChatMessage(player, messages.getGameCancelledFewPlayersMessage());
+                        player.sendChatMessage(messages.getGameCancelledFewPlayersMessage());
                     }
 
                     game.startNextPhase(new DisabledPhase());
@@ -78,10 +77,7 @@ public class WaitingPhase extends Phase {
                     for (PEPlayer player : playersOnLobby) {
                         String playerName = player.getName();
                         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-                        BukkitMessageSender.sendChatMessage(
-                                playerName,
-                                messages.getGameStartingAnnouncementMessage(remainingSeconds)
-                        );
+                        player.sendChatMessage(messages.getGameStartingAnnouncementMessage(remainingSeconds));
                     }
                 }
 

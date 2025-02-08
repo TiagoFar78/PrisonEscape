@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -54,7 +53,7 @@ public class LanternItem extends FunctionalItem implements Craftable {
 
         game.getPEPlayer(playerName).removeItem(player.getInventory().getHeldItemSlot());
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-        BukkitMessageSender.sendChatMessage(playerName, messages.getBlindnessAppliedMessage(affectedGuards));
+        peplayer.sendChatMessage(messages.getBlindnessAppliedMessage(affectedGuards));
     }
 
     @Override

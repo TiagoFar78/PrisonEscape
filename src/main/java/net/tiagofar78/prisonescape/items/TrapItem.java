@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -54,12 +53,12 @@ public class TrapItem extends FunctionalItem implements Buyable {
         Guard placer = (Guard) peplayer;
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
         if (game.getPrison().addTrap(placer, loc) != 0) {
-            BukkitMessageSender.sendChatMessage(playerName, messages.getCannotPlaceTrapMessage());
+            peplayer.sendChatMessage(messages.getCannotPlaceTrapMessage());
             return;
         }
 
         game.getPEPlayer(playerName).removeItem(player.getInventory().getHeldItemSlot());
-        BukkitMessageSender.sendChatMessage(playerName, messages.getTrapPlacedMessage());
+        peplayer.sendChatMessage(messages.getTrapPlacedMessage());
     }
 
 }

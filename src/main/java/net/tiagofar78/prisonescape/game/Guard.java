@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.items.Buyable;
 import net.tiagofar78.prisonescape.items.Item;
 import net.tiagofar78.prisonescape.items.SearchItem;
@@ -161,7 +160,7 @@ public class Guard extends PEPlayer {
     }
 
     public void stoppedWatchingCamera() {
-        BukkitTeleporter.teleport(this, _locationBeforeWatchingCameras);
+        teleport(_locationBeforeWatchingCameras);
         setGameMode(GameMode.SURVIVAL);
         _locationBeforeWatchingCameras = null;
     }

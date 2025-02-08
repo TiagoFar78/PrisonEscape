@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -96,7 +95,7 @@ public class Chest implements Clickable {
         if (returnCode == -1) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
-            BukkitMessageSender.sendChatMessage(player, messages.getFullInventoryMessage());
+            player.sendChatMessage(messages.getFullInventoryMessage());
             return ClickReturnAction.NOTHING;
         }
 

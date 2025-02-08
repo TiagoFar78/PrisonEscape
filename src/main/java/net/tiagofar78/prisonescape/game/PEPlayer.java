@@ -34,6 +34,9 @@ public abstract class PEPlayer {
     private static final int REGION_LINE_INDEX = 0;
     private static final int INTERACT_EVENT_COOLDOWN_TICKS = 5;
     private static final int TICKS_PER_SECOND = 20;
+    private static final int FADE = (int) (1 * TICKS_PER_SECOND);
+    private static final int STAY = (int) (3.5 * TICKS_PER_SECOND);
+    private static final double CENTER_OF_BLOCK = 0.5;
     private static final String WANTED_TEAM_NAME = "Wanted";
 
     private static final int INVENTORY_SIZE = 4;
@@ -605,6 +608,47 @@ public abstract class PEPlayer {
 
         return player.isSneaking();
     }
+
+    public void sendChatMessage(String message) {
+        Player player = getBukkitPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.sendMessage(message);
+    }
+
+    public void sendChatMessage(String[] message) {
+        Player bukkitPlayer = getBukkitPlayer();
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        bukkitPlayer.sendMessage(message);
+    }
+
+    public void sendChatMessage(List<String> message) {
+        sendChatMessage(message.toArray(new String[0]));
+    }
+
+    public void sendTitleMessage(String titleMessage, String subtitleMessage) {
+        Player bukkitPlayer = getBukkitPlayer();
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        bukkitPlayer.sendTitle(titleMessage, subtitleMessage, FADE, STAY, FADE);
+    }
+
+    public void teleport(Location loc) {
+        Player bukkitPlayer = getBukkitPlayer();
+        if (bukkitPlayer == null || !bukkitPlayer.isOnline()) {
+            return;
+        }
+
+        bukkitPlayer.teleport(loc.clone().add(CENTER_OF_BLOCK, 0, CENTER_OF_BLOCK));
+    }
+
 
 //  ########################################
 //  #                 Util                 #

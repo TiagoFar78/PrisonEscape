@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.phases;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.DayPeriod;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
@@ -51,14 +50,14 @@ public class OngoingPhase extends Phase {
         PETeam<Prisoner> prisonersTeam = game.getPrisonerTeam();
         for (Prisoner player : prisonersTeam.getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPrisonerGameStartedMessage());
+            player.sendChatMessage(messages.getPrisonerGameStartedMessage());
 
             game.addPrisonerToStartedGame(player, DayPeriod.DAY);
         }
 
         for (Guard player : game.getGuardsTeam().getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPoliceGameStartedMessage());
+            player.sendChatMessage(messages.getPoliceGameStartedMessage());
 
             game.addGuardToStartedGame(player, DayPeriod.DAY);
         }

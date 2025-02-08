@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.menus;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
@@ -169,13 +168,13 @@ public class TradeMenu implements Clickable {
 
         if (isPlayer1) {
             if (_hasPlayer1Accepted) {
-                BukkitMessageSender.sendChatMessage(player, messages.getTradeAlreadyAcceptedMessage());
+                player.sendChatMessage(messages.getTradeAlreadyAcceptedMessage());
             }
 
             _hasPlayer1Accepted = true;
         } else {
             if (_hasPlayer2Accepted) {
-                BukkitMessageSender.sendChatMessage(player, messages.getTradeAlreadyAcceptedMessage());
+                player.sendChatMessage(messages.getTradeAlreadyAcceptedMessage());
             }
 
             _hasPlayer2Accepted = true;

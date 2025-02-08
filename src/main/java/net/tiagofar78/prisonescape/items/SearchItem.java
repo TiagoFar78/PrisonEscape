@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -50,14 +49,14 @@ public class SearchItem extends FunctionalItem implements Buyable {
         }
 
         if (prisoner.isWanted()) {
-            BukkitMessageSender.sendChatMessage(guardName, guardMessages.getAlreadyWantedPlayerMessage());
+            guard.sendChatMessage(guardMessages.getAlreadyWantedPlayerMessage());
         } else if (prisoner.hasIllegalItems()) {
             game.setWanted(prisoner, guard);
         } else {
             MessageLanguageManager prisonerMessages = MessageLanguageManager.getInstanceByPlayer(prisonerName);
-            BukkitMessageSender.sendChatMessage(prisonerName, prisonerMessages.getPrisonerInspectedMessage());
+            prisoner.sendChatMessage(prisonerMessages.getPrisonerInspectedMessage());
 
-            BukkitMessageSender.sendChatMessage(guardName, guardMessages.getPoliceInspectedMessage(prisonerName));
+            guard.sendChatMessage(guardMessages.getPoliceInspectedMessage(prisonerName));
 
             guard.usedSearch();
             guard.removeItem(heldItemSlot);

@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.menus;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.AntenaItem;
@@ -170,7 +169,7 @@ public class CraftingMenu implements Clickable {
 
         if (itemsIndexes.size() == 0) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getCraftingItemsMissingMessage());
+            player.sendChatMessage(messages.getCraftingItemsMissingMessage());
         } else {
             processCrafting(player, itemsIndexes);
             _selectedItem = null;

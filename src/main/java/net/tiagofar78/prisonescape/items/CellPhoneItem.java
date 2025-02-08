@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.prisonbuilding.PrisonBuilding;
@@ -42,12 +41,12 @@ public class CellPhoneItem extends FunctionalItem implements Craftable {
 
         PrisonBuilding prison = game.getPrison();
         if (!prison.hasCellPhoneCoverage(location)) {
-            BukkitMessageSender.sendChatMessage(player, messages.getNoCellPhoneCoverageMessage());
+            player.sendChatMessage(messages.getNoCellPhoneCoverageMessage());
             return;
         }
 
         int helicopterSpawnDelay = ConfigManager.getInstance().getHelicopterSpawnDelay();
-        BukkitMessageSender.sendChatMessage(player, messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
+        player.sendChatMessage(messages.getHelicopterOnTheWayMessage(helicopterSpawnDelay));
 
         int itemSlot = bukkitPlayer.getInventory().getHeldItemSlot();
         player.removeItem(itemSlot);

@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.ConfigManager;
@@ -51,7 +50,7 @@ public class CameraItem extends FunctionalItem implements Buyable {
 
         String playerName = e.getPlayer().getName();
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerName);
-        BukkitMessageSender.sendChatMessage(playerName, messages.getCameraPlacedMessage());
+        player.sendChatMessage(messages.getCameraPlacedMessage());
     }
 
 }
