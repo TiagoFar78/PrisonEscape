@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.inventory.ItemStack;
@@ -69,7 +68,7 @@ public abstract class ToolItem extends Item {
 
         double roundedDurability = (double) Math.round(_durability * 100) / (double) 100;
         String newName = meta.getDisplayName() + " - " + getDurabilityColorCode() + roundedDurability + "%";
-        BukkitItems.setName(item, newName);
+        setName(item, newName);
 
         return item;
     }
