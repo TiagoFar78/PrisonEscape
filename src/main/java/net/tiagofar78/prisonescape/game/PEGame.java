@@ -1,8 +1,6 @@
 package net.tiagofar78.prisonescape.game;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
-import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.bukkit.BukkitWorldEditor;
 import net.tiagofar78.prisonescape.dataobjects.ItemProbability;
 import net.tiagofar78.prisonescape.game.phases.DisabledPhase;
@@ -114,7 +112,7 @@ public class PEGame {
         PEPlayer player = new WaitingPlayer(this, playerName);
         _playersOnLobby.add(player);
 
-        BukkitTeleporter.teleport(player, _prison.getWaitingLobbyLocation());
+        player.teleport(_prison.getWaitingLobbyLocation());
         player.setKit(new TeamSelectorKit());
         player.clearEffects();
 
@@ -124,8 +122,7 @@ public class PEGame {
             updatePreferenceTabListDisplay(playerName, WAITING_TEAM_NAME);
 
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
-            BukkitMessageSender.sendChatMessage(
-                    playerOnLobby,
+            playerOnLobby.sendChatMessage(
                     messages.getSuccessfullyJoinedGameMessage(playerName, playerNumber, maxPlayers)
             );
         }
@@ -167,8 +164,7 @@ public class PEGame {
         int playerNumber = _playersOnLobby.size();
         for (PEPlayer playerOnLobby : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
-            BukkitMessageSender.sendChatMessage(
-                    playerOnLobby,
+            playerOnLobby.sendChatMessage(
                     messages.getSuccessfullyRejoinedGameMessage(playerName, playerNumber, maxPlayers)
             );
         }
@@ -201,8 +197,7 @@ public class PEGame {
         int playerNumber = _playersOnLobby.size();
         for (PEPlayer playerOnLobby : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
-            BukkitMessageSender.sendChatMessage(
-                    playerOnLobby,
+            playerOnLobby.sendChatMessage(
                     messages.getSuccessfullyLeftGameMessage(playerName, playerNumber, maxPlayers)
             );
         }
@@ -262,7 +257,7 @@ public class PEGame {
         player.updateScoreaboardTeams();
         player.setScoreboard(player.getScoreboardData().getScoreboard());
         player.updateRegionLine(_prison, dayPeriod);
-        BukkitTeleporter.teleport(player, location);
+        player.teleport(location);
         player.updateInventory();
     }
 
@@ -329,7 +324,7 @@ public class PEGame {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             String title = messages.getNewDayTitleMessage(_currentDay);
             String subtitle = messages.getNewDaySubtitleMessage();
-            BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
+            player.sendTitleMessage(title, subtitle);
 
             player.updateRegionLine(_prison, _dayPeriod);
         }
@@ -396,7 +391,7 @@ public class PEGame {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             String title = messages.getNightTitleMessage();
             String subtitle = messages.getNightSubtitleMessage();
-            BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
+            player.sendTitleMessage(title, subtitle);
 
             player.updateRegionLine(_prison, _dayPeriod);
         }
@@ -468,11 +463,11 @@ public class PEGame {
 
     public void playerEscaped(Prisoner player) {
         player.escaped();
-        BukkitTeleporter.teleport(player, _prison.getAfterEscapeLocation());
+        player.teleport(_prison.getAfterEscapeLocation());
 
         for (PEPlayer playerOnLobby : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(playerOnLobby.getName());
-            BukkitMessageSender.sendChatMessage(playerOnLobby, messages.getPlayerEscapedMessage(player.getName()));
+            playerOnLobby.sendChatMessage(messages.getPlayerEscapedMessage(player.getName()));
         }
 
         if (_prisonersTeam.getMembers().stream().filter(p -> p.isImprisioned()).count() == 0) {
@@ -488,7 +483,7 @@ public class PEGame {
         for (PEPlayer player : _playersOnLobby) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
             String announcement = messages.getPrisonerArrested(arrested.getName());
-            BukkitMessageSender.sendChatMessage(player.getName(), announcement);
+            player.sendChatMessage(announcement);
         }
 
         int secondsInSolitary = ConfigManager.getInstance().getSecondsInSolitary();
@@ -496,7 +491,7 @@ public class PEGame {
     }
 
     private void runArrestTimer(int secondsLeft, Prisoner arrested) {
-        BukkitMessageSender.sendTitleMessage(arrested.getName(), "", ChatColor.WHITE + Integer.toString(secondsLeft));
+        arrested.sendTitleMessage("", ChatColor.WHITE + Integer.toString(secondsLeft));
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
 
@@ -514,7 +509,7 @@ public class PEGame {
                 removeWanted(arrested);
 
                 MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(arrested.getName());
-                BukkitMessageSender.sendChatMessage(arrested.getName(), messages.getPrisonerFreedOfSolitary());
+                arrested.sendChatMessage(messages.getPrisonerFreedOfSolitary());
 
                 if (_dayPeriod == DayPeriod.DAY) {
                     teleportToSolitaryExit(arrested);
@@ -532,7 +527,7 @@ public class PEGame {
         WaitingPlayer waitingPlayer = (WaitingPlayer) player;
         waitingPlayer.setPreference(teamPref);
 
-        BukkitMessageSender.sendChatMessage(player, message);
+        player.sendChatMessage(message);
 
         updatePreferenceTabListDisplay(playerName, teamName);
         player.getKit().update(this, waitingPlayer);
@@ -585,19 +580,19 @@ public class PEGame {
 
     private void teleportPrisonerToSpawnPoint(PEPlayer player) {
         int playerIndex = _prisonersTeam.getPlayerIndex(player);
-        BukkitTeleporter.teleport(player, _prison.getPlayerCellLocation(playerIndex));
+        player.teleport(_prison.getPlayerCellLocation(playerIndex));
     }
 
     private void teleportToSolitary(PEPlayer player) {
-        BukkitTeleporter.teleport(player, _prison.getSolitaryLocation());
+        player.teleport(_prison.getSolitaryLocation());
     }
 
     private void teleportToSolitaryExit(PEPlayer player) {
-        BukkitTeleporter.teleport(player, _prison.getSolitaryExitLocation());
+        player.teleport(_prison.getSolitaryExitLocation());
     }
 
     private void teleportToLeavingLocation(PEPlayer player) {
-        BukkitTeleporter.teleport(player, ConfigManager.getInstance().getLeavingLocation());
+        player.teleport(ConfigManager.getInstance().getLeavingLocation());
     }
 
 //	#########################################

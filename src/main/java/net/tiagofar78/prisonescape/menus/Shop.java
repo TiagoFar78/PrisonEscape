@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.menus;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -67,17 +66,17 @@ public class Shop implements Clickable {
 
         int returnCode = guard.buyItem(item, buyableItem.getPrice());
         if (returnCode == -1) {
-            BukkitMessageSender.sendChatMessage(player, messages.getReachedItemLimitMessage());
+            player.sendChatMessage(messages.getReachedItemLimitMessage());
             return ClickReturnAction.NOTHING;
         } else if (returnCode == -2) {
-            BukkitMessageSender.sendChatMessage(player, messages.getNotEnoughMoneyMessage());
+            player.sendChatMessage(messages.getNotEnoughMoneyMessage());
             return ClickReturnAction.NOTHING;
         } else if (returnCode == -3) {
-            BukkitMessageSender.sendChatMessage(player, messages.getFullInventoryMessage());
+            player.sendChatMessage(messages.getFullInventoryMessage());
             return ClickReturnAction.NOTHING;
         }
 
-        BukkitMessageSender.sendChatMessage(player, messages.getSuccessfullyBoughtItemMessage(guard.getBalance()));
+        player.sendChatMessage(messages.getSuccessfullyBoughtItemMessage(guard.getBalance()));
         return ClickReturnAction.NOTHING;
     }
 

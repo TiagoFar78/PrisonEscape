@@ -1,12 +1,13 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +53,8 @@ public abstract class Item {
     }
 
     protected ItemStack toItemStack(MessageLanguageManager messages) {
-        ItemStack item = BukkitItems.createItemStack(getMaterial());
-        BukkitItems.setName(item, getDisplayName(messages));
+        ItemStack item = createItemStack(getMaterial());
+        setName(item, getDisplayName(messages));
         setLore(item, messages);
 
         return item;
@@ -73,7 +74,7 @@ public abstract class Item {
         }
 
         if (lore.size() > 0) {
-            BukkitItems.setLore(item, lore);
+            setLore(item, lore);
         }
     }
 
@@ -92,6 +93,35 @@ public abstract class Item {
     @Override
     public boolean equals(Object o) {
         return o.getClass().getSimpleName().equals(this.getClass().getSimpleName());
+    }
+
+//  #########################################
+//  #               ItemStack               #
+//  #########################################
+
+    public ItemStack createItemStack(Material type) {
+        return new ItemStack(type);
+    }
+
+    public void setName(ItemStack item, String name) {
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+
+        item.setItemMeta(meta);
+    }
+
+    public void setLore(ItemStack item, List<String> lore) {
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(lore);
+
+        item.setItemMeta(meta);
+    }
+
+    public void removeAttributes(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        item.setItemMeta(meta);
     }
 
 }

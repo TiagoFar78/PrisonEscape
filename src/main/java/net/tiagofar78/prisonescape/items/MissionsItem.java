@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -38,7 +37,7 @@ public class MissionsItem extends FunctionalItem {
 
         List<Mission> missions = guard.getMissions();
         if (missions.size() == 0) {
-            BukkitMessageSender.sendChatMessage(guard, messages.getAllMissionsCompletedMessage());
+            guard.sendChatMessage(messages.getAllMissionsCompletedMessage());
             return;
         }
 
@@ -51,10 +50,10 @@ public class MissionsItem extends FunctionalItem {
             }
         }
 
-        BukkitMessageSender.sendChatMessage(guard, messages.getGoToMissionLocationsMessage());
+        guard.sendChatMessage(messages.getGoToMissionLocationsMessage());
         for (Mission mission : missions) {
             String regionName = mission.getRegionName();
-            BukkitMessageSender.sendChatMessage(guard, messages.getMissionLocationLineMessage(regionName));
+            guard.sendChatMessage(messages.getMissionLocationLineMessage(regionName));
         }
     }
 

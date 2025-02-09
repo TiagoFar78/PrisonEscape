@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
@@ -224,7 +223,7 @@ public class Vault implements Clickable {
     private boolean sendItemToInventory(PEPlayer player, Item item) {
         if (player.giveItem(item) == -1) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getFullInventoryMessage());
+            player.sendChatMessage(messages.getFullInventoryMessage());
             return false;
         }
 
@@ -251,7 +250,7 @@ public class Vault implements Clickable {
 
     private boolean sendItemToVault(PEPlayer player, List<Item> contents, Item item, String message) {
         if (addItem(contents, item) == -1) {
-            BukkitMessageSender.sendChatMessage(player, message);
+            player.sendChatMessage(message);
             return false;
         }
 

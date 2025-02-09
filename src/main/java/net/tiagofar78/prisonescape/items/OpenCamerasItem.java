@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -49,7 +48,7 @@ public class OpenCamerasItem extends FunctionalItem {
 
         List<Camera> cameras = game.getPrison().getCameras();
         if (cameras.size() == 0) {
-            BukkitMessageSender.sendChatMessage(playerName, messages.getNoCamerasPlacedMessage());
+            player.sendChatMessage(messages.getNoCamerasPlacedMessage());
             return;
         }
 
@@ -61,7 +60,7 @@ public class OpenCamerasItem extends FunctionalItem {
             guard.getKit().update(game, guard);
         } else if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
             if (guard.isSneaking()) {
-                BukkitMessageSender.sendChatMessage(guard, messages.getCantJoinCameraSneakingMessage());
+                guard.sendChatMessage(messages.getCantJoinCameraSneakingMessage());
                 return;
             }
 
@@ -70,7 +69,7 @@ public class OpenCamerasItem extends FunctionalItem {
             cameras.get(_currentCameraIndex).addWatcher(guard);
             guard.startedWatchingCamera(loc);
 
-            BukkitMessageSender.sendTitleMessage(playerName, "", messages.getSneakToLeaveCameraMessage());
+            player.sendTitleMessage("", messages.getSneakToLeaveCameraMessage());
         }
     }
 

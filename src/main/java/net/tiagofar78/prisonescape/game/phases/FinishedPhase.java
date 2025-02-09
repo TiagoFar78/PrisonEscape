@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.phases;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -76,8 +75,8 @@ public class FinishedPhase extends Phase {
 
             List<String> resultMessage = messages.getGameResultMessage(_winnerTeam.isOnTeam(player));
 
-            BukkitMessageSender.sendTitleMessage(player.getName(), title, subtitle);
-            BukkitMessageSender.sendChatMessage(player, resultMessage);
+            player.sendTitleMessage(title, subtitle);
+            player.sendChatMessage(resultMessage);
         }
 
         int finishedPhaseDuration = ConfigManager.getInstance().getFinishedPhaseDuration();

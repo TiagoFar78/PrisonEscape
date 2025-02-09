@@ -20,7 +20,6 @@ import com.sk89q.worldedit.world.block.BlockState;
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.PrisonEscape;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
-import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.game.Prisoner;
@@ -131,14 +130,14 @@ public class Helicopter {
         }
 
         _players.add(player);
-        BukkitTeleporter.teleport(player, joinLocation);
+        player.teleport(joinLocation);
     }
 
     private void policeClicked(Location exitLocation) {
         destroyHelicopter();
 
         for (PEPlayer player : _players) {
-            BukkitTeleporter.teleport(player, exitLocation);
+            player.teleport(exitLocation);
         }
 
         _players.clear();

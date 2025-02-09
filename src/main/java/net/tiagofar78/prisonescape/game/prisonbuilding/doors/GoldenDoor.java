@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.game.prisonbuilding.doors;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.game.PEGame;
 import net.tiagofar78.prisonescape.game.PEPlayer;
 import net.tiagofar78.prisonescape.items.GoldenKeyItem;
@@ -32,7 +31,7 @@ public class GoldenDoor extends Door {
             }
 
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getGoldenDoorRequirementsMessage());
+            player.sendChatMessage(messages.getGoldenDoorRequirementsMessage());
             return ClickDoorReturnAction.NOTHING;
         }
 

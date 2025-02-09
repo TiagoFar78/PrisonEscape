@@ -3,5 +3,8 @@
 .settings/
 target/
 .vscode/*
-TestServer/
+TestServer/*
+!TestServer/README.md
+!TestServer/plugins
+TestServer/plugins/*
 !TestServer/plugins/TF_PrisonEscape/

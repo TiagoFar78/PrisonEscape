@@ -1,7 +1,5 @@
 package net.tiagofar78.prisonescape.listener;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
-import net.tiagofar78.prisonescape.bukkit.BukkitTeleporter;
 import net.tiagofar78.prisonescape.dataobjects.PlayerInGame;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEGame;
@@ -308,7 +306,7 @@ public class PlayerListener implements Listener {
 
         Location destination = prison.getSecretPassageDestinationLocation(blockLocation, game.isPrisoner(player));
         if (destination != null) {
-            BukkitTeleporter.teleport(player, destination);
+            player.teleport(destination);
             return false;
         }
 
@@ -341,7 +339,7 @@ public class PlayerListener implements Listener {
 
         if (game.isGuard(player)) {
             if (!(item instanceof SearchItem)) {
-                BukkitMessageSender.sendChatMessage(player, messages.getPoliceOpenVaultMessage());
+                player.sendChatMessage(messages.getPoliceOpenVaultMessage());
                 return;
             }
 
@@ -350,7 +348,7 @@ public class PlayerListener implements Listener {
         }
 
         if (game.getPrisonerTeam().getPlayerIndex(player) != vaultIndex) {
-            BukkitMessageSender.sendChatMessage(player, messages.getPrisonerOtherVaultMessage());
+            player.sendChatMessage(messages.getPrisonerOtherVaultMessage());
             return;
         }
 
@@ -371,14 +369,11 @@ public class PlayerListener implements Listener {
         if (returnCode == 1) {
             game.setWanted(vaultOwner, guard);
 
-            BukkitMessageSender.sendChatMessage(
-                    guard,
-                    messagesPolice.getPoliceFoundIllegalItemsMessage(vaultOwner.getName())
-            );
-            BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisoner.getPrisonerFoundIllegalItemsMessage());
+            guard.sendChatMessage(messagesPolice.getPoliceFoundIllegalItemsMessage(vaultOwner.getName()));
+            vaultOwner.sendChatMessage(messagesPrisoner.getPrisonerFoundIllegalItemsMessage());
         } else if (returnCode == 0) {
-            BukkitMessageSender.sendChatMessage(guard, messagesPolice.getPoliceNoIllegalItemsFoundMessage());
-            BukkitMessageSender.sendChatMessage(vaultOwner, messagesPrisoner.getPrisonerNoIllegalItemsFoundMessage());
+            guard.sendChatMessage(messagesPolice.getPoliceNoIllegalItemsFoundMessage());
+            vaultOwner.sendChatMessage(messagesPrisoner.getPrisonerNoIllegalItemsFoundMessage());
             guard.usedSearch();
             guard.removeItemIndex(index);
         }
@@ -390,12 +385,12 @@ public class PlayerListener implements Listener {
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
 
         if (game.isGuard(player)) {
-            BukkitMessageSender.sendChatMessage(player, messages.getPoliceCanNotOpenChestMessage());
+            player.sendChatMessage(messages.getPoliceCanNotOpenChestMessage());
             return;
         }
 
         if (chest.isOpened()) {
-            BukkitMessageSender.sendChatMessage(player, messages.getChestAlreadyOpenedMessage());
+            player.sendChatMessage(messages.getChestAlreadyOpenedMessage());
             return;
         }
 
@@ -411,7 +406,7 @@ public class PlayerListener implements Listener {
         int returnCode = crack.fixCrack();
         if (returnCode == -1) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getCanOnlyFixHolesMessage());
+            player.sendChatMessage(messages.getCanOnlyFixHolesMessage());
         }
 
         return 0;
@@ -444,7 +439,7 @@ public class PlayerListener implements Listener {
 
         if (!item.isTool()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, obstacle.getEffectiveToolMessage(messages));
+            player.sendChatMessage(obstacle.getEffectiveToolMessage(messages));
             return 0;
         }
 
@@ -453,7 +448,7 @@ public class PlayerListener implements Listener {
             obstacle.removeFromWorld();
         } else if (returnCode == -1) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, obstacle.getEffectiveToolMessage(messages));
+            player.sendChatMessage(obstacle.getEffectiveToolMessage(messages));
             return 0;
         }
 
@@ -602,7 +597,7 @@ public class PlayerListener implements Listener {
         int returnCode = player.removeItem(slot);
         if (returnCode == -1) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getCannotDropThatItemMessage());
+            player.sendChatMessage(messages.getCannotDropThatItemMessage());
         }
 
         return returnCode == 0;
@@ -640,21 +635,21 @@ public class PlayerListener implements Listener {
     public void sendGeneralMessage(PEGame game, String senderName, String message) {
         for (PEPlayer player : game.getPlayersOnLobby()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getGeneralMessage(senderName, message));
+            player.sendChatMessage(messages.getGeneralMessage(senderName, message));
         }
     }
 
     private void sendMessageToPoliceTeam(PEGame game, String senderName, String message) {
         for (PEPlayer player : game.getGuardsTeam().getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPoliceTeamMessage(senderName, message));
+            player.sendChatMessage(messages.getPoliceTeamMessage(senderName, message));
         }
     }
 
     private void sendMessageToPrisonersTeam(PEGame game, String senderName, String message) {
         for (PEPlayer player : game.getPrisonerTeam().getMembers()) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-            BukkitMessageSender.sendChatMessage(player, messages.getPrisonerTeamMessage(senderName, message));
+            player.sendChatMessage(messages.getPrisonerTeamMessage(senderName, message));
         }
     }
 }

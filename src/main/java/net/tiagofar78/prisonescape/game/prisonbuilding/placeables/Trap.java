@@ -2,7 +2,6 @@ package net.tiagofar78.prisonescape.game.prisonbuilding.placeables;
 
 import net.tiagofar78.prisonescape.PEResources;
 import net.tiagofar78.prisonescape.PrisonEscape;
-import net.tiagofar78.prisonescape.bukkit.BukkitMessageSender;
 import net.tiagofar78.prisonescape.bukkit.BukkitScheduler;
 import net.tiagofar78.prisonescape.game.Guard;
 import net.tiagofar78.prisonescape.game.PEPlayer;
@@ -120,18 +119,18 @@ public class Trap {
 
         for (Guard guard : guards) {
             MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(guard.getName());
-            BukkitMessageSender.sendChatMessage(guard, messages.getTrapTriggeredMessage());
+            guard.sendChatMessage(messages.getTrapTriggeredMessage());
         }
 
         int trapDuration = ConfigManager.getInstance().getTrapDuration();
         MessageLanguageManager messages = MessageLanguageManager.getInstanceByPlayer(player.getName());
-        BukkitMessageSender.sendChatMessage(player, messages.getCaughtInATrapMessage(trapDuration));
+        player.sendChatMessage(messages.getCaughtInATrapMessage(trapDuration));
 
         BukkitScheduler.runSchedulerLater(new Runnable() {
             @Override
             public void run() {
                 player.allowMovement();
-                BukkitMessageSender.sendChatMessage(player, messages.getCanMoveFreelyMessage());
+                player.sendChatMessage(messages.getCanMoveFreelyMessage());
                 delete();
             }
         }, trapDuration * TICKS_PER_SECOND);

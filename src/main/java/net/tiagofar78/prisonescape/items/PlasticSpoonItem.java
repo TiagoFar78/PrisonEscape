@@ -1,6 +1,5 @@
 package net.tiagofar78.prisonescape.items;
 
-import net.tiagofar78.prisonescape.bukkit.BukkitItems;
 import net.tiagofar78.prisonescape.managers.MessageLanguageManager;
 
 import org.bukkit.Material;
@@ -40,7 +39,7 @@ public class PlasticSpoonItem extends ToolItem {
     public ItemStack toItemStack(MessageLanguageManager messages) {
         ItemStack item = super.toItemStack(messages);
 
-        BukkitItems.removeAttributes(item);
+        removeAttributes(item);
 
         return item;
     }
